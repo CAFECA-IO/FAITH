@@ -1129,7 +1129,7 @@ a {
     0 4px 6px -4px rgba(0, 0, 0, 0.1);
 }
 
-/* Info: Hide horizontal scrollbar (20240415 - Shirley) */
+/* Info: Hide horizontal scrollbar (20240625 - Shirley) */
 /* For Webkit browser */
 .hideScrollbar::-webkit-scrollbar {
   display: none;
@@ -1139,7 +1139,7 @@ a {
   scrollbar-width: none;
 }
 
-/* Info: hide scroll bar of all div (20240415 - Shirley) */
+/* Info: hide scroll bar of all div (20240625 - Shirley) */
 /* div {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -1163,7 +1163,7 @@ div::-webkit-scrollbar {
     0px 2px 5px 0px var(--Shadow-Lv-5, rgba(49, 67, 98, 0.1));
 }
 
-/* Info: (20240502 - Julian) progress bar style */
+/* Info: (20240625 - Shirley) progress bar style */
 .sliderProgress {
   -webkit-appearance: none;
   width: 100%;
@@ -1172,7 +1172,7 @@ div::-webkit-scrollbar {
   background: none;
   overflow: hidden;
 }
-/* Info: (20240502 - Julian) 滑動紐 */
+/* Info: (20240625 - Shirley) 滑動紐 */
 .sliderProgress::-webkit-slider-thumb {
   -webkit-appearance: none;
   position: relative;
@@ -1190,7 +1190,7 @@ div::-webkit-scrollbar {
   border: 2px solid #ffd892;
   cursor: pointer;
 }
-/* Info: (20240502 - Julian) 滑動條 */
+/* Info: (20240625 - Shirley) 滑動條 */
 .sliderProgress::-webkit-slider-runnable-track {
   height: 5px;
   background: #cdd1d9;

@@ -827,7 +827,7 @@ module.exports = {
         '32px': '32px',
       },
       screens: {
-        /* Info: (20240315 - Shirley) 等同於 @media (min-width: ...px) */
+        /* Info: (20240625 - Shirley) 等同於 @media (min-width: ...px) */
 
         iphonese: '376px',
         iphone12pro: '391px',
@@ -850,7 +850,7 @@ module.exports = {
       },
 
       spacing: {
-        /* Info: (20240315 - Shirley) 適用範圍
+        /* Info: (20240625 - Shirley) 適用範圍
          * width / height / padding / margin / top / bottom / right / left */
         nonepx: 'var(--number-none)',
         '1px': 'var(--number-1)',
@@ -1241,7 +1241,7 @@ module.exports = {
         '120vw': '120vw',
         '140vw': '140vw',
 
-        // Info: (20240315- Shirley) A4 尺寸
+        // Info: (20240625- Shirley) A4 尺寸
         'a4-width': '595px',
         'a4-height': '842px',
       },

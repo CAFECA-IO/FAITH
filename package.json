@@ -1,6 +1,6 @@
 {
   "name": "FAITH",
-  "version": "0.1.0+1",
+  "version": "0.1.0+2",
   "private": false,
   "scripts": {
     "dev": "next dev",
@@ -14,9 +14,14 @@
     "production": "next start -p 80"
   },
   "dependencies": {
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "next": "14.2.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-icons": "^5.2.1",
+    "react-usestateref": "^1.0.9",
+    "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {
     "@babel/eslint-plugin": "^7.24.7",
