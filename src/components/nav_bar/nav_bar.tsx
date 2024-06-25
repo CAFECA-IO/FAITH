@@ -1,94 +1,94 @@
-/* eslint-disable */
 import Link from 'next/link';
 import React from 'react';
-import { Button } from '../button/button';
-import { cn } from '../../lib/utils/common';
 import Image from 'next/image';
-import useOuterClick from '../../lib/hooks/use_outer_click';
+// import useOuterClick from '../../lib/hooks/use_outer_click';
 import { NATIVE_ROUTE } from '@/constants/url';
 import version from '@/lib/version';
+import { Button } from '@/components/button/button';
+import { cn } from '@/lib/utils/common';
 
 const NavBar = () => {
-  const {
-    targetRef: userMenuRef,
-    componentVisible: isUserMenuOpen,
-    setComponentVisible: setIsUserMenuOpen,
-  } = useOuterClick<HTMLDivElement>(false);
+  // TODO: in dev (20240625 - Shirley)
+  // const {
+  //   targetRef: userMenuRef,
+  //   componentVisible: isUserMenuOpen,
+  //   setComponentVisible: setIsUserMenuOpen,
+  // } = useOuterClick<HTMLDivElement>(false);
 
-  const logOutClickHandler = async () => {
-    setIsUserMenuOpen(false);
-  };
+  // const logOutClickHandler = async () => {
+  //   setIsUserMenuOpen(false);
+  // };
 
-  const displayedUserMenu = isUserMenuOpen ? (
-    <div className="absolute right-10 top-20 z-50">
-      <div className="max-w-[248px] flex-col rounded-2xl bg-white p-4 shadow-xl">
-        <img
-          srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&"
-          className="mx-auto aspect-square w-16 self-center"
-        />
-        <div className="mt-3 flex justify-center gap-0 px-16">
-          <div className="text-secondaryBlue my-auto text-base font-semibold leading-6 tracking-normal">
-            Joyce
-          </div>
-          <div className="flex flex-col justify-center rounded-md p-2.5">
-            <div className="flex items-center justify-center">
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/81424e1f4bb6c5d2f3b559ea40f9f188932a4c8bd82176e3de86e8257c95ec6e?apiKey=0e17b0b875f041659e186639705112b1&"
-                className="aspect-square w-4"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="mt-3 flex flex-col justify-center">
-          <div className="flex flex-col justify-center">
-            <div className="h-px shrink-0 border border-solid border-gray-300 bg-gray-300" />
-          </div>
-        </div>
-        <div className="mt-3 flex gap-2 rounded-md px-6 py-2.5">
-          <div className="my-auto flex items-center justify-center">
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/b2440bc7dff988603a015147398e81878220ce5264999f173e13e28a3f19ba26?apiKey=0e17b0b875f041659e186639705112b1&"
-              className="aspect-square w-5"
-            />
-          </div>
-          <div className="text-base font-normal leading-6 tracking-normal text-sky-950">
-            Subscription & Bills
-          </div>
-        </div>
-        <div className="mt-3 flex gap-2 rounded-md px-6 py-2.5">
-          <div className="my-auto flex items-center justify-center">
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/d483779fe7b5d1853e7ad9a6a31acef6c171fae39e7875d3e3e346af17601c37?apiKey=0e17b0b875f041659e186639705112b1&"
-              className="aspect-square w-5"
-            />
-          </div>
-          <div className="text-base font-normal leading-6 tracking-normal text-sky-950">
-            Setting
-          </div>
-        </div>
-        <div className="mt-3 flex flex-col justify-center py-2.5">
-          <div className="flex flex-col justify-center">
-            <div className="h-px shrink-0 border border-solid border-gray-300 bg-gray-300" />
-          </div>
-        </div>
-        <button
-          type="button"
-          onClick={logOutClickHandler}
-          className="mt-3 flex w-full gap-2 rounded-md px-6 py-2.5 hover:opacity-70"
-        >
-          <div className="my-auto flex items-center justify-center">
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/ca0dfc144be43547f4337c7f445306d81e5d800962d761f417c4dcad926c5c8a?apiKey=0e17b0b875f041659e186639705112b1&"
-              className="aspect-square w-5"
-            />
-          </div>
-          <div className="text-secondaryBlue2 text-base font-normal leading-6 tracking-normal">
-            Logout
-          </div>
-        </button>
-      </div>
-    </div>
-  ) : null;
+  // const displayedUserMenu = isUserMenuOpen ? (
+  //   <div className="absolute right-10 top-20 z-50">
+  //     <div className="max-w-[248px] flex-col rounded-2xl bg-white p-4 shadow-xl">
+  //       <img
+  //         srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&"
+  //         className="mx-auto aspect-square w-16 self-center"
+  //       />
+  //       <div className="mt-3 flex justify-center gap-0 px-16">
+  //         <div className="text-secondaryBlue my-auto text-base font-semibold leading-6 tracking-normal">
+  //           Joyce
+  //         </div>
+  //         <div className="flex flex-col justify-center rounded-md p-2.5">
+  //           <div className="flex items-center justify-center">
+  //             <img
+  //               src="https://cdn.builder.io/api/v1/image/assets/TEMP/81424e1f4bb6c5d2f3b559ea40f9f188932a4c8bd82176e3de86e8257c95ec6e?apiKey=0e17b0b875f041659e186639705112b1&"
+  //               className="aspect-square w-4"
+  //             />
+  //           </div>
+  //         </div>
+  //       </div>
+  //       <div className="mt-3 flex flex-col justify-center">
+  //         <div className="flex flex-col justify-center">
+  //           <div className="h-px shrink-0 border border-solid border-gray-300 bg-gray-300" />
+  //         </div>
+  //       </div>
+  //       <div className="mt-3 flex gap-2 rounded-md px-6 py-2.5">
+  //         <div className="my-auto flex items-center justify-center">
+  //           <img
+  //             src="https://cdn.builder.io/api/v1/image/assets/TEMP/b2440bc7dff988603a015147398e81878220ce5264999f173e13e28a3f19ba26?apiKey=0e17b0b875f041659e186639705112b1&"
+  //             className="aspect-square w-5"
+  //           />
+  //         </div>
+  //         <div className="text-base font-normal leading-6 tracking-normal text-sky-950">
+  //           Subscription & Bills
+  //         </div>
+  //       </div>
+  //       <div className="mt-3 flex gap-2 rounded-md px-6 py-2.5">
+  //         <div className="my-auto flex items-center justify-center">
+  //           <img
+  //             src="https://cdn.builder.io/api/v1/image/assets/TEMP/d483779fe7b5d1853e7ad9a6a31acef6c171fae39e7875d3e3e346af17601c37?apiKey=0e17b0b875f041659e186639705112b1&"
+  //             className="aspect-square w-5"
+  //           />
+  //         </div>
+  //         <div className="text-base font-normal leading-6 tracking-normal text-sky-950">
+  //           Setting
+  //         </div>
+  //       </div>
+  //       <div className="mt-3 flex flex-col justify-center py-2.5">
+  //         <div className="flex flex-col justify-center">
+  //           <div className="h-px shrink-0 border border-solid border-gray-300 bg-gray-300" />
+  //         </div>
+  //       </div>
+  //       <button
+  //         type="button"
+  //         onClick={logOutClickHandler}
+  //         className="mt-3 flex w-full gap-2 rounded-md px-6 py-2.5 hover:opacity-70"
+  //       >
+  //         <div className="my-auto flex items-center justify-center">
+  //           <img
+  //             src="https://cdn.builder.io/api/v1/image/assets/TEMP/ca0dfc144be43547f4337c7f445306d81e5d800962d761f417c4dcad926c5c8a?apiKey=0e17b0b875f041659e186639705112b1&"
+  //             className="aspect-square w-5"
+  //           />
+  //         </div>
+  //         <div className="text-secondaryBlue2 text-base font-normal leading-6 tracking-normal">
+  //           Logout
+  //         </div>
+  //       </button>
+  //     </div>
+  //   </div>
+  // ) : null;
 
   const displayedLogInBtn = (
     <div className="flex space-x-5">
@@ -140,7 +140,7 @@ const NavBar = () => {
       <div className="z-60 h-80px bg-surface-neutral-surface-lv1 px-80px py-8px shadow-navbar lg:h-60px flex w-full items-center gap-5 max-md:flex-wrap max-md:px-5">
         <div className="my-auto flex flex-1 items-center">
           <div className="flex flex-col items-center justify-center gap-2 lg:flex-row lg:items-end lg:justify-end">
-            <Link href={NATIVE_ROUTE.HOME}>
+            <Link href={NATIVE_ROUTE.HOME} className="shrink-0">
               {/* Info: (20240417 - Julian) Desktop logo */}
               <Image
                 src="/logo/isunfa_logo_light.svg"
@@ -166,7 +166,7 @@ const NavBar = () => {
           </div>
 
           {/* TODO: links on mobile (20240408 - Shirley) */}
-          <div className="my-auto hidden flex-1 gap-5 max-md:flex-wrap lg:flex lg:pr-20">
+          <div className="my-auto hidden flex-1 gap-5 max-md:flex-wrap lg:flex lg:pr-0">
             <Button
               size={'small'}
               variant={'secondaryBorderless'}

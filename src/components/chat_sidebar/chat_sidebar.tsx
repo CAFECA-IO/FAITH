@@ -46,7 +46,7 @@ const ChatSidebar = () => {
 
       {/* Info: ----- desktop version (20240423 - Shirley) ----- */}
       <div
-        className={`bg-lightYellow fixed z-10 hidden h-screen flex-col items-center lg:flex ${isExpanded ? 'w-240px' : '-translate-x-240px w-0'} px-12px pb-40px pt-100px bg-white transition-all duration-300 ease-in-out`}
+        className={`bg-surface-brand-primary-5 fixed z-10 hidden h-screen flex-col items-center lg:flex ${isExpanded ? 'w-240px' : '-translate-x-240px w-0'} px-12px pb-40px pt-100px transition-all duration-300 ease-in-out`}
       >
         <div className="flex items-center gap-3">
           <div className="relative flex h-10 w-10 items-center justify-center">
