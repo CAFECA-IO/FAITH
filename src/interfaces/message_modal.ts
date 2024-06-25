@@ -10,13 +10,13 @@ export enum MessageType {
 
 export interface IMessageModal {
   title: string;
-  content: string;
+  normalMsg?: string;
   hideCloseBtn?: boolean;
   submitBtnStr: string;
   submitBtnFunction: () => void;
   messageType: MessageType;
   subtitle?: string;
-  subMsg?: string;
+  redMsg?: string;
   backBtnStr?: string;
   backBtnFunction?: () => void;
   submitBtnClassName?: string;
@@ -26,7 +26,7 @@ export interface IMessageModal {
 
 export const dummyMessageModalData: IMessageModal = {
   title: 'Warning',
-  content: '',
+  normalMsg: '',
   submitBtnStr: 'Delete',
   submitBtnFunction: () => {},
   submitBtnVariant: 'tertiaryBorderless',

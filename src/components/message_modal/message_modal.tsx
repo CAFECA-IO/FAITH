@@ -17,9 +17,9 @@ const MessageModal = ({
   const {
     title,
     subtitle,
-    content,
+    normalMsg,
     hideCloseBtn,
-    subMsg,
+    redMsg,
     submitBtnStr,
     submitBtnFunction,
     backBtnStr,
@@ -96,11 +96,11 @@ const MessageModal = ({
   ));
 
   // Info: 換行處理 (20240515 - Shirley)
-  const displayedContent = content.split('\n').map((line, index) => (
+  const displayedNormalMsg = normalMsg?.split('\n').map((line, index) => (
     // eslint-disable-next-line react/no-array-index-key
     <div key={index} className="-mt-2">
       {line}
-      {index < content.split('\n').length - 1}
+      {index < normalMsg.split('\n').length - 1}
     </div>
   ));
 
@@ -125,9 +125,9 @@ const MessageModal = ({
           <h1 className={`text-base font-medium ${titleColor}`}>{displayedSubtitles}</h1>
           <Image src={imgStr} width={48} height={48} alt={imgAlt} />
           {/* Info: (20240507 - Julian) sub message (red color) */}
-          <p className="text-base text-lightRed">{subMsg}</p>
-          {/* Info: (20240425 - Julian) common message (gray color) */}
-          <div className="text-sm text-lightGray5">{displayedContent}</div>
+          <p className="text-base text-lightRed">{redMsg}</p>
+          {/* Info: (20240425 - Julian) normal message (gray color) */}
+          <div className="text-sm text-lightGray5">{displayedNormalMsg}</div>
         </div>
         <div className="flex items-center justify-center gap-24px">
           {isBackBtn}
