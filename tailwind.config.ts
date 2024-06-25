@@ -733,6 +733,7 @@ module.exports = {
 
         indigo: '#8098F9',
         darkBlue3: '#0024620D',
+        lightYellow: '#FFA5020D',
       },
       backgroundImage: {
         web: 'url("/elements/web.svg")',
@@ -827,7 +828,7 @@ module.exports = {
         '32px': '32px',
       },
       screens: {
-        /* Info: (20240315 - Shirley) 等同於 @media (min-width: ...px) */
+        /* Info: (20240625 - Shirley) 等同於 @media (min-width: ...px) */
 
         iphonese: '376px',
         iphone12pro: '391px',
@@ -850,7 +851,7 @@ module.exports = {
       },
 
       spacing: {
-        /* Info: (20240315 - Shirley) 適用範圍
+        /* Info: (20240625 - Shirley) 適用範圍
          * width / height / padding / margin / top / bottom / right / left */
         nonepx: 'var(--number-none)',
         '1px': 'var(--number-1)',
@@ -1241,7 +1242,7 @@ module.exports = {
         '120vw': '120vw',
         '140vw': '140vw',
 
-        // Info: (20240315- Shirley) A4 尺寸
+        // Info: (20240625- Shirley) A4 尺寸
         'a4-width': '595px',
         'a4-height': '842px',
       },
@@ -1336,6 +1337,8 @@ module.exports = {
         custom3: '0px 161px 96px 0px rgba(32, 22, 93, 0.05)',
         custom4: '0px 286px 114px 0px rgba(32, 22, 93, 0.01)',
         custom5: '0px 447px 125px 0px rgba(32, 22, 93, 0)',
+        custom6:
+          '0px 50px 17px 0px var(--shadow-lv-1, rgba(49, 67, 98, 0.00)), 0px 28px 15px 0px var(--shadow-lv-2, rgba(49, 67, 98, 0.01)), 0px 11px 13px 0px var(--shadow-lv-3, rgba(49, 67, 98, 0.05)), 0px 6px 10px 0px var(--shadow-lv-4, rgba(49, 67, 98, 0.09)), 0px 2px 5px 0px var(--shadow-lv-5, rgba(49, 67, 98, 0.10))',
 
         dropmenu:
           '0px 166px 46px 0px var(--Shadow-Lv-1, rgba(49, 67, 98, 0.00)), 0px 106px 42px 0px var(--Shadow-Lv-2, rgba(49, 67, 98, 0.01)), 0px 60px 36px 0px var(--Shadow-Lv-3, rgba(49, 67, 98, 0.05)), 0px 27px 27px 0px var(--Shadow-Lv-4, rgba(49, 67, 98, 0.09)), 0px 7px 15px 0px var(--Shadow-Lv-5, rgba(49, 67, 98, 0.10));',
