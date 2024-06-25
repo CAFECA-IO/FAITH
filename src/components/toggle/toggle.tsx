@@ -7,6 +7,7 @@ interface IToggleProps {
   getToggledState: (props: boolean) => void;
   toggleStateFromParent?: boolean;
   setToggleStateFromParent?: Dispatch<SetStateAction<boolean>>;
+  onClick?: () => void;
 }
 
 const Toggle = ({
@@ -16,6 +17,7 @@ const Toggle = ({
   lockedToOpen = false,
   toggleStateFromParent,
   setToggleStateFromParent,
+  onClick,
 }: IToggleProps) => {
   const [toggle, setToggle] =
     toggleStateFromParent && setToggleStateFromParent
@@ -28,6 +30,11 @@ const Toggle = ({
 
   const toggleClickHandler = () => {
     if (lockedToOpen) return;
+    if (onClick) {
+      onClick();
+      return;
+    }
+
     setToggle(!toggle);
     passToggledStateHandler(!toggle);
   };

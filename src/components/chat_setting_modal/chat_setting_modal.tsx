@@ -32,7 +32,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
   const [isAutoRenewal, setIsAutoRenewal] = useState(true);
 
   // ToDo: (20240625 - Julian) replace with actual data
-  const hasSubscription = false;
+  const hasSubscription = true;
   const subscriptionPlan = 'Beta';
   const monthlyFee = 'NTD 3000';
   const nextPaymentTimestamp = 1719131200;
@@ -61,8 +61,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
     messageModalDataHandler({
       messageType: MessageType.WARNING,
       title: 'Delete All Chat',
-      normalMsg: 'Are you sure you want to delete all Chat?',
-      redMsg: 'This action cannot be undone.',
+      redMsg: 'Are you sure you want to delete all Chat? This action cannot be undone!',
       backBtnStr: 'Cancel',
       submitBtnStr: 'Confirm',
       submitBtnFunction: () => {}, // ToDo: (20240625 - Julian) add delete all chat function
@@ -74,11 +73,23 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
     messageModalDataHandler({
       messageType: MessageType.WARNING,
       title: 'Cancel Subscription',
-      normalMsg: 'Are you sure you want to cancel your subscription?',
-      redMsg: 'Once confirmed, the cancellation will take effect on the next billing date.',
+      redMsg: 'Are you sure you want to cancel your subscription?',
+      normalMsg: 'Once confirmed, the cancellation will take effect on the next billing date.',
       backBtnStr: 'Cancel',
       submitBtnStr: 'Confirm',
       submitBtnFunction: () => {}, // ToDo: (20240625 - Julian) add cancel subscription function
+    });
+    messageModalVisibilityHandler();
+  };
+
+  const autoRenewalConfirmHandler = () => {
+    messageModalDataHandler({
+      messageType: MessageType.WARNING,
+      title: 'Auto-Renewal',
+      normalMsg: 'Are you sure you want to Turn off Auto-Renewal ?',
+      backBtnStr: 'Cancel',
+      submitBtnStr: 'Confirm',
+      submitBtnFunction: autoRenewalToggleHandler,
     });
     messageModalVisibilityHandler();
   };
@@ -179,7 +190,8 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
           id="auto-renewal-toggle"
           toggleStateFromParent={isAutoRenewal}
           getToggledState={autoRenewalToggleHandler}
-          // ToDo: (20240625 - Julian) confirm step needed
+          // Info: (20240625 - Julian) 只有關閉的時候才會有 confirm modal
+          onClick={isAutoRenewal ? autoRenewalConfirmHandler : undefined}
         />
       </div>
       {/* Info: (20240625 - Julian) Cancel Subscription */}
