@@ -160,7 +160,7 @@ const NavBar = () => {
             </Link>
             <div className="rounded-xs bg-primaryYellow3 text-primaryYellow2 my-auto flex flex-col justify-center self-stretch px-1">
               <div className="rounded-xs px-0.1rem flex flex-col justify-center py-1">
-                <div className="justify-center px-1 text-xs">V{version}</div>
+                <div className="justify-center px-1 text-xs">v{version}</div>
               </div>
             </div>
           </div>
