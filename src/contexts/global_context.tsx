@@ -23,7 +23,7 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
   const [isMessageModalVisible, setIsMessageModalVisible] = useState(false);
   const [messageModalData, setMessageModalData] = useState<IMessageModal>(dummyMessageModalData);
 
-  const [isChatSettingModalVisible, setIsChatSettingModalVisible] = useState(true);
+  const [isChatSettingModalVisible, setIsChatSettingModalVisible] = useState(false);
 
   const messageModalVisibilityHandler = () => {
     setIsMessageModalVisible(!isMessageModalVisible);

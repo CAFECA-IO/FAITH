@@ -32,7 +32,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
   const [isAutoRenewal, setIsAutoRenewal] = useState(true);
 
   // ToDo: (20240625 - Julian) replace with actual data
-  const hasSubscription = true;
+  const hasSubscription = false;
   const subscriptionPlan = 'Beta';
   const monthlyFee = 'NTD 3000';
   const nextPaymentTimestamp = 1719131200;
@@ -214,8 +214,108 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
         <div className="h-8px w-8px rounded-full bg-surface-support-strong-maple"></div>
         <p className="text-base text-text-neutral-primary">Upgrade Your Faith</p>
       </div>
-      <div className="flex h-250px items-center justify-center rounded-sm border">
-        Subscription plan introduction card
+      {/* Info: (20240625 - Julian) Beta plan introduction card */}
+      <div className="relative flex h-350px flex-none flex-col items-center justify-between overflow-hidden rounded-sm p-20px shadow">
+        {/* Info: (20240625 - Julian) Background (Beta) */}
+        <div className="absolute left-0 top-0">
+          <svg
+            width="120"
+            height="120"
+            viewBox="0 0 120 120"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="40" cy="40" r="80" fill="#002462" />
+          </svg>
+          <p className="absolute left-20px top-32px text-32px font-bold text-text-brand-primary-lv2">
+            Beta
+          </p>
+        </div>
+        {/* Info: (20240625 - Julian) Background (medal) */}
+        <div className="absolute right-0 top-40px">
+          <svg
+            width="101"
+            height="160"
+            viewBox="0 0 101 160"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.2999 102.95L5.64985 130C5.21101 130.76 4.97998 131.622 4.97998 132.5C4.97998 133.378 5.21101 134.24 5.64985 135C6.09038 135.763 6.7247 136.396 7.48858 136.835C8.25247 137.274 9.1188 137.504 9.99985 137.5H27.2999L35.9999 152.5C36.4361 153.256 37.0626 153.884 37.8169 154.323C38.5713 154.761 39.4273 154.995 40.2999 155C41.1809 155.004 42.0472 154.774 42.8111 154.335C43.575 153.896 44.2093 153.263 44.6499 152.5L57.0499 131.05C42.3382 125.923 29.7574 116.034 21.2999 102.95Z"
+              fill="#002462"
+            />
+            <path
+              d="M85 52.4L80 42.4L75 52.4C74.6382 53.1185 74.1085 53.7392 73.4556 54.2092C72.8028 54.6793 72.0462 54.9848 71.25 55.1L60.5 56.7L68.3 64.4C68.8787 64.9621 69.3128 65.6558 69.5653 66.422C69.8178 67.1881 69.8812 68.0041 69.75 68.8L67.9 79.6L77.45 74.6C78.1807 74.2386 78.9848 74.0506 79.8 74.0506C80.6152 74.0506 81.4193 74.2386 82.15 74.6L91.7 79.6L90 68.8C89.8688 68.0041 89.9322 67.1881 90.1846 66.422C90.4371 65.6558 90.8713 64.9621 91.45 64.4L99.25 56.7L88.55 55C87.7992 54.8661 87.0889 54.5622 86.4736 54.1115C85.8583 53.6609 85.3542 53.0755 85 52.4Z"
+              fill="#002462"
+            />
+            <path
+              d="M140 65C140 53.1331 136.481 41.5328 129.888 31.6658C123.295 21.7989 113.925 14.1085 102.961 9.56726C91.9975 5.026 79.9335 3.8378 68.2946 6.15291C56.6558 8.46802 45.9648 14.1825 37.5736 22.5736C29.1825 30.9648 23.468 41.6558 21.1529 53.2946C18.8378 64.9335 20.026 76.9975 24.5673 87.961C29.1085 98.9246 36.7989 108.295 46.6658 114.888C56.5328 121.481 68.1331 125 80 125C95.913 125 111.174 118.679 122.426 107.426C133.679 96.1742 140 80.913 140 65ZM113.5 56.8L100.35 69.7L103.45 87.9C103.629 88.8374 103.535 89.8063 103.181 90.6923C102.826 91.5783 102.226 92.3443 101.45 92.9C100.606 93.5112 99.5921 93.8433 98.55 93.85C97.7293 93.8459 96.9222 93.6399 96.2 93.25L80 84.6L63.8 93.15C63.0095 93.5369 62.1309 93.7083 61.253 93.6468C60.3751 93.5853 59.5289 93.2932 58.8 92.8C58.0243 92.2443 57.4238 91.4783 57.0694 90.5923C56.715 89.7063 56.6215 88.7374 56.8 87.8L59.9 69.6L46.5 56.8C45.826 56.1511 45.3476 55.326 45.1192 54.4186C44.8909 53.5112 44.9217 52.558 45.2082 51.6673C45.4946 50.7765 46.0253 49.9841 46.7398 49.38C47.4544 48.7759 48.3241 48.3844 49.25 48.25L67.4 45.6L75.5 29.05C75.9095 28.2047 76.5487 27.4917 77.3446 26.9929C78.1405 26.4941 79.0607 26.2295 80 26.2295C80.9393 26.2295 81.8596 26.4941 82.6555 26.9929C83.4513 27.4917 84.0906 28.2047 84.5 29.05L92.6 45.6L110.75 48.25C111.676 48.3844 112.546 48.7759 113.26 49.38C113.975 49.9841 114.505 50.7765 114.792 51.6673C115.078 52.558 115.109 53.5112 114.881 54.4186C114.652 55.326 114.174 56.1511 113.5 56.8Z"
+              fill="#002462"
+            />
+          </svg>
+        </div>
+        {/* Info: (20240625 - Julian) Content */}
+        <div className="flex w-full items-end justify-center gap-x-50px pr-60px">
+          <div className="flex flex-col items-center gap-y-10px font-bold">
+            <p className="text-2xl text-text-brand-secondary-lv1">
+              NTD$ <span className="text-48px text-text-brand-primary-lv2">3,000</span>
+            </p>
+            <p className="text-4xl text-text-brand-secondary-lv2">Monthly</p>
+            <p className="text-xl text-text-brand-secondary-lv1">(30,000/Year)</p>
+          </div>
+          <ul className="list-disc text-lg font-semibold">
+            <li>
+              Users : <span className="text-text-support-baby">10</span>
+            </li>
+            <li>
+              Scan Maximum : <span className="text-text-support-baby">Unlimited</span>
+            </li>
+            <li>
+              Upload Space : <span className="text-text-support-baby">100 G</span>
+            </li>
+            <li>
+              Live FinanceReports : <span className="text-text-support-baby">30</span>
+            </li>
+            <li>Data Dashboard</li>
+            <li>Contract Management</li>
+            <li>Accounting Service</li>
+            <li className="text-text-support-baby">Employee Salary Management</li>
+          </ul>
+        </div>
+        {/* Info: (20240625 - Julian) Get Beta Button */}
+        {/* ToDo: (20240625 - Julian) Link to the beta plan page */}
+        <Button type="button" variant="tertiaryOutline" className="ml-auto w-fit text-lg">
+          <p>Get Beta</p>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g clipPath="url(#clip0_224_7869)">
+              <path
+                className="fill-current"
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M11.7699 4.4556C12.2093 4.01626 12.9216 4.01626 13.3609 4.4556L20.1109 11.2056C20.5503 11.6449 20.5503 12.3573 20.1109 12.7966L13.3609 19.5466C12.9216 19.9859 12.2093 19.9859 11.7699 19.5466C11.3306 19.1073 11.3306 18.3949 11.7699 17.9556L17.7244 12.0011L11.7699 6.04659C11.3306 5.60725 11.3306 4.89494 11.7699 4.4556Z"
+                fill="#001840"
+              />
+              <path
+                className="fill-current"
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M3.56543 12.0011C3.56543 11.3798 4.06911 10.8761 4.69043 10.8761H18.3779C18.9992 10.8761 19.5029 11.3798 19.5029 12.0011C19.5029 12.6224 18.9992 13.1261 18.3779 13.1261H4.69043C4.06911 13.1261 3.56543 12.6224 3.56543 12.0011Z"
+                fill="#001840"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_224_7869">
+                <rect width="24" height="24" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+        </Button>
       </div>
     </div>
   );
@@ -224,23 +324,19 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
 
   const isDisplayModal = isModalVisible ? (
     <div className="fixed inset-0 z-70 flex items-center justify-center bg-black/50">
-      <div className="relative flex w-90vw flex-col rounded-sm bg-white py-20px font-barlow">
+      <div className="relative flex h-auto w-90vw flex-col rounded-sm bg-white py-20px font-barlow">
         {/* Info: (20240625 - Julian) Header */}
-        <div className="flex px-40px text-32px font-bold text-text-neutral-primary">
+        <div className="flex items-center justify-between pl-40px pr-20px text-32px font-bold text-text-neutral-primary">
           <h1>Setting</h1>
-          <button
-            type="button"
-            onClick={modalVisibilityHandler}
-            className="absolute right-12px top-12px text-lightGray5"
-          >
-            <Image src="/icons/cross.svg" width={20} height={20} alt="cross_icon" />
+          <button type="button" onClick={modalVisibilityHandler}>
+            <Image src="/icons/cross.svg" width={32} height={32} alt="cross_icon" />
           </button>
         </div>
 
         <hr className="my-20px bg-divider-stroke-lv-4" />
 
         {/* Info: (20240625 - Julian) Content */}
-        <div className="flex h-350px w-full gap-x-60px p-20px font-medium text-button-text-secondary">
+        <div className="flex min-h-350px w-full gap-x-60px p-20px font-medium text-button-text-secondary">
           {/* Info: (20240625 - Julian) Sidebar */}
           <div className="flex flex-col items-start gap-20px">
             {/* Info: (20240625 - Julian) Normal Setting */}

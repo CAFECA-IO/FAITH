@@ -110,7 +110,7 @@ const MessageModal = ({
       onClick={modalVisibilityHandler}
       className="absolute right-12px top-12px text-lightGray5"
     >
-      <Image src="/icons/cross.svg" width={20} height={20} alt="cross_icon" />
+      <Image src="/icons/cross.svg" width={32} height={32} alt="cross_icon" />
     </button>
   ) : null;
 
