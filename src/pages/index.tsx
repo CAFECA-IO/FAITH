@@ -1,11 +1,7 @@
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
-
 export default function Home() {
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 text-red-400 ${inter.className}`}
+      className={`font-barlow text-text-brand-primary-lv2 flex min-h-screen flex-col items-center justify-between p-24 text-4xl`}
     >
       FAITH
     </main>
