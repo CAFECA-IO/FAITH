@@ -1,5 +1,6 @@
-import React, { useState, useContext, createContext, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useContext, createContext } from 'react';
 import { IMessageModal, dummyMessageModalData } from '@/interfaces/message_modal';
+/* eslint-disable-next-line import/no-cycle */
 import ChatSettingModal from '@/components/chat_setting_modal/chat_setting_modal';
 import MessageModal from '@/components/message_modal/message_modal';
 
@@ -23,7 +24,7 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
   const [isMessageModalVisible, setIsMessageModalVisible] = useState(false);
   const [messageModalData, setMessageModalData] = useState<IMessageModal>(dummyMessageModalData);
 
-  const [isChatSettingModalVisible, setIsChatSettingModalVisible] = useState(false);
+  const [isChatSettingModalVisible, setIsChatSettingModalVisible] = useState(true);
 
   const messageModalVisibilityHandler = () => {
     setIsMessageModalVisible(!isMessageModalVisible);
@@ -37,6 +38,7 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     setIsChatSettingModalVisible(!isChatSettingModalVisible);
   };
 
+  /* eslint-disable react/jsx-no-constructed-context-values */
   const value = {
     isMessageModalVisible,
     messageModalVisibilityHandler,
