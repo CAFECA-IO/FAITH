@@ -41,10 +41,15 @@ export interface ButtonProps
 
 // Info: 使用 forwardRef 將引用傳遞給 DOM 元素 (20240625 - Shirley)
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, ...props }, ref) => {
+  ({ className, variant, size, type = 'button', ...props }, ref) => {
     const Comp = 'button';
     return (
-      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        type={type}
+        {...props}
+      />
     );
   }
 );
