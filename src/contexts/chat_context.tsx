@@ -1,28 +1,6 @@
+import { IChat, IFolder } from '@/interfaces/chat';
 import { createContext, useContext, useMemo } from 'react';
 import useStateRef from 'react-usestateref';
-
-interface IFolder {
-  id: string;
-  name: string;
-  chats: IAbbreviatedChat[];
-}
-
-interface IAbbreviatedChat {
-  id: string;
-  title: string;
-  description: string;
-  createdAt: number;
-}
-
-interface IMessage {
-  role: string;
-  content: string;
-  createdAt: number;
-}
-
-interface IChat extends IAbbreviatedChat {
-  messages: IMessage[];
-}
 
 interface ChatContextType {
   chatList: IChat[];

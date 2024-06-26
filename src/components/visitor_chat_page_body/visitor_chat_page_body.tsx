@@ -1,4 +1,6 @@
+import ChatMessage from '@/components/chat_message/chat_message';
 import ChatTopicOption from '@/components/chat_topic_option/chat_topic_option';
+import { IMessage, dummyMessageList } from '@/interfaces/chat';
 import Image from 'next/image';
 import React, { useRef, useState } from 'react';
 
@@ -109,33 +111,49 @@ const VisitorChatPageBody = () => {
     </div>
   );
 
+  const chatList: IMessage[] = dummyMessageList;
+
+  // TODO: if chat list is not empty, show chat list, otherwise show default chat content (20240626 - Shirley)
+  const defaultChatContent =
+    chatList.length > 0 ? (
+      <div className="h-screen overflow-y-auto overflow-x-hidden pt-56">
+        <div className="ml-20 mr-10 flex flex-col gap-10">
+          {chatList.map((chat) => (
+            <ChatMessage role={chat.role} content={chat.content} />
+          ))}
+        </div>
+      </div>
+    ) : (
+      <div className="flex h-screen flex-col justify-center pt-52">
+        {/* Info: logo, greetings, random chat topics (20240626 - Shirley) */}
+        <div className="flex flex-col px-5">
+          <div className="flex w-full justify-center">
+            <div className="relative flex items-center justify-center">
+              <Image
+                src={'/logo/isunfa_logo_with_ring.svg'}
+                width={100}
+                height={100}
+                alt="isunfa logo with ring border"
+              />
+            </div>
+          </div>
+
+          <div className="self-center text-3xl font-bold text-stroke-neutral-secondary">
+            How can I help you today?
+          </div>
+
+          {displayedChatTopics}
+        </div>
+      </div>
+    );
+
   return (
     <div className="">
       <div>
-        {/* Info: logo, greetings, random chat topics (20240626 - Shirley) */}
-        <div className="flex h-screen flex-col justify-center pt-52">
-          <div className="flex flex-col px-5">
-            <div className="flex w-full justify-center">
-              <div className="relative flex items-center justify-center">
-                <Image
-                  src={'/logo/isunfa_logo_with_ring.svg'}
-                  width={100}
-                  height={100}
-                  alt="isunfa logo with ring border"
-                />
-              </div>
-            </div>
-
-            <div className="self-center text-3xl font-bold text-stroke-neutral-secondary">
-              How can I help you today?
-            </div>
-
-            {displayedChatTopics}
-          </div>
-        </div>
+        {defaultChatContent}
 
         {/* Info: Chat input (20240626 - Shirley) */}
-        <div className={`mb-5 mt-9 flex w-full flex-col px-40 max-md:max-w-full`}>
+        <div className={`mb-5 mt-9 flex w-full flex-col px-20 max-md:max-w-full`}>
           <div>{displayedPromptInput}</div>
 
           <div className="mt-2 text-sm leading-5 tracking-normal text-input-text-secondary max-md:max-w-full">
