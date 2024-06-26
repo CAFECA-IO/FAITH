@@ -1,31 +1,36 @@
-/* eslint-disable */
-
 import { Button } from '@/components/button/button';
 import Image from 'next/image';
 
 export default function Login() {
   const logInClickHandler = () => {
+    // TODO: in dev (20240626 - Shirley)
+    // eslint-disable-next-line no-useless-return
     return;
   };
 
   const registerClickHandler = () => {
+    // TODO: in dev (20240626 - Shirley)
+    // eslint-disable-next-line no-useless-return
     return;
   };
   return (
     <div
-      className="flex items-center justify-center bg-white bg-opacity-30 px-16 pb-20 pt-10 backdrop-blur-[200px] max-md:px-5"
+      className="flex items-center justify-center bg-white px-16 pb-20 pt-10 max-md:px-5"
       style={{
         backgroundImage: 'url("/elements/login_page_bg.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
+        minHeight: '100vh',
       }}
     >
       <div className="flex items-center justify-center px-16 max-md:px-5">
         <div className="flex w-600px max-w-full flex-col items-center">
           <Image src="/logo/isunfa_logo_with_ring.svg" alt="isunfa logo" width={60} height={60} />
-          <div className="my-5 text-5xl font-bold leading-8 text-slate-700">Welcome Back!</div>
-          <div className="mt-5 justify-end self-stretch rounded-3xl bg-white bg-opacity-30 px-12 py-20 max-md:mt-10 max-md:max-w-full max-md:px-5">
+          <div className="my-5 text-5xl font-bold leading-8 text-text-neutral-primary">
+            Welcome Back!
+          </div>
+          <div className="mt-5 justify-end self-stretch rounded-3xl bg-white/30 px-12 py-20 max-md:mt-10 max-md:max-w-full max-md:px-5">
             <div className="mt-10 flex flex-col items-center">
               <Image src="/elements/avatar_login.svg" alt="avatar" width={180} height={180} />
 

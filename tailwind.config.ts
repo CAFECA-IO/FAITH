@@ -1427,6 +1427,9 @@ module.exports = {
         'top-10': 'center top -10rem right -2.5rm',
         // 'right-4': 'right -2.5rem center',
       },
+      backdropBlur: {
+        '200px': '200px',
+      },
       keyframes: {
         slideBottomToTop: {
           '0%': { transform: 'translateY(100%)' },
