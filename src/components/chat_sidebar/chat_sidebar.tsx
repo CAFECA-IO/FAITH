@@ -1,21 +1,24 @@
 import Image from 'next/image';
+import { useState } from 'react';
 import { Button } from '@/components/button/button';
 
-interface ChatSidebarProps {
-  isExpanded: boolean;
-  toggleSidebar: () => void;
-}
+const ChatSidebar = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
 
-const ChatSidebar = ({ isExpanded, toggleSidebar }: ChatSidebarProps) => {
-  const displayedSidebar = (
-    <>
-      {/* Info: 展開跟收起 sidebar 的按鈕 (20240626 - Shirley) */}
+  const toggleSidebar = () => setIsExpanded(!isExpanded);
+
+  return (
+    <div className="font-barlow">
+      <div
+        className={`relative ${isExpanded ? 'w-200px' : 'w-0'} transition-all duration-300 ease-in-out`}
+      ></div>
+
       <Button
         variant={'secondaryBorderless'}
         size={'extraSmall'}
         type="button"
         onClick={toggleSidebar}
-        className={`fixed top-96 ${isExpanded ? 'left-240px' : 'left-0'} z-40 hidden transition-all duration-300 ease-in-out lg:block`}
+        className={`absolute top-96 ${isExpanded ? 'left-240px' : 'left-0'} z-40 hidden transition-all duration-300 ease-in-out lg:block`}
       >
         {isExpanded ? (
           <svg
@@ -44,6 +47,7 @@ const ChatSidebar = ({ isExpanded, toggleSidebar }: ChatSidebarProps) => {
           </svg>
         )}
       </Button>
+
       {/* Info: ----- desktop version (20240423 - Shirley) ----- */}
       <div
         className={`fixed z-10 hidden h-screen flex-col items-center bg-surface-brand-primary-5 lg:flex ${isExpanded ? 'w-240px' : 'w-0 -translate-x-240px'} px-12px pb-40px pt-100px transition-all duration-300 ease-in-out`}
@@ -100,10 +104,8 @@ const ChatSidebar = ({ isExpanded, toggleSidebar }: ChatSidebarProps) => {
           </Button>
         </div>
       </div>
-    </>
+    </div>
   );
-
-  return <div className="font-barlow">{displayedSidebar}</div>;
 };
 
 export default ChatSidebar;
