@@ -1,7 +1,7 @@
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
-// import useOuterClick from '../../lib/hooks/use_outer_click';
 import { NATIVE_ROUTE } from '@/constants/url';
 import version from '@/lib/version';
 import { Button } from '@/components/button/button';
@@ -9,6 +9,7 @@ import { cn, getTimestampInSeconds } from '@/lib/utils/common';
 import { useChatCtx } from '@/contexts/chat_context';
 
 const NavBar = () => {
+  const router = useRouter();
   const { addChat } = useChatCtx();
 
   // TODO: in dev (20240625 - Shirley)
@@ -93,6 +94,10 @@ const NavBar = () => {
   //   </div>
   // ) : null;
 
+  const buttonClickHandler = () => {
+    router.push(NATIVE_ROUTE.LOGIN);
+  };
+
   const newChatClickHandler = () => {
     addChat({
       id: `${getTimestampInSeconds()}`,
@@ -105,7 +110,7 @@ const NavBar = () => {
 
   const displayedLogInBtn = (
     <div className="flex space-x-5">
-      <Button variant={'tertiary'} size={'medium'}>
+      <Button onClick={buttonClickHandler} variant={'tertiary'} size={'medium'}>
         <p>Register</p>
 
         <svg
@@ -125,7 +130,7 @@ const NavBar = () => {
           </g>
         </svg>
       </Button>
-      <Button className="" variant={'tertiaryOutline'} size={'medium'}>
+      <Button onClick={buttonClickHandler} className="" variant={'tertiaryOutline'} size={'medium'}>
         <p className={cn('text-base leading-6 tracking-normal')}>Login</p>
 
         <svg
