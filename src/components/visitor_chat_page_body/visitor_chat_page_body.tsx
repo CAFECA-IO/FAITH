@@ -1,15 +1,37 @@
+import { v4 as uuidv4 } from 'uuid';
 import ChatMessage from '@/components/chat_message/chat_message';
 import ChatTopicOption from '@/components/chat_topic_option/chat_topic_option';
-import { IMessage, dummyMessageList } from '@/interfaces/chat';
+import { useChatCtx } from '@/contexts/chat_context';
+import { IMessage, MessageRole } from '@/interfaces/chat';
+import { getTimestampInSeconds } from '@/lib/utils/common';
 import Image from 'next/image';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const VisitorChatPageBody = () => {
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const { selectedChat: chat, addMessage, addChat } = useChatCtx();
+
   const [prompt, setPrompt] = useState('');
   const [rows, setRows] = useState(1);
   const [isComposing, setIsComposing] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const topicClickHandler = (title: string) => {
+    addChat({
+      id: `${getTimestampInSeconds()}`,
+      name: title,
+      createdAt: getTimestampInSeconds(),
+      messages: [],
+      description: '',
+    });
+    addMessage({
+      id: uuidv4(),
+      role: MessageRole.ANONYMOUS_USER,
+      content: `${title}`,
+      createdAt: getTimestampInSeconds(),
+    });
+  };
 
   const promptInputChangeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPrompt(e.target.value);
@@ -18,6 +40,16 @@ const VisitorChatPageBody = () => {
   const submitPrompt = () => {
     setPrompt('');
     setRows(1);
+    addMessage({
+      id: uuidv4(),
+      role: MessageRole.ANONYMOUS_USER,
+      content: prompt,
+      createdAt: getTimestampInSeconds(),
+    });
+  };
+
+  const submitButtonClickHandler = () => {
+    submitPrompt();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -62,14 +94,27 @@ const VisitorChatPageBody = () => {
   // TODO: extract dummy data to interfaces and import them and iterate (20240626 - Shirley)
   const displayedChatTopics = (
     <div className="mt-9 flex w-full justify-center">
-      <div className="mx-20 grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <ChatTopicOption title="Tell me a joke" description="Faith can share the latest jokes." />
-        <ChatTopicOption title="Tell me a story" description="Faith can share the latest story." />
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <ChatTopicOption
+          title="Tell me a joke"
+          description="Faith can share the latest jokes."
+          onClick={() => topicClickHandler('Tell me a joke')}
+        />
+        <ChatTopicOption
+          title="Tell me a story"
+          description="Faith can share the latest story."
+          onClick={() => topicClickHandler('Tell me a story')}
+        />
         <ChatTopicOption
           title="Share the latest AI information"
           description="Faith can share the latest AI information."
+          onClick={() => topicClickHandler('Share the latest AI information')}
         />
-        <ChatTopicOption title='Say " Hi "' description="Faith can say Hi." />
+        <ChatTopicOption
+          title='Say " Hi "'
+          description="Faith can say Hi."
+          onClick={() => topicClickHandler('Say " Hi "')}
+        />
       </div>
     </div>
   );
@@ -89,6 +134,7 @@ const VisitorChatPageBody = () => {
         className={`relative flex w-full min-w-200px resize-none items-center justify-between rounded-sm border border-lightGray3 bg-white px-5 py-3 outline-none transition-all duration-300`}
       />
       <button
+        onClick={submitButtonClickHandler}
         disabled={!prompt}
         type="button"
         className="absolute bottom-3 right-3 text-icon-surface-single-color-primary disabled:text-button-surface-strong-disable"
@@ -111,20 +157,10 @@ const VisitorChatPageBody = () => {
     </div>
   );
 
-  const chatList: IMessage[] = dummyMessageList;
-
   // TODO: if chat list is not empty, show chat list, otherwise show default chat content (20240626 - Shirley)
-  const defaultChatContent =
-    chatList.length > 0 ? (
-      <div className="h-screen overflow-y-auto overflow-x-hidden pt-56">
-        <div className="ml-20 mr-10 flex flex-col gap-10">
-          {chatList.map((chat) => (
-            <ChatMessage role={chat.role} content={chat.content} />
-          ))}
-        </div>
-      </div>
-    ) : (
-      <div className="flex h-screen flex-col justify-center pt-52">
+  const displayedChatContent =
+    !chat || chat.messages.length === 0 ? (
+      <div className="flex h-screen flex-col justify-center pt-56">
         {/* Info: logo, greetings, random chat topics (20240626 - Shirley) */}
         <div className="flex flex-col px-5">
           <div className="flex w-full justify-center">
@@ -145,12 +181,29 @@ const VisitorChatPageBody = () => {
           {displayedChatTopics}
         </div>
       </div>
-    );
+    ) : chat.messages.length > 0 ? (
+      <div
+        ref={chatContainerRef}
+        className="hideScrollbar h-screen overflow-y-auto overflow-x-hidden pt-56"
+      >
+        <div className="ml-20 mr-10 flex flex-col gap-10">
+          {chat.messages.map((message: IMessage) => (
+            <ChatMessage key={message.id} role={message.role} content={message.content} />
+          ))}
+        </div>
+      </div>
+    ) : null;
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chat?.messages]);
 
   return (
     <div className="">
       <div>
-        {defaultChatContent}
+        {displayedChatContent}
 
         {/* Info: Chat input (20240626 - Shirley) */}
         <div className={`mb-5 mt-9 flex w-full flex-col px-20 max-md:max-w-full`}>

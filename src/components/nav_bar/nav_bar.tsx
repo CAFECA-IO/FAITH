@@ -5,9 +5,12 @@ import Image from 'next/image';
 import { NATIVE_ROUTE } from '@/constants/url';
 import version from '@/lib/version';
 import { Button } from '@/components/button/button';
-import { cn } from '@/lib/utils/common';
+import { cn, getTimestampInSeconds } from '@/lib/utils/common';
+import { useChatCtx } from '@/contexts/chat_context';
 
 const NavBar = () => {
+  const { addChat } = useChatCtx();
+
   // TODO: in dev (20240625 - Shirley)
   // const {
   //   targetRef: userMenuRef,
@@ -90,6 +93,16 @@ const NavBar = () => {
   //   </div>
   // ) : null;
 
+  const newChatClickHandler = () => {
+    addChat({
+      id: `${getTimestampInSeconds()}`,
+      name: 'New Chat for anonymous user',
+      createdAt: getTimestampInSeconds(),
+      messages: [],
+      description: '',
+    });
+  };
+
   const displayedLogInBtn = (
     <div className="flex space-x-5">
       <Button variant={'tertiary'} size={'medium'}>
@@ -168,6 +181,7 @@ const NavBar = () => {
           {/* TODO: links on mobile (20240408 - Shirley) */}
           <div className="my-auto hidden flex-1 gap-5 max-md:flex-wrap lg:flex lg:pr-0">
             <Button
+              onClick={newChatClickHandler}
               size={'small'}
               variant={'secondaryBorderless'}
               className="flex justify-center py-1 lg:ml-10"

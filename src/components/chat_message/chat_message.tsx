@@ -14,7 +14,7 @@ interface RoleMessageProps {
 const AnonymousUserMessage = ({ content }: RoleMessageProps) => {
   return (
     <div className="flex gap-5 self-start font-barlow">
-      <div className="relative flex shrink-0 items-center justify-center">
+      <div className="relative flex shrink-0 items-start justify-center">
         <Image
           src={'/elements/anonymous_avatar.svg'}
           width={60}
