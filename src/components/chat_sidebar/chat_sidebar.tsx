@@ -9,6 +9,10 @@ const ChatSidebar = () => {
 
   return (
     <div className="font-barlow">
+      <div
+        className={`relative ${isExpanded ? 'w-200px' : 'w-0'} transition-all duration-300 ease-in-out`}
+      ></div>
+
       <Button
         variant={'secondaryBorderless'}
         size={'extraSmall'}
@@ -46,7 +50,7 @@ const ChatSidebar = () => {
 
       {/* Info: ----- desktop version (20240423 - Shirley) ----- */}
       <div
-        className={`bg-surface-brand-primary-5 fixed z-10 hidden h-screen flex-col items-center lg:flex ${isExpanded ? 'w-240px' : '-translate-x-240px w-0'} px-12px pb-40px pt-100px transition-all duration-300 ease-in-out`}
+        className={`fixed z-10 hidden h-screen flex-col items-center bg-surface-brand-primary-5 lg:flex ${isExpanded ? 'w-240px' : 'w-0 -translate-x-240px'} px-12px pb-40px pt-100px transition-all duration-300 ease-in-out`}
       >
         <div className="flex items-center gap-3">
           <div className="relative flex h-10 w-10 items-center justify-center">
@@ -70,7 +74,7 @@ const ChatSidebar = () => {
           </div>
 
           <p
-            className={`text-button-text-secondary text-lg font-medium transition-all duration-300 ease-in-out`}
+            className={`text-lg font-medium text-button-text-secondary transition-all duration-300 ease-in-out`}
           >
             My Chat List
           </p>
