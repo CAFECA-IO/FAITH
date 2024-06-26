@@ -1,20 +1,21 @@
 import Image from 'next/image';
-import { useState } from 'react';
 import { Button } from '@/components/button/button';
 
-const ChatSidebar = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
+interface ChatSidebarProps {
+  isExpanded: boolean;
+  toggleSidebar: () => void;
+}
 
-  const toggleSidebar = () => setIsExpanded(!isExpanded);
-
-  return (
-    <div className="font-barlow">
+const ChatSidebar = ({ isExpanded, toggleSidebar }: ChatSidebarProps) => {
+  const displayedSidebar = (
+    <>
+      {/* Info: 展開跟收起 sidebar 的按鈕 (20240626 - Shirley) */}
       <Button
         variant={'secondaryBorderless'}
         size={'extraSmall'}
         type="button"
         onClick={toggleSidebar}
-        className={`absolute top-96 ${isExpanded ? 'left-240px' : 'left-0'} z-40 hidden transition-all duration-300 ease-in-out lg:block`}
+        className={`fixed top-96 ${isExpanded ? 'left-240px' : 'left-0'} z-40 hidden transition-all duration-300 ease-in-out lg:block`}
       >
         {isExpanded ? (
           <svg
@@ -43,10 +44,9 @@ const ChatSidebar = () => {
           </svg>
         )}
       </Button>
-
       {/* Info: ----- desktop version (20240423 - Shirley) ----- */}
       <div
-        className={`bg-surface-brand-primary-5 fixed z-10 hidden h-screen flex-col items-center lg:flex ${isExpanded ? 'w-240px' : '-translate-x-240px w-0'} px-12px pb-40px pt-100px transition-all duration-300 ease-in-out`}
+        className={`fixed z-10 hidden h-screen flex-col items-center bg-surface-brand-primary-5 lg:flex ${isExpanded ? 'w-240px' : 'w-0 -translate-x-240px'} px-12px pb-40px pt-100px transition-all duration-300 ease-in-out`}
       >
         <div className="flex items-center gap-3">
           <div className="relative flex h-10 w-10 items-center justify-center">
@@ -70,7 +70,7 @@ const ChatSidebar = () => {
           </div>
 
           <p
-            className={`text-button-text-secondary text-lg font-medium transition-all duration-300 ease-in-out`}
+            className={`text-lg font-medium text-button-text-secondary transition-all duration-300 ease-in-out`}
           >
             My Chat List
           </p>
@@ -100,8 +100,10 @@ const ChatSidebar = () => {
           </Button>
         </div>
       </div>
-    </div>
+    </>
   );
+
+  return <div className="font-barlow">{displayedSidebar}</div>;
 };
 
 export default ChatSidebar;

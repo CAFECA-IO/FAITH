@@ -7,7 +7,7 @@ type ICredential = {
 };
 
 interface UserContextType {
-  user: ICredential;
+  user: ICredential | null;
   setUser: (user: ICredential) => void;
 }
 
@@ -17,7 +17,7 @@ const UserContext = createContext<UserContextType>({
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<ICredential>({} as ICredential);
+  const [user, setUser] = useState<ICredential | null>(null);
 
   const value = useMemo(() => ({ user, setUser }), [user]);
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

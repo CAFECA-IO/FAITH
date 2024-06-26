@@ -1,13 +1,17 @@
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
-// import useOuterClick from '../../lib/hooks/use_outer_click';
 import { NATIVE_ROUTE } from '@/constants/url';
 import version from '@/lib/version';
 import { Button } from '@/components/button/button';
-import { cn } from '@/lib/utils/common';
+import { cn, getTimestampInSeconds } from '@/lib/utils/common';
+import { useChatCtx } from '@/contexts/chat_context';
 
 const NavBar = () => {
+  const router = useRouter();
+  const { addChat } = useChatCtx();
+
   // TODO: in dev (20240625 - Shirley)
   // const {
   //   targetRef: userMenuRef,
@@ -90,9 +94,23 @@ const NavBar = () => {
   //   </div>
   // ) : null;
 
+  const buttonClickHandler = () => {
+    router.push(NATIVE_ROUTE.LOGIN);
+  };
+
+  const newChatClickHandler = () => {
+    addChat({
+      id: `${getTimestampInSeconds()}`,
+      name: 'New Chat for anonymous user',
+      createdAt: getTimestampInSeconds(),
+      messages: [],
+      description: '',
+    });
+  };
+
   const displayedLogInBtn = (
     <div className="flex space-x-5">
-      <Button variant={'tertiary'} size={'medium'}>
+      <Button onClick={buttonClickHandler} variant={'tertiary'} size={'medium'}>
         <p>Register</p>
 
         <svg
@@ -112,7 +130,7 @@ const NavBar = () => {
           </g>
         </svg>
       </Button>
-      <Button className="" variant={'tertiaryOutline'} size={'medium'}>
+      <Button onClick={buttonClickHandler} className="" variant={'tertiaryOutline'} size={'medium'}>
         <p className={cn('text-base leading-6 tracking-normal')}>Login</p>
 
         <svg
@@ -137,7 +155,7 @@ const NavBar = () => {
 
   return (
     <div className="fixed top-0 z-20 flex w-screen">
-      <div className="z-60 h-80px bg-surface-neutral-surface-lv1 px-80px py-8px shadow-navbar lg:h-60px flex w-full items-center gap-5 max-md:flex-wrap max-md:px-5">
+      <div className="z-60 flex h-80px w-full items-center gap-5 bg-surface-neutral-surface-lv1 px-80px py-8px shadow-navbar max-md:flex-wrap max-md:px-5 lg:h-60px">
         <div className="my-auto flex flex-1 items-center">
           <div className="flex flex-col items-center justify-center gap-2 lg:flex-row lg:items-end lg:justify-end">
             <Link href={NATIVE_ROUTE.HOME} className="shrink-0">
@@ -158,8 +176,8 @@ const NavBar = () => {
                 className="block lg:hidden"
               />
             </Link>
-            <div className="rounded-xs bg-primaryYellow3 text-primaryYellow2 my-auto flex flex-col justify-center self-stretch px-1">
-              <div className="rounded-xs px-0.1rem flex flex-col justify-center py-1">
+            <div className="my-auto flex flex-col justify-center self-stretch rounded-xs bg-primaryYellow3 px-1 text-primaryYellow2">
+              <div className="flex flex-col justify-center rounded-xs px-0.1rem py-1">
                 <div className="justify-center px-1 text-xs">v{version}</div>
               </div>
             </div>
@@ -168,6 +186,7 @@ const NavBar = () => {
           {/* TODO: links on mobile (20240408 - Shirley) */}
           <div className="my-auto hidden flex-1 gap-5 max-md:flex-wrap lg:flex lg:pr-0">
             <Button
+              onClick={newChatClickHandler}
               size={'small'}
               variant={'secondaryBorderless'}
               className="flex justify-center py-1 lg:ml-10"
@@ -248,7 +267,7 @@ const NavBar = () => {
         </div>
 
         <div className="hidden flex-col items-start justify-center lg:flex">
-          <div className="h-40px bg-lightGray6 w-px shrink-0" />
+          <div className="h-40px w-px shrink-0 bg-lightGray6" />
         </div>
 
         <div className="my-auto hidden lg:flex"> {displayedLogInBtn}</div>
