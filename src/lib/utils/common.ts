@@ -111,3 +111,13 @@ export const timestampToString = (timestamp: number | undefined) => {
     time: `${hour}:${minute}:${second}`, // e.g. 00:00:00
   };
 };
+
+export const getTimestampInSeconds = () => {
+  return Math.floor(new Date().getTime() / 1000);
+};
+
+export const wait = (ms: number): Promise<void> => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};

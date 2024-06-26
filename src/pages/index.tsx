@@ -26,7 +26,7 @@ export default function Home() {
         />
       </Head>
 
-      <div className="">
+      <div className="h-screen">
         <NavBar />
 
         <div className="bg-white">
