@@ -42,7 +42,10 @@ const TopicSection = ({ category, topics }: ITopicBrowsePageBody) => {
   const isShowSeeMore =
     topics.length > 3 ? (
       // ToDo: (20240626 - Julian) link
-      <Link href="" className="text-base font-semibold text-link-text-primary">
+      <Link
+        href={`/discover/see-more?category=${category}`}
+        className="text-base font-semibold text-link-text-primary"
+      >
         See More
       </Link>
     ) : null;
