@@ -201,6 +201,17 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const sortChats = () => {
+    if (chatsRef.current) {
+      // 新到舊排序
+      setChats(chatsRef.current.sort((a, b) => b.createdAt - a.createdAt));
+    }
+
+    if (chatBriefsRef.current) {
+      setChatBriefs(chatBriefsRef.current.sort((a, b) => b.createdAt - a.createdAt));
+    }
+  };
+
   const addChat = (item: IChat) => {
     setSelectedChat(item);
     handleChats([item]);
@@ -210,6 +221,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       description: item.description,
       createdAt: item.createdAt,
     });
+    sortChats();
   };
 
   const addEmptyChat = () => {
@@ -237,6 +249,15 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const deleteChat = (id: string) => {
     if (chatsRef.current) {
       setChats(chatsRef.current.filter((chat: IChat) => chat.id !== id));
+    }
+
+    deleteChatBrief(id);
+
+    const chatLength = chatsRef.current?.length;
+    if (chatLength && chatLength > 0) {
+      selectChat(chatsRef.current?.[0]?.id || '');
+    } else {
+      addEmptyChat();
     }
   };
 

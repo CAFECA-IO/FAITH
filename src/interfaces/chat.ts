@@ -42,9 +42,16 @@ export interface IChat extends IChatBrief {
   messages: IMessage[];
 }
 
+export enum ChatTopicType {
+  AI = 'ai',
+  TRENDING = 'trending',
+  OTHERS = 'others',
+}
+
 export interface IChatTopic {
   title: string;
   description: string;
+  type: ChatTopicType;
 }
 
 export const dummyChatBrief: IChatBrief = {
@@ -193,17 +200,21 @@ export const dummyChatTopics: IChatTopic[] = [
   {
     title: 'Tell me a joke',
     description: 'Faith can share the latest jokes.',
+    type: ChatTopicType.OTHERS,
   },
   {
     title: 'Tell me a story',
     description: 'Faith can share the latest story.',
+    type: ChatTopicType.OTHERS,
   },
   {
     title: 'Share the latest AI information',
     description: 'Faith can share the latest AI information.',
+    type: ChatTopicType.AI,
   },
   {
     title: 'Say " Hi "',
     description: 'Faith can say Hi.',
+    type: ChatTopicType.TRENDING,
   },
 ];

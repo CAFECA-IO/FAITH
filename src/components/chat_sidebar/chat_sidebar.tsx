@@ -2,15 +2,131 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { Button } from '@/components/button/button';
 import { useChatCtx } from '@/contexts/chat_context';
+import { cn } from '@/lib/utils/common';
+import useOuterClick from '@/lib/hooks/use_outer_click';
+import { IChatBrief } from '@/interfaces/chat';
 
 interface ChatSidebarProps {
   getIsExpanded?: (props: boolean) => void;
 }
 
-const ChatSidebar = ({ getIsExpanded }: ChatSidebarProps) => {
-  const { chatBriefs, selectChat } = useChatCtx();
+const ChatBriefItem = ({ chatBrief, key }: { chatBrief: IChatBrief; key: string }) => {
+  const { selectChat, selectedChat, deleteChat } = useChatCtx();
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  const {
+    targetRef: editMenuRef,
+    componentVisible: isEditMenuVisible,
+    setComponentVisible: setEditMenuVisible,
+  } = useOuterClick<HTMLDivElement>(false);
+
+  const editIconClickHandler = () => {
+    setEditMenuVisible(!isEditMenuVisible);
+  };
+
+  const renameClickHandler = () => {
+    setEditMenuVisible(false);
+  };
+
+  const shareClickHandler = () => {
+    setEditMenuVisible(false);
+  };
+
+  const privateClickHandler = () => {
+    setEditMenuVisible(false);
+  };
+
+  const removeClickHandler = () => {
+    setEditMenuVisible(false);
+    deleteChat(chatBrief.id);
+  };
+
+  const displayedEditMenu = isEditMenuVisible && (
+    <div className="relative">
+      <div key={key} ref={editMenuRef} className="absolute right-0 top-0 z-50">
+        <div className="shadow-userMenu flex flex-col gap-1 rounded-sm bg-white py-2 text-base font-normal leading-6 tracking-normal">
+          <Button
+            disabled
+            variant={'secondaryBorderless'}
+            className=""
+            onClick={renameClickHandler}
+          >
+            Rename
+          </Button>
+          <Button disabled variant={'secondaryBorderless'} className="" onClick={shareClickHandler}>
+            Share
+          </Button>
+          <Button
+            disabled
+            variant={'secondaryBorderless'}
+            className=""
+            onClick={privateClickHandler}
+          >
+            Set to Private
+          </Button>
+          <Button variant={'secondaryBorderless'} className="" onClick={removeClickHandler}>
+            Remove Chat
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const displayedChatBriefItem = (
+    <>
+      <div
+        key={chatBrief.id}
+        onClick={() => selectChat(chatBrief.id)}
+        className={cn(
+          'flex items-center justify-between',
+          chatBrief.id === selectedChat?.id ? 'bg-surface-brand-primary-10' : ''
+        )}
+      >
+        <Button
+          variant={'secondaryBorderless'}
+          className={cn(
+            'px-2 py-2',
+            chatBrief.id === selectedChat?.id
+              ? 'w-180px hover:text-button-text-secondary'
+              : 'w-full'
+          )}
+        >
+          <p className="truncate text-sm font-normal">{chatBrief.name}</p>
+        </Button>
+        {chatBrief.id === selectedChat?.id && (
+          <Button
+            onClick={editIconClickHandler}
+            variant={'secondaryBorderless'}
+            size={'extraSmall'}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                className="fill-current"
+                fillRule="evenodd"
+                d="M5.003 11.751a.25.25 0 100 .5.25.25 0 000-.5zm-1.75.25a1.75 1.75 0 113.5 0 1.75 1.75 0 01-3.5 0zm8.75-.25a.25.25 0 100 .5.25.25 0 000-.5zm-1.75.25a1.75 1.75 0 113.5 0 1.75 1.75 0 01-3.5 0zm8.75-.25a.25.25 0 100 .5.25.25 0 000-.5zm-1.75.25a1.75 1.75 0 113.5 0 1.75 1.75 0 01-3.5 0z"
+                clipRule="evenodd"
+              ></path>
+            </svg>{' '}
+          </Button>
+        )}
+      </div>
+
+      {displayedEditMenu}
+    </>
+  );
+
+  return <div>{displayedChatBriefItem}</div>;
+};
+
+const ChatSidebar = ({ getIsExpanded }: ChatSidebarProps) => {
+  const { chatBriefs } = useChatCtx();
+
+  const [isExpanded, setIsExpanded] = useState(true);
 
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
@@ -18,6 +134,11 @@ const ChatSidebar = ({ getIsExpanded }: ChatSidebarProps) => {
       getIsExpanded(!isExpanded);
     }
   };
+
+  const displayedChatBrief =
+    chatBriefs &&
+    chatBriefs.length > 0 &&
+    chatBriefs.map((chat) => <ChatBriefItem chatBrief={chat} key={chat.id} />);
 
   return (
     <div className="font-barlow">
@@ -92,21 +213,8 @@ const ChatSidebar = ({ getIsExpanded }: ChatSidebarProps) => {
               My Chat List
             </p>
           </div>
-          <div className="mb-10 mt-5 grow overflow-y-auto overflow-x-hidden">
-            {chatBriefs &&
-              chatBriefs.length > 0 &&
-              chatBriefs
-                .sort((a, b) => b.createdAt - a.createdAt)
-                .map((chat) => (
-                  <Button
-                    variant={'secondaryBorderless'}
-                    key={chat.id}
-                    className="px-2 py-2"
-                    onClick={() => selectChat(chat.id)}
-                  >
-                    <p className="truncate text-sm font-normal">{chat.name}</p>
-                  </Button>
-                ))}
+          <div className="hideScrollbar mb-10 mt-5 grow overflow-y-auto overflow-x-hidden">
+            {displayedChatBrief}
           </div>{' '}
         </div>
 

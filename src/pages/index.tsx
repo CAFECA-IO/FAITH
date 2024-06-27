@@ -5,7 +5,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 
 export default function Home() {
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const getIsExpanded = (props: boolean) => {
     setIsSidebarExpanded(props);
   };

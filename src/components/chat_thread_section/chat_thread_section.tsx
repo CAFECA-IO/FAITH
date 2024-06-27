@@ -12,8 +12,11 @@ import { getTimestamp } from '@/lib/utils/common';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import ChatMessage from '@/components/chat_message/chat_message';
+import { useUserCtx } from '@/contexts/user_context';
+import { TopicIcons } from '@/constants/display';
 
 const ChatThreadSection = () => {
+  const { signedIn } = useUserCtx();
   const { selectedChat: chat, userAddMessage } = useChatCtx();
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -39,6 +42,7 @@ const ChatThreadSection = () => {
             title={topic.title}
             description={topic.description}
             onClick={() => topicClickHandler(topic.title)}
+            icon={signedIn ? TopicIcons[topic.type] : undefined}
           />
         ))}
       </div>

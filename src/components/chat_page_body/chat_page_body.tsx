@@ -1,10 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
+import { useUserCtx } from '@/contexts/user_context';
 import { useChatCtx } from '@/contexts/chat_context';
 import { getTimestamp } from '@/lib/utils/common';
 import React, { useRef, useState } from 'react';
 import ChatThreadSection from '@/components/chat_thread_section/chat_thread_section';
 
 const ChatPageBody = () => {
+  const { signedIn } = useUserCtx();
   const { userAddMessage } = useChatCtx();
 
   const [prompt, setPrompt] = useState('');
@@ -94,13 +96,35 @@ const ChatPageBody = () => {
         rows={rows}
         // TODO: i18n (20240626 - Shirley)
         placeholder="Say something..."
-        className={`relative flex max-h-300px w-full resize-none items-center justify-between overflow-auto rounded-sm border border-lightGray3 bg-white px-5 py-3 outline-none transition-all duration-300`}
+        className={`relative flex max-h-300px w-full resize-none items-center justify-between overflow-auto rounded-sm border border-lightGray3 bg-white ${signedIn ? `pl-12 pr-5` : `px-5`} py-3 outline-none transition-all duration-300`}
       />
+      {signedIn && (
+        <button
+          type="button"
+          className="absolute bottom-3 left-3 text-icon-surface-single-color-primary hover:text-button-text-primary-hover disabled:text-button-surface-strong-disable"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="fill-current"
+              fillRule="evenodd"
+              d="M18.15 4.006a2.75 2.75 0 00-3.889 0l-9.015 9.016a4.5 4.5 0 106.364 6.364l9.015-9.016a.75.75 0 111.06 1.06l-9.015 9.016a6 6 0 01-8.485-8.485L13.2 2.945a4.25 4.25 0 116.01 6.01l-8.662 8.663a2.5 2.5 0 11-3.536-3.536l7.602-7.601a.75.75 0 111.06 1.06l-7.601 7.602a1 1 0 101.414 1.414l8.662-8.662a2.75 2.75 0 000-3.889z"
+              clipRule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      )}
+
       <button
         onClick={submitButtonClickHandler}
         disabled={!prompt}
         type="button"
-        className="absolute bottom-3 right-3 text-icon-surface-single-color-primary disabled:text-button-surface-strong-disable"
+        className="absolute bottom-3 right-3 text-icon-surface-single-color-primary hover:text-button-text-primary-hover disabled:text-button-surface-strong-disable"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
