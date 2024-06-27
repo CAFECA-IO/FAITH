@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { TopicCategory } from '@/constants/topic';
+import TopicItem from '../topic_item/topic_item';
+import { dummyTopicData } from '@/interfaces/topic';
 
 const TopicSeeMorePageBody = () => {
   const topicCategories = Object.values(TopicCategory);
@@ -11,8 +13,11 @@ const TopicSeeMorePageBody = () => {
   const [search, setSearch] = useState('');
   const [currentCategory, setCurrentCategory] = useState(defaultCategory);
   // ToDo: (20240626 - Julian) sorting function
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [sort, setSort] = useState('Newest');
+
+  const sortSwitchHandler = () => {
+    setSort((prevSort) => (prevSort === 'Newest' ? 'Oldest' : 'Newest'));
+  };
 
   const searchChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
@@ -34,14 +39,26 @@ const TopicSeeMorePageBody = () => {
     );
   });
 
+  // ToDo: (20240627 - Julian) replace dummy data with real data
+  const currentTopics = dummyTopicData.filter((topic) => topic.category.includes(currentCategory));
+
+  const displayTopics =
+    currentTopics.length > 0 ? (
+      currentTopics.map((topic) => <TopicItem key={topic.id} topic={topic} />)
+    ) : (
+      <div className="col-span-2 mx-auto flex-1 py-40px text-text-neutral-tertiary">
+        <p>No topics yet.</p>
+      </div>
+    );
+
   return (
-    <div className="mx-100px my-180px flex flex-col items-center">
+    <div className="mx-100px my-180px flex w-screen flex-col items-center">
       <h1 className="text-48px font-bold text-text-neutral-primary">Welcome to Discover</h1>
       <p className="mt-20px text-base font-semibold text-text-neutral-tertiary">
         Discover records publicly asked questions by users, allowing you to find answers from
         others&apos; inquiries.
       </p>
-      <div className="mt-40px flex flex-col items-center">
+      <div className="mt-40px flex w-full flex-col items-center">
         {/* Info: (20240626 - Julian) Chat box */}
         <div className="flex w-full items-center gap-16px rounded-sm border border-input-stroke-input bg-input-surface-input-background px-16px py-14px">
           <input
@@ -74,11 +91,16 @@ const TopicSeeMorePageBody = () => {
           {displayTopicCategories}
         </div>
         {/* Info: (20240626 - Julian) Topic list */}
-        <div className="mt-40px flex flex-col items-stretch">
+        <div className="mt-40px flex w-full flex-col items-stretch">
+          {/* Info: (20240626 - Julian) Category title */}
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold text-text-neutral-secondary">{currentCategory}</h2>
             {/* Info: (20240626 - Julian) Sort */}
-            <div className="flex items-center gap-x-16px text-chat-bubbles-text-note">
+            <button
+              type="button"
+              className="flex items-center gap-x-16px text-chat-bubbles-text-note"
+              onClick={sortSwitchHandler}
+            >
               <div className="flex items-center gap-x-8px">
                 <svg
                   width="20"
@@ -96,7 +118,7 @@ const TopicSeeMorePageBody = () => {
                     />
                   </g>
                 </svg>
-                <p>{sort}</p>
+                <p className="w-55px">{sort}</p>
               </div>
               <svg
                 width="16"
@@ -114,7 +136,10 @@ const TopicSeeMorePageBody = () => {
                   />
                 </g>
               </svg>
-            </div>
+            </button>
+          </div>
+          <div className="mt-20px grid w-full grid-flow-row grid-cols-2 gap-40px">
+            {displayTopics}
           </div>
         </div>
       </div>
