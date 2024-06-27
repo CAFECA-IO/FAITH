@@ -6,8 +6,17 @@ export interface ITopic {
   imageId: string;
   creator: string;
   category: TopicCategory[];
-  content: string;
+  summary: string;
 }
+
+export const defaultTopicData: ITopic = {
+  id: '',
+  title: '',
+  imageId: '',
+  creator: '',
+  category: [],
+  summary: '',
+};
 
 export const dummyTopicData: ITopic[] = [
   {
@@ -16,7 +25,7 @@ export const dummyTopicData: ITopic[] = [
     imageId: '/icons/info.svg',
     creator: 'John Doe',
     category: [TopicCategory.FINANCIAL_INSIGHTS, TopicCategory.TRENDING],
-    content:
+    summary:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
@@ -25,7 +34,7 @@ export const dummyTopicData: ITopic[] = [
     imageId: '/icons/info.svg',
     creator: 'John Doe',
     category: [TopicCategory.AI_FINANCE, TopicCategory.TRENDING],
-    content:
+    summary:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
@@ -34,7 +43,7 @@ export const dummyTopicData: ITopic[] = [
     imageId: '/icons/info.svg',
     creator: 'John Doe',
     category: [TopicCategory.FINANCIAL_INSIGHTS, TopicCategory.TRENDING, TopicCategory.AI_FINANCE],
-    content:
+    summary:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
@@ -43,7 +52,7 @@ export const dummyTopicData: ITopic[] = [
     imageId: '/icons/info.svg',
     creator: 'John Doe',
     category: [TopicCategory.FINANCIAL_INSIGHTS, TopicCategory.OTHER],
-    content:
+    summary:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
@@ -52,7 +61,7 @@ export const dummyTopicData: ITopic[] = [
     imageId: '/icons/info.svg',
     creator: 'John Doe',
     category: [TopicCategory.FINANCIAL_INSIGHTS, TopicCategory.TRENDING],
-    content:
+    summary:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
 ];

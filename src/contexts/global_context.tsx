@@ -1,8 +1,10 @@
 import React, { useState, useContext, createContext } from 'react';
 import { IMessageModal, dummyMessageModalData } from '@/interfaces/message_modal';
+import { ITopic, defaultTopicData } from '@/interfaces/topic';
 /* eslint-disable-next-line import/no-cycle */
 import ChatSettingModal from '@/components/chat_setting_modal/chat_setting_modal';
 import MessageModal from '@/components/message_modal/message_modal';
+import TopicModal from '@/components/topic_modal/topic_modal';
 
 interface IGlobalContext {
   isMessageModalVisible: boolean;
@@ -12,6 +14,11 @@ interface IGlobalContext {
 
   isChatSettingModalVisible: boolean;
   chatSettingModalVisibilityHandler: () => void;
+
+  isTopicModalVisible: boolean;
+  topicModalVisibilityHandler: () => void;
+  topicModalData: ITopic;
+  topicModalDataHandler: (data: ITopic) => void;
 }
 
 export interface IGlobalProvider {
@@ -26,6 +33,9 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
 
   const [isChatSettingModalVisible, setIsChatSettingModalVisible] = useState(false);
 
+  const [isTopicModalVisible, setIsTopicModalVisible] = useState(false);
+  const [topicModalData, setTopicModalData] = useState<ITopic>(defaultTopicData);
+
   const messageModalVisibilityHandler = () => {
     setIsMessageModalVisible(!isMessageModalVisible);
   };
@@ -38,6 +48,14 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     setIsChatSettingModalVisible(!isChatSettingModalVisible);
   };
 
+  const topicModalVisibilityHandler = () => {
+    setIsTopicModalVisible(!isTopicModalVisible);
+  };
+
+  const topicModalDataHandler = (data: ITopic) => {
+    setTopicModalData(data);
+  };
+
   /* eslint-disable react/jsx-no-constructed-context-values */
   const value = {
     isMessageModalVisible,
@@ -46,6 +64,10 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     messageModalDataHandler,
     isChatSettingModalVisible,
     chatSettingModalVisibilityHandler,
+    isTopicModalVisible,
+    topicModalVisibilityHandler,
+    topicModalData,
+    topicModalDataHandler,
   };
 
   return (
@@ -59,6 +81,12 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
       <ChatSettingModal
         isModalVisible={isChatSettingModalVisible}
         modalVisibilityHandler={chatSettingModalVisibilityHandler}
+      />
+
+      <TopicModal
+        isModalVisible={isTopicModalVisible}
+        modalVisibilityHandler={topicModalVisibilityHandler}
+        topicData={topicModalData}
       />
       {children}
     </GlobalContext.Provider>
