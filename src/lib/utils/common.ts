@@ -1,3 +1,4 @@
+import { ALLOWED_ORIGINS } from '@/constants/config';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -121,3 +122,7 @@ export const wait = (ms: number): Promise<void> => {
     setTimeout(resolve, ms);
   });
 };
+
+export function getDomains() {
+  return ALLOWED_ORIGINS;
+}

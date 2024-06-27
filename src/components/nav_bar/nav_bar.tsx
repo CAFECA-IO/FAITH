@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import React from 'react';
@@ -7,92 +8,91 @@ import version from '@/lib/version';
 import { Button } from '@/components/button/button';
 import { cn } from '@/lib/utils/common';
 import { useChatCtx } from '@/contexts/chat_context';
+import { useUserCtx } from '@/contexts/user_context';
+import useOuterClick from '@/lib/hooks/use_outer_click';
 
 const NavBar = () => {
   const router = useRouter();
+
+  const { signedIn, signOut } = useUserCtx();
   const { addEmptyChat } = useChatCtx();
 
   // TODO: in dev (20240625 - Shirley)
-  // const {
-  //   targetRef: userMenuRef,
-  //   componentVisible: isUserMenuOpen,
-  //   setComponentVisible: setIsUserMenuOpen,
-  // } = useOuterClick<HTMLDivElement>(false);
+  const {
+    targetRef: userMenuRef,
+    componentVisible: isUserMenuOpen,
+    setComponentVisible: setIsUserMenuOpen,
+  } = useOuterClick<HTMLDivElement>(false);
 
-  // const logOutClickHandler = async () => {
-  //   setIsUserMenuOpen(false);
-  // };
+  const avatarClickHandler = () => {
+    setIsUserMenuOpen(!isUserMenuOpen);
+  };
 
-  // const displayedUserMenu = isUserMenuOpen ? (
-  //   <div className="absolute right-10 top-20 z-50">
-  //     <div className="max-w-[248px] flex-col rounded-2xl bg-white p-4 shadow-xl">
-  //       <img
-  //         srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&"
-  //         className="mx-auto aspect-square w-16 self-center"
-  //       />
-  //       <div className="mt-3 flex justify-center gap-0 px-16">
-  //         <div className="text-secondaryBlue my-auto text-base font-semibold leading-6 tracking-normal">
-  //           Joyce
-  //         </div>
-  //         <div className="flex flex-col justify-center rounded-md p-2.5">
-  //           <div className="flex items-center justify-center">
-  //             <img
-  //               src="https://cdn.builder.io/api/v1/image/assets/TEMP/81424e1f4bb6c5d2f3b559ea40f9f188932a4c8bd82176e3de86e8257c95ec6e?apiKey=0e17b0b875f041659e186639705112b1&"
-  //               className="aspect-square w-4"
-  //             />
-  //           </div>
-  //         </div>
-  //       </div>
-  //       <div className="mt-3 flex flex-col justify-center">
-  //         <div className="flex flex-col justify-center">
-  //           <div className="h-px shrink-0 border border-solid border-gray-300 bg-gray-300" />
-  //         </div>
-  //       </div>
-  //       <div className="mt-3 flex gap-2 rounded-md px-6 py-2.5">
-  //         <div className="my-auto flex items-center justify-center">
-  //           <img
-  //             src="https://cdn.builder.io/api/v1/image/assets/TEMP/b2440bc7dff988603a015147398e81878220ce5264999f173e13e28a3f19ba26?apiKey=0e17b0b875f041659e186639705112b1&"
-  //             className="aspect-square w-5"
-  //           />
-  //         </div>
-  //         <div className="text-base font-normal leading-6 tracking-normal text-sky-950">
-  //           Subscription & Bills
-  //         </div>
-  //       </div>
-  //       <div className="mt-3 flex gap-2 rounded-md px-6 py-2.5">
-  //         <div className="my-auto flex items-center justify-center">
-  //           <img
-  //             src="https://cdn.builder.io/api/v1/image/assets/TEMP/d483779fe7b5d1853e7ad9a6a31acef6c171fae39e7875d3e3e346af17601c37?apiKey=0e17b0b875f041659e186639705112b1&"
-  //             className="aspect-square w-5"
-  //           />
-  //         </div>
-  //         <div className="text-base font-normal leading-6 tracking-normal text-sky-950">
-  //           Setting
-  //         </div>
-  //       </div>
-  //       <div className="mt-3 flex flex-col justify-center py-2.5">
-  //         <div className="flex flex-col justify-center">
-  //           <div className="h-px shrink-0 border border-solid border-gray-300 bg-gray-300" />
-  //         </div>
-  //       </div>
-  //       <button
-  //         type="button"
-  //         onClick={logOutClickHandler}
-  //         className="mt-3 flex w-full gap-2 rounded-md px-6 py-2.5 hover:opacity-70"
-  //       >
-  //         <div className="my-auto flex items-center justify-center">
-  //           <img
-  //             src="https://cdn.builder.io/api/v1/image/assets/TEMP/ca0dfc144be43547f4337c7f445306d81e5d800962d761f417c4dcad926c5c8a?apiKey=0e17b0b875f041659e186639705112b1&"
-  //             className="aspect-square w-5"
-  //           />
-  //         </div>
-  //         <div className="text-secondaryBlue2 text-base font-normal leading-6 tracking-normal">
-  //           Logout
-  //         </div>
-  //       </button>
-  //     </div>
-  //   </div>
-  // ) : null;
+  const logOutClickHandler = async () => {
+    setIsUserMenuOpen(false);
+    signOut();
+  };
+
+  const displayedUserMenu = isUserMenuOpen ? (
+    <div className="top-4.5rem absolute right-10 z-50">
+      <div className="shadow-userMenu flex flex-col gap-5 rounded-xs bg-white p-4">
+        <Button
+          size={'small'}
+          variant={'secondaryBorderless'}
+          className="flex w-full justify-start"
+          onClick={logOutClickHandler}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <g
+              className="stroke-current"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
+              clipPath="url(#clip0_413_9743)"
+            >
+              <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"></path>
+              <path d="M15.606 12.273a1.25 1.25 0 00.25 1.379l.046.045a1.517 1.517 0 11-2.144 2.144l-.046-.045a1.25 1.25 0 00-1.379-.25 1.25 1.25 0 00-.757 1.143v.13a1.515 1.515 0 01-3.03 0v-.069a1.25 1.25 0 00-.819-1.144 1.25 1.25 0 00-1.379.25l-.045.046a1.514 1.514 0 01-2.473-.492 1.515 1.515 0 01.329-1.652l.046-.046a1.25 1.25 0 00.25-1.379 1.25 1.25 0 00-1.144-.757h-.13a1.515 1.515 0 010-3.03h.069a1.25 1.25 0 001.144-.819 1.25 1.25 0 00-.25-1.379l-.046-.045a1.515 1.515 0 112.144-2.144l.046.046a1.25 1.25 0 001.379.25h.06a1.25 1.25 0 00.758-1.144v-.13a1.515 1.515 0 013.03 0v.069a1.25 1.25 0 00.758 1.144 1.25 1.25 0 001.379-.25l.045-.046a1.516 1.516 0 112.144 2.144l-.046.046a1.25 1.25 0 00-.25 1.379v.06a1.25 1.25 0 001.144.758h.13a1.515 1.515 0 110 3.03h-.069a1.25 1.25 0 00-1.144.758z"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_413_9743">
+                <path fill="#fff" d="M0 0H20V20H0z"></path>
+              </clipPath>
+            </defs>
+          </svg>
+          <p className="font-normal">Setting</p>
+        </Button>
+
+        <Button
+          size={'small'}
+          variant={'secondaryBorderless'}
+          className="flex w-full justify-start"
+          onClick={logOutClickHandler}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              className="fill-current"
+              fillRule="evenodd"
+              d="M7.955 3.31c-.198-.052-.463-.059-1.286-.059h-.417c-.592 0-1 0-1.316.022-.31.021-.48.06-.603.111a1.75 1.75 0 00-.947.947c-.051.123-.09.293-.112.603-.021.317-.022.724-.022 1.317v7.5c0 .593 0 1 .022 1.317.022.31.06.48.112.603.177.429.518.77.947.947.123.05.292.09.603.111.317.022.724.022 1.316.022h.417c.823 0 1.088-.006 1.286-.06a1.75 1.75 0 001.238-1.237c.053-.199.06-.463.06-1.286a.75.75 0 011.5 0v.108c0 .67 0 1.15-.111 1.566a3.25 3.25 0 01-2.298 2.298c-.416.112-.897.111-1.567.111h-.551c-.56 0-1.018 0-1.393-.025-.386-.027-.738-.083-1.074-.222a3.25 3.25 0 01-1.76-1.76c-.138-.335-.195-.687-.221-1.074-.026-.374-.026-.832-.026-1.393V6.225c0-.56 0-1.019.026-1.393.026-.387.083-.738.222-1.075a3.25 3.25 0 011.759-1.759c.336-.139.688-.195 1.075-.221.374-.026.832-.026 1.392-.026h.551c.67 0 1.151 0 1.567.11a3.25 3.25 0 012.298 2.299c.111.415.11.897.11 1.566v.108a.75.75 0 11-1.5 0c0-.823-.006-1.087-.06-1.286a1.75 1.75 0 00-1.237-1.237zm4.85 1.994a.75.75 0 011.061 0l4.167 4.167a.75.75 0 010 1.06l-4.167 4.167a.75.75 0 01-1.06-1.06l2.886-2.887h-8.19a.75.75 0 010-1.5h8.19l-2.887-2.886a.75.75 0 010-1.06z"
+              clipRule="evenodd"
+            ></path>
+          </svg>
+          <p className="font-normal">Logout</p>
+        </Button>
+      </div>
+    </div>
+  ) : null;
 
   const isDisplayedDiscoverButton = (
     /* ToDo: (20240626 - Julian) icons on mobile */
@@ -132,7 +132,15 @@ const NavBar = () => {
     }
   };
 
-  const displayedLogInBtn = (
+  const displayedLogInBtn = signedIn ? (
+    <div ref={userMenuRef}>
+      <button onClick={avatarClickHandler} className="flex h-full w-full justify-center">
+        {/* Info: avatar svg (20240408 - Shirley) */}
+        <Image src={`/elements/default_user.svg`} alt="avatar" width={40} height={40} />
+      </button>
+      {displayedUserMenu}
+    </div>
+  ) : (
     <div className="flex space-x-5">
       <Button onClick={buttonClickHandler} variant={'tertiary'} size={'medium'}>
         <p>Register</p>

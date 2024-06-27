@@ -84,6 +84,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [selectedChat, setSelectedChat, selectedChatRef] = useStateRef<IChat | null>(null);
 
   const addMessage = (message: IMessage) => {
+    // eslint-disable-next-line no-console
+    console.log('message in addMessage', message);
     if (selectedChatRef.current) {
       const updatedChat = {
         ...selectedChatRef.current,
