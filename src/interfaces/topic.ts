@@ -18,6 +18,7 @@ export interface ITopic extends ITopicBrief {
     countOfDislikes: number;
   };
   comments: IComment[];
+  isFavorite: boolean;
 }
 
 export const defaultTopicData: ITopic = {
@@ -34,6 +35,7 @@ export const defaultTopicData: ITopic = {
     countOfDislikes: 0,
   },
   comments: [],
+  isFavorite: false,
 };
 
 export const dummyTopicList: ITopic[] = [
@@ -62,6 +64,7 @@ export const dummyTopicList: ITopic[] = [
         createTimestamp: 1624825200,
       },
     ],
+    isFavorite: false,
   },
   {
     id: '2',
@@ -78,13 +81,18 @@ export const dummyTopicList: ITopic[] = [
       countOfDislikes: 1,
     },
     comments: [],
+    isFavorite: false,
   },
   {
     id: '3',
     title: 'WorldMap',
     imageId: '/icons/info.svg',
     creator: 'John',
-    category: [TopicCategory.FINANCIAL_INSIGHTS, TopicCategory.TRENDING, TopicCategory.OTHER],
+    category: [
+      TopicCategory.FINANCIAL_INSIGHTS,
+      TopicCategory.TRENDING,
+      TopicCategory.MY_FAVORITES,
+    ],
     summary:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     mainQuestion: 'How much money should I save for retirement?',
@@ -113,7 +121,36 @@ export const dummyTopicList: ITopic[] = [
         countOfDislikes: 0,
         createTimestamp: 1649237041,
       },
+      {
+        id: '3-3',
+        userName: 'Bob',
+        userAvatar: '/icons/info.svg',
+        comment: 'I think you should save at least 20% of your income for retirement.',
+        countOfLikes: 1,
+        countOfDislikes: 0,
+        createTimestamp: 1653418252,
+      },
+      {
+        id: '3-4',
+        userName: 'Frank',
+        userAvatar: '/icons/info.svg',
+        comment: 'Noob Ai lol',
+        countOfLikes: 0,
+        countOfDislikes: 3,
+        createTimestamp: 1661901238,
+      },
+      {
+        id: '3-5',
+        userName: 'Eva',
+        userAvatar: '/icons/info.svg',
+        comment:
+          'This answer is too generic. You need to consider your age, income, and retirement goals.',
+        countOfLikes: 3,
+        countOfDislikes: 0,
+        createTimestamp: 1697041093,
+      },
     ],
+    isFavorite: true,
   },
   {
     id: '4',
@@ -142,6 +179,7 @@ export const dummyTopicList: ITopic[] = [
         createTimestamp: 1653418252,
       },
     ],
+    isFavorite: false,
   },
   {
     id: '5',
@@ -179,6 +217,7 @@ export const dummyTopicList: ITopic[] = [
         createTimestamp: 1661901238,
       },
     ],
+    isFavorite: false,
   },
   {
     id: '6',
@@ -196,5 +235,6 @@ export const dummyTopicList: ITopic[] = [
       countOfDislikes: 2,
     },
     comments: [],
+    isFavorite: false,
   },
 ];
