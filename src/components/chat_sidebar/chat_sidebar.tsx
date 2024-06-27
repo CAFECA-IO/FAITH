@@ -2,10 +2,19 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { Button } from '@/components/button/button';
 
-const ChatSidebar = () => {
+interface ChatSidebarProps {
+  getIsExpanded?: (props: boolean) => void;
+}
+
+const ChatSidebar = ({ getIsExpanded }: ChatSidebarProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const toggleSidebar = () => setIsExpanded(!isExpanded);
+  const toggleSidebar = () => {
+    setIsExpanded(!isExpanded);
+    if (getIsExpanded) {
+      getIsExpanded(!isExpanded);
+    }
+  };
 
   return (
     <div className="font-barlow">
@@ -18,7 +27,7 @@ const ChatSidebar = () => {
         size={'extraSmall'}
         type="button"
         onClick={toggleSidebar}
-        className={`absolute top-96 ${isExpanded ? 'left-240px' : 'left-0'} z-40 hidden transition-all duration-300 ease-in-out lg:block`}
+        className={`fixed top-96 ${isExpanded ? 'left-240px' : 'left-0'} z-40 hidden transition-all duration-300 ease-in-out lg:block`}
       >
         {isExpanded ? (
           <svg

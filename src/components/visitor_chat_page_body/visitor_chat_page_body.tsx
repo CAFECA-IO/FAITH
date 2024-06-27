@@ -202,7 +202,7 @@ const VisitorChatPageBody = () => {
 
   return (
     <div className="">
-      <div>
+      <div className="flex w-full flex-col">
         {displayedChatContent}
 
         {/* Info: Chat input (20240626 - Shirley) */}
