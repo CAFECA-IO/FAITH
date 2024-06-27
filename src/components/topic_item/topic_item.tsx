@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ITopicBrief } from '@/interfaces/topic';
+import { ITopicBrief, dummyTopicList, defaultTopicData } from '@/interfaces/topic';
 import { useGlobalCtx } from '@/contexts/global_context';
 
 interface ITopicItem {
@@ -8,7 +8,12 @@ interface ITopicItem {
 
 const TopicItem = ({ topic }: ITopicItem) => {
   const { topicModalVisibilityHandler, topicModalDataHandler } = useGlobalCtx();
+
+  // ToDo: (20240627 - Julian) If API call here
+  const topicDetailData = dummyTopicList.find((item) => item.id === topic.id) || defaultTopicData;
+
   const clickHandler = () => {
+    topicModalDataHandler(topicDetailData);
     topicModalVisibilityHandler();
   };
 
