@@ -5,13 +5,8 @@ import { DUMMY_TIMESTAMP, FIDO2_USER_HANDLE } from '@/constants/config';
 import { NATIVE_API } from '@/constants/url';
 import { checkFIDO2Cookie, createChallenge } from '@/lib/utils/authorization';
 import { DEFAULT_USER_NAME } from '@/lib/utils/display';
-import { ICredential } from '@/interfaces/webauthn';
+import { ICredential, IUserAuth } from '@/interfaces/webauthn';
 import { useRouter } from 'next/router';
-
-interface IUserAuth {
-  username: string;
-  credential: ICredential;
-}
 
 interface UserContextType {
   user: ICredential | null;

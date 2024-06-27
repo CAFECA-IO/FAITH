@@ -80,7 +80,7 @@ const ChatThreadSection = () => {
         ref={chatContainerRef}
         className="hideScrollbar h-screen overflow-y-auto overflow-x-hidden pt-56"
       >
-        <div className="ml-20 mr-10 flex flex-col gap-10">
+        <div className="mx-20 flex flex-col gap-10">
           {chat.messages.map((message: IMessage) => (
             <ChatMessage
               sender={

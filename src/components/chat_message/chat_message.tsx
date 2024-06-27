@@ -40,10 +40,10 @@ const ChatMessage = ({ sender, role, content }: ChatMessageProps) => {
         </svg>
       </div>
     ) : (
-      // TODO: user avatar (20240627 - Shirley)
+      // TODO: use imageId in `user` data as user avatar (20240627 - Shirley)
       <div className="relative flex shrink-0 items-start justify-center">
         <Image
-          src={'/elements/anonymous_avatar.svg'}
+          src={'/elements/default_user.svg'}
           width={60}
           height={60}
           alt="isunfa logo with ring border"

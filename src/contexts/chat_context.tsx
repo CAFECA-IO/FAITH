@@ -84,8 +84,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [selectedChat, setSelectedChat, selectedChatRef] = useStateRef<IChat | null>(null);
 
   const addMessage = (message: IMessage) => {
-    // eslint-disable-next-line no-console
-    console.log('message in addMessage', message);
     if (selectedChatRef.current) {
       const updatedChat = {
         ...selectedChatRef.current,
@@ -101,7 +99,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const userAddMessage = (message: IMessageWithoutSender) => {
-    const role = userCtx.user ? MessageRole.USER : MessageRole.VISITOR;
+    const role = userCtx.signedIn ? MessageRole.USER : MessageRole.VISITOR;
     addMessage({ ...message, role });
   };
 
@@ -175,10 +173,12 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     //   setChats([...chatsRef.current, item]);
     // }
     // Info: 未登入情況下使用聊天簡介頁面，選擇聊天後，將聊天簡介頁面選項清空
-    if (!userCtx.user) {
-      // add the brand new chat
-      setSelectedChat(item);
-    }
+    // if (!userCtx.user) {
+    //   // add the brand new chat
+    //   setSelectedChat(item);
+    // }
+
+    setSelectedChat(item);
   };
 
   const addEmptyChat = () => {
@@ -234,6 +234,12 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  useEffect(() => {
+    if (!userCtx.signedIn) {
+      addEmptyChat();
+    }
+  }, [userCtx.signedIn]);
+
   // Info: add a chat from the beginning (20240627 - Shirley)
   useEffect(() => {
     if (router.pathname === NATIVE_ROUTE.HOME) {
@@ -241,11 +247,15 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [router.pathname]);
 
-  // TODO: 機器人隔 0.5 秒後自動回覆罐頭訊息 (20240626 - Shirley)
+  // TODO: 機器人隔 0.5 秒後自動回覆罐頭訊息 for demo (20240626 - Shirley)
   useEffect(() => {
     if (selectedChatRef?.current?.messages.length === 0) return;
     const addBotMessage = async () => {
-      if (selectedChatRef.current?.messages.at(-1)?.role !== MessageRole.BOT) {
+      if (
+        selectedChatRef?.current?.messages &&
+        selectedChatRef?.current?.messages.length > 0 &&
+        selectedChatRef.current?.messages.at(-1)?.role !== MessageRole.BOT
+      ) {
         const botMessage = {
           id: uuidv4(),
           role: MessageRole.BOT,
