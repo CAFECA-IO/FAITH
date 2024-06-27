@@ -12,7 +12,7 @@ interface UserContextType {
 }
 
 const UserContext = createContext<UserContextType>({
-  user: {} as ICredential,
+  user: null,
   setUser: () => {},
 });
 

@@ -5,12 +5,12 @@ import Image from 'next/image';
 import { NATIVE_ROUTE } from '@/constants/url';
 import version from '@/lib/version';
 import { Button } from '@/components/button/button';
-import { cn, getTimestampInSeconds } from '@/lib/utils/common';
+import { cn } from '@/lib/utils/common';
 import { useChatCtx } from '@/contexts/chat_context';
 
 const NavBar = () => {
   const router = useRouter();
-  const { addChat } = useChatCtx();
+  const { addEmptyChat } = useChatCtx();
 
   // TODO: in dev (20240625 - Shirley)
   // const {
@@ -124,13 +124,12 @@ const NavBar = () => {
   };
 
   const newChatClickHandler = () => {
-    addChat({
-      id: `${getTimestampInSeconds()}`,
-      name: 'New Chat for anonymous user',
-      createdAt: getTimestampInSeconds(),
-      messages: [],
-      description: '',
-    });
+    // Info: redirect to / if now is not on / (20240627 - Shirley)
+    if (router.pathname !== NATIVE_ROUTE.HOME) {
+      router.push(NATIVE_ROUTE.HOME);
+    } else {
+      addEmptyChat();
+    }
   };
 
   const displayedLogInBtn = (

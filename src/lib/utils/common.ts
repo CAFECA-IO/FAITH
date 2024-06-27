@@ -112,8 +112,8 @@ export const timestampToString = (timestamp: number | undefined) => {
   };
 };
 
-export const getTimestampInSeconds = () => {
-  return Math.floor(new Date().getTime() / 1000);
+export const getTimestamp = () => {
+  return Math.floor(Date.now() / 1000);
 };
 
 export const wait = (ms: number): Promise<void> => {

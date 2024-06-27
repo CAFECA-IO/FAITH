@@ -1,10 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useUserCtx } from '@/contexts/user_context';
 import { IChat, IChatBrief, IFolder, IMessage, MessageRole } from '@/interfaces/chat';
-import { getTimestampInSeconds, wait } from '@/lib/utils/common';
+import { getTimestamp, timestampToString, wait } from '@/lib/utils/common';
 import { DELAYED_RESPONSE_MILLISECONDS } from '@/lib/utils/display';
 import { createContext, useContext, useEffect, useMemo } from 'react';
 import useStateRef from 'react-usestateref';
+import { useRouter } from 'next/router';
+import { NATIVE_ROUTE } from '@/constants/url';
 
 interface ChatContextType {
   selectedChat: IChat | null;
@@ -22,6 +24,7 @@ interface ChatContextType {
   chats: IChat[] | null;
   handleChats: (chats: IChat[]) => void;
   addChat: (chat: IChat) => void;
+  addEmptyChat: () => void;
   renameChat: (id: string, newName: string) => void;
   deleteChat: (id: string) => void;
 
@@ -48,6 +51,7 @@ const ChatContext = createContext<ChatContextType>({
   chats: null as IChat[] | null,
   handleChats: () => {},
   addChat: () => {},
+  addEmptyChat: () => {},
   renameChat: () => {},
   deleteChat: () => {},
 
@@ -59,6 +63,7 @@ const ChatContext = createContext<ChatContextType>({
 });
 
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
   const userCtx = useUserCtx();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [chatBriefs, setChatBriefs, chatBriefsRef] = useStateRef<IChatBrief[] | null>(null);
@@ -160,6 +165,19 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const addEmptyChat = () => {
+    const nowTs = getTimestamp();
+    const { time } = timestampToString(nowTs);
+    const chat = {
+      id: uuidv4(),
+      name: `Chat - ${time}`,
+      messages: [],
+      description: '',
+      createdAt: nowTs,
+    };
+    addChat(chat);
+  };
+
   const renameChat = (id: string, newName: string) => {
     if (chatsRef.current) {
       setChats(
@@ -200,6 +218,13 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Info: add a chat from the beginning (20240627 - Shirley)
+  useEffect(() => {
+    if (router.pathname === NATIVE_ROUTE.HOME) {
+      addEmptyChat();
+    }
+  }, [router.pathname]);
+
   // TODO: 機器人隔 0.5 秒後自動回覆罐頭訊息 (20240626 - Shirley)
   useEffect(() => {
     if (selectedChatRef?.current?.messages.length === 0) return;
@@ -209,7 +234,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
           id: uuidv4(),
           role: MessageRole.BOT,
           content: 'Sure!',
-          createdAt: getTimestampInSeconds(),
+          createdAt: getTimestamp(),
         };
 
         await wait(DELAYED_RESPONSE_MILLISECONDS);
@@ -238,6 +263,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       chats: chatsRef.current,
       handleChats,
       addChat,
+      addEmptyChat,
       renameChat,
       deleteChat,
 

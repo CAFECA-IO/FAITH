@@ -30,6 +30,11 @@ export interface IChat extends IChatBrief {
   messages: IMessage[];
 }
 
+export interface IChatTopic {
+  title: string;
+  description: string;
+}
+
 export const dummyChatBrief: IChatBrief = {
   id: 'ntffteyy',
   name: '遞迴函數',
@@ -169,5 +174,24 @@ export const dummyFolders: IFolder[] = [
     id: 'kfgdhnsdf',
     name: '程式學習',
     chats: [dummyChatBrief],
+  },
+];
+
+export const dummyChatTopics: IChatTopic[] = [
+  {
+    title: 'Tell me a joke',
+    description: 'Faith can share the latest jokes.',
+  },
+  {
+    title: 'Tell me a story',
+    description: 'Faith can share the latest story.',
+  },
+  {
+    title: 'Share the latest AI information',
+    description: 'Faith can share the latest AI information.',
+  },
+  {
+    title: 'Say " Hi "',
+    description: 'Faith can say Hi.',
   },
 ];

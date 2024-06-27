@@ -2,8 +2,8 @@ import { v4 as uuidv4 } from 'uuid';
 import ChatMessage from '@/components/chat_message/chat_message';
 import ChatTopicOption from '@/components/chat_topic_option/chat_topic_option';
 import { useChatCtx } from '@/contexts/chat_context';
-import { IMessage, MessageRole } from '@/interfaces/chat';
-import { getTimestampInSeconds } from '@/lib/utils/common';
+import { IChatTopic, IMessage, MessageRole, dummyChatTopics } from '@/interfaces/chat';
+import { getTimestamp } from '@/lib/utils/common';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -14,14 +14,17 @@ const VisitorChatPageBody = () => {
   const [prompt, setPrompt] = useState('');
   const [rows, setRows] = useState(1);
   const [isComposing, setIsComposing] = useState(false);
+  // TODO: dummy data (20240627 - Shirley)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [topicOptions, setTopicOptions] = useState<IChatTopic[]>(dummyChatTopics);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const topicClickHandler = (title: string) => {
     addChat({
-      id: `${getTimestampInSeconds()}`,
+      id: `${getTimestamp()}`,
       name: title,
-      createdAt: getTimestampInSeconds(),
+      createdAt: getTimestamp(),
       messages: [],
       description: '',
     });
@@ -29,7 +32,7 @@ const VisitorChatPageBody = () => {
       id: uuidv4(),
       role: MessageRole.ANONYMOUS_USER,
       content: `${title}`,
-      createdAt: getTimestampInSeconds(),
+      createdAt: getTimestamp(),
     });
   };
 
@@ -44,7 +47,7 @@ const VisitorChatPageBody = () => {
       id: uuidv4(),
       role: MessageRole.ANONYMOUS_USER,
       content: prompt,
-      createdAt: getTimestampInSeconds(),
+      createdAt: getTimestamp(),
     });
   };
 
@@ -52,69 +55,68 @@ const VisitorChatPageBody = () => {
     submitPrompt();
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && e.shiftKey) {
-      e.preventDefault();
-      setRows((prevRows) => prevRows + 1);
+  const heightenTextArea = () => {
+    setRows((prevRows) => prevRows + 1);
 
-      if (textareaRef.current) {
-        const textarea = textareaRef.current;
-        const currentPosition = textarea.selectionStart;
-        const newPosition = currentPosition + 1;
-
-        setPrompt((prevPrompt) => prevPrompt + '\n');
-        textarea.setSelectionRange(newPosition, newPosition);
-      }
-    } else if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
-      e.preventDefault();
-      submitPrompt();
-    } else if (e.key === 'Backspace') {
+    if (textareaRef.current) {
       const textarea = textareaRef.current;
-      if (textarea) {
-        const currentPosition = textarea.selectionStart;
-        const currentValue = textarea.value;
-        if (currentPosition > 0 && currentValue[currentPosition - 1] === '\n') {
-          e.preventDefault();
-          setRows((prevRows) => Math.max(1, prevRows - 1));
+      const currentPosition = textarea.selectionStart;
+      const newPosition = currentPosition + 1;
 
-          setTimeout(() => {
-            const newPosition = currentPosition - 1;
-            setPrompt(
-              (prevPrompt) =>
-                // eslint-disable-next-line implicit-arrow-linebreak
-                prevPrompt.slice(0, currentPosition - 1) + prevPrompt.slice(currentPosition)
-            );
-            textarea.setSelectionRange(newPosition, newPosition);
-          }, 0);
-        }
+      setPrompt((prevPrompt) => prevPrompt + '\n');
+      textarea.setSelectionRange(newPosition, newPosition);
+    }
+  };
+
+  const lessenTextArea = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      const currentPosition = textarea.selectionStart;
+      const currentValue = textarea.value;
+      if (currentPosition > 0 && currentValue[currentPosition - 1] === '\n') {
+        e.preventDefault();
+        setRows((prevRows) => Math.max(1, prevRows - 1));
+
+        const newPosition = currentPosition - 1;
+        setPrompt(
+          (prevPrompt) =>
+            prevPrompt.slice(0, currentPosition - 1) + prevPrompt.slice(currentPosition)
+        );
+        textarea.setSelectionRange(newPosition, newPosition);
       }
     }
   };
 
-  // TODO: extract dummy data to interfaces and import them and iterate (20240626 - Shirley)
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Info: 完全空白下，text area 自動允許按一次 enter，此時網站讓 text area 高度加高；但會造成減少 text area 時少一行，所以先不使用 (20240627 - Shirley)
+    // if (e.key === 'Enter') {
+    //   heightenTextArea();
+    // }
+
+    // Info: shift + enter 加高 text area (20240627 - Shirley)
+    if (e.key === 'Enter' && e.shiftKey) {
+      e.preventDefault();
+      heightenTextArea();
+    } else if (e.key === 'Enter' && !e.shiftKey && !isComposing && !!prompt) {
+      // Info: enter 提交 (20240627 - Shirley)
+      e.preventDefault();
+      submitPrompt();
+    } else if (e.key === 'Backspace') {
+      lessenTextArea(e);
+    }
+  };
+
   const displayedChatTopics = (
-    <div className="mt-9 flex w-full justify-center">
+    <div className="mt-9 flex w-full justify-center px-10">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <ChatTopicOption
-          title="Tell me a joke"
-          description="Faith can share the latest jokes."
-          onClick={() => topicClickHandler('Tell me a joke')}
-        />
-        <ChatTopicOption
-          title="Tell me a story"
-          description="Faith can share the latest story."
-          onClick={() => topicClickHandler('Tell me a story')}
-        />
-        <ChatTopicOption
-          title="Share the latest AI information"
-          description="Faith can share the latest AI information."
-          onClick={() => topicClickHandler('Share the latest AI information')}
-        />
-        <ChatTopicOption
-          title='Say " Hi "'
-          description="Faith can say Hi."
-          onClick={() => topicClickHandler('Say " Hi "')}
-        />
+        {topicOptions.map((topic: IChatTopic) => (
+          <ChatTopicOption
+            key={topic.title}
+            title={topic.title}
+            description={topic.description}
+            onClick={() => topicClickHandler(topic.title)}
+          />
+        ))}
       </div>
     </div>
   );
@@ -131,7 +133,7 @@ const VisitorChatPageBody = () => {
         rows={rows}
         // TODO: i18n (20240626 - Shirley)
         placeholder="Say something..."
-        className={`relative flex w-full min-w-200px resize-none items-center justify-between rounded-sm border border-lightGray3 bg-white px-5 py-3 outline-none transition-all duration-300`}
+        className={`relative flex max-h-300px w-full resize-none items-center justify-between overflow-auto rounded-sm border border-lightGray3 bg-white px-5 py-3 outline-none transition-all duration-300`}
       />
       <button
         onClick={submitButtonClickHandler}
