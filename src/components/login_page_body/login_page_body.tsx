@@ -1,22 +1,19 @@
 import { Button } from '@/components/button/button';
+import { useGlobalCtx } from '@/contexts/global_context';
 import { useUserCtx } from '@/contexts/user_context';
 import Image from 'next/image';
 
 const LoginPageBody = () => {
-  const { signIn, signUp } = useUserCtx();
+  const { signIn } = useUserCtx();
+  const { registerModalVisibilityHandler } = useGlobalCtx();
 
   const logInClickHandler = () => {
     signIn();
-    // TODO: in dev (20240626 - Shirley)
-    // eslint-disable-next-line no-useless-return
-    return;
   };
 
   const registerClickHandler = () => {
-    signUp();
-    // TODO: in dev (20240626 - Shirley)
-    // eslint-disable-next-line no-useless-return
-    return;
+    registerModalVisibilityHandler();
+    // signUp();
   };
 
   return (

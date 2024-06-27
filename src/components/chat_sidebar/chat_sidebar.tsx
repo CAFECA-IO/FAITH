@@ -1,12 +1,15 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { Button } from '@/components/button/button';
+import { useChatCtx } from '@/contexts/chat_context';
 
 interface ChatSidebarProps {
   getIsExpanded?: (props: boolean) => void;
 }
 
 const ChatSidebar = ({ getIsExpanded }: ChatSidebarProps) => {
+  const { chatBriefs, selectChat } = useChatCtx();
+
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleSidebar = () => {
@@ -61,35 +64,53 @@ const ChatSidebar = ({ getIsExpanded }: ChatSidebarProps) => {
       <div
         className={`fixed z-10 hidden h-screen flex-col items-center bg-surface-brand-primary-5 lg:flex ${isExpanded ? 'w-240px' : 'w-0 -translate-x-240px'} px-12px pb-40px pt-100px transition-all duration-300 ease-in-out`}
       >
-        <div className="flex items-center gap-3">
-          <div className="relative flex h-10 w-10 items-center justify-center">
-            <Image
-              src={'/logo/isunfa_pure_logo.svg'}
-              width={20}
-              height={20}
-              alt="isunfa logo"
-              className="z-10 h-5 w-5"
-            />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
-              fill="none"
-              viewBox="0 0 40 40"
-              className="absolute"
-            >
-              <circle cx="20" cy="20" r="19" stroke="#CDD1D9" strokeWidth="2"></circle>
-            </svg>
-          </div>
+        <div className="flex h-full w-full flex-col">
+          <div className="mx-3 -mt-5 flex items-center gap-3">
+            <div className="relative flex h-10 w-10 items-center justify-center">
+              <Image
+                src={'/logo/isunfa_pure_logo.svg'}
+                width={20}
+                height={20}
+                alt="isunfa logo"
+                className="z-10 h-5 w-5"
+              />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="40"
+                height="40"
+                fill="none"
+                viewBox="0 0 40 40"
+                className="absolute"
+              >
+                <circle cx="20" cy="20" r="19" stroke="#CDD1D9" strokeWidth="2"></circle>
+              </svg>
+            </div>
 
-          <p
-            className={`text-lg font-medium text-button-text-secondary transition-all duration-300 ease-in-out`}
-          >
-            My Chat List
-          </p>
+            <p
+              className={`text-lg font-medium text-button-text-secondary transition-all duration-300 ease-in-out`}
+            >
+              My Chat List
+            </p>
+          </div>
+          <div className="mb-10 mt-5 grow overflow-y-auto overflow-x-hidden">
+            {chatBriefs &&
+              chatBriefs.length > 0 &&
+              chatBriefs
+                .sort((a, b) => b.createdAt - a.createdAt)
+                .map((chat) => (
+                  <Button
+                    variant={'secondaryBorderless'}
+                    key={chat.id}
+                    className="px-2 py-2"
+                    onClick={() => selectChat(chat.id)}
+                  >
+                    <p className="truncate text-sm font-normal">{chat.name}</p>
+                  </Button>
+                ))}
+          </div>{' '}
         </div>
 
-        <div className="flex h-full w-full flex-col items-center justify-end text-lg">
+        <div className="-mt-3">
           <Button
             size={'medium'}
             variant={'secondaryOutline'}

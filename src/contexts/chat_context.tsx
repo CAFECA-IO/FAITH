@@ -9,7 +9,7 @@ import {
   MessageRole,
 } from '@/interfaces/chat';
 import { getTimestamp, timestampToString, wait } from '@/lib/utils/common';
-import { DELAYED_RESPONSE_MILLISECONDS } from '@/lib/utils/display';
+import { DELAYED_RESPONSE_MILLISECONDS } from '@/constants/display';
 import { createContext, useContext, useEffect, useMemo } from 'react';
 import useStateRef from 'react-usestateref';
 import { useRouter } from 'next/router';
@@ -18,6 +18,8 @@ import { NATIVE_ROUTE } from '@/constants/url';
 interface ChatContextType {
   selectedChat: IChat | null;
   setSelectedChat: (chat: IChat | null) => void;
+  selectChat: (id: string) => void;
+
   addMessage: (message: IMessage) => void;
   userAddMessage: (message: IMessageWithoutSender) => void;
   updateMessage: (messageIndex: number, updatedMessage: IMessage) => void;
@@ -46,6 +48,8 @@ interface ChatContextType {
 const ChatContext = createContext<ChatContextType>({
   selectedChat: null,
   setSelectedChat: () => {},
+  selectChat: () => {},
+
   addMessage: () => {},
   userAddMessage: () => {},
   updateMessage: () => {},
@@ -73,7 +77,7 @@ const ChatContext = createContext<ChatContextType>({
 
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const userCtx = useUserCtx();
+  const { signedIn } = useUserCtx();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [chatBriefs, setChatBriefs, chatBriefsRef] = useStateRef<IChatBrief[] | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -99,7 +103,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const userAddMessage = (message: IMessageWithoutSender) => {
-    const role = userCtx.signedIn ? MessageRole.USER : MessageRole.VISITOR;
+    const role = signedIn ? MessageRole.USER : MessageRole.VISITOR;
     addMessage({ ...message, role });
   };
 
@@ -142,8 +146,16 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const addChatBrief = (item: IChatBrief) => {
-    if (chatBriefsRef.current) {
-      setChatBriefs([...chatBriefsRef.current, item]);
+    if (!signedIn) return;
+
+    if (!chatBriefsRef.current) {
+      setChatBriefs([item]);
+    } else {
+      // Info: 檢查是否已存在相同 id 的 chatBrief (20240627 - Shirley)
+      const existingBrief = chatBriefsRef.current.find((brief) => brief.id === item.id);
+      if (!existingBrief) {
+        setChatBriefs([...chatBriefsRef.current, item]);
+      }
     }
   };
 
@@ -163,32 +175,52 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const clearChats = () => {
+    setChats([]);
+  };
+
+  const clearChatBriefs = () => {
+    setChatBriefs([]);
+  };
+
   const handleChats = (items: IChat[]) => {
-    setChats(items);
+    if (signedIn) {
+      if (chatsRef.current) {
+        setChats([...chatsRef.current, ...items]);
+      } else {
+        setChats(items);
+      }
+    } else {
+      setChats(items);
+    }
+  };
+
+  const selectChat = (id: string) => {
+    if (chatsRef.current) {
+      setSelectedChat(chatsRef.current.find((chat) => chat.id === id) || null);
+    }
   };
 
   const addChat = (item: IChat) => {
-    // TODO: in dev (20240626 - Shirley)
-    // if (chatsRef.current) {
-    //   setChats([...chatsRef.current, item]);
-    // }
-    // Info: 未登入情況下使用聊天簡介頁面，選擇聊天後，將聊天簡介頁面選項清空
-    // if (!userCtx.user) {
-    //   // add the brand new chat
-    //   setSelectedChat(item);
-    // }
-
     setSelectedChat(item);
+    handleChats([item]);
+    addChatBrief({
+      id: item.id,
+      name: item.name,
+      description: item.description,
+      createdAt: item.createdAt,
+    });
   };
 
   const addEmptyChat = () => {
     const nowTs = getTimestamp();
-    const { time } = timestampToString(nowTs);
+    const { date, time } = timestampToString(nowTs);
+    const randomId = uuidv4();
     const chat = {
-      id: uuidv4(),
-      name: `Chat - ${time}`,
+      id: randomId,
+      name: `Chat - ${time} - ${randomId}`,
       messages: [],
-      description: '',
+      description: `Chat - ${date} ${time}`,
       createdAt: nowTs,
     };
     addChat(chat);
@@ -235,14 +267,16 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    if (!userCtx.signedIn) {
+    clearChats();
+    clearChatBriefs();
+    if (signedIn) {
       addEmptyChat();
     }
-  }, [userCtx.signedIn]);
+  }, [signedIn]);
 
   // Info: add a chat from the beginning (20240627 - Shirley)
   useEffect(() => {
-    if (router.pathname === NATIVE_ROUTE.HOME) {
+    if (router.pathname === NATIVE_ROUTE.HOME && !signedIn) {
       addEmptyChat();
     }
   }, [router.pathname]);
@@ -276,6 +310,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     () => ({
       selectedChat: selectedChatRef.current,
       setSelectedChat,
+      selectChat,
+
       addMessage,
       userAddMessage,
       updateMessage,

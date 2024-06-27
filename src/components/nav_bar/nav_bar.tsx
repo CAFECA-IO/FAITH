@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import React from 'react';
@@ -31,6 +30,7 @@ const NavBar = () => {
   const logOutClickHandler = async () => {
     setIsUserMenuOpen(false);
     signOut();
+    addEmptyChat();
   };
 
   const displayedUserMenu = isUserMenuOpen ? (
@@ -136,7 +136,11 @@ const NavBar = () => {
 
   const displayedLogInBtn = signedIn ? (
     <div ref={userMenuRef}>
-      <button onClick={avatarClickHandler} className="flex h-full w-full justify-center">
+      <button
+        type="button"
+        onClick={avatarClickHandler}
+        className="flex h-full w-full justify-center"
+      >
         {/* Info: avatar svg (20240408 - Shirley) */}
         <Image src={`/elements/default_user.svg`} alt="avatar" width={40} height={40} />
       </button>

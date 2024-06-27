@@ -14,21 +14,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import ChatMessage from '@/components/chat_message/chat_message';
 
 const ChatThreadSection = () => {
+  const { selectedChat: chat, userAddMessage } = useChatCtx();
+
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  const { selectedChat: chat, userAddMessage, addChat } = useChatCtx();
 
   // TODO: dummy data (20240627 - Shirley)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [topicOptions, setTopicOptions] = useState<IChatTopic[]>(dummyChatTopics);
 
   const topicClickHandler = (title: string) => {
-    addChat({
-      id: `${getTimestamp()}`,
-      name: title,
-      createdAt: getTimestamp(),
-      messages: [],
-      description: '',
-    });
     userAddMessage({
       id: uuidv4(),
       content: `${title}`,

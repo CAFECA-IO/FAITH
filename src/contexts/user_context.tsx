@@ -1,10 +1,10 @@
-import { createContext, useContext, useMemo, useEffect } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 import { client } from '@passwordless-id/webauthn';
 import useStateRef from 'react-usestateref';
 import { DUMMY_TIMESTAMP, FIDO2_USER_HANDLE } from '@/constants/config';
 import { NATIVE_API } from '@/constants/url';
 import { checkFIDO2Cookie, createChallenge } from '@/lib/utils/authorization';
-import { DEFAULT_USER_NAME } from '@/lib/utils/display';
+import { DEFAULT_USER_NAME } from '@/constants/display';
 import { ICredential, IUserAuth } from '@/interfaces/webauthn';
 import { useRouter } from 'next/router';
 
@@ -37,19 +37,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [signedIn, setSignedIn, signedInRef] = useStateRef(false);
 
-  // const readCookie = async () => {
-  //   const cookie = document.cookie.split('; ').find((row: string) => row.startsWith('FIDO2='));
-  //   const FIDO2 = cookie ? cookie.split('=')[1] : null;
-  //   if (FIDO2) {
-  //     const decoded = decodeURIComponent(FIDO2);
-  //     return JSON.parse(decoded) as ICredential;
-  //   }
-  //   return null;
-  // };
-
   const writeCookie = async () => {
     const expiration = new Date();
-    expiration.setHours(expiration.getHours() + 1);
+    expiration.setMonth(expiration.getMonth() + 1);
     document.cookie = `FIDO2=${encodeURIComponent(JSON.stringify(userRef.current))}; expires=${expiration.toUTCString()}; path=/`;
   };
 
@@ -78,11 +68,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(data.credential);
       setSignedIn(true);
 
-      // 存儲註冊信息到本地存儲
       const registrationArray = JSON.parse(localStorage.getItem('registrationArray') || '[]');
       registrationArray.push(data);
       localStorage.setItem('registrationArray', JSON.stringify(registrationArray));
     } catch (error) {
+      // Deprecated: (20240715 - Shirley)
       // eslint-disable-next-line no-console
       console.error('註冊錯誤:', error);
     }
@@ -104,6 +94,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         writeCookie();
       }
     } catch (error) {
+      // Deprecated: (20240715 - Shirley)
       // eslint-disable-next-line no-console
       console.error('登入錯誤:', error);
     }
@@ -121,6 +112,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(null);
       setSignedIn(false);
     } catch (error) {
+      // Deprecated: (20240715 - Shirley)
       // eslint-disable-next-line no-console
       console.error('登出錯誤:', error);
     }
@@ -132,40 +124,43 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(credentialFromCookie[0]);
       setSignedIn(true);
     }
-
-    // const credentialFromCookie = checkFIDO2Cookie();
-    // if (credentialFromCookie && 'id' in credentialFromCookie[0]) {
-    //   setUserAuth({
-    //     username: DEFAULT_USER_NAME,
-    //     credential: credentialFromCookie[0],
-    //   });
-    //   setSignedIn(true);
-    // }
   };
 
   useEffect(() => {
     setPrivateData();
   }, []);
 
-  // redirect to home page when successful login
   useEffect(() => {
     if (signedIn) {
       router.push('/');
     }
   }, [signedIn]);
 
-  const value = useMemo(
-    () => ({
-      user: userRef.current,
-      setUser,
-      signUp,
-      signIn,
-      signOut,
-      userAuth: userAuthRef.current,
-      signedIn: signedInRef.current,
-    }),
-    [userRef.current]
-  );
+  // TODO: test the user auth status (20240627 -Shirley)
+  // const value = useMemo(
+  //   () => ({
+  //     user: userRef.current,
+  //     setUser,
+  //     signUp,
+  //     signIn,
+  //     signOut,
+  //     userAuth: userAuthRef.current,
+  //     signedIn: signedInRef.current,
+  //   }),
+  //   [userRef.current, signedInRef.current, userAuthRef.current]
+  // );
+
+  // TODO: test the user auth status (20240627 -Shirley)
+  /* eslint-disable react/jsx-no-constructed-context-values */
+  const value = {
+    user: userRef.current,
+    setUser,
+    signUp,
+    signIn,
+    signOut,
+    userAuth: userAuthRef.current,
+    signedIn: signedInRef.current,
+  };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
