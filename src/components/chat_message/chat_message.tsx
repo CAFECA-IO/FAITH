@@ -1,9 +1,9 @@
-import { MessageRole, Sender } from '@/interfaces/chat';
+import { MessageRole, DisplayedSender } from '@/interfaces/chat';
 import Image from 'next/image';
 import React from 'react';
 
 interface ChatMessageProps {
-  sender: Sender;
+  sender: DisplayedSender;
   role: MessageRole;
   content: string;
 }
@@ -40,20 +40,40 @@ const ChatMessage = ({ sender, role, content }: ChatMessageProps) => {
         </svg>
       </div>
     ) : (
-      <p>user</p>
+      // TODO: user avatar (20240627 - Shirley)
+      <div className="relative flex shrink-0 items-start justify-center">
+        <Image
+          src={'/elements/anonymous_avatar.svg'}
+          width={60}
+          height={60}
+          alt="isunfa logo with ring border"
+        />
+      </div>
     );
 
   const displayedMessage = (
     <div>
-      <div className="mt-0 flex gap-5 self-start whitespace-nowrap font-barlow">
-        {displayedAvatar}
-        <div className="flex w-1200px flex-col overflow-x-auto">
-          <div className="text-xl font-bold leading-8">{sender}</div>
-          <div className="mt-2 whitespace-pre-wrap text-base leading-6 tracking-normal">
-            {content}
+      {role !== MessageRole.USER ? (
+        <div className="mt-0 flex gap-5 self-start whitespace-nowrap font-barlow">
+          {displayedAvatar}
+          <div className="flex w-1200px flex-col overflow-x-auto">
+            <div className="text-xl font-bold leading-8">{sender}</div>
+            <div className="mt-2 whitespace-pre-wrap text-base leading-6 tracking-normal">
+              {content}
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="mt-0 flex w-full justify-end gap-5 self-start whitespace-nowrap font-barlow">
+          <div className="flex w-1200px flex-col items-end justify-center overflow-x-auto">
+            <div className="mt-2 whitespace-pre-wrap text-base leading-6 tracking-normal">
+              {content}
+            </div>
+          </div>
+
+          {displayedAvatar}
+        </div>
+      )}
     </div>
   );
 

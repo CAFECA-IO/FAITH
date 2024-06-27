@@ -1,12 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useChatCtx } from '@/contexts/chat_context';
-import { MessageRole } from '@/interfaces/chat';
 import { getTimestamp } from '@/lib/utils/common';
 import React, { useRef, useState } from 'react';
 import ChatThreadSection from '@/components/chat_thread_section/chat_thread_section';
 
 const ChatPageBody = () => {
-  const { addMessage } = useChatCtx();
+  const { userAddMessage } = useChatCtx();
 
   const [prompt, setPrompt] = useState('');
   const [rows, setRows] = useState(1);
@@ -21,9 +20,8 @@ const ChatPageBody = () => {
   const submitPrompt = () => {
     setPrompt('');
     setRows(1);
-    addMessage({
+    userAddMessage({
       id: uuidv4(),
-      role: MessageRole.VISITOR,
       content: prompt,
       createdAt: getTimestamp(),
     });

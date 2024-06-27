@@ -1,7 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 import ChatTopicOption from '@/components/chat_topic_option/chat_topic_option';
 import { useChatCtx } from '@/contexts/chat_context';
-import { IChatTopic, IMessage, MessageRole, Sender, dummyChatTopics } from '@/interfaces/chat';
+import {
+  IChatTopic,
+  IMessage,
+  MessageRole,
+  DisplayedSender,
+  dummyChatTopics,
+} from '@/interfaces/chat';
 import { getTimestamp } from '@/lib/utils/common';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
@@ -9,7 +15,7 @@ import ChatMessage from '@/components/chat_message/chat_message';
 
 const ChatThreadSection = () => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  const { selectedChat: chat, addMessage, addChat } = useChatCtx();
+  const { selectedChat: chat, userAddMessage, addChat } = useChatCtx();
 
   // TODO: dummy data (20240627 - Shirley)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -23,9 +29,8 @@ const ChatThreadSection = () => {
       messages: [],
       description: '',
     });
-    addMessage({
+    userAddMessage({
       id: uuidv4(),
-      role: MessageRole.VISITOR,
       content: `${title}`,
       createdAt: getTimestamp(),
     });
@@ -80,10 +85,10 @@ const ChatThreadSection = () => {
             <ChatMessage
               sender={
                 message.role === MessageRole.VISITOR
-                  ? Sender.VISITOR
+                  ? DisplayedSender.VISITOR
                   : message.role === MessageRole.BOT
-                    ? Sender.FAITH
-                    : Sender.USER
+                    ? DisplayedSender.BOT
+                    : DisplayedSender.USER
               }
               key={message.id}
               role={message.role}

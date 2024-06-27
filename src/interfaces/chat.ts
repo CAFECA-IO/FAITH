@@ -13,16 +13,22 @@ export interface IChatBrief {
   createdAt: number;
 }
 
-export enum Sender {
+export enum DisplayedSender {
   VISITOR = 'You',
   USER = '',
-  FAITH = 'Faith',
+  BOT = 'Faith',
 }
 
 export enum MessageRole {
   USER = 'user',
   BOT = 'bot',
   VISITOR = 'visitor',
+}
+
+export interface IMessageWithoutSender {
+  id: string;
+  content: string;
+  createdAt: number;
 }
 
 export interface IMessage {
@@ -58,7 +64,7 @@ export const dummyMessage: IMessage = {
 export const dummyMessages: IMessage[] = [
   {
     id: 'masvdsf',
-    role: MessageRole.VISITOR,
+    role: MessageRole.USER,
     content: '你能解釋一下什麼是遞迴函數嗎？',
     createdAt: Date.now(),
   },
@@ -70,7 +76,7 @@ export const dummyMessages: IMessage[] = [
   },
   {
     id: uuidv4(),
-    role: MessageRole.VISITOR,
+    role: MessageRole.USER,
     content: '可以舉個例子嗎？',
     createdAt: Date.now(),
   },
@@ -89,7 +95,7 @@ export const dummyMessages: IMessage[] = [
   },
   {
     id: uuidv4(),
-    role: MessageRole.VISITOR,
+    role: MessageRole.USER,
     content: '這個函數是如何工作的？',
     createdAt: Date.now(),
   },
@@ -102,7 +108,7 @@ export const dummyMessages: IMessage[] = [
   },
   {
     id: uuidv4(),
-    role: MessageRole.VISITOR,
+    role: MessageRole.USER,
     content: '遞迴函數有什麼優缺點？',
     createdAt: Date.now(),
   },
@@ -115,7 +121,7 @@ export const dummyMessages: IMessage[] = [
   },
   {
     id: uuidv4(),
-    role: MessageRole.VISITOR,
+    role: MessageRole.USER,
     content: '還有其他常見的遞迴函數例子嗎？',
     createdAt: Date.now(),
   },
@@ -128,7 +134,7 @@ export const dummyMessages: IMessage[] = [
   },
   {
     id: uuidv4(),
-    role: MessageRole.VISITOR,
+    role: MessageRole.USER,
     content: '能詳細解釋一下斐波那契數列的遞迴實現嗎？',
     createdAt: Date.now(),
   },
@@ -141,7 +147,7 @@ export const dummyMessages: IMessage[] = [
   },
   {
     id: uuidv4(),
-    role: MessageRole.VISITOR,
+    role: MessageRole.USER,
     content: '遞迴和迭代有什麼區別？',
     createdAt: Date.now(),
   },
@@ -154,7 +160,7 @@ export const dummyMessages: IMessage[] = [
   },
   {
     id: uuidv4(),
-    role: MessageRole.VISITOR,
+    role: MessageRole.USER,
     content: '如何避免遞迴導致的堆棧溢出？',
     createdAt: Date.now(),
   },

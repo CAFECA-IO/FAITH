@@ -1,6 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useUserCtx } from '@/contexts/user_context';
-import { IChat, IChatBrief, IFolder, IMessage, MessageRole } from '@/interfaces/chat';
+import {
+  IChat,
+  IChatBrief,
+  IFolder,
+  IMessage,
+  IMessageWithoutSender,
+  MessageRole,
+} from '@/interfaces/chat';
 import { getTimestamp, timestampToString, wait } from '@/lib/utils/common';
 import { DELAYED_RESPONSE_MILLISECONDS } from '@/lib/utils/display';
 import { createContext, useContext, useEffect, useMemo } from 'react';
@@ -12,6 +19,7 @@ interface ChatContextType {
   selectedChat: IChat | null;
   setSelectedChat: (chat: IChat | null) => void;
   addMessage: (message: IMessage) => void;
+  userAddMessage: (message: IMessageWithoutSender) => void;
   updateMessage: (messageIndex: number, updatedMessage: IMessage) => void;
   deleteMessage: (messageIndex: number) => void;
 
@@ -39,6 +47,7 @@ const ChatContext = createContext<ChatContextType>({
   selectedChat: null,
   setSelectedChat: () => {},
   addMessage: () => {},
+  userAddMessage: () => {},
   updateMessage: () => {},
   deleteMessage: () => {},
 
@@ -87,6 +96,11 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         );
       }
     }
+  };
+
+  const userAddMessage = (message: IMessageWithoutSender) => {
+    const role = userCtx.user ? MessageRole.USER : MessageRole.VISITOR;
+    addMessage({ ...message, role });
   };
 
   const updateMessage = (messageIndex: number, updatedMessage: IMessage) => {
@@ -251,6 +265,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       selectedChat: selectedChatRef.current,
       setSelectedChat,
       addMessage,
+      userAddMessage,
       updateMessage,
       deleteMessage,
 
