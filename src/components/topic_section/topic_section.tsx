@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ITopic } from '@/interfaces/topic';
+import { ITopicBrief } from '@/interfaces/topic';
 import { TopicCategory } from '@/constants/topic';
 import TopicItem from '@/components/topic_item/topic_item';
 
 interface ITopicBrowsePageBody {
   category: TopicCategory;
-  topics: ITopic[];
+  topics: ITopicBrief[];
 }
 
 const TopicSection = ({ category, topics }: ITopicBrowsePageBody) => {

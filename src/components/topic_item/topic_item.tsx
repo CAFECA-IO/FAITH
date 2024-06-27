@@ -1,15 +1,14 @@
 import Image from 'next/image';
-import { ITopic } from '@/interfaces/topic';
+import { ITopicBrief } from '@/interfaces/topic';
 import { useGlobalCtx } from '@/contexts/global_context';
 
 interface ITopicItem {
-  topic: ITopic;
+  topic: ITopicBrief;
 }
 
 const TopicItem = ({ topic }: ITopicItem) => {
   const { topicModalVisibilityHandler, topicModalDataHandler } = useGlobalCtx();
   const clickHandler = () => {
-    topicModalDataHandler(topic);
     topicModalVisibilityHandler();
   };
 

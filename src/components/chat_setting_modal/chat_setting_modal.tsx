@@ -325,7 +325,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
 
   const isDisplayModal = isModalVisible ? (
     <div className="fixed inset-0 z-70 flex items-center justify-center bg-black/50">
-      <div className="relative flex h-auto w-90vw flex-col rounded-sm bg-white py-20px font-barlow">
+      <div className="relative flex h-auto w-90vw flex-col rounded-sm bg-surface-neutral-surface-lv1 py-20px font-barlow">
         {/* Info: (20240625 - Julian) Header */}
         <div className="flex items-center justify-between pl-40px pr-20px text-32px font-bold text-text-neutral-primary">
           <h1>Setting</h1>

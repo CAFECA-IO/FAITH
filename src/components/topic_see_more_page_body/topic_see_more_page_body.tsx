@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { TopicCategory } from '@/constants/topic';
 import TopicItem from '../topic_item/topic_item';
-import { dummyTopicData } from '@/interfaces/topic';
+import { dummyTopicList } from '@/interfaces/topic';
 
 const TopicSeeMorePageBody = () => {
   const topicCategories = Object.values(TopicCategory);
@@ -40,7 +40,7 @@ const TopicSeeMorePageBody = () => {
   });
 
   // ToDo: (20240627 - Julian) replace dummy data with real data
-  const currentTopics = dummyTopicData.filter((topic) => topic.category.includes(currentCategory));
+  const currentTopics = dummyTopicList.filter((topic) => topic.category.includes(currentCategory));
 
   const displayTopics =
     currentTopics.length > 0 ? (

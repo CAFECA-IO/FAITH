@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { dummyTopicData } from '@/interfaces/topic';
+import { dummyTopicList } from '@/interfaces/topic';
 import { TopicCategory } from '@/constants/topic';
 import TopicSection from '@/components/topic_section/topic_section';
 
@@ -27,7 +27,7 @@ const TopicBrowsePageBody = () => {
 
   const displayTopics = topicCategories.map((category) => {
     // ToDo: (20240627 - Julian) replace dummy data with real data
-    const topics = dummyTopicData.filter((topic) => topic.category.includes(category));
+    const topics = dummyTopicList.filter((topic) => topic.category.includes(category));
     return <TopicSection key={`${category}_section`} category={category} topics={topics} />;
   });
 

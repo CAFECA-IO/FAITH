@@ -1,12 +1,25 @@
 import { TopicCategory } from '@/constants/topic';
 
-export interface ITopic {
+export interface ITopicBrief {
   id: string;
   title: string;
   imageId: string;
   creator: string;
   category: TopicCategory[];
   summary: string;
+}
+
+export interface ITopic extends ITopicBrief {
+  mainQuestion: string;
+  bestAnswers: {
+    answer: string;
+    countOfLikes: number;
+    countOfDislikes: number;
+  };
+  comments: {
+    user: string;
+    comment: string;
+  }[];
 }
 
 export const defaultTopicData: ITopic = {
@@ -16,9 +29,16 @@ export const defaultTopicData: ITopic = {
   creator: '',
   category: [],
   summary: '',
+  mainQuestion: '',
+  bestAnswers: {
+    answer: '',
+    countOfLikes: 0,
+    countOfDislikes: 0,
+  },
+  comments: [],
 };
 
-export const dummyTopicData: ITopic[] = [
+export const dummyTopicList: ITopicBrief[] = [
   {
     id: '1',
     title: 'WorldMap',
