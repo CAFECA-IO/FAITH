@@ -5,10 +5,11 @@ import { getTimestamp } from '@/lib/utils/common';
 import React, { useEffect, useRef, useState } from 'react';
 import ChatThreadSection from '@/components/chat_thread_section/chat_thread_section';
 import { useGlobalCtx } from '@/contexts/global_context';
+import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item';
 
 const ChatPageBody = () => {
   const { signedIn } = useUserCtx();
-  const { userAddMessage, selectedChat } = useChatCtx();
+  const { userAddMessage, selectedChat, files, cancelUpload, clearFiles } = useChatCtx();
   const { fileUploadModalVisibilityHandler } = useGlobalCtx();
 
   const [prompt, setPrompt] = useState('');
@@ -16,6 +17,10 @@ const ChatPageBody = () => {
   const [isComposing, setIsComposing] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const cancelFileClickHandler = (fileId: string) => {
+    cancelUpload(fileId);
+  };
 
   const uploadIconClickHandler = () => {
     fileUploadModalVisibilityHandler();
@@ -33,6 +38,8 @@ const ChatPageBody = () => {
       content: prompt,
       createdAt: getTimestamp(),
     });
+    // TODO: 需送出檔案在用戶對話紀錄上 (20240628 - Shirley)
+    clearFiles();
   };
 
   const submitButtonClickHandler = () => {
@@ -98,6 +105,17 @@ const ChatPageBody = () => {
 
   const displayedPromptInput = (
     <div className="relative flex-1">
+      {files && (
+        <div className="my-2 flex gap-3 overflow-x-auto">
+          {files.map((file) => (
+            <UploadedFileItem
+              callback={() => cancelFileClickHandler(file.id)}
+              key={file.id}
+              file={file}
+            />
+          ))}
+        </div>
+      )}
       <textarea
         ref={textareaRef}
         value={prompt}

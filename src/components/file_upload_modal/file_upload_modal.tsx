@@ -1,150 +1,32 @@
 import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/button/button';
+import { FileStatus, FileStatusIcons, IFile } from '@/interfaces/file';
+import { useChatCtx } from '@/contexts/chat_context';
 
 interface IFileUploadModalProps {
   isModalVisible: boolean;
   modalVisibilityHandler: () => void;
 }
 
-type FileStatusUnion = 'uploading' | 'success' | 'error';
-
-const FileStatus: { [key in FileStatusUnion]: FileStatusUnion } = {
-  uploading: 'uploading',
-  success: 'success',
-  error: 'error',
-};
-
-export const FileStatusIcons = {
-  // uploading: '/icons/uploading.svg',
-  retry: '/icons/retry.svg',
-  success: '/icons/success_hollow.svg',
-  error: '/icons/attention.svg',
-};
-
-// export const FileStatusInfo: {
-//   [key in FileStatusUnion]: { status: FileStatusUnion; icon: string };
-// } = {
-//   uploading: {
-//     status: 'uploading',
-//     icon: FileStatusIcons.uploading,
-//   },
-//   success: {
-//     status: FileStatus.success,
-//     icon: FileStatusIcons.success,
-//   },
-//   error: {
-//     status: FileStatus.error,
-//     icon: FileStatusIcons.error,
-//   },
-// };
-
-// type FileTypeUnionKey = 'pdf' | 'text' | 'png' | 'jpg' | 'svg' | 'json';
-
-// type FileFormatUnion =
-//   | 'application/pdf'
-//   | 'text/plain'
-//   | 'image/png'
-//   | 'image/jpeg'
-//   | 'image/svg+xml'
-//   | 'application/json';
-
-// const FileFormats: { [key in FileTypeUnionKey]: FileFormatUnion } = {
-//   pdf: 'application/pdf',
-//   text: 'text/plain',
-//   png: 'image/png',
-//   jpg: 'image/jpeg',
-//   svg: 'image/svg+xml',
-//   json: 'application/json',
-// };
-
-export const FileTypeIcons = {
-  pdf: '/icons/pdf.svg',
-  text: '/icons/txt.svg',
-  png: '/icons/jpg.svg',
-  jpg: '/icons/jpg.svg',
-  svg: '/icons/jpg.svg',
-  json: '/icons/txt.svg',
-};
-
-export const ALLOWED_FILE_TYPES = [
-  'application/pdf',
-  'text/plain',
-  'image/png',
-  'image/jpeg',
-  'image/svg+xml',
-  'application/json',
-];
-
-// export const FileTypeInfo: { [key in FileTypeUnionKey]: { icon: string; mimeType: string } } = {
-//   pdf: {
-//     icon: FileTypeIcons.pdf,
-//     mimeType: FileFormats.pdf,
-//   },
-//   text: {
-//     icon: FileTypeIcons.text,
-//     mimeType: FileFormats.text,
-//   },
-//   png: {
-//     icon: FileTypeIcons.png,
-//     mimeType: FileFormats.png,
-//   },
-//   jpg: {
-//     icon: FileTypeIcons.jpg,
-//     mimeType: FileFormats.jpg,
-//   },
-//   svg: {
-//     icon: FileTypeIcons.svg,
-//     mimeType: FileFormats.svg,
-//   },
-//   json: {
-//     icon: FileTypeIcons.json,
-//     mimeType: FileFormats.json,
-//   },
-// };
-
-interface IFile {
-  data: File;
-  status: FileStatusUnion;
-}
-
-const isValidFileType = (file: File) => {
-  const isInAllowedTypes = ALLOWED_FILE_TYPES.includes(file.type);
-  return isInAllowedTypes;
-};
-
 const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUploadModalProps) => {
-  const [files, setFiles] = useState<IFile[]>([]);
+  const { createIFile, clearFiles } = useChatCtx();
+  const [displayedFiles, setDisplayedFiles] = useState<IFile[]>([]);
+  // const [isFirstTime, setIsFirstTime] = useState<boolean>(true);
 
-  useEffect(() => {
-    if (!isModalVisible) {
-      setFiles([]);
-    }
-  }, [isModalVisible]);
+  // Info: 第二次打開就清空已選擇上傳的檔案 (20240628 - Shirley)
+  // useEffect(() => {
+  //   if (!isFirstTime && isModalVisible) {
+  //     clearFiles();
+  //   }
 
-  const cancelHandler = () => {
-    setFiles([]);
-  };
+  //   if (isFirstTime) {
+  //     setIsFirstTime(false);
+  //   }
+  // }, [isModalVisible]);
 
-  const handleFiles = (newFiles: File[]) => {
-    const validFiles = newFiles.filter(isValidFileType);
-    const oversizedFiles = validFiles.filter((file) => file.size > 5 * 1024 * 1024); // 5MB in bytes
-
-    if (oversizedFiles.length > 0) {
-      // Deprecated: 20240715 - Shirley
-      // eslint-disable-next-line no-console
-      console.log('上傳失敗：檔案大小不能超過 5MB。');
-      return;
-    }
-
-    if (files.length + validFiles.length > 5) {
-      // Deprecated: 20240715 - Shirley
-      // eslint-disable-next-line no-console
-      console.log('上傳失敗：最多只能上傳5個檔案。');
-    } else {
-      const newIFiles = validFiles.map((file) => ({ data: file, status: FileStatus.success }));
-      setFiles((prevFiles) => [...prevFiles, ...newIFiles]);
-    }
+  const clearHandler = () => {
+    clearFiles();
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -157,19 +39,42 @@ const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUpload
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    const newFiles = Array.from(event.dataTransfer.files);
-    handleFiles(newFiles);
+    Array.from(event.dataTransfer.files).map((file) => createIFile(file, FileStatus.success));
+    // const newFiles: IFile[] = Array.from(event.dataTransfer.files).map((file) =>
+    //   createIFile(file, FileStatus.success)
+    // );
+    // handleFiles(newFiles);
   };
 
   const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const newFiles = event.target.files ? Array.from(event.target.files) : [];
-    handleFiles(newFiles);
+    // TODO: detect the upload status of file (20240628 - Shirley)
+    if (event.target.files) {
+      Array.from(event.target.files).forEach((file) => createIFile(file, FileStatus.success));
+    }
+    // const newFiles = event.target.files
+    //   ? Array.from(event.target.files).map((file) => createIFile(file, FileStatus.success))
+    //   : [];
+    // handleFiles(newFiles);
+
+    modalVisibilityHandler();
   };
 
   const saveFile = () => {
-    // ToDo: (20240618 - Julian) 保存文件到服務器
+    // ToDo: (20240628 - Shirley) 保存文件到服務器
+    modalVisibilityHandler();
+    setDisplayedFiles([]);
   };
+
+  // useEffect(() => {
+  //   if (isModalVisible && !isEverVisible) {
+  //     setIsEverVisible(true);
+  //   }
+
+  //   if (!isModalVisible && !isEverVisible) {
+  //     clearFiles();
+  //   }
+  // }, [isModalVisible]);
 
   const uploadArea = (
     <div
@@ -206,12 +111,11 @@ const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUpload
   );
 
   const overview =
-    files.length > 0 ? (
+    displayedFiles.length > 0 ? (
       <div className="flex w-full flex-col items-center gap-20px">
         <div className="max-h-330px w-full overflow-y-auto">
-          {files.map((file, index) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <div key={index} className="flex items-center justify-between border-b p-2">
+          {displayedFiles.map((file) => (
+            <div key={file.id} className="flex items-center justify-between border-b p-2">
               <p className="truncate text-sm">{file.data.name}</p>
               <p className="text-xs text-lightGray4">
                 {file.data.size < 1024 * 1024
@@ -253,11 +157,16 @@ const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUpload
           ))}
         </div>
         <div className="ml-auto flex items-center gap-12px px-20px py-16px text-button-text-secondary">
-          <Button type="button" variant="secondaryBorderless" onClick={cancelHandler}>
-            取消
+          <Button
+            type="button"
+            variant="secondaryBorderless"
+            onClick={clearHandler}
+            // onClick={() => cancelHandler(files[index].id)}
+          >
+            Cancel
           </Button>
           <Button type="button" className="w-full" variant="tertiary" onClick={saveFile}>
-            <p>保存</p>
+            <p>Save</p>
             <svg
               width="20"
               height="20"

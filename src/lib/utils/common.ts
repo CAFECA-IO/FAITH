@@ -1,4 +1,5 @@
 import { ALLOWED_ORIGINS } from '@/constants/config';
+import { ALLOWED_FILE_TYPES } from '@/interfaces/file';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -126,3 +127,8 @@ export const wait = (ms: number): Promise<void> => {
 export function getDomains() {
   return ALLOWED_ORIGINS;
 }
+
+export const isValidFileType = (file: File) => {
+  const isInAllowedTypes = ALLOWED_FILE_TYPES.includes(file.type);
+  return isInAllowedTypes;
+};
