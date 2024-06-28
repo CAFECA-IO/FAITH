@@ -30,8 +30,8 @@ const UploadedFileItem = ({ file, callback }: IUploadedFileItemProps) => {
         <div className="flex h-full items-center justify-between gap-2 whitespace-nowrap rounded-sm bg-surface-neutral-main-background p-2 text-sm font-normal leading-tight text-slate-700 shadow-dropmenu">
           <div className="flex items-center gap-2 overflow-hidden">
             <Image
-              width={20}
-              height={20}
+              width={40}
+              height={48}
               src={getFileTypeIcon(data.name)}
               className=""
               alt="File type icon"

@@ -14,7 +14,7 @@ const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUpload
   const [displayedFiles, setDisplayedFiles] = useState<IFile[]>([]);
   // const [isFirstTime, setIsFirstTime] = useState<boolean>(true);
 
-  // Info: 第二次打開就清空已選擇上傳的檔案 (20240628 - Shirley)
+  // Info: 第二次打開就清空已選擇上傳的檔案的功能 (20240628 - Shirley)
   // useEffect(() => {
   //   if (!isFirstTime && isModalVisible) {
   //     clearFiles();
@@ -40,10 +40,6 @@ const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUpload
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     Array.from(event.dataTransfer.files).map((file) => createIFile(file, FileStatus.success));
-    // const newFiles: IFile[] = Array.from(event.dataTransfer.files).map((file) =>
-    //   createIFile(file, FileStatus.success)
-    // );
-    // handleFiles(newFiles);
   };
 
   const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,11 +48,6 @@ const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUpload
     if (event.target.files) {
       Array.from(event.target.files).forEach((file) => createIFile(file, FileStatus.success));
     }
-    // const newFiles = event.target.files
-    //   ? Array.from(event.target.files).map((file) => createIFile(file, FileStatus.success))
-    //   : [];
-    // handleFiles(newFiles);
-
     modalVisibilityHandler();
   };
 
@@ -65,16 +56,6 @@ const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUpload
     modalVisibilityHandler();
     setDisplayedFiles([]);
   };
-
-  // useEffect(() => {
-  //   if (isModalVisible && !isEverVisible) {
-  //     setIsEverVisible(true);
-  //   }
-
-  //   if (!isModalVisible && !isEverVisible) {
-  //     clearFiles();
-  //   }
-  // }, [isModalVisible]);
 
   const uploadArea = (
     <div
@@ -157,12 +138,7 @@ const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUpload
           ))}
         </div>
         <div className="ml-auto flex items-center gap-12px px-20px py-16px text-button-text-secondary">
-          <Button
-            type="button"
-            variant="secondaryBorderless"
-            onClick={clearHandler}
-            // onClick={() => cancelHandler(files[index].id)}
-          >
+          <Button type="button" variant="secondaryBorderless" onClick={clearHandler}>
             Cancel
           </Button>
           <Button type="button" className="w-full" variant="tertiary" onClick={saveFile}>
@@ -218,12 +194,12 @@ const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUpload
             ></path>
           </svg>
         </button>
-        {/* Info: (20240617 - Julian) Header */}
+        {/* Info: (20240628 - Shirley) Header */}
         <div className="flex flex-col items-center gap-2 p-16px">
           <h1 className="text-xl font-bold text-card-text-primary">Upload File</h1>
           <p className="text-xs text-card-text-secondary">Please upload your file</p>
         </div>
-        {/* Info: (20240617 - Julian) Body */}
+        {/* Info: (20240628 - Shirley) Body */}
         <div className="flex items-center justify-center">{overview}</div>
       </div>
     </div>

@@ -16,4 +16,4 @@ export const ALLOWED_ORIGINS = [
 export const FIDO2_USER_HANDLE = 'iSunFA-User';
 
 export const LIMIT_FOR_FILES = 5;
-export const LIMIT_FOR_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
+export const LIMIT_FOR_FILE_SIZE = 50 * 1024 * 1024; // 50MB in bytes

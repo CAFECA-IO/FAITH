@@ -124,7 +124,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     if (oversizedFiles.length > 0) {
       // Deprecated: 20240715 - Shirley
       // eslint-disable-next-line no-console
-      console.log('上傳失敗：檔案大小不能超過 5MB。');
+      console.log('上傳失敗：檔案大小不能超過 50MB。');
 
       return;
     }
@@ -387,8 +387,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       setSelectedChat(dummyChats[0]);
       setChatBriefs(dummyChatBriefs);
       setFolders(dummyFolders);
-
-      // addEmptyChat();
     } else {
       clearData();
     }
