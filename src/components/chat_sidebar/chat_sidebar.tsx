@@ -7,12 +7,15 @@ import { cn } from '@/lib/utils/common';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 import { IChatBrief, IFolder } from '@/interfaces/chat';
 import { useUserCtx } from '@/contexts/user_context';
+import { useRouter } from 'next/router';
+import { NATIVE_ROUTE } from '@/constants/url';
 
 interface ChatSidebarProps {
   getIsExpanded?: (props: boolean) => void;
 }
 
 const ChatBriefItem = ({ chatBrief }: { chatBrief: IChatBrief }) => {
+  const router = useRouter();
   const { selectChat, selectedChat, deleteChat } = useChatCtx();
 
   const {
@@ -20,6 +23,14 @@ const ChatBriefItem = ({ chatBrief }: { chatBrief: IChatBrief }) => {
     componentVisible: isEditMenuVisible,
     setComponentVisible: setEditMenuVisible,
   } = useOuterClick<HTMLDivElement>(false);
+
+  const chatBriefClickHandler = () => {
+    selectChat(chatBrief.id);
+    // TODO: 現在用 SPA 來寫，之後應該改成用 next/link 的 href 去跳轉、拿 URL 的資料來顯示對應畫面 (20240628 - Shirley)
+    if (router.pathname !== NATIVE_ROUTE.HOME) {
+      router.push(NATIVE_ROUTE.HOME);
+    }
+  };
 
   const editIconClickHandler = () => {
     setEditMenuVisible(!isEditMenuVisible);
@@ -77,7 +88,7 @@ const ChatBriefItem = ({ chatBrief }: { chatBrief: IChatBrief }) => {
     <>
       <div
         key={chatBrief.id}
-        onClick={() => selectChat(chatBrief.id)}
+        onClick={chatBriefClickHandler}
         className={cn(
           'flex items-center justify-between',
           chatBrief.id === selectedChat?.id ? 'bg-surface-brand-primary-10' : ''
@@ -180,7 +191,7 @@ const ChatFolderItem = ({ chatFolder }: { chatFolder: IFolder }) => {
     </div>
   );
   const displayedFolder = (
-    <div key={chatFolder.id} className="w-full py-2">
+    <div key={chatFolder.id} className="w-full pb-2 pt-0">
       <div
         onClick={() => setIsFolderExpanded(!isFolderExpanded)}
         className={`flex w-full items-center justify-between gap-5 px-2 text-base font-medium leading-6 tracking-normal text-slate-700 hover:cursor-pointer`}

@@ -11,12 +11,14 @@ import {
   dummyChats,
   dummyFolders,
 } from '@/interfaces/chat';
-import { getTimestamp, timestampToString, wait } from '@/lib/utils/common';
+import { getTimestamp, isValidFileType, timestampToString, wait } from '@/lib/utils/common';
 import { DELAYED_RESPONSE_MILLISECONDS } from '@/constants/display';
-import { createContext, useContext, useEffect, useMemo } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 import useStateRef from 'react-usestateref';
 import { useRouter } from 'next/router';
 import { NATIVE_ROUTE } from '@/constants/url';
+import { FileStatus, FileStatusUnion, IFile } from '@/interfaces/file';
+import { LIMIT_FOR_FILES, LIMIT_FOR_FILE_SIZE } from '@/constants/config';
 
 interface ChatContextType {
   selectedChat: IChat | null;
@@ -46,6 +48,13 @@ interface ChatContextType {
   addFolder: (folder: IFolder) => void;
   renameFolder: (id: string, newName: string) => void;
   deleteFolder: (id: string) => void;
+
+  files: IFile[] | null;
+  handleFiles: (files: File[]) => void;
+  cancelUpload: (id: string) => void;
+  createIFile: (file: File, status: FileStatusUnion) => IFile;
+  clearFiles: () => void;
+  saveFiles: () => void;
 }
 
 const ChatContext = createContext<ChatContextType>({
@@ -76,21 +85,73 @@ const ChatContext = createContext<ChatContextType>({
   addFolder: () => {},
   renameFolder: () => {},
   deleteFolder: () => {},
+
+  files: null as IFile[] | null,
+  handleFiles: () => {},
+  cancelUpload: () => {},
+  createIFile: () => ({ id: '', data: new File([], ''), status: FileStatus.success }) as IFile,
+  clearFiles: () => {},
+  saveFiles: () => {},
 });
 
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const { signedIn } = useUserCtx();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [chatBriefs, setChatBriefs, chatBriefsRef] = useStateRef<IChatBrief[] | null>(
-    dummyChatBriefs
-  );
+  const [chatBriefs, setChatBriefs, chatBriefsRef] = useStateRef<IChatBrief[] | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [chats, setChats, chatsRef] = useStateRef<IChat[] | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [folders, setFolders, foldersRef] = useStateRef<IFolder[] | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedChat, setSelectedChat, selectedChatRef] = useStateRef<IChat | null>(null);
+  const [files, setFiles] = useStateRef<IFile[]>([]);
+
+  const createIFile = (file: File, status: FileStatusUnion): IFile => {
+    const newFile = {
+      id: uuidv4(),
+      data: file,
+      status,
+    };
+    setFiles((prevFiles) => [...prevFiles, newFile]);
+    return newFile;
+  };
+
+  const handleFiles = (newFiles: File[]) => {
+    const validFiles = newFiles.filter(isValidFileType);
+    const oversizedFiles = validFiles.filter((file) => file.size > LIMIT_FOR_FILE_SIZE);
+
+    if (oversizedFiles.length > 0) {
+      // Deprecated: 20240715 - Shirley
+      // eslint-disable-next-line no-console
+      console.log('上傳失敗：檔案大小不能超過 50MB。');
+
+      return;
+    }
+
+    if (files.length + validFiles.length > LIMIT_FOR_FILES) {
+      // Deprecated: 20240715 - Shirley
+      // eslint-disable-next-line no-console
+      console.log('上傳失敗：最多只能上傳5個檔案。');
+    } else {
+      const newIFiles = validFiles.map((file) => createIFile(file, FileStatus.success));
+      setFiles((prevFiles) => [...prevFiles, ...newIFiles]);
+    }
+  };
+
+  const cancelUpload = (id: string) => {
+    setFiles(files.filter((file) => file.id !== id));
+  };
+
+  const clearFiles = () => {
+    setFiles([]);
+  };
+
+  const saveFiles = () => {
+    // ToDo: (20240628 - Shirley) 保存文件到服務器
+    // eslint-disable-next-line no-console
+    console.log('Saving files:', files);
+  };
 
   const addMessage = (message: IMessage) => {
     if (selectedChatRef.current) {
@@ -326,8 +387,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       setSelectedChat(dummyChats[0]);
       setChatBriefs(dummyChatBriefs);
       setFolders(dummyFolders);
-
-      // addEmptyChat();
     } else {
       clearData();
     }
@@ -363,38 +422,43 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     addBotMessage();
   }, [selectedChatRef.current?.messages]);
 
-  const value = useMemo(
-    () => ({
-      selectedChat: selectedChatRef.current,
-      setSelectedChat,
-      selectChat,
+  /* eslint-disable react/jsx-no-constructed-context-values */
+  const value = {
+    selectedChat: selectedChatRef.current,
+    setSelectedChat,
+    selectChat,
 
-      addMessage,
-      userAddMessage,
-      updateMessage,
-      deleteMessage,
+    addMessage,
+    userAddMessage,
+    updateMessage,
+    deleteMessage,
 
-      chatBriefs: chatBriefsRef.current,
-      handleChatBriefs,
-      addChatBrief,
-      renameChatBrief,
-      deleteChatBrief,
+    chatBriefs: chatBriefsRef.current,
+    handleChatBriefs,
+    addChatBrief,
+    renameChatBrief,
+    deleteChatBrief,
 
-      chats: chatsRef.current,
-      handleChats,
-      addChat,
-      addEmptyChat,
-      renameChat,
-      deleteChat,
+    chats: chatsRef.current,
+    handleChats,
+    addChat,
+    addEmptyChat,
+    renameChat,
+    deleteChat,
 
-      folders: foldersRef.current,
-      handleFolders,
-      addFolder,
-      renameFolder,
-      deleteFolder,
-    }),
-    [chatBriefsRef.current, chatsRef.current, foldersRef.current, selectedChatRef.current]
-  );
+    folders: foldersRef.current,
+    handleFolders,
+    addFolder,
+    renameFolder,
+    deleteFolder,
+
+    files,
+    handleFiles,
+    cancelUpload,
+    saveFiles,
+    createIFile,
+    clearFiles,
+  };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 };
