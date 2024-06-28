@@ -1,10 +1,13 @@
 import React, { useState, useContext, createContext } from 'react';
 import { IMessageModal, dummyMessageModalData } from '@/interfaces/message_modal';
 import { ITopic, defaultTopicData } from '@/interfaces/topic';
+import { IReportCommentModal, defaultReportCommentModalData } from '@/interfaces/report_modal';
 /* eslint-disable-next-line import/no-cycle */
 import ChatSettingModal from '@/components/chat_setting_modal/chat_setting_modal';
 import MessageModal from '@/components/message_modal/message_modal';
+/* eslint-disable-next-line import/no-cycle */
 import TopicModal from '@/components/topic_modal/topic_modal';
+import ReportCommentModal from '@/components/report_comment_modal/report_comment_modal';
 import RegisterFormModal from '@/components/register_form_modal/register_form_modal';
 import FileUploadModal from '@/components/file_upload_modal/file_upload_modal';
 
@@ -21,6 +24,11 @@ interface IGlobalContext {
   topicModalVisibilityHandler: () => void;
   topicModalData: ITopic;
   topicModalDataHandler: (data: ITopic) => void;
+
+  isReportCommentModalVisible: boolean;
+  reportCommentModalVisibilityHandler: () => void;
+  reportCommentModalData: IReportCommentModal;
+  reportCommentModalDataHandler: (data: IReportCommentModal) => void;
 
   isRegisterModalVisible: boolean;
   registerModalVisibilityHandler: () => void;
@@ -45,6 +53,11 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
   const [topicModalData, setTopicModalData] = useState<ITopic>(defaultTopicData);
   const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
 
+  const [isReportCommentModalVisible, setIsReportCommentModalVisible] = useState(false);
+  const [reportCommentModalData, setReportCommentModalData] = useState<IReportCommentModal>(
+    defaultReportCommentModalData
+  );
+
   const [isFileUploadModalVisible, setIsFileUploadModalVisible] = useState(false);
 
   const messageModalVisibilityHandler = () => {
@@ -67,6 +80,13 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     setTopicModalData(data);
   };
 
+  const reportCommentModalVisibilityHandler = () => {
+    setIsReportCommentModalVisible(!isReportCommentModalVisible);
+  };
+
+  const reportCommentModalDataHandler = (data: IReportCommentModal) => {
+    setReportCommentModalData(data);
+  };
   const registerModalVisibilityHandler = () => {
     setIsRegisterModalVisible(!isRegisterModalVisible);
   };
@@ -87,6 +107,10 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     topicModalVisibilityHandler,
     topicModalData,
     topicModalDataHandler,
+    isReportCommentModalVisible,
+    reportCommentModalVisibilityHandler,
+    reportCommentModalData,
+    reportCommentModalDataHandler,
     isRegisterModalVisible,
     registerModalVisibilityHandler,
     isFileUploadModalVisible,
@@ -110,6 +134,11 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
         isModalVisible={isTopicModalVisible}
         modalVisibilityHandler={topicModalVisibilityHandler}
         topicData={topicModalData}
+      />
+      <ReportCommentModal
+        isModalVisible={isReportCommentModalVisible}
+        modalVisibilityHandler={reportCommentModalVisibilityHandler}
+        reportCommentData={reportCommentModalData}
       />
 
       <RegisterFormModal

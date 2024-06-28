@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 import { timestampToString } from '@/lib/utils/common';
 import Toggle from '@/components/toggle/toggle';
@@ -46,6 +47,12 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
     componentVisible: isThemeVisible,
     setComponentVisible: setThemeVisible,
   } = useOuterClick<HTMLDivElement>(false);
+
+  useEffect(() => {
+    if (isModalVisible) {
+      setCurrentTab(ChatSettingTab.NORMAL_SETTING);
+    }
+  }, [isModalVisible]);
 
   const normalSettingClickHandler = () => setCurrentTab(ChatSettingTab.NORMAL_SETTING);
   const subscriptionClickHandler = () => setCurrentTab(ChatSettingTab.SUBSCRIPTION);
@@ -284,39 +291,40 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
           </ul>
         </div>
         {/* Info: (20240625 - Julian) Get Beta Button */}
-        {/* ToDo: (20240625 - Julian) Link to the beta plan page */}
-        <Button type="button" variant="tertiaryOutline" className="ml-auto w-fit text-lg">
-          <p>Get Beta</p>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g clipPath="url(#clip0_224_7869)">
-              <path
-                className="fill-current"
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M11.7699 4.4556C12.2093 4.01626 12.9216 4.01626 13.3609 4.4556L20.1109 11.2056C20.5503 11.6449 20.5503 12.3573 20.1109 12.7966L13.3609 19.5466C12.9216 19.9859 12.2093 19.9859 11.7699 19.5466C11.3306 19.1073 11.3306 18.3949 11.7699 17.9556L17.7244 12.0011L11.7699 6.04659C11.3306 5.60725 11.3306 4.89494 11.7699 4.4556Z"
-                fill="#001840"
-              />
-              <path
-                className="fill-current"
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M3.56543 12.0011C3.56543 11.3798 4.06911 10.8761 4.69043 10.8761H18.3779C18.9992 10.8761 19.5029 11.3798 19.5029 12.0011C19.5029 12.6224 18.9992 13.1261 18.3779 13.1261H4.69043C4.06911 13.1261 3.56543 12.6224 3.56543 12.0011Z"
-                fill="#001840"
-              />
-            </g>
-            <defs>
-              <clipPath id="clip0_224_7869">
-                <rect width="24" height="24" fill="white" />
-              </clipPath>
-            </defs>
-          </svg>
-        </Button>
+        <Link
+          // ToDo: (20240625 - Julian) replace with actual link
+          href={`/subscription/beta`}
+          className="ml-auto w-fit text-lg"
+          onClick={modalVisibilityHandler}
+        >
+          <Button type="button" variant="tertiaryOutline">
+            <p>Get Beta</p>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g>
+                <path
+                  className="fill-current"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M11.7699 4.4556C12.2093 4.01626 12.9216 4.01626 13.3609 4.4556L20.1109 11.2056C20.5503 11.6449 20.5503 12.3573 20.1109 12.7966L13.3609 19.5466C12.9216 19.9859 12.2093 19.9859 11.7699 19.5466C11.3306 19.1073 11.3306 18.3949 11.7699 17.9556L17.7244 12.0011L11.7699 6.04659C11.3306 5.60725 11.3306 4.89494 11.7699 4.4556Z"
+                  fill="#001840"
+                />
+                <path
+                  className="fill-current"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M3.56543 12.0011C3.56543 11.3798 4.06911 10.8761 4.69043 10.8761H18.3779C18.9992 10.8761 19.5029 11.3798 19.5029 12.0011C19.5029 12.6224 18.9992 13.1261 18.3779 13.1261H4.69043C4.06911 13.1261 3.56543 12.6224 3.56543 12.0011Z"
+                  fill="#001840"
+                />
+              </g>
+            </svg>
+          </Button>
+        </Link>
       </div>
     </div>
   );

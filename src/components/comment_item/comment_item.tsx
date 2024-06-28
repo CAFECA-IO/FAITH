@@ -1,4 +1,6 @@
 import Image from 'next/image';
+// eslint-disable-next-line import/no-cycle
+import { useGlobalCtx } from '@/contexts/global_context';
 
 interface ICommentItemProps {
   commentData: {
@@ -13,6 +15,7 @@ interface ICommentItemProps {
 }
 
 const CommentItem = ({ commentData }: ICommentItemProps) => {
+  const { reportCommentModalVisibilityHandler } = useGlobalCtx();
   const { userName, userAvatar, comment, countOfLikes, countOfDislikes } = commentData;
 
   return (
@@ -85,6 +88,7 @@ const CommentItem = ({ commentData }: ICommentItemProps) => {
         <button
           type="button"
           className="text-icon-surface-single-color-primary hover:text-icon-surface-accent"
+          onClick={reportCommentModalVisibilityHandler}
         >
           <svg
             width="20"
