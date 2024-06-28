@@ -1433,6 +1433,9 @@ module.exports = {
       backdropBlur: {
         '200px': '200px',
       },
+      gridTemplateColumns: {
+        0: 'repeat(1, minmax(0px, 0fr))',
+      },
       keyframes: {
         slideBottomToTop: {
           '0%': { transform: 'translateY(100%)' },

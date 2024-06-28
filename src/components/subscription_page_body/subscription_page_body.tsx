@@ -294,7 +294,10 @@ const SubscriptionPageBody = () => {
 
   const displayedSubscribeButton = (
     <div className="row-span-3 mt-auto flex flex-col gap-y-40px">
-      <label className="flex items-baseline gap-x-8px text-sm text-checkbox-text-primary">
+      <label
+        htmlFor="subscription-agreement-checkbox"
+        className="flex items-baseline gap-x-8px text-sm text-checkbox-text-primary"
+      >
         <div className="">
           <input
             id="subscription-agreement-checkbox"
