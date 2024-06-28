@@ -6,6 +6,7 @@ import ChatSettingModal from '@/components/chat_setting_modal/chat_setting_modal
 import MessageModal from '@/components/message_modal/message_modal';
 import TopicModal from '@/components/topic_modal/topic_modal';
 import RegisterFormModal from '@/components/register_form_modal/register_form_modal';
+import FileUploadModal from '@/components/file_upload_modal/file_upload_modal';
 
 interface IGlobalContext {
   isMessageModalVisible: boolean;
@@ -23,6 +24,9 @@ interface IGlobalContext {
 
   isRegisterModalVisible: boolean;
   registerModalVisibilityHandler: () => void;
+
+  isFileUploadModalVisible: boolean;
+  fileUploadModalVisibilityHandler: () => void;
 }
 
 export interface IGlobalProvider {
@@ -40,6 +44,8 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
   const [isTopicModalVisible, setIsTopicModalVisible] = useState(false);
   const [topicModalData, setTopicModalData] = useState<ITopic>(defaultTopicData);
   const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
+
+  const [isFileUploadModalVisible, setIsFileUploadModalVisible] = useState(false);
 
   const messageModalVisibilityHandler = () => {
     setIsMessageModalVisible(!isMessageModalVisible);
@@ -65,6 +71,10 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     setIsRegisterModalVisible(!isRegisterModalVisible);
   };
 
+  const fileUploadModalVisibilityHandler = () => {
+    setIsFileUploadModalVisible(!isFileUploadModalVisible);
+  };
+
   /* eslint-disable react/jsx-no-constructed-context-values */
   const value = {
     isMessageModalVisible,
@@ -79,6 +89,8 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     topicModalDataHandler,
     isRegisterModalVisible,
     registerModalVisibilityHandler,
+    isFileUploadModalVisible,
+    fileUploadModalVisibilityHandler,
   };
 
   return (
@@ -103,6 +115,11 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
       <RegisterFormModal
         isModalVisible={isRegisterModalVisible}
         modalVisibilityHandler={registerModalVisibilityHandler}
+      />
+
+      <FileUploadModal
+        isModalVisible={isFileUploadModalVisible}
+        modalVisibilityHandler={fileUploadModalVisibilityHandler}
       />
 
       {children}
