@@ -1,8 +1,10 @@
 import React, { useState, useContext, createContext } from 'react';
 import { IMessageModal, dummyMessageModalData } from '@/interfaces/message_modal';
+import { ITopic, defaultTopicData } from '@/interfaces/topic';
 /* eslint-disable-next-line import/no-cycle */
 import ChatSettingModal from '@/components/chat_setting_modal/chat_setting_modal';
 import MessageModal from '@/components/message_modal/message_modal';
+import TopicModal from '@/components/topic_modal/topic_modal';
 import RegisterFormModal from '@/components/register_form_modal/register_form_modal';
 
 interface IGlobalContext {
@@ -13,6 +15,11 @@ interface IGlobalContext {
 
   isChatSettingModalVisible: boolean;
   chatSettingModalVisibilityHandler: () => void;
+
+  isTopicModalVisible: boolean;
+  topicModalVisibilityHandler: () => void;
+  topicModalData: ITopic;
+  topicModalDataHandler: (data: ITopic) => void;
 
   isRegisterModalVisible: boolean;
   registerModalVisibilityHandler: () => void;
@@ -30,6 +37,8 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
 
   const [isChatSettingModalVisible, setIsChatSettingModalVisible] = useState(false);
 
+  const [isTopicModalVisible, setIsTopicModalVisible] = useState(false);
+  const [topicModalData, setTopicModalData] = useState<ITopic>(defaultTopicData);
   const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
 
   const messageModalVisibilityHandler = () => {
@@ -44,6 +53,14 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     setIsChatSettingModalVisible(!isChatSettingModalVisible);
   };
 
+  const topicModalVisibilityHandler = () => {
+    setIsTopicModalVisible(!isTopicModalVisible);
+  };
+
+  const topicModalDataHandler = (data: ITopic) => {
+    setTopicModalData(data);
+  };
+
   const registerModalVisibilityHandler = () => {
     setIsRegisterModalVisible(!isRegisterModalVisible);
   };
@@ -56,6 +73,10 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     messageModalDataHandler,
     isChatSettingModalVisible,
     chatSettingModalVisibilityHandler,
+    isTopicModalVisible,
+    topicModalVisibilityHandler,
+    topicModalData,
+    topicModalDataHandler,
     isRegisterModalVisible,
     registerModalVisibilityHandler,
   };
@@ -71,6 +92,12 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
       <ChatSettingModal
         isModalVisible={isChatSettingModalVisible}
         modalVisibilityHandler={chatSettingModalVisibilityHandler}
+      />
+
+      <TopicModal
+        isModalVisible={isTopicModalVisible}
+        modalVisibilityHandler={topicModalVisibilityHandler}
+        topicData={topicModalData}
       />
 
       <RegisterFormModal
