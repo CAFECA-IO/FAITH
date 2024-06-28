@@ -8,6 +8,7 @@ import { Button } from '@/components/button/button';
 import { cn } from '@/lib/utils/common';
 import { useChatCtx } from '@/contexts/chat_context';
 import { useUserCtx } from '@/contexts/user_context';
+import { useGlobalCtx } from '@/contexts/global_context';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 
 const NavBar = () => {
@@ -15,6 +16,7 @@ const NavBar = () => {
 
   const { signedIn, signOut } = useUserCtx();
   const { addEmptyChat } = useChatCtx();
+  const { chatSettingModalVisibilityHandler } = useGlobalCtx();
 
   // TODO: in dev (20240625 - Shirley)
   const {
@@ -40,7 +42,7 @@ const NavBar = () => {
           size={'small'}
           variant={'secondaryBorderless'}
           className="flex w-full justify-start"
-          onClick={logOutClickHandler}
+          onClick={chatSettingModalVisibilityHandler}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -54,16 +56,10 @@ const NavBar = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="1.5"
-              clipPath="url(#clip0_413_9743)"
             >
               <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"></path>
               <path d="M15.606 12.273a1.25 1.25 0 00.25 1.379l.046.045a1.517 1.517 0 11-2.144 2.144l-.046-.045a1.25 1.25 0 00-1.379-.25 1.25 1.25 0 00-.757 1.143v.13a1.515 1.515 0 01-3.03 0v-.069a1.25 1.25 0 00-.819-1.144 1.25 1.25 0 00-1.379.25l-.045.046a1.514 1.514 0 01-2.473-.492 1.515 1.515 0 01.329-1.652l.046-.046a1.25 1.25 0 00.25-1.379 1.25 1.25 0 00-1.144-.757h-.13a1.515 1.515 0 010-3.03h.069a1.25 1.25 0 001.144-.819 1.25 1.25 0 00-.25-1.379l-.046-.045a1.515 1.515 0 112.144-2.144l.046.046a1.25 1.25 0 001.379.25h.06a1.25 1.25 0 00.758-1.144v-.13a1.515 1.515 0 013.03 0v.069a1.25 1.25 0 00.758 1.144 1.25 1.25 0 001.379-.25l.045-.046a1.516 1.516 0 112.144 2.144l-.046.046a1.25 1.25 0 00-.25 1.379v.06a1.25 1.25 0 001.144.758h.13a1.515 1.515 0 110 3.03h-.069a1.25 1.25 0 00-1.144.758z"></path>
             </g>
-            <defs>
-              <clipPath id="clip0_413_9743">
-                <path fill="#fff" d="M0 0H20V20H0z"></path>
-              </clipPath>
-            </defs>
           </svg>
           <p className="font-normal">Setting</p>
         </Button>
