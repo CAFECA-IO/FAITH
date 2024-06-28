@@ -5,6 +5,7 @@ import { ITopic, defaultTopicData } from '@/interfaces/topic';
 import ChatSettingModal from '@/components/chat_setting_modal/chat_setting_modal';
 import MessageModal from '@/components/message_modal/message_modal';
 import TopicModal from '@/components/topic_modal/topic_modal';
+import RegisterFormModal from '@/components/register_form_modal/register_form_modal';
 
 interface IGlobalContext {
   isMessageModalVisible: boolean;
@@ -19,6 +20,9 @@ interface IGlobalContext {
   topicModalVisibilityHandler: () => void;
   topicModalData: ITopic;
   topicModalDataHandler: (data: ITopic) => void;
+
+  isRegisterModalVisible: boolean;
+  registerModalVisibilityHandler: () => void;
 }
 
 export interface IGlobalProvider {
@@ -35,6 +39,7 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
 
   const [isTopicModalVisible, setIsTopicModalVisible] = useState(false);
   const [topicModalData, setTopicModalData] = useState<ITopic>(defaultTopicData);
+  const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
 
   const messageModalVisibilityHandler = () => {
     setIsMessageModalVisible(!isMessageModalVisible);
@@ -56,6 +61,10 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     setTopicModalData(data);
   };
 
+  const registerModalVisibilityHandler = () => {
+    setIsRegisterModalVisible(!isRegisterModalVisible);
+  };
+
   /* eslint-disable react/jsx-no-constructed-context-values */
   const value = {
     isMessageModalVisible,
@@ -68,6 +77,8 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     topicModalVisibilityHandler,
     topicModalData,
     topicModalDataHandler,
+    isRegisterModalVisible,
+    registerModalVisibilityHandler,
   };
 
   return (
@@ -88,6 +99,12 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
         modalVisibilityHandler={topicModalVisibilityHandler}
         topicData={topicModalData}
       />
+
+      <RegisterFormModal
+        isModalVisible={isRegisterModalVisible}
+        modalVisibilityHandler={registerModalVisibilityHandler}
+      />
+
       {children}
     </GlobalContext.Provider>
   );

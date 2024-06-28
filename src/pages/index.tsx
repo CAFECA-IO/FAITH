@@ -1,9 +1,15 @@
 import ChatSidebar from '@/components/chat_sidebar/chat_sidebar';
 import NavBar from '@/components/nav_bar/nav_bar';
-import VisitorChatPageBody from '@/components/visitor_chat_page_body/visitor_chat_page_body';
+import ChatPageBody from '@/components/chat_page_body/chat_page_body';
 import Head from 'next/head';
+import { useState } from 'react';
 
 export default function Home() {
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
+  const getIsExpanded = (props: boolean) => {
+    setIsSidebarExpanded(props);
+  };
+
   return (
     <>
       {/* TODO: 更改網站名稱跟 meta (20240625 - Shirley) */}
@@ -30,8 +36,13 @@ export default function Home() {
         <NavBar />
 
         <div className="bg-white">
-          <ChatSidebar />
-          <VisitorChatPageBody />
+          <ChatSidebar getIsExpanded={getIsExpanded} />
+          <div
+            className={`flex h-screen flex-col justify-end transition-all duration-300 ease-in-out ${isSidebarExpanded ? 'ml-240px' : ''}`}
+          >
+            {' '}
+            <ChatPageBody />
+          </div>
         </div>
       </div>
     </>

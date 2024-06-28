@@ -5,135 +5,148 @@ import Image from 'next/image';
 import { NATIVE_ROUTE } from '@/constants/url';
 import version from '@/lib/version';
 import { Button } from '@/components/button/button';
-import { cn, getTimestampInSeconds } from '@/lib/utils/common';
+import { cn } from '@/lib/utils/common';
 import { useChatCtx } from '@/contexts/chat_context';
+import { useUserCtx } from '@/contexts/user_context';
+import useOuterClick from '@/lib/hooks/use_outer_click';
 
 const NavBar = () => {
   const router = useRouter();
-  const { addChat } = useChatCtx();
+
+  const { signedIn, signOut } = useUserCtx();
+  const { addEmptyChat } = useChatCtx();
 
   // TODO: in dev (20240625 - Shirley)
-  // const {
-  //   targetRef: userMenuRef,
-  //   componentVisible: isUserMenuOpen,
-  //   setComponentVisible: setIsUserMenuOpen,
-  // } = useOuterClick<HTMLDivElement>(false);
+  const {
+    targetRef: userMenuRef,
+    componentVisible: isUserMenuOpen,
+    setComponentVisible: setIsUserMenuOpen,
+  } = useOuterClick<HTMLDivElement>(false);
 
-  // const logOutClickHandler = async () => {
-  //   setIsUserMenuOpen(false);
-  // };
+  const avatarClickHandler = () => {
+    setIsUserMenuOpen(!isUserMenuOpen);
+  };
 
-  // const displayedUserMenu = isUserMenuOpen ? (
-  //   <div className="absolute right-10 top-20 z-50">
-  //     <div className="max-w-[248px] flex-col rounded-2xl bg-white p-4 shadow-xl">
-  //       <img
-  //         srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/a7d6ae28b20ae9f8039f351ff2014cd414f4bdb3f62c8e6e14e9d5a5c7a391cf?apiKey=0e17b0b875f041659e186639705112b1&"
-  //         className="mx-auto aspect-square w-16 self-center"
-  //       />
-  //       <div className="mt-3 flex justify-center gap-0 px-16">
-  //         <div className="text-secondaryBlue my-auto text-base font-semibold leading-6 tracking-normal">
-  //           Joyce
-  //         </div>
-  //         <div className="flex flex-col justify-center rounded-md p-2.5">
-  //           <div className="flex items-center justify-center">
-  //             <img
-  //               src="https://cdn.builder.io/api/v1/image/assets/TEMP/81424e1f4bb6c5d2f3b559ea40f9f188932a4c8bd82176e3de86e8257c95ec6e?apiKey=0e17b0b875f041659e186639705112b1&"
-  //               className="aspect-square w-4"
-  //             />
-  //           </div>
-  //         </div>
-  //       </div>
-  //       <div className="mt-3 flex flex-col justify-center">
-  //         <div className="flex flex-col justify-center">
-  //           <div className="h-px shrink-0 border border-solid border-gray-300 bg-gray-300" />
-  //         </div>
-  //       </div>
-  //       <div className="mt-3 flex gap-2 rounded-md px-6 py-2.5">
-  //         <div className="my-auto flex items-center justify-center">
-  //           <img
-  //             src="https://cdn.builder.io/api/v1/image/assets/TEMP/b2440bc7dff988603a015147398e81878220ce5264999f173e13e28a3f19ba26?apiKey=0e17b0b875f041659e186639705112b1&"
-  //             className="aspect-square w-5"
-  //           />
-  //         </div>
-  //         <div className="text-base font-normal leading-6 tracking-normal text-sky-950">
-  //           Subscription & Bills
-  //         </div>
-  //       </div>
-  //       <div className="mt-3 flex gap-2 rounded-md px-6 py-2.5">
-  //         <div className="my-auto flex items-center justify-center">
-  //           <img
-  //             src="https://cdn.builder.io/api/v1/image/assets/TEMP/d483779fe7b5d1853e7ad9a6a31acef6c171fae39e7875d3e3e346af17601c37?apiKey=0e17b0b875f041659e186639705112b1&"
-  //             className="aspect-square w-5"
-  //           />
-  //         </div>
-  //         <div className="text-base font-normal leading-6 tracking-normal text-sky-950">
-  //           Setting
-  //         </div>
-  //       </div>
-  //       <div className="mt-3 flex flex-col justify-center py-2.5">
-  //         <div className="flex flex-col justify-center">
-  //           <div className="h-px shrink-0 border border-solid border-gray-300 bg-gray-300" />
-  //         </div>
-  //       </div>
-  //       <button
-  //         type="button"
-  //         onClick={logOutClickHandler}
-  //         className="mt-3 flex w-full gap-2 rounded-md px-6 py-2.5 hover:opacity-70"
-  //       >
-  //         <div className="my-auto flex items-center justify-center">
-  //           <img
-  //             src="https://cdn.builder.io/api/v1/image/assets/TEMP/ca0dfc144be43547f4337c7f445306d81e5d800962d761f417c4dcad926c5c8a?apiKey=0e17b0b875f041659e186639705112b1&"
-  //             className="aspect-square w-5"
-  //           />
-  //         </div>
-  //         <div className="text-secondaryBlue2 text-base font-normal leading-6 tracking-normal">
-  //           Logout
-  //         </div>
-  //       </button>
-  //     </div>
-  //   </div>
-  // ) : null;
+  const logOutClickHandler = async () => {
+    setIsUserMenuOpen(false);
+    signOut();
+    addEmptyChat();
+  };
 
-  const isDisplayedDiscoverButton = (
-    /* ToDo: (20240626 - Julian) icons on mobile */
-    /* ToDo: (20240626 - Julian) only show when user is logged in */
-    <Link href={'/discover'} className="my-auto hidden lg:flex">
-      <Button size={'small'} variant={'secondaryBorderless'}>
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+  const displayedUserMenu = isUserMenuOpen ? (
+    <div className="top-4.5rem absolute right-10 z-50">
+      <div className="shadow-userMenu flex flex-col gap-5 rounded-xs bg-white p-4">
+        <Button
+          size={'small'}
+          variant={'secondaryBorderless'}
+          className="flex w-full justify-start"
+          onClick={logOutClickHandler}
         >
-          <g>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <g
+              className="stroke-current"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
+              clipPath="url(#clip0_413_9743)"
+            >
+              <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"></path>
+              <path d="M15.606 12.273a1.25 1.25 0 00.25 1.379l.046.045a1.517 1.517 0 11-2.144 2.144l-.046-.045a1.25 1.25 0 00-1.379-.25 1.25 1.25 0 00-.757 1.143v.13a1.515 1.515 0 01-3.03 0v-.069a1.25 1.25 0 00-.819-1.144 1.25 1.25 0 00-1.379.25l-.045.046a1.514 1.514 0 01-2.473-.492 1.515 1.515 0 01.329-1.652l.046-.046a1.25 1.25 0 00.25-1.379 1.25 1.25 0 00-1.144-.757h-.13a1.515 1.515 0 010-3.03h.069a1.25 1.25 0 001.144-.819 1.25 1.25 0 00-.25-1.379l-.046-.045a1.515 1.515 0 112.144-2.144l.046.046a1.25 1.25 0 001.379.25h.06a1.25 1.25 0 00.758-1.144v-.13a1.515 1.515 0 013.03 0v.069a1.25 1.25 0 00.758 1.144 1.25 1.25 0 001.379-.25l.045-.046a1.516 1.516 0 112.144 2.144l-.046.046a1.25 1.25 0 00-.25 1.379v.06a1.25 1.25 0 001.144.758h.13a1.515 1.515 0 110 3.03h-.069a1.25 1.25 0 00-1.144.758z"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_413_9743">
+                <path fill="#fff" d="M0 0H20V20H0z"></path>
+              </clipPath>
+            </defs>
+          </svg>
+          <p className="font-normal">Setting</p>
+        </Button>
+
+        <Button
+          size={'small'}
+          variant={'secondaryBorderless'}
+          className="flex w-full justify-start"
+          onClick={logOutClickHandler}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
             <path
               className="fill-current"
               fillRule="evenodd"
+              d="M7.955 3.31c-.198-.052-.463-.059-1.286-.059h-.417c-.592 0-1 0-1.316.022-.31.021-.48.06-.603.111a1.75 1.75 0 00-.947.947c-.051.123-.09.293-.112.603-.021.317-.022.724-.022 1.317v7.5c0 .593 0 1 .022 1.317.022.31.06.48.112.603.177.429.518.77.947.947.123.05.292.09.603.111.317.022.724.022 1.316.022h.417c.823 0 1.088-.006 1.286-.06a1.75 1.75 0 001.238-1.237c.053-.199.06-.463.06-1.286a.75.75 0 011.5 0v.108c0 .67 0 1.15-.111 1.566a3.25 3.25 0 01-2.298 2.298c-.416.112-.897.111-1.567.111h-.551c-.56 0-1.018 0-1.393-.025-.386-.027-.738-.083-1.074-.222a3.25 3.25 0 01-1.76-1.76c-.138-.335-.195-.687-.221-1.074-.026-.374-.026-.832-.026-1.393V6.225c0-.56 0-1.019.026-1.393.026-.387.083-.738.222-1.075a3.25 3.25 0 011.759-1.759c.336-.139.688-.195 1.075-.221.374-.026.832-.026 1.392-.026h.551c.67 0 1.151 0 1.567.11a3.25 3.25 0 012.298 2.299c.111.415.11.897.11 1.566v.108a.75.75 0 11-1.5 0c0-.823-.006-1.087-.06-1.286a1.75 1.75 0 00-1.237-1.237zm4.85 1.994a.75.75 0 011.061 0l4.167 4.167a.75.75 0 010 1.06l-4.167 4.167a.75.75 0 01-1.06-1.06l2.886-2.887h-8.19a.75.75 0 010-1.5h8.19l-2.887-2.886a.75.75 0 010-1.06z"
               clipRule="evenodd"
-              d="M12.0029 1.25098C12.4171 1.25098 12.7529 1.58676 12.7529 2.00098V3.00098C12.7529 3.41519 12.4171 3.75098 12.0029 3.75098C11.5887 3.75098 11.2529 3.41519 11.2529 3.00098V2.00098C11.2529 1.58676 11.5887 1.25098 12.0029 1.25098ZM4.3725 4.37055C4.6654 4.07766 5.14027 4.07766 5.43316 4.37055L6.03326 4.97065C6.32615 5.26354 6.32615 5.73841 6.03326 6.03131C5.74037 6.3242 5.26549 6.3242 4.9726 6.03131L4.3725 5.43121C4.07961 5.13832 4.07961 4.66344 4.3725 4.37055ZM19.6336 4.37062C19.9264 4.66355 19.9264 5.13842 19.6334 5.43128L19.0332 6.03137C18.7403 6.32423 18.2654 6.32417 17.9725 6.03124C17.6797 5.73831 17.6797 5.26344 17.9727 4.97058L18.5729 4.37048C18.8658 4.07763 19.3407 4.07769 19.6336 4.37062ZM5.25293 12.001C5.25293 8.27305 8.27501 5.25098 12.0029 5.25098C15.7309 5.25098 18.7529 8.27305 18.7529 12.001C18.7529 14.1188 17.7769 16.0087 16.2529 17.2453V18.801V18.8314C16.2529 19.3656 16.2529 19.8114 16.2232 20.1756C16.1922 20.5555 16.125 20.9122 15.9532 21.2495C15.6895 21.7669 15.2688 22.1876 14.7514 22.4512C14.4141 22.6231 14.0575 22.6902 13.6776 22.7212C13.3134 22.751 12.8675 22.751 12.3334 22.751H12.3029H11.7029H11.6725C11.1383 22.751 10.6925 22.751 10.3283 22.7212C9.94837 22.6902 9.59172 22.6231 9.25446 22.4512C8.73701 22.1876 8.31631 21.7669 8.05266 21.2495C7.88082 20.9122 7.81371 20.5555 7.78267 20.1756C7.75291 19.8114 7.75292 19.3656 7.75293 18.8314V18.801V17.2453C6.22892 16.0087 5.25293 14.1188 5.25293 12.001ZM12.0029 6.75098C9.10343 6.75098 6.75293 9.10148 6.75293 12.001C6.75293 13.757 7.61432 15.3118 8.94091 16.2661C9.13681 16.407 9.25293 16.6336 9.25293 16.8749V18.801C9.25293 19.3734 9.25351 19.7576 9.27769 20.0535C9.30115 20.3406 9.34303 20.4779 9.38917 20.5685C9.50901 20.8037 9.70024 20.9949 9.93544 21.1147C10.026 21.1609 10.1633 21.2028 10.4504 21.2262C10.7463 21.2504 11.1305 21.251 11.7029 21.251H12.3029C12.8754 21.251 13.2596 21.2504 13.5555 21.2262C13.8426 21.2028 13.9799 21.1609 14.0704 21.1147C14.3056 20.9949 14.4968 20.8037 14.6167 20.5685C14.6628 20.4779 14.7047 20.3406 14.7282 20.0535C14.7523 19.7576 14.7529 19.3734 14.7529 18.801V16.8749C14.7529 16.6336 14.8691 16.407 15.065 16.2661C16.3915 15.3118 17.2529 13.757 17.2529 12.001C17.2529 9.10148 14.9024 6.75098 12.0029 6.75098ZM1.25293 12.001C1.25293 11.5868 1.58872 11.251 2.00293 11.251H3.00293C3.41714 11.251 3.75293 11.5868 3.75293 12.001C3.75293 12.4152 3.41714 12.751 3.00293 12.751H2.00293C1.58872 12.751 1.25293 12.4152 1.25293 12.001ZM20.2529 12.001C20.2529 11.5868 20.5887 11.251 21.0029 11.251H22.0029C22.4171 11.251 22.7529 11.5868 22.7529 12.001C22.7529 12.4152 22.4171 12.751 22.0029 12.751H21.0029C20.5887 12.751 20.2529 12.4152 20.2529 12.001ZM9.25293 13.501C9.25293 13.0868 9.58872 12.751 10.0029 12.751H12.0029H14.0029C14.4171 12.751 14.7529 13.0868 14.7529 13.501C14.7529 13.9152 14.4171 14.251 14.0029 14.251H12.7529V18.501C12.7529 18.9152 12.4171 19.251 12.0029 19.251C11.5887 19.251 11.2529 18.9152 11.2529 18.501V14.251H10.0029C9.58872 14.251 9.25293 13.9152 9.25293 13.501Z"
-              fill="#001840"
-            />
-          </g>
-        </svg>
-      </Button>
-    </Link>
-  );
+            ></path>
+          </svg>
+          <p className="font-normal">Logout</p>
+        </Button>
+      </div>
+    </div>
+  ) : null;
+
+  const isDisplayedDiscoverButton =
+    /* ToDo: (20240626 - Julian) icons on mobile */
+    /* ToDo: (20240626 - Julian) only show when user is logged in */
+    signedIn ? (
+      <Link href={'/discover'} className="my-auto hidden lg:flex">
+        <Button size={'small'} variant={'secondaryBorderless'}>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g>
+              <path
+                className="fill-current"
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M12.0029 1.25098C12.4171 1.25098 12.7529 1.58676 12.7529 2.00098V3.00098C12.7529 3.41519 12.4171 3.75098 12.0029 3.75098C11.5887 3.75098 11.2529 3.41519 11.2529 3.00098V2.00098C11.2529 1.58676 11.5887 1.25098 12.0029 1.25098ZM4.3725 4.37055C4.6654 4.07766 5.14027 4.07766 5.43316 4.37055L6.03326 4.97065C6.32615 5.26354 6.32615 5.73841 6.03326 6.03131C5.74037 6.3242 5.26549 6.3242 4.9726 6.03131L4.3725 5.43121C4.07961 5.13832 4.07961 4.66344 4.3725 4.37055ZM19.6336 4.37062C19.9264 4.66355 19.9264 5.13842 19.6334 5.43128L19.0332 6.03137C18.7403 6.32423 18.2654 6.32417 17.9725 6.03124C17.6797 5.73831 17.6797 5.26344 17.9727 4.97058L18.5729 4.37048C18.8658 4.07763 19.3407 4.07769 19.6336 4.37062ZM5.25293 12.001C5.25293 8.27305 8.27501 5.25098 12.0029 5.25098C15.7309 5.25098 18.7529 8.27305 18.7529 12.001C18.7529 14.1188 17.7769 16.0087 16.2529 17.2453V18.801V18.8314C16.2529 19.3656 16.2529 19.8114 16.2232 20.1756C16.1922 20.5555 16.125 20.9122 15.9532 21.2495C15.6895 21.7669 15.2688 22.1876 14.7514 22.4512C14.4141 22.6231 14.0575 22.6902 13.6776 22.7212C13.3134 22.751 12.8675 22.751 12.3334 22.751H12.3029H11.7029H11.6725C11.1383 22.751 10.6925 22.751 10.3283 22.7212C9.94837 22.6902 9.59172 22.6231 9.25446 22.4512C8.73701 22.1876 8.31631 21.7669 8.05266 21.2495C7.88082 20.9122 7.81371 20.5555 7.78267 20.1756C7.75291 19.8114 7.75292 19.3656 7.75293 18.8314V18.801V17.2453C6.22892 16.0087 5.25293 14.1188 5.25293 12.001ZM12.0029 6.75098C9.10343 6.75098 6.75293 9.10148 6.75293 12.001C6.75293 13.757 7.61432 15.3118 8.94091 16.2661C9.13681 16.407 9.25293 16.6336 9.25293 16.8749V18.801C9.25293 19.3734 9.25351 19.7576 9.27769 20.0535C9.30115 20.3406 9.34303 20.4779 9.38917 20.5685C9.50901 20.8037 9.70024 20.9949 9.93544 21.1147C10.026 21.1609 10.1633 21.2028 10.4504 21.2262C10.7463 21.2504 11.1305 21.251 11.7029 21.251H12.3029C12.8754 21.251 13.2596 21.2504 13.5555 21.2262C13.8426 21.2028 13.9799 21.1609 14.0704 21.1147C14.3056 20.9949 14.4968 20.8037 14.6167 20.5685C14.6628 20.4779 14.7047 20.3406 14.7282 20.0535C14.7523 19.7576 14.7529 19.3734 14.7529 18.801V16.8749C14.7529 16.6336 14.8691 16.407 15.065 16.2661C16.3915 15.3118 17.2529 13.757 17.2529 12.001C17.2529 9.10148 14.9024 6.75098 12.0029 6.75098ZM1.25293 12.001C1.25293 11.5868 1.58872 11.251 2.00293 11.251H3.00293C3.41714 11.251 3.75293 11.5868 3.75293 12.001C3.75293 12.4152 3.41714 12.751 3.00293 12.751H2.00293C1.58872 12.751 1.25293 12.4152 1.25293 12.001ZM20.2529 12.001C20.2529 11.5868 20.5887 11.251 21.0029 11.251H22.0029C22.4171 11.251 22.7529 11.5868 22.7529 12.001C22.7529 12.4152 22.4171 12.751 22.0029 12.751H21.0029C20.5887 12.751 20.2529 12.4152 20.2529 12.001ZM9.25293 13.501C9.25293 13.0868 9.58872 12.751 10.0029 12.751H12.0029H14.0029C14.4171 12.751 14.7529 13.0868 14.7529 13.501C14.7529 13.9152 14.4171 14.251 14.0029 14.251H12.7529V18.501C12.7529 18.9152 12.4171 19.251 12.0029 19.251C11.5887 19.251 11.2529 18.9152 11.2529 18.501V14.251H10.0029C9.58872 14.251 9.25293 13.9152 9.25293 13.501Z"
+                fill="#001840"
+              />
+            </g>
+          </svg>
+        </Button>
+      </Link>
+    ) : null;
+
   const buttonClickHandler = () => {
     router.push(NATIVE_ROUTE.LOGIN);
   };
 
   const newChatClickHandler = () => {
-    addChat({
-      id: `${getTimestampInSeconds()}`,
-      name: 'New Chat for anonymous user',
-      createdAt: getTimestampInSeconds(),
-      messages: [],
-      description: '',
-    });
+    // Info: redirect to / if now is not on / (20240627 - Shirley)
+    if (router.pathname !== NATIVE_ROUTE.HOME) {
+      router.push(NATIVE_ROUTE.HOME);
+    } else {
+      addEmptyChat();
+    }
   };
 
-  const displayedLogInBtn = (
+  const displayedLogInBtn = signedIn ? (
+    <div ref={userMenuRef}>
+      <button
+        type="button"
+        onClick={avatarClickHandler}
+        className="flex h-full w-full justify-center"
+      >
+        {/* Info: avatar svg (20240408 - Shirley) */}
+        <Image src={`/elements/default_user.svg`} alt="avatar" width={40} height={40} />
+      </button>
+      {displayedUserMenu}
+    </div>
+  ) : (
     <div className="flex space-x-5">
       <Button onClick={buttonClickHandler} variant={'tertiary'} size={'medium'}>
         <p>Register</p>
