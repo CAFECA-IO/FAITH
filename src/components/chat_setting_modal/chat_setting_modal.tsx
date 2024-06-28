@@ -294,7 +294,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <g clipPath="url(#clip0_224_7869)">
+            <g>
               <path
                 className="fill-current"
                 fillRule="evenodd"
@@ -310,11 +310,6 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
                 fill="#001840"
               />
             </g>
-            <defs>
-              <clipPath id="clip0_224_7869">
-                <rect width="24" height="24" fill="white" />
-              </clipPath>
-            </defs>
           </svg>
         </Button>
       </div>
