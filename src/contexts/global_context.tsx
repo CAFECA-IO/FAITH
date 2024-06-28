@@ -3,6 +3,7 @@ import { IMessageModal, dummyMessageModalData } from '@/interfaces/message_modal
 /* eslint-disable-next-line import/no-cycle */
 import ChatSettingModal from '@/components/chat_setting_modal/chat_setting_modal';
 import MessageModal from '@/components/message_modal/message_modal';
+import RegisterFormModal from '@/components/register_form_modal/register_form_modal';
 
 interface IGlobalContext {
   isMessageModalVisible: boolean;
@@ -12,6 +13,9 @@ interface IGlobalContext {
 
   isChatSettingModalVisible: boolean;
   chatSettingModalVisibilityHandler: () => void;
+
+  isRegisterModalVisible: boolean;
+  registerModalVisibilityHandler: () => void;
 }
 
 export interface IGlobalProvider {
@@ -26,6 +30,8 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
 
   const [isChatSettingModalVisible, setIsChatSettingModalVisible] = useState(false);
 
+  const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
+
   const messageModalVisibilityHandler = () => {
     setIsMessageModalVisible(!isMessageModalVisible);
   };
@@ -38,6 +44,10 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     setIsChatSettingModalVisible(!isChatSettingModalVisible);
   };
 
+  const registerModalVisibilityHandler = () => {
+    setIsRegisterModalVisible(!isRegisterModalVisible);
+  };
+
   /* eslint-disable react/jsx-no-constructed-context-values */
   const value = {
     isMessageModalVisible,
@@ -46,6 +56,8 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     messageModalDataHandler,
     isChatSettingModalVisible,
     chatSettingModalVisibilityHandler,
+    isRegisterModalVisible,
+    registerModalVisibilityHandler,
   };
 
   return (
@@ -60,6 +72,12 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
         isModalVisible={isChatSettingModalVisible}
         modalVisibilityHandler={chatSettingModalVisibilityHandler}
       />
+
+      <RegisterFormModal
+        isModalVisible={isRegisterModalVisible}
+        modalVisibilityHandler={registerModalVisibilityHandler}
+      />
+
       {children}
     </GlobalContext.Provider>
   );
