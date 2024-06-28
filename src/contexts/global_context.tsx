@@ -5,8 +5,10 @@ import { IReportCommentModal, defaultReportCommentModalData } from '@/interfaces
 /* eslint-disable-next-line import/no-cycle */
 import ChatSettingModal from '@/components/chat_setting_modal/chat_setting_modal';
 import MessageModal from '@/components/message_modal/message_modal';
+/* eslint-disable-next-line import/no-cycle */
 import TopicModal from '@/components/topic_modal/topic_modal';
 import ReportCommentModal from '@/components/report_comment_modal/report_comment_modal';
+import RegisterFormModal from '@/components/register_form_modal/register_form_modal';
 
 interface IGlobalContext {
   isMessageModalVisible: boolean;
@@ -26,6 +28,9 @@ interface IGlobalContext {
   reportCommentModalVisibilityHandler: () => void;
   reportCommentModalData: IReportCommentModal;
   reportCommentModalDataHandler: (data: IReportCommentModal) => void;
+
+  isRegisterModalVisible: boolean;
+  registerModalVisibilityHandler: () => void;
 }
 
 export interface IGlobalProvider {
@@ -38,10 +43,11 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
   const [isMessageModalVisible, setIsMessageModalVisible] = useState(false);
   const [messageModalData, setMessageModalData] = useState<IMessageModal>(dummyMessageModalData);
 
-  const [isChatSettingModalVisible, setIsChatSettingModalVisible] = useState(true);
+  const [isChatSettingModalVisible, setIsChatSettingModalVisible] = useState(false);
 
   const [isTopicModalVisible, setIsTopicModalVisible] = useState(false);
   const [topicModalData, setTopicModalData] = useState<ITopic>(defaultTopicData);
+  const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
 
   const [isReportCommentModalVisible, setIsReportCommentModalVisible] = useState(false);
   const [reportCommentModalData, setReportCommentModalData] = useState<IReportCommentModal>(
@@ -75,6 +81,9 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
   const reportCommentModalDataHandler = (data: IReportCommentModal) => {
     setReportCommentModalData(data);
   };
+  const registerModalVisibilityHandler = () => {
+    setIsRegisterModalVisible(!isRegisterModalVisible);
+  };
 
   /* eslint-disable react/jsx-no-constructed-context-values */
   const value = {
@@ -92,6 +101,8 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     reportCommentModalVisibilityHandler,
     reportCommentModalData,
     reportCommentModalDataHandler,
+    isRegisterModalVisible,
+    registerModalVisibilityHandler,
   };
 
   return (
@@ -117,6 +128,12 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
         modalVisibilityHandler={reportCommentModalVisibilityHandler}
         reportCommentData={reportCommentModalData}
       />
+
+      <RegisterFormModal
+        isModalVisible={isRegisterModalVisible}
+        modalVisibilityHandler={registerModalVisibilityHandler}
+      />
+
       {children}
     </GlobalContext.Provider>
   );

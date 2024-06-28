@@ -11,12 +11,25 @@ export interface IChatBrief {
   name: string;
   description: string;
   createdAt: number;
+  folders: string[];
+}
+
+export enum DisplayedSender {
+  VISITOR = 'You',
+  USER = '',
+  BOT = 'Faith',
 }
 
 export enum MessageRole {
   USER = 'user',
   BOT = 'bot',
-  ANONYMOUS_USER = 'anonymous user',
+  VISITOR = 'visitor',
+}
+
+export interface IMessageWithoutSender {
+  id: string;
+  content: string;
+  createdAt: number;
 }
 
 export interface IMessage {
@@ -30,12 +43,27 @@ export interface IChat extends IChatBrief {
   messages: IMessage[];
 }
 
+export enum ChatTopicType {
+  AI = 'ai',
+  TRENDING = 'trending',
+  OTHERS = 'others',
+}
+
+export interface IChatTopic {
+  title: string;
+  description: string;
+  type: ChatTopicType;
+}
+
 export const dummyChatBrief: IChatBrief = {
-  id: 'ntffteyy',
+  id: 'Recursion',
   name: '遞迴函數',
   description: '遞迴函數的基本概念',
   createdAt: Date.now(),
+  folders: ['Programming'],
 };
+
+export const dummyChatBriefs: IChatBrief[] = [dummyChatBrief];
 
 export const dummyMessage: IMessage = {
   id: 'masvdsf',
@@ -47,7 +75,7 @@ export const dummyMessage: IMessage = {
 export const dummyMessages: IMessage[] = [
   {
     id: 'masvdsf',
-    role: MessageRole.ANONYMOUS_USER,
+    role: MessageRole.USER,
     content: '你能解釋一下什麼是遞迴函數嗎？',
     createdAt: Date.now(),
   },
@@ -59,7 +87,7 @@ export const dummyMessages: IMessage[] = [
   },
   {
     id: uuidv4(),
-    role: MessageRole.ANONYMOUS_USER,
+    role: MessageRole.USER,
     content: '可以舉個例子嗎？',
     createdAt: Date.now(),
   },
@@ -78,7 +106,7 @@ export const dummyMessages: IMessage[] = [
   },
   {
     id: uuidv4(),
-    role: MessageRole.ANONYMOUS_USER,
+    role: MessageRole.USER,
     content: '這個函數是如何工作的？',
     createdAt: Date.now(),
   },
@@ -91,7 +119,7 @@ export const dummyMessages: IMessage[] = [
   },
   {
     id: uuidv4(),
-    role: MessageRole.ANONYMOUS_USER,
+    role: MessageRole.USER,
     content: '遞迴函數有什麼優缺點？',
     createdAt: Date.now(),
   },
@@ -104,7 +132,7 @@ export const dummyMessages: IMessage[] = [
   },
   {
     id: uuidv4(),
-    role: MessageRole.ANONYMOUS_USER,
+    role: MessageRole.USER,
     content: '還有其他常見的遞迴函數例子嗎？',
     createdAt: Date.now(),
   },
@@ -117,7 +145,7 @@ export const dummyMessages: IMessage[] = [
   },
   {
     id: uuidv4(),
-    role: MessageRole.ANONYMOUS_USER,
+    role: MessageRole.USER,
     content: '能詳細解釋一下斐波那契數列的遞迴實現嗎？',
     createdAt: Date.now(),
   },
@@ -130,7 +158,7 @@ export const dummyMessages: IMessage[] = [
   },
   {
     id: uuidv4(),
-    role: MessageRole.ANONYMOUS_USER,
+    role: MessageRole.USER,
     content: '遞迴和迭代有什麼區別？',
     createdAt: Date.now(),
   },
@@ -143,7 +171,7 @@ export const dummyMessages: IMessage[] = [
   },
   {
     id: uuidv4(),
-    role: MessageRole.ANONYMOUS_USER,
+    role: MessageRole.USER,
     content: '如何避免遞迴導致的堆棧溢出？',
     createdAt: Date.now(),
   },
@@ -157,17 +185,43 @@ export const dummyMessages: IMessage[] = [
 ];
 
 export const dummyChat: IChat = {
-  id: 'ntffteyy',
+  id: 'Recursion',
   name: '遞迴函數',
   description: '遞迴函數的基本概念',
   createdAt: Date.now() - 172800000, // 兩天前
   messages: dummyMessages,
+  folders: ['Programming'],
 };
+
+export const dummyChats: IChat[] = [dummyChat];
 
 export const dummyFolders: IFolder[] = [
   {
-    id: 'kfgdhnsdf',
+    id: 'Programming',
     name: '程式學習',
     chats: [dummyChatBrief],
+  },
+];
+
+export const dummyChatTopics: IChatTopic[] = [
+  {
+    title: 'Tell me a joke',
+    description: 'Faith can share the latest jokes.',
+    type: ChatTopicType.OTHERS,
+  },
+  {
+    title: 'Tell me a story',
+    description: 'Faith can share the latest story.',
+    type: ChatTopicType.OTHERS,
+  },
+  {
+    title: 'Share the latest AI information',
+    description: 'Faith can share the latest AI information.',
+    type: ChatTopicType.AI,
+  },
+  {
+    title: 'Say " Hi "',
+    description: 'Faith can say Hi.',
+    type: ChatTopicType.TRENDING,
   },
 ];

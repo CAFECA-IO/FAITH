@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { ITopic } from '@/interfaces/topic';
 import SortToggle from '@/components/sort_toggle/sort_toggle';
+// eslint-disable-next-line import/no-cycle
 import CommentItem from '@/components/comment_item/comment_item';
 import { SortOptions } from '@/constants/display';
 

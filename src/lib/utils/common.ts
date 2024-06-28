@@ -1,3 +1,4 @@
+import { ALLOWED_ORIGINS } from '@/constants/config';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -112,8 +113,8 @@ export const timestampToString = (timestamp: number | undefined) => {
   };
 };
 
-export const getTimestampInSeconds = () => {
-  return Math.floor(new Date().getTime() / 1000);
+export const getTimestamp = () => {
+  return Math.floor(Date.now() / 1000);
 };
 
 export const wait = (ms: number): Promise<void> => {
@@ -121,3 +122,7 @@ export const wait = (ms: number): Promise<void> => {
     setTimeout(resolve, ms);
   });
 };
+
+export function getDomains() {
+  return ALLOWED_ORIGINS;
+}
