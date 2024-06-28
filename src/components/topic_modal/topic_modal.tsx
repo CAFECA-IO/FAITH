@@ -5,13 +5,13 @@ import SortToggle from '@/components/sort_toggle/sort_toggle';
 import CommentItem from '@/components/comment_item/comment_item';
 import { SortOptions } from '@/constants/display';
 
-interface TopicModalProps {
+interface ITopicModalProps {
   isModalVisible: boolean;
   modalVisibilityHandler: () => void;
   topicData: ITopic;
 }
 
-const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: TopicModalProps) => {
+const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopicModalProps) => {
   const { title, summary, mainQuestion, bestAnswers, comments, isFavorite } = topicData;
 
   const [commentSort, setCommentSort] = useState(SortOptions.NEWEST);
