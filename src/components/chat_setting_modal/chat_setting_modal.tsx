@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import useOuterClick from '@/lib/hooks/use_outer_click';
@@ -47,6 +47,12 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
     componentVisible: isThemeVisible,
     setComponentVisible: setThemeVisible,
   } = useOuterClick<HTMLDivElement>(false);
+
+  useEffect(() => {
+    if (isModalVisible) {
+      setCurrentTab(ChatSettingTab.NORMAL_SETTING);
+    }
+  }, [isModalVisible]);
 
   const normalSettingClickHandler = () => setCurrentTab(ChatSettingTab.NORMAL_SETTING);
   const subscriptionClickHandler = () => setCurrentTab(ChatSettingTab.SUBSCRIPTION);

@@ -46,14 +46,14 @@ const ReportCommentModal = ({
         <div className="flex w-full flex-col gap-y-20px px-40px pt-40px font-medium text-button-text-secondary">
           <div className="flex flex-1 flex-col gap-8px">
             <p className="text-input-text-primary">Reason for report</p>
-            <div className="w-full rounded-sm border border-input-stroke-input bg-input-surface-input-background px-12px py-10px">
+            <div className="flex w-full rounded-sm border border-input-stroke-input bg-input-surface-input-background px-12px py-10px">
               <input
                 id="report-comment-reason"
                 type="text"
                 value={reportReason}
                 onChange={reportReasonChangeHandler}
                 placeholder="Enter your feedback"
-                className="bg-transparent text-text-neutral-primary outline-none placeholder:text-input-text-input-placeholder"
+                className="flex-1 bg-transparent text-text-neutral-primary outline-none placeholder:text-input-text-input-placeholder"
               />
             </div>
           </div>

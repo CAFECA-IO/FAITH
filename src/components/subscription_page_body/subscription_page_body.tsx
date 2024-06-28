@@ -127,7 +127,7 @@ const SubscriptionPageBody = () => {
   const monthDropMenu = (
     <div
       ref={monthRef}
-      className={`absolute left-0 top-14 grid h-200px w-full flex-col overflow-y-auto rounded-sm border border-input-stroke-input ${monthVisible ? 'visible grid-cols-1 opacity-100' : 'grid-cols-0 invisible opacity-0'} bg-input-surface-input-background p-10px shadow-dropmenu transition-all duration-300 ease-in-out`}
+      className={`absolute left-0 top-14 flex w-full flex-col overflow-y-auto rounded-sm border border-input-stroke-input ${monthVisible ? 'h-200px opacity-100' : 'h-0 opacity-0'} bg-input-surface-input-background p-10px shadow-dropmenu transition-all duration-300 ease-in-out`}
     >
       {monthList.map((month) => {
         const clickHandler = () => {
@@ -152,7 +152,7 @@ const SubscriptionPageBody = () => {
   const yearDropMenu = (
     <div
       ref={yearRef}
-      className={`absolute left-0 top-14 grid h-200px w-full flex-col overflow-y-auto rounded-sm border border-input-stroke-input ${yearVisible ? 'visible grid-cols-1 opacity-100' : 'grid-cols-0 invisible opacity-0'} bg-input-surface-input-background p-10px shadow-dropmenu transition-all duration-300 ease-in-out`}
+      className={`absolute left-0 top-14 flex w-full flex-col overflow-y-auto rounded-sm border border-input-stroke-input ${yearVisible ? 'h-200px opacity-100' : 'h-0 opacity-0'} bg-input-surface-input-background p-10px shadow-dropmenu transition-all duration-300 ease-in-out`}
     >
       {yearList.map((year) => {
         const clickHandler = () => {
