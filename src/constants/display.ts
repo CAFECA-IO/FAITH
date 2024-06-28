@@ -8,3 +8,7 @@ export const TopicIcons = {
   [ChatTopicType.TRENDING]: '/elements/trending_topic.svg',
   [ChatTopicType.OTHERS]: '/elements/others_topic.svg',
 };
+export enum SortOptions {
+  NEWEST = 'Newest',
+  OLDEST = 'Oldest',
+}
