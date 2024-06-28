@@ -10,7 +10,6 @@ export const ALLOWED_ORIGINS = [
   'http://localhost:3001',
   'http://localhost:3002',
   'http://localhost:3003',
-  'https://www.faith.isunfa.com',
   'https://faith.isunfa.com',
 ];
 

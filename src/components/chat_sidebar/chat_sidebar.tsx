@@ -1,16 +1,18 @@
+import { v4 as uuidv4 } from 'uuid';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Button } from '@/components/button/button';
 import { useChatCtx } from '@/contexts/chat_context';
 import { cn } from '@/lib/utils/common';
 import useOuterClick from '@/lib/hooks/use_outer_click';
-import { IChatBrief } from '@/interfaces/chat';
+import { IChatBrief, IFolder } from '@/interfaces/chat';
+import { useUserCtx } from '@/contexts/user_context';
 
 interface ChatSidebarProps {
   getIsExpanded?: (props: boolean) => void;
 }
 
-const ChatBriefItem = ({ chatBrief, key }: { chatBrief: IChatBrief; key: string }) => {
+const ChatBriefItem = ({ chatBrief }: { chatBrief: IChatBrief }) => {
   const { selectChat, selectedChat, deleteChat } = useChatCtx();
 
   const {
@@ -42,8 +44,8 @@ const ChatBriefItem = ({ chatBrief, key }: { chatBrief: IChatBrief; key: string 
 
   const displayedEditMenu = isEditMenuVisible && (
     <div className="relative">
-      <div key={key} ref={editMenuRef} className="absolute right-0 top-0 z-50">
-        <div className="shadow-userMenu flex flex-col gap-1 rounded-sm bg-white py-2 text-base font-normal leading-6 tracking-normal">
+      <div key={chatBrief.id} ref={editMenuRef} className="absolute right-0 top-0 z-50">
+        <div className="flex flex-col gap-1 rounded-sm bg-white py-2 text-base font-normal leading-6 tracking-normal shadow-userMenu">
           <Button
             disabled
             variant={'secondaryBorderless'}
@@ -84,13 +86,13 @@ const ChatBriefItem = ({ chatBrief, key }: { chatBrief: IChatBrief; key: string 
         <Button
           variant={'secondaryBorderless'}
           className={cn(
-            'px-2 py-2',
+            'justify-start px-2 py-2 text-start',
             chatBrief.id === selectedChat?.id
-              ? 'w-180px hover:text-button-text-secondary'
+              ? 'w-170px hover:text-button-text-secondary'
               : 'w-full'
           )}
         >
-          <p className="truncate text-sm font-normal">{chatBrief.name}</p>
+          <p className="truncate text-start text-sm font-normal">{chatBrief.name}</p>
         </Button>
         {chatBrief.id === selectedChat?.id && (
           <Button
@@ -123,8 +125,142 @@ const ChatBriefItem = ({ chatBrief, key }: { chatBrief: IChatBrief; key: string 
   return <div>{displayedChatBriefItem}</div>;
 };
 
+const ChatFolderItem = ({ chatFolder }: { chatFolder: IFolder }) => {
+  const [isFolderExpanded, setIsFolderExpanded] = useState(false);
+
+  const {
+    targetRef: editMenuRef,
+    componentVisible: isEditMenuVisible,
+    setComponentVisible: setEditMenuVisible,
+  } = useOuterClick<HTMLDivElement>(false);
+
+  const editIconClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setEditMenuVisible(!isEditMenuVisible);
+  };
+
+  const renameClickHandler = () => {
+    setEditMenuVisible(false);
+  };
+
+  const shareClickHandler = () => {
+    setEditMenuVisible(false);
+  };
+
+  const removeClickHandler = () => {
+    setEditMenuVisible(false);
+  };
+
+  const displayedEditMenu = isEditMenuVisible && (
+    <div className="relative">
+      <div key={chatFolder.id} ref={editMenuRef} className="absolute right-4 top-6 z-50">
+        <div className="flex flex-col gap-1 rounded-sm bg-white py-2 text-base font-normal leading-6 tracking-normal shadow-userMenu">
+          <Button
+            disabled
+            variant={'secondaryBorderless'}
+            className=""
+            onClick={renameClickHandler}
+          >
+            Rename Folder
+          </Button>
+          <Button disabled variant={'secondaryBorderless'} className="" onClick={shareClickHandler}>
+            Share Folder
+          </Button>
+
+          <Button
+            disabled
+            variant={'secondaryBorderless'}
+            className=""
+            onClick={removeClickHandler}
+          >
+            Remove Folder
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+  const displayedFolder = (
+    <div key={chatFolder.id} className="w-full py-2">
+      <div
+        onClick={() => setIsFolderExpanded(!isFolderExpanded)}
+        className={`flex w-full items-center justify-between gap-5 px-2 text-base font-medium leading-6 tracking-normal text-slate-700 hover:cursor-pointer`}
+      >
+        <div className="flex gap-2.5">
+          <div className="my-auto h-2 w-2 shrink-0 rounded-full bg-orange-400" />
+          <div className="w-120px">
+            <p className="truncate">{chatFolder.name}</p>
+          </div>
+        </div>
+
+        <div className="flex flex-1 items-center justify-end gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="none"
+            viewBox="0 0 16 16"
+            className={`transition-transform duration-300 ${isFolderExpanded ? 'rotate-180' : ''}`}
+          >
+            <path
+              fill="#314362"
+              fillRule="evenodd"
+              d="M3.725 5.677a.75.75 0 011.06 0l3.376 3.376 3.376-3.376a.75.75 0 111.06 1.06l-3.905 3.907a.75.75 0 01-1.061 0L3.725 6.738a.75.75 0 010-1.061z"
+              clipRule="evenodd"
+            ></path>
+          </svg>
+
+          {/* Info: folder edit icon (20240628 - Shirley) */}
+          {isFolderExpanded && (
+            <div className="pointer-events-auto">
+              <Button
+                onClick={editIconClickHandler}
+                variant={'secondaryBorderless'}
+                className="px-2 py-1"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  viewBox="0 0 16 16"
+                >
+                  <g clipPath="url(#clip0_487_4271)">
+                    <path
+                      className="fill-current"
+                      fillRule="evenodd"
+                      d="M11.863 1.445a2.131 2.131 0 013.014 3.014L8.65 10.685l-.04.04c-.185.185-.358.359-.568.487a2.053 2.053 0 01-.593.246c-.239.057-.484.057-.745.057H5.557a.75.75 0 01-.75-.75v-1.09-.058c0-.261 0-.506.057-.745.05-.21.133-.41.245-.593.129-.21.302-.383.487-.567a38.7 38.7 0 00.041-.041l6.226-6.226zm1.953 1.06a.631.631 0 00-.893 0L6.698 8.733c-.25.25-.286.292-.31.33a.552.552 0 00-.066.16c-.01.043-.015.098-.015.452v.34h.34c.354 0 .41-.004.453-.015a.552.552 0 00.16-.066c.037-.023.08-.058.33-.309l6.226-6.226a.631.631 0 000-.892zm-9.07-.303H7.51a.75.75 0 010 1.5H4.776c-.56 0-.934 0-1.222.024-.28.023-.41.064-.496.107-.227.116-.41.3-.526.526-.044.086-.084.217-.107.496a16.76 16.76 0 00-.024 1.222v5.469c0 .56 0 .934.024 1.222.023.279.063.41.107.496.115.226.3.41.526.526.085.043.217.084.496.107.288.023.663.024 1.222.024h5.469c.559 0 .933 0 1.221-.024.28-.023.411-.064.497-.107.226-.116.41-.3.526-.526.043-.086.084-.217.106-.496.024-.289.025-.663.025-1.222V8.81a.75.75 0 011.5 0V11.576c0 .521 0 .957-.03 1.314-.03.372-.096.723-.265 1.055-.26.508-.673.922-1.181 1.181-.333.17-.683.235-1.056.266-.356.029-.792.029-1.313.029h-5.53c-.52 0-.957 0-1.313-.03-.372-.03-.723-.095-1.055-.265a2.703 2.703 0 01-1.181-1.181c-.17-.332-.236-.683-.266-1.055-.03-.357-.03-.793-.03-1.314V6.047c0-.521 0-.957.03-1.314.03-.372.096-.723.265-1.055.26-.509.673-.922 1.182-1.181.332-.17.683-.235 1.055-.266.356-.029.792-.029 1.314-.029z"
+                      clipRule="evenodd"
+                    ></path>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_487_4271">
+                      <path fill="#fff" d="M0 0H16V16H0z"></path>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </Button>
+            </div>
+          )}
+
+          {displayedEditMenu}
+        </div>
+      </div>
+
+      {isFolderExpanded &&
+        chatFolder.chats.map((chat) => (
+          <div key={chat.id} className="ml-5 mt-2">
+            <ChatBriefItem chatBrief={chat} key={chat.id} />
+          </div>
+        ))}
+    </div>
+  );
+
+  return <div>{displayedFolder}</div>;
+};
+
 const ChatSidebar = ({ getIsExpanded }: ChatSidebarProps) => {
-  const { chatBriefs } = useChatCtx();
+  const { signedIn } = useUserCtx();
+  const { chatBriefs, folders, addFolder } = useChatCtx();
 
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -135,10 +271,28 @@ const ChatSidebar = ({ getIsExpanded }: ChatSidebarProps) => {
     }
   };
 
-  const displayedChatBrief =
+  const addFolderClickHandler = () => {
+    const uuid = uuidv4();
+    addFolder({
+      id: uuid,
+      name: `New Folder`,
+      chats: [],
+    });
+  };
+
+  const displayedFolders =
+    signedIn && // TODO: for demo，實際上要限制沒登入就不能新增資料夾，理論上這個條件不應該發生 (20240628 - Shirley)
+    folders &&
+    folders.length > 0 &&
+    folders.map((folder) => <ChatFolderItem chatFolder={folder} key={folder.id} />);
+
+  const displayedChatBriefs =
+    signedIn && // TODO: for demo，實際上要限制沒登入就只能替代 chats array 中最後一個 chat (20240628 - Shirley)
     chatBriefs &&
     chatBriefs.length > 0 &&
-    chatBriefs.map((chat) => <ChatBriefItem chatBrief={chat} key={chat.id} />);
+    chatBriefs
+      .filter((chat) => !(chat.folders.length > 0))
+      .map((chat) => <ChatBriefItem chatBrief={chat} key={chat.id} />);
 
   return (
     <div className="font-barlow">
@@ -214,12 +368,14 @@ const ChatSidebar = ({ getIsExpanded }: ChatSidebarProps) => {
             </p>
           </div>
           <div className="hideScrollbar mb-10 mt-5 grow overflow-y-auto overflow-x-hidden">
-            {displayedChatBrief}
+            {displayedFolders}
+            {displayedChatBriefs}
           </div>{' '}
         </div>
 
         <div className="-mt-3">
           <Button
+            onClick={addFolderClickHandler}
             size={'medium'}
             variant={'secondaryOutline'}
             className="text-button-text-secondary"

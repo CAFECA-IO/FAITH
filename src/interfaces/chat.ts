@@ -11,6 +11,7 @@ export interface IChatBrief {
   name: string;
   description: string;
   createdAt: number;
+  folders: string[];
 }
 
 export enum DisplayedSender {
@@ -55,11 +56,14 @@ export interface IChatTopic {
 }
 
 export const dummyChatBrief: IChatBrief = {
-  id: 'ntffteyy',
+  id: 'Recursion',
   name: '遞迴函數',
   description: '遞迴函數的基本概念',
   createdAt: Date.now(),
+  folders: ['Programming'],
 };
+
+export const dummyChatBriefs: IChatBrief[] = [dummyChatBrief];
 
 export const dummyMessage: IMessage = {
   id: 'masvdsf',
@@ -181,16 +185,19 @@ export const dummyMessages: IMessage[] = [
 ];
 
 export const dummyChat: IChat = {
-  id: 'ntffteyy',
+  id: 'Recursion',
   name: '遞迴函數',
   description: '遞迴函數的基本概念',
   createdAt: Date.now() - 172800000, // 兩天前
   messages: dummyMessages,
+  folders: ['Programming'],
 };
+
+export const dummyChats: IChat[] = [dummyChat];
 
 export const dummyFolders: IFolder[] = [
   {
-    id: 'kfgdhnsdf',
+    id: 'Programming',
     name: '程式學習',
     chats: [dummyChatBrief],
   },
