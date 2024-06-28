@@ -2,18 +2,29 @@ import { v4 as uuidv4 } from 'uuid';
 import { useUserCtx } from '@/contexts/user_context';
 import { useChatCtx } from '@/contexts/chat_context';
 import { getTimestamp } from '@/lib/utils/common';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ChatThreadSection from '@/components/chat_thread_section/chat_thread_section';
+import { useGlobalCtx } from '@/contexts/global_context';
+import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item';
 
 const ChatPageBody = () => {
   const { signedIn } = useUserCtx();
-  const { userAddMessage } = useChatCtx();
+  const { userAddMessage, selectedChat, files, cancelUpload, clearFiles } = useChatCtx();
+  const { fileUploadModalVisibilityHandler } = useGlobalCtx();
 
   const [prompt, setPrompt] = useState('');
   const [rows, setRows] = useState(1);
   const [isComposing, setIsComposing] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const cancelFileClickHandler = (fileId: string) => {
+    cancelUpload(fileId);
+  };
+
+  const uploadIconClickHandler = () => {
+    fileUploadModalVisibilityHandler();
+  };
 
   const promptInputChangeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPrompt(e.target.value);
@@ -27,6 +38,8 @@ const ChatPageBody = () => {
       content: prompt,
       createdAt: getTimestamp(),
     });
+    // TODO: 需送出檔案在用戶對話紀錄上 (20240628 - Shirley)
+    clearFiles();
   };
 
   const submitButtonClickHandler = () => {
@@ -84,8 +97,25 @@ const ChatPageBody = () => {
     }
   };
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, [selectedChat?.id]);
+
   const displayedPromptInput = (
     <div className="relative flex-1">
+      {files && (
+        <div className="my-2 flex gap-3 overflow-x-auto">
+          {files.map((file) => (
+            <UploadedFileItem
+              callback={() => cancelFileClickHandler(file.id)}
+              key={file.id}
+              file={file}
+            />
+          ))}
+        </div>
+      )}
       <textarea
         ref={textareaRef}
         value={prompt}
@@ -99,7 +129,9 @@ const ChatPageBody = () => {
         className={`relative flex max-h-300px w-full resize-none items-center justify-between overflow-auto rounded-sm border border-lightGray3 bg-white ${signedIn ? `pl-12 pr-5` : `px-5`} py-3 outline-none transition-all duration-300`}
       />
       {signedIn && (
+        // Info: upload file icon (20240628 - Shirley)
         <button
+          onClick={uploadIconClickHandler}
           type="button"
           className="absolute bottom-3 left-3 text-icon-surface-single-color-primary hover:text-button-text-primary-hover disabled:text-button-surface-strong-disable"
         >
@@ -120,6 +152,7 @@ const ChatPageBody = () => {
         </button>
       )}
 
+      {/* Info: submit icon (20240628 - Shirley) */}
       <button
         onClick={submitButtonClickHandler}
         disabled={!prompt}
