@@ -40,6 +40,7 @@ const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUpload
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     Array.from(event.dataTransfer.files).map((file) => createIFile(file, FileStatus.success));
+    modalVisibilityHandler();
   };
 
   const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
