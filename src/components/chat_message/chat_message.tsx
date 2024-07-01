@@ -1,16 +1,20 @@
 import { Button } from '@/components/button/button';
+import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item';
 import { useUserCtx } from '@/contexts/user_context';
 import { MessageRole, DisplayedSender } from '@/interfaces/chat';
+import { IFile } from '@/interfaces/file';
 import Image from 'next/image';
 import React from 'react';
 
+// TODO: replaced by IMessage (20240701 - Shirley)
 interface ChatMessageProps {
   sender: DisplayedSender;
   role: MessageRole;
   content: string;
+  file?: IFile;
 }
 
-const ChatMessage = ({ sender, role, content }: ChatMessageProps) => {
+const ChatMessage = ({ sender, role, content, file }: ChatMessageProps) => {
   const { signedIn } = useUserCtx();
   const displayedAvatar =
     role === MessageRole.VISITOR ? (
@@ -56,6 +60,7 @@ const ChatMessage = ({ sender, role, content }: ChatMessageProps) => {
 
   const displayedMessage = (
     <div>
+      {/* Info: 用戶未登入的訊息 (20240701 - Shirley) */}
       {role !== MessageRole.USER ? (
         <div className="mt-0 flex gap-5 self-start whitespace-nowrap font-barlow">
           {displayedAvatar}
@@ -64,8 +69,16 @@ const ChatMessage = ({ sender, role, content }: ChatMessageProps) => {
             <div className="mt-2 whitespace-pre-wrap text-base leading-6 tracking-normal">
               {content}
             </div>
+
+            {/* Info: 用戶登入後，機器人的訊息 (20240701 - Shirley) */}
             {role === MessageRole.BOT && signedIn ? (
               <div className="flex gap-2">
+                {file && (
+                  <div className="mt-2">
+                    <UploadedFileItem file={file} retry={() => {}} delete={() => {}} />
+                  </div>
+                )}
+
                 <Button size={'extraSmall'} variant={'secondaryBorderless'} className="px-1 pt-5">
                   {' '}
                   <svg
@@ -156,8 +169,15 @@ const ChatMessage = ({ sender, role, content }: ChatMessageProps) => {
           </div>
         </div>
       ) : (
+        // Info: 用戶登入後，用戶的訊息 (20240701 - Shirley)
         <div className="mt-0 flex w-full justify-end gap-5 self-start whitespace-nowrap font-barlow">
           <div className="flex w-1200px flex-col items-end justify-center overflow-x-auto">
+            {file && (
+              <div className="mt-2">
+                <UploadedFileItem file={file} />
+              </div>
+            )}
+
             <div className="mt-2 whitespace-pre-wrap text-base leading-6 tracking-normal">
               {content}
             </div>

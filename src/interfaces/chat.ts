@@ -1,3 +1,4 @@
+import { IFile } from '@/interfaces/file';
 import { v4 as uuidv4 } from 'uuid';
 
 export interface IFolder {
@@ -30,6 +31,7 @@ export interface IMessageWithoutSender {
   id: string;
   content: string;
   createdAt: number;
+  file?: IFile;
 }
 
 export interface IMessage {
@@ -37,6 +39,7 @@ export interface IMessage {
   role: MessageRole;
   content: string;
   createdAt: number;
+  file?: IFile;
 }
 
 export interface IChat extends IChatBrief {

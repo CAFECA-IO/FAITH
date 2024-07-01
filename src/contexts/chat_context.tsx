@@ -12,13 +12,16 @@ import {
   dummyFolders,
 } from '@/interfaces/chat';
 import { getTimestamp, isValidFileType, timestampToString, wait } from '@/lib/utils/common';
-import { DELAYED_RESPONSE_MILLISECONDS } from '@/constants/display';
+import {
+  DELAYED_FILE_UPLOAD_MILLISECONDS,
+  DELAYED_RESPONSE_MILLISECONDS,
+} from '@/constants/display';
 import { createContext, useContext, useEffect } from 'react';
 import useStateRef from 'react-usestateref';
 import { useRouter } from 'next/router';
 import { NATIVE_ROUTE } from '@/constants/url';
 import { FileStatus, FileStatusUnion, IFile } from '@/interfaces/file';
-import { LIMIT_FOR_FILES, LIMIT_FOR_FILE_SIZE } from '@/constants/config';
+import { LIMIT_FOR_FILE_SIZE } from '@/constants/config';
 
 interface ChatContextType {
   selectedChat: IChat | null;
@@ -49,12 +52,13 @@ interface ChatContextType {
   renameFolder: (id: string, newName: string) => void;
   deleteFolder: (id: string) => void;
 
-  files: IFile[] | null;
-  handleFiles: (files: File[]) => void;
-  cancelUpload: (id: string) => void;
+  file: IFile | null;
+  handleFile: (file: File) => void;
+  cancelUpload: () => void;
   createIFile: (file: File, status: FileStatusUnion) => IFile;
-  clearFiles: () => void;
-  saveFiles: () => void;
+  clearFile: () => void;
+  saveFile: (item: IFile) => void;
+  retryFileUpload: () => void;
 }
 
 const ChatContext = createContext<ChatContextType>({
@@ -86,12 +90,13 @@ const ChatContext = createContext<ChatContextType>({
   renameFolder: () => {},
   deleteFolder: () => {},
 
-  files: null as IFile[] | null,
-  handleFiles: () => {},
+  file: null,
+  handleFile: () => {},
   cancelUpload: () => {},
   createIFile: () => ({ id: '', data: new File([], ''), status: FileStatus.success }) as IFile,
-  clearFiles: () => {},
-  saveFiles: () => {},
+  clearFile: () => {},
+  saveFile: () => {},
+  retryFileUpload: () => {},
 });
 
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
@@ -105,52 +110,75 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [folders, setFolders, foldersRef] = useStateRef<IFolder[] | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedChat, setSelectedChat, selectedChatRef] = useStateRef<IChat | null>(null);
-  const [files, setFiles] = useStateRef<IFile[]>([]);
+  const [file, setFile] = useStateRef<IFile | null>(null);
+  const [uploadTimeout, setUploadTimeout] = useStateRef<NodeJS.Timeout | null>(null);
 
-  const createIFile = (file: File, status: FileStatusUnion): IFile => {
-    const newFile = {
-      id: uuidv4(),
-      data: file,
-      status,
-    };
-    setFiles((prevFiles) => [...prevFiles, newFile]);
-    return newFile;
-  };
-
-  const handleFiles = (newFiles: File[]) => {
-    const validFiles = newFiles.filter(isValidFileType);
-    const oversizedFiles = validFiles.filter((file) => file.size > LIMIT_FOR_FILE_SIZE);
-
-    if (oversizedFiles.length > 0) {
-      // Deprecated: 20240715 - Shirley
-      // eslint-disable-next-line no-console
-      console.log('上傳失敗：檔案大小不能超過 50MB。');
-
-      return;
-    }
-
-    if (files.length + validFiles.length > LIMIT_FOR_FILES) {
-      // Deprecated: 20240715 - Shirley
-      // eslint-disable-next-line no-console
-      console.log('上傳失敗：最多只能上傳5個檔案。');
-    } else {
-      const newIFiles = validFiles.map((file) => createIFile(file, FileStatus.success));
-      setFiles((prevFiles) => [...prevFiles, ...newIFiles]);
-    }
-  };
-
-  const cancelUpload = (id: string) => {
-    setFiles(files.filter((file) => file.id !== id));
-  };
-
-  const clearFiles = () => {
-    setFiles([]);
-  };
-
-  const saveFiles = () => {
+  const saveFile = (item: IFile) => {
     // ToDo: (20240628 - Shirley) 保存文件到服務器
     // eslint-disable-next-line no-console
-    console.log('Saving files:', files);
+    console.log('saveFile', item);
+  };
+
+  const createIFile = (newFile: File, status: FileStatusUnion): IFile => {
+    const iFile = {
+      id: uuidv4(),
+      data: newFile,
+      status,
+    };
+    setFile(iFile);
+    return iFile;
+  };
+
+  const handleFile = (newFile: File) => {
+    let iFile = createIFile(newFile, FileStatus.uploading);
+    setFile(iFile);
+
+    const timeoutId = setTimeout(() => {
+      let fileStatus = FileStatus.uploading;
+
+      if (isValidFileType(newFile)) {
+        // Info: file size <= 50MB (20240701 - Shirley)
+        if (newFile.size > LIMIT_FOR_FILE_SIZE) {
+          fileStatus = FileStatus.error;
+        } else {
+          fileStatus = FileStatus.success;
+        }
+      } else {
+        fileStatus = FileStatus.error;
+      }
+
+      iFile = createIFile(newFile, fileStatus);
+      setFile(iFile);
+
+      if (iFile) {
+        saveFile(iFile);
+      }
+      setUploadTimeout(null);
+    }, DELAYED_FILE_UPLOAD_MILLISECONDS);
+
+    setUploadTimeout(timeoutId);
+  };
+
+  const retryFileUpload = () => {
+    if (file && file.status === FileStatus.error) {
+      handleFile(file.data);
+    }
+  };
+
+  const cancelUpload = () => {
+    if (uploadTimeout) {
+      clearTimeout(uploadTimeout);
+      setUploadTimeout(null);
+    }
+    setFile(null);
+  };
+
+  const clearFile = () => {
+    if (uploadTimeout) {
+      clearTimeout(uploadTimeout);
+      setUploadTimeout(null);
+    }
+    setFile(null);
   };
 
   const addMessage = (message: IMessage) => {
@@ -452,12 +480,13 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     renameFolder,
     deleteFolder,
 
-    files,
-    handleFiles,
+    file,
+    handleFile,
     cancelUpload,
-    saveFiles,
+    saveFile,
     createIFile,
-    clearFiles,
+    clearFile,
+    retryFileUpload,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

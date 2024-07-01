@@ -91,6 +91,7 @@ const ChatThreadSection = () => {
               key={message.id}
               role={message.role}
               content={message.content}
+              file={message.file}
             />
           ))}
         </div>
