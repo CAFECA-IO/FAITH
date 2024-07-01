@@ -7,12 +7,14 @@ import React from 'react';
 
 interface IUploadedFileItemProps {
   file: IFile;
+  isStatusVisible?: boolean;
   delete?: () => void;
   retry?: () => void;
 }
 
 const UploadedFileItem = ({
   file,
+  isStatusVisible = true,
   delete: deleteCallback,
   retry: retryCallback,
 }: IUploadedFileItemProps) => {
@@ -93,7 +95,7 @@ const UploadedFileItem = ({
     </div>
   );
 
-  const displayedStatus =
+  const displayedStatus = isStatusVisible ? (
     status !== FileStatus.uploading ? (
       displayedSuccessOrError
     ) : (
@@ -101,7 +103,8 @@ const UploadedFileItem = ({
         {' '}
         <LoadingSVG />
       </div>
-    );
+    )
+  ) : null;
 
   return (
     <div className="relative m-2">

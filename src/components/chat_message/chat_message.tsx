@@ -260,7 +260,7 @@ const ChatMessage = ({ sender, role, content, file }: ChatMessageProps) => {
           <div className="flex w-1200px flex-col items-end justify-center overflow-x-auto">
             {file && (
               <div className="mt-2">
-                <UploadedFileItem file={file} />
+                <UploadedFileItem isStatusVisible={false} file={file} />
               </div>
             )}
 

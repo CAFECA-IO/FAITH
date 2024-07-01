@@ -138,7 +138,7 @@ const ChatPageBody = () => {
         rows={rows}
         // TODO: i18n (20240626 - Shirley)
         placeholder="Say something..."
-        className={`relative flex max-h-300px w-full resize-none items-center justify-between overflow-auto rounded-sm border border-lightGray3 bg-white ${signedIn ? `pl-12 pr-5` : `px-5`} py-3 outline-none transition-all duration-300`}
+        className={`relative flex max-h-150px w-full resize-none items-center justify-between overflow-auto rounded-sm border border-lightGray3 bg-white ${signedIn ? `pl-12 pr-5` : `px-5`} py-3 outline-none transition-all duration-300`}
       />
       {signedIn && (
         // Info: upload file icon (20240628 - Shirley)
