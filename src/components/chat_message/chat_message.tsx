@@ -1,10 +1,11 @@
 import { Button } from '@/components/button/button';
 import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item';
+import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
 import { useUserCtx } from '@/contexts/user_context';
 import { MessageRole, DisplayedSender } from '@/interfaces/chat';
 import { IFile } from '@/interfaces/file';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 
 // TODO: replaced by IMessage (20240701 - Shirley)
 interface ChatMessageProps {
@@ -16,6 +17,48 @@ interface ChatMessageProps {
 
 const ChatMessage = ({ sender, role, content, file }: ChatMessageProps) => {
   const { signedIn } = useUserCtx();
+  const [isCopySuccess, setIsCopySuccess] = useState(false);
+  const [isLikeSuccess, setIsLikeSuccess] = useState(false);
+  const [isDislikeSuccess, setIsDislikeSuccess] = useState(false);
+
+  const readAloadClickHandler = () => {
+    // TODO: 點擊後，開始朗誦答案 (20240701 - Shirley)
+    // eslint-disable-next-line
+    console.log('readAloadClickHandler');
+  };
+
+  const copyClickHandler = () => {
+    navigator.clipboard.writeText(content);
+
+    setIsCopySuccess(true);
+    // Info: 3 秒後將 isCopySuccess 設回 false (20240701 - Shirley)
+    setTimeout(() => {
+      setIsCopySuccess(false);
+    }, DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS);
+  };
+
+  const resendClickHandler = () => {
+    // TODO: 對機器人回答不滿意，點擊後，重新送出訊息 (20240701 - Shirley)
+    // eslint-disable-next-line
+    console.log('resendClickHandler');
+  };
+
+  const likeClickHandler = () => {
+    // TODO: 點擊後，點讚 (20240701 - Shirley)
+    // eslint-disable-next-line
+    console.log('likeClickHandler');
+
+    setIsLikeSuccess(true);
+  };
+
+  const dislikeClickHandler = () => {
+    // TODO: 點擊後，點踩 (20240701 - Shirley)
+    // eslint-disable-next-line
+    console.log('dislikeClickHandler');
+
+    setIsDislikeSuccess(true);
+  };
+
   const displayedAvatar =
     role === MessageRole.VISITOR ? (
       <div className="relative flex shrink-0 items-start justify-center">
@@ -78,8 +121,12 @@ const ChatMessage = ({ sender, role, content, file }: ChatMessageProps) => {
                     <UploadedFileItem file={file} retry={() => {}} delete={() => {}} />
                   </div>
                 )}
-
-                <Button size={'extraSmall'} variant={'secondaryBorderless'} className="px-1 pt-5">
+                <Button
+                  onClick={readAloadClickHandler}
+                  size={'extraSmall'}
+                  variant={'secondaryBorderless'}
+                  className="px-1 pt-5"
+                >
                   {' '}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -96,24 +143,53 @@ const ChatMessage = ({ sender, role, content, file }: ChatMessageProps) => {
                     ></path>
                   </svg>
                 </Button>
-                <Button size={'extraSmall'} variant={'secondaryBorderless'} className="px-1 pt-5">
+
+                <Button
+                  onClick={copyClickHandler}
+                  size={'extraSmall'}
+                  variant={'secondaryBorderless'}
+                  className="px-1 pt-5"
+                >
                   {' '}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    fill="none"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      className="fill-current"
-                      fillRule="evenodd"
-                      d="M9.306.918H15.7c.441 0 .817 0 1.126.025.324.026.64.084.941.238.455.232.825.602 1.057 1.056.153.302.211.617.238.942.025.308.025.684.025 1.126V10.698c0 .44 0 .817-.025 1.125-.027.325-.085.64-.238.942a2.417 2.417 0 01-1.057 1.056c-.301.154-.617.212-.941.238-.309.025-.685.025-1.126.025h-1.613v1.614c0 .44 0 .817-.025 1.125-.027.325-.085.64-.239.942a2.417 2.417 0 01-1.056 1.056c-.301.154-.617.212-.941.238-.309.025-.685.025-1.126.025H4.306c-.441 0-.817 0-1.126-.025-.324-.026-.64-.084-.941-.238a2.417 2.417 0 01-1.056-1.056c-.154-.302-.212-.617-.239-.942C.92 16.515.92 16.14.92 15.697V9.304c0-.44 0-.817.025-1.125.027-.325.085-.64.239-.942a2.417 2.417 0 011.056-1.056c.301-.154.617-.212.941-.238.309-.025.685-.025 1.126-.025H5.92V4.304c0-.44 0-.817.025-1.125.027-.325.085-.64.239-.942a2.417 2.417 0 011.056-1.056c.301-.154.617-.212.941-.238.309-.025.685-.025 1.126-.025zm-2.637 6.5H4.336c-.48 0-.793 0-1.034.02-.231.019-.327.052-.382.08a.917.917 0 00-.4.4c-.029.055-.062.151-.08.383-.02.24-.02.554-.02 1.033v6.334c0 .479 0 .793.02 1.033.018.232.051.328.08.383a.917.917 0 00.4.4c.055.028.15.061.382.08.24.02.555.02 1.034.02h6.333c.48 0 .793 0 1.034-.02.231-.019.327-.052.382-.08a.916.916 0 00.4-.4c.029-.055.062-.151.08-.383.02-.24.02-.554.02-1.033V9.334c0-.479 0-.793-.02-1.033-.018-.232-.051-.328-.08-.383a.916.916 0 00-.4-.4c-.055-.028-.15-.061-.382-.08-.24-.02-.555-.02-1.034-.02h-4zm7.417 5.166v-3.28c0-.44 0-.817-.025-1.125-.027-.325-.085-.64-.239-.942a2.416 2.416 0 00-1.056-1.056c-.301-.154-.617-.212-.941-.238-.309-.025-.685-.025-1.126-.025h-3.28V4.334c0-.479 0-.793.02-1.033.02-.232.052-.328.08-.383a.917.917 0 01.4-.4c.056-.028.152-.061.383-.08.24-.02.555-.02 1.034-.02h6.333c.48 0 .793 0 1.034.02.231.019.327.052.382.08l.34-.669-.34.669a.916.916 0 01.4.4c.029.055.062.151.08.383.02.24.02.554.02 1.033v6.334c0 .479 0 .793-.02 1.033-.018.232-.051.328-.08.383a.916.916 0 01-.4.4c-.055.028-.15.061-.382.08-.24.02-.555.02-1.034.02h-1.583z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
+                  {isCopySuccess ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      fill="none"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill="#FFA502"
+                        fillRule="evenodd"
+                        d="M17.2 4.47a.75.75 0 010 1.062l-9.167 9.166a.75.75 0 01-1.06 0l-4.167-4.166a.75.75 0 011.06-1.061l3.637 3.636 8.636-8.636a.75.75 0 011.06 0z"
+                        clipRule="evenodd"
+                      ></path>
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      fill="none"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        className="fill-current"
+                        fillRule="evenodd"
+                        d="M9.306.918H15.7c.441 0 .817 0 1.126.025.324.026.64.084.941.238.455.232.825.602 1.057 1.056.153.302.211.617.238.942.025.308.025.684.025 1.126V10.698c0 .44 0 .817-.025 1.125-.027.325-.085.64-.238.942a2.417 2.417 0 01-1.057 1.056c-.301.154-.617.212-.941.238-.309.025-.685.025-1.126.025h-1.613v1.614c0 .44 0 .817-.025 1.125-.027.325-.085.64-.239.942a2.417 2.417 0 01-1.056 1.056c-.301.154-.617.212-.941.238-.309.025-.685.025-1.126.025H4.306c-.441 0-.817 0-1.126-.025-.324-.026-.64-.084-.941-.238a2.417 2.417 0 01-1.056-1.056c-.154-.302-.212-.617-.239-.942C.92 16.515.92 16.14.92 15.697V9.304c0-.44 0-.817.025-1.125.027-.325.085-.64.239-.942a2.417 2.417 0 011.056-1.056c.301-.154.617-.212.941-.238.309-.025.685-.025 1.126-.025H5.92V4.304c0-.44 0-.817.025-1.125.027-.325.085-.64.239-.942a2.417 2.417 0 011.056-1.056c.301-.154.617-.212.941-.238.309-.025.685-.025 1.126-.025zm-2.637 6.5H4.336c-.48 0-.793 0-1.034.02-.231.019-.327.052-.382.08a.917.917 0 00-.4.4c-.029.055-.062.151-.08.383-.02.24-.02.554-.02 1.033v6.334c0 .479 0 .793.02 1.033.018.232.051.328.08.383a.917.917 0 00.4.4c.055.028.15.061.382.08.24.02.555.02 1.034.02h6.333c.48 0 .793 0 1.034-.02.231-.019.327-.052.382-.08a.916.916 0 00.4-.4c.029-.055.062-.151.08-.383.02-.24.02-.554.02-1.033V9.334c0-.479 0-.793-.02-1.033-.018-.232-.051-.328-.08-.383a.916.916 0 00-.4-.4c-.055-.028-.15-.061-.382-.08-.24-.02-.555-.02-1.034-.02h-4zm7.417 5.166v-3.28c0-.44 0-.817-.025-1.125-.027-.325-.085-.64-.239-.942a2.416 2.416 0 00-1.056-1.056c-.301-.154-.617-.212-.941-.238-.309-.025-.685-.025-1.126-.025h-3.28V4.334c0-.479 0-.793.02-1.033.02-.232.052-.328.08-.383a.917.917 0 01.4-.4c.056-.028.152-.061.383-.08.24-.02.555-.02 1.034-.02h6.333c.48 0 .793 0 1.034.02.231.019.327.052.382.08l.34-.669-.34.669a.916.916 0 01.4.4c.029.055.062.151.08.383.02.24.02.554.02 1.033v6.334c0 .479 0 .793-.02 1.033-.018.232-.051.328-.08.383a.916.916 0 01-.4.4c-.055.028-.15.061-.382.08-.24.02-.555.02-1.034.02h-1.583z"
+                        clipRule="evenodd"
+                      ></path>
+                    </svg>
+                  )}
                 </Button>
-                <Button size={'extraSmall'} variant={'secondaryBorderless'} className="px-1 pt-5">
+
+                <Button
+                  onClick={resendClickHandler}
+                  size={'extraSmall'}
+                  variant={'secondaryBorderless'}
+                  className="px-1 pt-5"
+                >
                   {' '}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +206,12 @@ const ChatMessage = ({ sender, role, content, file }: ChatMessageProps) => {
                     ></path>
                   </svg>
                 </Button>
-                <Button size={'extraSmall'} variant={'secondaryBorderless'} className="px-1 pt-5">
+                <Button
+                  onClick={likeClickHandler}
+                  size={'extraSmall'}
+                  variant={'secondaryBorderless'}
+                  className={`px-1 pt-5 ${isLikeSuccess ? 'hidden' : ''}`}
+                >
                   {' '}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -147,7 +228,12 @@ const ChatMessage = ({ sender, role, content, file }: ChatMessageProps) => {
                     ></path>
                   </svg>
                 </Button>
-                <Button size={'extraSmall'} variant={'secondaryBorderless'} className="px-1 pt-5">
+                <Button
+                  onClick={dislikeClickHandler}
+                  size={'extraSmall'}
+                  variant={'secondaryBorderless'}
+                  className={`px-1 pt-5 ${isDislikeSuccess ? 'text-surface-brand-primary' : ''}`}
+                >
                   {' '}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
