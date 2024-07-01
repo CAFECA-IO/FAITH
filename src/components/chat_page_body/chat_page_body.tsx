@@ -6,10 +6,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import ChatThreadSection from '@/components/chat_thread_section/chat_thread_section';
 import { useGlobalCtx } from '@/contexts/global_context';
 import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item';
+import { FileStatus } from '@/interfaces/file';
 
 const ChatPageBody = () => {
   const { signedIn } = useUserCtx();
-  const { userAddMessage, selectedChat, files, cancelUpload, clearFiles } = useChatCtx();
+  const { userAddMessage, selectedChat, file, cancelUpload, clearFile, retryFileUpload } =
+    useChatCtx();
   const { fileUploadModalVisibilityHandler } = useGlobalCtx();
 
   const [prompt, setPrompt] = useState('');
@@ -18,8 +20,16 @@ const ChatPageBody = () => {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const cancelFileClickHandler = (fileId: string) => {
-    cancelUpload(fileId);
+  // Info: 如果檔案正在上傳或者上傳失敗，就不能送出；有檔案並且檔案上傳成功，或者輸入框有文字，則可以送出 (20240701 - Shirley)
+  const isSubmitAllowed = file?.status === FileStatus.success || (!file && !!prompt);
+
+  const retryUploadClickHandler = () => {
+    retryFileUpload();
+  };
+
+  const cancelFileClickHandler = () => {
+    cancelUpload();
+    clearFile();
   };
 
   const uploadIconClickHandler = () => {
@@ -31,15 +41,17 @@ const ChatPageBody = () => {
   };
 
   const submitPrompt = () => {
-    setPrompt('');
-    setRows(1);
-    userAddMessage({
-      id: uuidv4(),
-      content: prompt,
-      createdAt: getTimestamp(),
-    });
-    // TODO: 需送出檔案在用戶對話紀錄上 (20240628 - Shirley)
-    clearFiles();
+    if (isSubmitAllowed) {
+      setPrompt('');
+      setRows(1);
+      userAddMessage({
+        id: uuidv4(),
+        content: prompt,
+        createdAt: getTimestamp(),
+        file: file && file.status === FileStatus.success ? file : undefined,
+      });
+      clearFile();
+    }
   };
 
   const submitButtonClickHandler = () => {
@@ -88,7 +100,7 @@ const ChatPageBody = () => {
     if (e.key === 'Enter' && e.shiftKey) {
       e.preventDefault();
       heightenTextArea();
-    } else if (e.key === 'Enter' && !e.shiftKey && !isComposing && !!prompt) {
+    } else if (e.key === 'Enter' && !e.shiftKey && !isComposing && isSubmitAllowed) {
       // Info: enter 提交 (20240627 - Shirley)
       e.preventDefault();
       submitPrompt();
@@ -105,15 +117,15 @@ const ChatPageBody = () => {
 
   const displayedPromptInput = (
     <div className="relative flex-1">
-      {files && (
+      {/* Info: file uploading status displaying (20240701 - Shirley) */}
+      {file && (
         <div className="my-2 flex gap-3 overflow-x-auto">
-          {files.map((file) => (
-            <UploadedFileItem
-              callback={() => cancelFileClickHandler(file.id)}
-              key={file.id}
-              file={file}
-            />
-          ))}
+          <UploadedFileItem
+            retry={retryUploadClickHandler}
+            delete={cancelFileClickHandler}
+            key={file.id}
+            file={file}
+          />
         </div>
       )}
       <textarea
@@ -126,7 +138,7 @@ const ChatPageBody = () => {
         rows={rows}
         // TODO: i18n (20240626 - Shirley)
         placeholder="Say something..."
-        className={`relative flex max-h-300px w-full resize-none items-center justify-between overflow-auto rounded-sm border border-lightGray3 bg-white ${signedIn ? `pl-12 pr-5` : `px-5`} py-3 outline-none transition-all duration-300`}
+        className={`relative flex max-h-150px w-full resize-none items-center justify-between overflow-auto rounded-sm border border-lightGray3 bg-white ${signedIn ? `pl-12 pr-5` : `px-5`} py-3 outline-none transition-all duration-300`}
       />
       {signedIn && (
         // Info: upload file icon (20240628 - Shirley)
@@ -155,7 +167,7 @@ const ChatPageBody = () => {
       {/* Info: submit icon (20240628 - Shirley) */}
       <button
         onClick={submitButtonClickHandler}
-        disabled={!prompt}
+        disabled={!isSubmitAllowed}
         type="button"
         className="absolute bottom-3 right-3 text-icon-surface-single-color-primary hover:text-button-text-primary-hover disabled:text-button-surface-strong-disable"
       >
