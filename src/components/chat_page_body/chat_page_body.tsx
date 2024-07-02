@@ -14,15 +14,8 @@ import { NATIVE_ROUTE } from '@/constants/url';
 
 const ChatPageBody = () => {
   const { signedIn } = useUserCtx();
-  const {
-    userAddMessage,
-    selectedChat,
-    file,
-    cancelUpload,
-    clearFile,
-    retryFileUpload,
-    chatBriefs,
-  } = useChatCtx();
+  const { userAddMessage, selectedChat, file, cancelUpload, clearFile, retryFileUpload } =
+    useChatCtx();
   const { fileUploadModalVisibilityHandler, toastHandler } = useGlobalCtx();
 
   const [prompt, setPrompt] = useState('');
@@ -51,29 +44,6 @@ const ChatPageBody = () => {
     setPrompt(e.target.value);
   };
 
-  const showRegisterToast =
-    // Info: (20240702 - Julian) wait for 3 seconds before showing the toast
-    setTimeout(() => {
-      toastHandler({
-        id: ToastId.REGISTER_REMINDER,
-        type: ToastType.INFO,
-        content: (
-          <div>
-            Do you like Faith? Access smarter responses, upload files and images, and more.{' '}
-            <button
-              type="button"
-              className="font-semibold text-link-text-primary hover:underline"
-              onClick={() => router.push(NATIVE_ROUTE.LOGIN)}
-            >
-              Register
-            </button>
-          </div>
-        ),
-        closeable: true,
-        autoClose: false,
-      });
-    }, 3000);
-
   const submitPrompt = () => {
     if (isSubmitAllowed) {
       setPrompt('');
@@ -87,7 +57,27 @@ const ChatPageBody = () => {
       clearFile();
 
       if (!signedIn) {
-        showRegisterToast;
+        // Info: (20240702 - Julian) wait for 3 seconds before showing the toast
+        setTimeout(() => {
+          toastHandler({
+            id: ToastId.REGISTER_REMINDER,
+            type: ToastType.INFO,
+            content: (
+              <div>
+                Do you like Faith? Access smarter responses, upload files and images, and more.{' '}
+                <button
+                  type="button"
+                  className="font-semibold text-link-text-primary hover:underline"
+                  onClick={() => router.push(NATIVE_ROUTE.LOGIN)}
+                >
+                  Register
+                </button>
+              </div>
+            ),
+            closeable: true,
+            autoClose: false,
+          });
+        }, 3000);
       }
     }
   };
@@ -152,11 +142,6 @@ const ChatPageBody = () => {
       textareaRef.current.focus();
     }
   }, [selectedChat?.id]);
-
-  useEffect(() => {
-    if (chatBriefs && chatBriefs.length === 1 && !signedIn) {
-    }
-  }, [chatBriefs]);
 
   const displayedPromptInput = (
     <div className="relative flex-1">
