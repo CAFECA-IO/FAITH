@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/button/button';
 import { IReportCommentModal } from '@/interfaces/report_modal';
 
@@ -23,6 +23,12 @@ const ReportCommentModal = ({
   };
 
   const isSubmitDisabled = reportReason === '';
+
+  useEffect(() => {
+    if (isModalVisible) {
+      setReportReason('');
+    }
+  }, [isModalVisible]);
 
   const submitHandler = () => {
     // ToDo: (20240628 - Julian) API call to report comment

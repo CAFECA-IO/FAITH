@@ -3,12 +3,14 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { Button } from '@/components/button/button';
 import { useChatCtx } from '@/contexts/chat_context';
+import { useGlobalCtx } from '@/contexts/global_context';
 import { cn } from '@/lib/utils/common';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 import { IChatBrief, IFolder } from '@/interfaces/chat';
 import { useUserCtx } from '@/contexts/user_context';
 import { useRouter } from 'next/router';
 import { NATIVE_ROUTE } from '@/constants/url';
+import { MessageType } from '@/interfaces/message_modal';
 
 interface ChatSidebarProps {
   getIsExpanded?: (props: boolean) => void;
@@ -17,6 +19,7 @@ interface ChatSidebarProps {
 const ChatBriefItem = ({ chatBrief }: { chatBrief: IChatBrief }) => {
   const router = useRouter();
   const { selectChat, selectedChat, deleteChat } = useChatCtx();
+  const { messageModalVisibilityHandler, messageModalDataHandler } = useGlobalCtx();
 
   const {
     targetRef: editMenuRef,
@@ -49,8 +52,18 @@ const ChatBriefItem = ({ chatBrief }: { chatBrief: IChatBrief }) => {
   };
 
   const removeClickHandler = () => {
-    setEditMenuVisible(false);
-    deleteChat(chatBrief.id);
+    messageModalDataHandler({
+      title: 'Remove Chat',
+      messageType: MessageType.WARNING,
+      redMsg: 'Are you sure you want to delete this chat?\nThis action cannot be undone!',
+      backBtnStr: 'Cancel',
+      submitBtnStr: 'Remove',
+      submitBtnFunction: () => {
+        setEditMenuVisible(false);
+        deleteChat(chatBrief.id);
+      },
+    });
+    messageModalVisibilityHandler();
   };
 
   const displayedEditMenu = isEditMenuVisible && (
@@ -137,6 +150,7 @@ const ChatBriefItem = ({ chatBrief }: { chatBrief: IChatBrief }) => {
 };
 
 const ChatFolderItem = ({ chatFolder }: { chatFolder: IFolder }) => {
+  const { messageModalDataHandler, messageModalVisibilityHandler } = useGlobalCtx();
   const [isFolderExpanded, setIsFolderExpanded] = useState(false);
 
   const {
@@ -159,7 +173,18 @@ const ChatFolderItem = ({ chatFolder }: { chatFolder: IFolder }) => {
   };
 
   const removeClickHandler = () => {
-    setEditMenuVisible(false);
+    messageModalDataHandler({
+      title: 'Remove Folder',
+      messageType: MessageType.WARNING,
+      redMsg: 'Are you sure you want to delete this folder?\nThis action cannot be undone!',
+      backBtnStr: 'Cancel',
+      submitBtnStr: 'Remove',
+      submitBtnFunction: () => {
+        // ToDo: (20240702 - Julian) 這邊要寫刪除資料夾的 function
+        setEditMenuVisible(false);
+      },
+    });
+    messageModalVisibilityHandler();
   };
 
   const displayedEditMenu = isEditMenuVisible && (

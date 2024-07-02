@@ -3,16 +3,20 @@ import { useUserCtx } from '@/contexts/user_context';
 import { useChatCtx } from '@/contexts/chat_context';
 import { getTimestamp } from '@/lib/utils/common';
 import React, { useEffect, useRef, useState } from 'react';
+import router from 'next/router';
 import ChatThreadSection from '@/components/chat_thread_section/chat_thread_section';
 import { useGlobalCtx } from '@/contexts/global_context';
 import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item';
 import { FileStatus } from '@/interfaces/file';
+import { ToastId } from '@/constants/toast_id';
+import { ToastType } from '@/interfaces/toastify';
+import { NATIVE_ROUTE } from '@/constants/url';
 
 const ChatPageBody = () => {
   const { signedIn } = useUserCtx();
   const { userAddMessage, selectedChat, file, cancelUpload, clearFile, retryFileUpload } =
     useChatCtx();
-  const { fileUploadModalVisibilityHandler } = useGlobalCtx();
+  const { fileUploadModalVisibilityHandler, toastHandler } = useGlobalCtx();
 
   const [prompt, setPrompt] = useState('');
   const [rows, setRows] = useState(1);
@@ -51,6 +55,30 @@ const ChatPageBody = () => {
         file: file && file.status === FileStatus.success ? file : undefined,
       });
       clearFile();
+
+      if (!signedIn) {
+        // Info: (20240702 - Julian) wait for 3 seconds before showing the toast
+        setTimeout(() => {
+          toastHandler({
+            id: ToastId.REGISTER_REMINDER,
+            type: ToastType.INFO,
+            content: (
+              <div>
+                Do you like Faith? Access smarter responses, upload files and images, and more.{' '}
+                <button
+                  type="button"
+                  className="font-semibold text-link-text-primary hover:underline"
+                  onClick={() => router.push(NATIVE_ROUTE.LOGIN)}
+                >
+                  Register
+                </button>
+              </div>
+            ),
+            closeable: true,
+            autoClose: false,
+          });
+        }, 3000);
+      }
     }
   };
 
