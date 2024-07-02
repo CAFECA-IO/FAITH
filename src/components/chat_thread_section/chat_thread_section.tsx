@@ -17,7 +17,7 @@ import { TopicIcons } from '@/constants/display';
 
 const ChatThreadSection = () => {
   const { signedIn } = useUserCtx();
-  const { selectedChat: chat, userAddMessage } = useChatCtx();
+  const { selectedChat: chat, userAddMessage, resendMessage } = useChatCtx();
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -34,7 +34,7 @@ const ChatThreadSection = () => {
   };
 
   const displayedChatTopics = (
-    <div className="mt-9 flex w-full justify-center px-10">
+    <div className="mt-9 flex w-full justify-center px-20">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {topicOptions.map((topic: IChatTopic) => (
           <ChatTopicOption
@@ -52,7 +52,7 @@ const ChatThreadSection = () => {
   // Info: if chat list is not empty, show chat list, otherwise show default chat content (20240626 - Shirley)
   const displayedChatContent =
     !chat || chat.messages.length === 0 ? (
-      <div className="flex h-screen flex-col justify-center pt-56">
+      <div className="flex h-screen flex-col justify-center pt-28">
         {/* Info: logo, greetings, random chat topics (20240626 - Shirley) */}
         <div className="flex flex-col px-5">
           <div className="flex w-full justify-center">
@@ -67,7 +67,7 @@ const ChatThreadSection = () => {
           </div>
 
           <div className="self-center text-3xl font-bold text-stroke-neutral-secondary">
-            How can I help you today?
+            Hi, I am Faith, the AI Accountant.
           </div>
 
           {displayedChatTopics}
@@ -76,11 +76,12 @@ const ChatThreadSection = () => {
     ) : chat.messages.length > 0 ? (
       <div
         ref={chatContainerRef}
-        className="hideScrollbar h-screen overflow-y-auto overflow-x-hidden pt-56"
+        className="hideScrollbar h-screen overflow-y-auto overflow-x-hidden pb-10 pt-20"
       >
         <div className="mx-20 flex flex-col gap-10">
-          {chat.messages.map((message: IMessage) => (
+          {chat.messages.map((message: IMessage, index: number) => (
             <ChatMessage
+              resend={() => resendMessage(index)}
               sender={
                 message.role === MessageRole.VISITOR
                   ? DisplayedSender.VISITOR
@@ -88,10 +89,9 @@ const ChatThreadSection = () => {
                     ? DisplayedSender.BOT
                     : DisplayedSender.USER
               }
-              key={message.id}
+              key={message.messages[0].id}
               role={message.role}
-              content={message.content}
-              file={message.file}
+              messages={message.messages}
             />
           ))}
         </div>
@@ -102,7 +102,7 @@ const ChatThreadSection = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  }, [chat?.messages]);
+  }, [chat?.messages.length]);
 
   return <div>{displayedChatContent}</div>;
 };

@@ -1,11 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useUserCtx } from '@/contexts/user_context';
 import {
+  DisplayedFeedback,
   IChat,
   IChatBrief,
   IFolder,
   IMessage,
-  IMessageWithoutSender,
+  IMessageWithoutRole,
   MessageRole,
   dummyChatBriefs,
   dummyChats,
@@ -29,9 +30,15 @@ interface ChatContextType {
   selectChat: (id: string) => void;
 
   addMessage: (message: IMessage) => void;
-  userAddMessage: (message: IMessageWithoutSender) => void;
+  userAddMessage: (message: IMessageWithoutRole) => void;
   updateMessage: (messageIndex: number, updatedMessage: IMessage) => void;
   deleteMessage: (messageIndex: number) => void;
+  resendMessage: (messageIndex: number) => void;
+  dislikedMsg: string[];
+  resentMsg: string[];
+  addDislikedMsg: (messageId: string) => void;
+  addResentMsg: (messageId: string) => void;
+  displayedFeedback: DisplayedFeedback;
 
   chatBriefs: IChatBrief[] | null;
   handleChatBriefs: (chatBriefs: IChatBrief[]) => void;
@@ -70,6 +77,12 @@ const ChatContext = createContext<ChatContextType>({
   userAddMessage: () => {},
   updateMessage: () => {},
   deleteMessage: () => {},
+  resendMessage: () => {},
+  dislikedMsg: [],
+  resentMsg: [],
+  addDislikedMsg: () => {},
+  addResentMsg: () => {},
+  displayedFeedback: DisplayedFeedback.RESEND,
 
   chatBriefs: null as IChatBrief[] | null,
   handleChatBriefs: () => {},
@@ -112,6 +125,23 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [selectedChat, setSelectedChat, selectedChatRef] = useStateRef<IChat | null>(null);
   const [file, setFile] = useStateRef<IFile | null>(null);
   const [uploadTimeout, setUploadTimeout] = useStateRef<NodeJS.Timeout | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [dislikedMsg, setDislikedMsg, dislikedMsgRef] = useStateRef<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [resentMsg, setResentMsg, resentMsgRef] = useStateRef<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [displayedFeedback, setDisplayedFeedback, displayedFeedbackRef] =
+    useStateRef<DisplayedFeedback>(DisplayedFeedback.RESEND);
+
+  const addDislikedMsg = (messageId: string) => {
+    setDislikedMsg((prev) => [...prev, messageId]);
+    setDisplayedFeedback(DisplayedFeedback.DISLIKE);
+  };
+
+  const addResentMsg = (messageId: string) => {
+    setResentMsg((prev) => [...prev, messageId]);
+    setDisplayedFeedback(DisplayedFeedback.RESEND);
+  };
 
   const saveFile = (item: IFile) => {
     // ToDo: (20240628 - Shirley) 保存文件到服務器
@@ -196,9 +226,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const userAddMessage = (message: IMessageWithoutSender) => {
+  const userAddMessage = (message: IMessageWithoutRole) => {
     const role = signedIn ? MessageRole.USER : MessageRole.VISITOR;
-    addMessage({ ...message, role });
+    addMessage({ role, messages: [message] });
   };
 
   const updateMessage = (messageIndex: number, updatedMessage: IMessage) => {
@@ -227,6 +257,39 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         ),
       };
       setSelectedChat(updatedChat);
+      if (chatsRef.current) {
+        setChats(
+          chatsRef.current.map((chat: IChat) => (chat.id === updatedChat.id ? updatedChat : chat))
+        );
+      }
+    }
+  };
+
+  const resendMessage = (messageIndex: number) => {
+    if (selectedChatRef.current) {
+      const updatedChat = {
+        ...selectedChatRef.current,
+        messages: selectedChatRef.current.messages.map((msg, index) => {
+          if (index === messageIndex && msg.role === MessageRole.BOT) {
+            const oldMsg = msg.messages[0].content;
+            const newMsg = {
+              ...msg.messages[0],
+              content: oldMsg + ' ' + getTimestamp(),
+              id: uuidv4(),
+              dislike: false,
+              like: false,
+            };
+            return {
+              ...msg,
+              messages: [...msg.messages, newMsg],
+            };
+          }
+          return msg;
+        }),
+      };
+      setSelectedChat(updatedChat);
+      // TODO: add the latest msg into resentMsg array (20240702 - Shirley)
+      // addResentMsg(updatedChat.messages[0].messages[0].id);
       if (chatsRef.current) {
         setChats(
           chatsRef.current.map((chat: IChat) => (chat.id === updatedChat.id ? updatedChat : chat))
@@ -435,10 +498,14 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         selectedChatRef.current?.messages.at(-1)?.role !== MessageRole.BOT
       ) {
         const botMessage: IMessage = {
-          id: uuidv4(),
           role: MessageRole.BOT,
-          content: 'Sure!',
-          createdAt: getTimestamp(),
+          messages: [
+            {
+              id: uuidv4(),
+              content: 'Sure!',
+              createdAt: getTimestamp(),
+            },
+          ],
         };
 
         await wait(DELAYED_RESPONSE_MILLISECONDS);
@@ -460,6 +527,12 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     userAddMessage,
     updateMessage,
     deleteMessage,
+    resendMessage,
+    dislikedMsg: dislikedMsgRef.current,
+    addDislikedMsg,
+    resentMsg: resentMsgRef.current,
+    addResentMsg,
+    displayedFeedback: displayedFeedbackRef.current,
 
     chatBriefs: chatBriefsRef.current,
     handleChatBriefs,
