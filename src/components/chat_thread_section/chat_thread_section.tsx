@@ -34,7 +34,7 @@ const ChatThreadSection = () => {
   };
 
   const displayedChatTopics = (
-    <div className="mt-9 flex w-full justify-center px-10">
+    <div className="mt-9 flex w-full justify-center px-20">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {topicOptions.map((topic: IChatTopic) => (
           <ChatTopicOption
@@ -52,7 +52,7 @@ const ChatThreadSection = () => {
   // Info: if chat list is not empty, show chat list, otherwise show default chat content (20240626 - Shirley)
   const displayedChatContent =
     !chat || chat.messages.length === 0 ? (
-      <div className="flex h-screen flex-col justify-center">
+      <div className="flex h-screen flex-col justify-center pt-28">
         {/* Info: logo, greetings, random chat topics (20240626 - Shirley) */}
         <div className="flex flex-col px-5">
           <div className="flex w-full justify-center">

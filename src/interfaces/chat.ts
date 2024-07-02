@@ -294,13 +294,13 @@ export const dummyChatTopics: IChatTopic[] = [
     type: ChatTopicType.TRENDING,
   },
   {
-    title: 'Discuss recent accounting standards',
+    title: 'Recent accounting standards',
     description: 'Faith can share information on recent accounting standards.',
     type: ChatTopicType.AI,
   },
   {
     title: 'Explain budgeting process',
     description: 'Faith can explain the steps in creating a budget.',
-    type: ChatTopicType.TRENDING,
+    type: ChatTopicType.OTHERS,
   },
 ];
