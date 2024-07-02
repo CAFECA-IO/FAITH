@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import { v4 as uuidv4 } from 'uuid';
 import { useUserCtx } from '@/contexts/user_context';
 import {
@@ -42,6 +44,7 @@ interface ChatContextType {
   addChatBrief: (chatBrief: IChatBrief) => void;
   renameChatBrief: (id: string, newName: string) => void;
   deleteChatBrief: (id: string) => void;
+  updateChatBriefs: (updatedChatBriefs: IChatBrief[]) => void;
 
   chats: IChat[] | null;
   handleChats: (chats: IChat[]) => void;
@@ -84,6 +87,7 @@ const ChatContext = createContext<ChatContextType>({
   addChatBrief: () => {},
   renameChatBrief: () => {},
   deleteChatBrief: () => {},
+  updateChatBriefs: () => {},
 
   chats: null as IChat[] | null,
   handleChats: () => {},
@@ -325,6 +329,11 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const updateChatBriefs = (updatedChatBriefs: IChatBrief[]) => {
+    console.log('updatedChatBriefs in ChatContext', updatedChatBriefs);
+    setChatBriefs(updatedChatBriefs);
+  };
+
   const deleteChatBrief = (id: string) => {
     if (chatBriefsRef.current) {
       setChatBriefs(chatBriefsRef.current.filter((brief: IChatBrief) => brief.id !== id));
@@ -438,6 +447,17 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (foldersRef.current) {
       setFolders([...foldersRef.current, item]);
+
+      // 更新 chatBriefs，將被拖動的聊天添加到新資料夾
+      if (chatBriefsRef.current) {
+        setChatBriefs(
+          chatBriefsRef.current.map((chat) =>
+            item.chats.some((folderChat) => folderChat.id === chat.id)
+              ? { ...chat, folders: [...chat.folders, item.id] }
+              : chat
+          )
+        );
+      }
     }
   };
 
@@ -528,6 +548,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     addChatBrief,
     renameChatBrief,
     deleteChatBrief,
+    updateChatBriefs,
 
     chats: chatsRef.current,
     handleChats,

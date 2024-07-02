@@ -64,11 +64,4 @@ const Toggle = ({
   );
 };
 
-Toggle.defaultProps = {
-  lockedToOpen: false,
-  initialToggleState: false,
-  toggleStateFromParent: false,
-  setToggleStateFromParent: () => {},
-};
-
 export default Toggle;
