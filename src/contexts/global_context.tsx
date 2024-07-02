@@ -126,19 +126,23 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
 
     const closeOnClick = closeable; // Info:(20240513 - Julian) default closeOnClick true
     const draggable = closeable; // Info:(20240513 - Julian) default draggable true
-    const closeButton = closeable;
-    // ? () => (
-    //     <div className="h-20px w-20px">
-    //       <RxCross2 size={16} className="text-secondaryBlue" />
-    //     </div>
-    //   )
-    // : false;
+    const closeButton = closeable
+      ? () => (
+          <Image
+            src="/icons/cross.svg"
+            width={16}
+            height={16}
+            alt="cross_icon"
+            className="mb-auto"
+          />
+        )
+      : false;
 
     switch (type) {
       case ToastType.SUCCESS:
         toastify.success(content, {
           icon: <Image src="/icons/success.svg" alt="success" width={24} height={24} />,
-          className: `${bodyStyle} before:bg-alert-surface-surface-success`,
+          className: `${bodyStyle} before:bg-successGreen3`,
           toastId,
           position,
           autoClose,
@@ -152,7 +156,7 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
       case ToastType.ERROR:
         toastify.error(content, {
           icon: <Image src="/icons/error.svg" alt="error" width={24} height={24} />,
-          className: `${bodyStyle} before:bg-alert-surface-surface-error`,
+          className: `${bodyStyle} before:bg-errorRed3`,
           toastId,
           position,
           autoClose,

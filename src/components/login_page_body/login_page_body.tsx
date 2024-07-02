@@ -8,7 +8,7 @@ import { ToastId } from '@/constants/toast_id';
 
 const LoginPageBody = () => {
   const { signIn, signedIn } = useUserCtx();
-  const { registerModalVisibilityHandler, toastHandler } = useGlobalCtx();
+  const { registerModalVisibilityHandler, toastHandler, eliminateToast } = useGlobalCtx();
 
   const logInClickHandler = () => {
     signIn();
@@ -21,6 +21,7 @@ const LoginPageBody = () => {
 
   useEffect(() => {
     if (signedIn) {
+      eliminateToast();
       toastHandler({
         id: ToastId.LOGIN,
         type: ToastType.SUCCESS,
