@@ -10,13 +10,15 @@ import { useChatCtx } from '@/contexts/chat_context';
 import { useUserCtx } from '@/contexts/user_context';
 import { useGlobalCtx } from '@/contexts/global_context';
 import useOuterClick from '@/lib/hooks/use_outer_click';
+import { ToastType } from '@/interfaces/toastify';
+import { ToastId } from '@/constants/toast_id';
 
 const NavBar = () => {
   const router = useRouter();
 
   const { signedIn, signOut } = useUserCtx();
   const { addEmptyChat } = useChatCtx();
-  const { chatSettingModalVisibilityHandler } = useGlobalCtx();
+  const { chatSettingModalVisibilityHandler, toastHandler, eliminateToast } = useGlobalCtx();
 
   // TODO: in dev (20240625 - Shirley)
   const {
@@ -33,11 +35,20 @@ const NavBar = () => {
     setIsUserMenuOpen(false);
     signOut();
     addEmptyChat();
+
+    eliminateToast();
+    toastHandler({
+      id: ToastId.LOGOUT,
+      type: ToastType.SUCCESS,
+      content: 'You have successfully logged out!',
+      closeable: true,
+      autoClose: 3000,
+    });
   };
 
   const displayedUserMenu = isUserMenuOpen ? (
-    <div className="top-4.5rem absolute right-10 z-50">
-      <div className="shadow-userMenu flex flex-col gap-5 rounded-xs bg-white p-4">
+    <div className="absolute right-10 top-4.5rem z-50">
+      <div className="flex flex-col gap-5 rounded-xs bg-white p-4 shadow-userMenu">
         <Button
           size={'small'}
           variant={'secondaryBorderless'}

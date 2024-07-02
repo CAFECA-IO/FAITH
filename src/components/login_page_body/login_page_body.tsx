@@ -1,11 +1,14 @@
+import { useEffect } from 'react';
 import { Button } from '@/components/button/button';
 import { useGlobalCtx } from '@/contexts/global_context';
 import { useUserCtx } from '@/contexts/user_context';
 import Image from 'next/image';
+import { ToastType } from '@/interfaces/toastify';
+import { ToastId } from '@/constants/toast_id';
 
 const LoginPageBody = () => {
-  const { signIn } = useUserCtx();
-  const { registerModalVisibilityHandler } = useGlobalCtx();
+  const { signIn, signedIn } = useUserCtx();
+  const { registerModalVisibilityHandler, toastHandler } = useGlobalCtx();
 
   const logInClickHandler = () => {
     signIn();
@@ -15,6 +18,18 @@ const LoginPageBody = () => {
     registerModalVisibilityHandler();
     // signUp();
   };
+
+  useEffect(() => {
+    if (signedIn) {
+      toastHandler({
+        id: ToastId.LOGIN,
+        type: ToastType.SUCCESS,
+        content: 'You have successfully logged in!',
+        closeable: true,
+        autoClose: 3000,
+      });
+    }
+  }, [signedIn]);
 
   return (
     <div
