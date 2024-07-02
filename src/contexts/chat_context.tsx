@@ -5,7 +5,7 @@ import {
   IChatBrief,
   IFolder,
   IMessage,
-  IMessageWithoutSender,
+  IMessageWithoutRole,
   MessageRole,
   dummyChatBriefs,
   dummyChats,
@@ -29,9 +29,10 @@ interface ChatContextType {
   selectChat: (id: string) => void;
 
   addMessage: (message: IMessage) => void;
-  userAddMessage: (message: IMessageWithoutSender) => void;
+  userAddMessage: (message: IMessageWithoutRole) => void;
   updateMessage: (messageIndex: number, updatedMessage: IMessage) => void;
   deleteMessage: (messageIndex: number) => void;
+  resendQuestion: (messageIndex: number) => void;
 
   chatBriefs: IChatBrief[] | null;
   handleChatBriefs: (chatBriefs: IChatBrief[]) => void;
@@ -70,6 +71,7 @@ const ChatContext = createContext<ChatContextType>({
   userAddMessage: () => {},
   updateMessage: () => {},
   deleteMessage: () => {},
+  resendQuestion: () => {},
 
   chatBriefs: null as IChatBrief[] | null,
   handleChatBriefs: () => {},
@@ -196,9 +198,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const userAddMessage = (message: IMessageWithoutSender) => {
+  const userAddMessage = (message: IMessageWithoutRole) => {
     const role = signedIn ? MessageRole.USER : MessageRole.VISITOR;
-    addMessage({ ...message, role });
+    addMessage({ role, messages: [message] });
   };
 
   const updateMessage = (messageIndex: number, updatedMessage: IMessage) => {
@@ -225,6 +227,35 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         messages: selectedChatRef.current.messages.filter(
           (_: IMessage, index: number) => index !== messageIndex
         ),
+      };
+      setSelectedChat(updatedChat);
+      if (chatsRef.current) {
+        setChats(
+          chatsRef.current.map((chat: IChat) => (chat.id === updatedChat.id ? updatedChat : chat))
+        );
+      }
+    }
+  };
+
+  const resendQuestion = (messageIndex: number) => {
+    if (selectedChatRef.current) {
+      const updatedChat = {
+        ...selectedChatRef.current,
+        messages: selectedChatRef.current.messages.map((msg, index) => {
+          if (index === messageIndex && msg.role === MessageRole.BOT) {
+            const oldMsg = msg.messages[0].content;
+            const newMsg = {
+              ...msg.messages[0],
+              content: oldMsg + ' ' + getTimestamp(),
+              id: uuidv4(),
+            };
+            return {
+              ...msg,
+              messages: [...msg.messages, newMsg],
+            };
+          }
+          return msg;
+        }),
       };
       setSelectedChat(updatedChat);
       if (chatsRef.current) {
@@ -435,10 +466,14 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         selectedChatRef.current?.messages.at(-1)?.role !== MessageRole.BOT
       ) {
         const botMessage: IMessage = {
-          id: uuidv4(),
           role: MessageRole.BOT,
-          content: 'Sure!',
-          createdAt: getTimestamp(),
+          messages: [
+            {
+              id: uuidv4(),
+              content: 'Sure!',
+              createdAt: getTimestamp(),
+            },
+          ],
         };
 
         await wait(DELAYED_RESPONSE_MILLISECONDS);
@@ -460,6 +495,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     userAddMessage,
     updateMessage,
     deleteMessage,
+    resendQuestion,
 
     chatBriefs: chatBriefsRef.current,
     handleChatBriefs,

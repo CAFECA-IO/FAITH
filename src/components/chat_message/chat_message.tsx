@@ -2,24 +2,41 @@ import { Button } from '@/components/button/button';
 import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item';
 import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
 import { useUserCtx } from '@/contexts/user_context';
-import { MessageRole, DisplayedSender } from '@/interfaces/chat';
+import { MessageRole, DisplayedSender, IMessage, IMessageWithoutRole } from '@/interfaces/chat';
 import { IFile } from '@/interfaces/file';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
 // TODO: replaced by IMessage (20240701 - Shirley)
-interface ChatMessageProps {
+interface ChatMessageProps extends IMessage {
   sender: DisplayedSender;
-  role: MessageRole;
-  content: string;
-  file?: IFile;
+  resend: () => void;
+  messages: IMessageWithoutRole[];
+  // role: MessageRole;
+  // content: string;
+  // file?: IFile;
 }
 
-const ChatMessage = ({ sender, role, content, file }: ChatMessageProps) => {
+const ChatMessage = ({
+  sender,
+  role,
+  messages,
+  // content,
+  // file,
+  // createdAt,
+  // id,
+  resend: resendCallback,
+}: ChatMessageProps) => {
   const { signedIn } = useUserCtx();
   const [isCopySuccess, setIsCopySuccess] = useState(false);
   const [isLikeSuccess, setIsLikeSuccess] = useState(false);
   const [isDislikeSuccess, setIsDislikeSuccess] = useState(false);
+  const [selectedMsgIndex, setSelectedMsgIndex] = useState(messages.length - 1 ?? 0);
+  // const [isFileExist, setIsFileExist] = useState(!!messages[selectedMsgIndex].file);
+
+  // useEffect(() => {
+  //   setIsFileExist(!!messages[selectedMsgIndex].file);
+  // }, [selectedMsgIndex]);
 
   const readAloadClickHandler = () => {
     // TODO: 點擊後，開始朗誦答案 (20240701 - Shirley)
@@ -28,7 +45,9 @@ const ChatMessage = ({ sender, role, content, file }: ChatMessageProps) => {
   };
 
   const copyClickHandler = () => {
-    navigator.clipboard.writeText(content);
+    navigator.clipboard.writeText(messages[selectedMsgIndex].content);
+
+    // navigator.clipboard.writeText(content);
 
     setIsCopySuccess(true);
     // Info: 3 秒後將 isCopySuccess 設回 false (20240701 - Shirley)
@@ -41,6 +60,7 @@ const ChatMessage = ({ sender, role, content, file }: ChatMessageProps) => {
     // TODO: 對機器人回答不滿意，點擊後，重新送出訊息 (20240701 - Shirley)
     // eslint-disable-next-line
     console.log('resendClickHandler');
+    resendCallback();
   };
 
   const likeClickHandler = () => {
@@ -110,15 +130,72 @@ const ChatMessage = ({ sender, role, content, file }: ChatMessageProps) => {
           <div className="flex w-1200px flex-col overflow-x-auto">
             <div className="text-xl font-bold leading-8">{sender}</div>
             <div className="mt-2 whitespace-pre-wrap text-base leading-6 tracking-normal">
-              {content}
+              {messages[selectedMsgIndex].content}
             </div>
 
             {/* Info: 用戶登入後，機器人的訊息 (20240701 - Shirley) */}
             {role === MessageRole.BOT && signedIn ? (
               <div className="flex gap-2">
-                {file && (
+                {!!messages[selectedMsgIndex].file && (
                   <div className="mt-2">
-                    <UploadedFileItem file={file} retry={() => {}} delete={() => {}} />
+                    <UploadedFileItem
+                      file={messages[selectedMsgIndex].file ?? ({} as IFile)}
+                      retry={() => {}}
+                      delete={() => {}}
+                    />
+                  </div>
+                )}
+
+                {messages.length > 1 && (
+                  <div className="mt-3 flex flex-row items-center">
+                    <Button
+                      onClick={() => setSelectedMsgIndex(Math.max(0, selectedMsgIndex - 1))}
+                      size={'extraSmall'}
+                      variant={'secondaryBorderless'}
+                      className="px-1 py-0"
+                      disabled={selectedMsgIndex === 0}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="none"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          className="fill-current"
+                          fillRule="evenodd"
+                          d="M10.645 3.724a.75.75 0 010 1.06L7.27 8.16l3.376 3.376a.75.75 0 01-1.06 1.061L5.677 8.691a.75.75 0 010-1.06l3.906-3.907a.75.75 0 011.061 0z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                    </Button>
+                    {/* Info: nowPage / totalPage (20240701 - Shirley) */}
+                    <div className="flex w-40px flex-row items-center justify-center text-base">{`${selectedMsgIndex + 1} / ${messages.length}`}</div>
+                    <Button
+                      onClick={() =>
+                        setSelectedMsgIndex(Math.min(messages.length - 1, selectedMsgIndex + 1))
+                      }
+                      size={'extraSmall'}
+                      variant={'secondaryBorderless'}
+                      className="px-1 py-0"
+                      disabled={selectedMsgIndex === messages.length - 1}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="none"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          className="fill-current"
+                          fillRule="evenodd"
+                          d="M5.678 3.724a.75.75 0 011.06 0l3.907 3.906a.75.75 0 010 1.06L6.74 12.598a.75.75 0 11-1.06-1.06L9.053 8.16 5.678 4.784a.75.75 0 010-1.06z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                    </Button>
                   </div>
                 )}
                 <Button
@@ -185,7 +262,10 @@ const ChatMessage = ({ sender, role, content, file }: ChatMessageProps) => {
                 </Button>
 
                 <Button
-                  onClick={resendClickHandler}
+                  onClick={() => {
+                    setSelectedMsgIndex(selectedMsgIndex + 1);
+                    resendClickHandler();
+                  }}
                   size={'extraSmall'}
                   variant={'secondaryBorderless'}
                   className="px-1 pt-5"
@@ -258,14 +338,17 @@ const ChatMessage = ({ sender, role, content, file }: ChatMessageProps) => {
         // Info: 用戶登入後，用戶的訊息 (20240701 - Shirley)
         <div className="mt-0 flex w-full justify-end gap-5 self-start whitespace-nowrap font-barlow">
           <div className="flex w-1200px flex-col items-end justify-center overflow-x-auto">
-            {file && (
+            {!!messages[selectedMsgIndex].file && (
               <div className="mt-2">
-                <UploadedFileItem isStatusVisible={false} file={file} />
+                <UploadedFileItem
+                  isStatusVisible={false}
+                  file={messages[selectedMsgIndex].file ?? ({} as IFile)}
+                />
               </div>
             )}
 
             <div className="mt-2 whitespace-pre-wrap text-base leading-6 tracking-normal">
-              {content}
+              {messages[selectedMsgIndex].content}
             </div>
           </div>
 

@@ -78,6 +78,7 @@ module.exports = {
         'function-paren-newline': 'off',
         'no-confusing-arrow': 'off',
         'implicit-arrow-linebreak': 'off',
+        'react/jsx-curly-newline': 'off',
       },
     },
   ],

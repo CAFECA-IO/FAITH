@@ -17,7 +17,7 @@ import { TopicIcons } from '@/constants/display';
 
 const ChatThreadSection = () => {
   const { signedIn } = useUserCtx();
-  const { selectedChat: chat, userAddMessage } = useChatCtx();
+  const { selectedChat: chat, userAddMessage, resendQuestion } = useChatCtx();
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -79,8 +79,9 @@ const ChatThreadSection = () => {
         className="hideScrollbar h-screen overflow-y-auto overflow-x-hidden pt-56"
       >
         <div className="mx-20 flex flex-col gap-10">
-          {chat.messages.map((message: IMessage) => (
+          {chat.messages.map((message: IMessage, index: number) => (
             <ChatMessage
+              resend={() => resendQuestion(index)}
               sender={
                 message.role === MessageRole.VISITOR
                   ? DisplayedSender.VISITOR
@@ -88,10 +89,13 @@ const ChatThreadSection = () => {
                     ? DisplayedSender.BOT
                     : DisplayedSender.USER
               }
-              key={message.id}
+              key={message.messages[0].id}
               role={message.role}
-              content={message.content}
-              file={message.file}
+              messages={message.messages}
+              // content={message.messages[0].content}
+              // file={message.messages[0].file}
+              // createdAt={message.messages[0].createdAt}
+              // id={message.messages[0].id}
             />
           ))}
         </div>
@@ -102,7 +106,7 @@ const ChatThreadSection = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  }, [chat?.messages]);
+  }, [chat?.messages.length]);
 
   return <div>{displayedChatContent}</div>;
 };
