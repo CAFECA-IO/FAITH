@@ -17,13 +17,21 @@ import { TopicIcons } from '@/constants/display';
 
 const ChatThreadSection = () => {
   const { signedIn } = useUserCtx();
-  const { selectedChat: chat, userAddMessage, resendQuestion } = useChatCtx();
+  const { selectedChat: chat, userAddMessage, resendQuestion, dislikeSelectedMsg } = useChatCtx();
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   // TODO: dummy data (20240627 - Shirley)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [topicOptions, setTopicOptions] = useState<IChatTopic[]>(dummyChatTopics);
+
+  useEffect(() => {
+    dislikeSelectedMsg(false);
+  }, [chat]);
+
+  const getDislike = (bool: boolean) => {
+    dislikeSelectedMsg(bool);
+  };
 
   const topicClickHandler = (title: string) => {
     userAddMessage({
@@ -52,7 +60,7 @@ const ChatThreadSection = () => {
   // Info: if chat list is not empty, show chat list, otherwise show default chat content (20240626 - Shirley)
   const displayedChatContent =
     !chat || chat.messages.length === 0 ? (
-      <div className="flex h-screen flex-col justify-center pt-56">
+      <div className="flex h-screen flex-col justify-center">
         {/* Info: logo, greetings, random chat topics (20240626 - Shirley) */}
         <div className="flex flex-col px-5">
           <div className="flex w-full justify-center">
@@ -76,7 +84,7 @@ const ChatThreadSection = () => {
     ) : chat.messages.length > 0 ? (
       <div
         ref={chatContainerRef}
-        className="hideScrollbar h-screen overflow-y-auto overflow-x-hidden pt-56"
+        className="hideScrollbar h-screen overflow-y-auto overflow-x-hidden pb-10 pt-20"
       >
         <div className="mx-20 flex flex-col gap-10">
           {chat.messages.map((message: IMessage, index: number) => (
@@ -92,10 +100,7 @@ const ChatThreadSection = () => {
               key={message.messages[0].id}
               role={message.role}
               messages={message.messages}
-              // content={message.messages[0].content}
-              // file={message.messages[0].file}
-              // createdAt={message.messages[0].createdAt}
-              // id={message.messages[0].id}
+              dislike={getDislike}
             />
           ))}
         </div>

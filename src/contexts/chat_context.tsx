@@ -33,6 +33,9 @@ interface ChatContextType {
   updateMessage: (messageIndex: number, updatedMessage: IMessage) => void;
   deleteMessage: (messageIndex: number) => void;
   resendQuestion: (messageIndex: number) => void;
+  isDislikeSelectedMsg: boolean;
+  dislikeSelectedMsg: (bool: boolean) => void;
+  isResendSelectedMsg: boolean;
 
   chatBriefs: IChatBrief[] | null;
   handleChatBriefs: (chatBriefs: IChatBrief[]) => void;
@@ -72,6 +75,9 @@ const ChatContext = createContext<ChatContextType>({
   updateMessage: () => {},
   deleteMessage: () => {},
   resendQuestion: () => {},
+  isDislikeSelectedMsg: false,
+  dislikeSelectedMsg: () => {},
+  isResendSelectedMsg: false,
 
   chatBriefs: null as IChatBrief[] | null,
   handleChatBriefs: () => {},
@@ -114,6 +120,19 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [selectedChat, setSelectedChat, selectedChatRef] = useStateRef<IChat | null>(null);
   const [file, setFile] = useStateRef<IFile | null>(null);
   const [uploadTimeout, setUploadTimeout] = useStateRef<NodeJS.Timeout | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isDislikeSelectedMsg, setIsDislikeSelectedMsg, isDislikeSelectedMsgRef] =
+    useStateRef(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isResendSelectedMsg, setIsResendSelectedMsg, isResendSelectedMsgRef] = useStateRef(false);
+
+  const dislikeSelectedMsg = (bool: boolean) => {
+    setIsDislikeSelectedMsg(bool);
+  };
+
+  const resendSelectedMsg = (bool: boolean) => {
+    setIsResendSelectedMsg(bool);
+  };
 
   const saveFile = (item: IFile) => {
     // ToDo: (20240628 - Shirley) 保存文件到服務器
@@ -248,6 +267,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
               ...msg.messages[0],
               content: oldMsg + ' ' + getTimestamp(),
               id: uuidv4(),
+              dislike: false,
+              like: false,
             };
             return {
               ...msg,
@@ -258,6 +279,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         }),
       };
       setSelectedChat(updatedChat);
+      // Info: this is to trigger the feedback section to show up (20240702 - Shirley)
+      resendSelectedMsg(true);
       if (chatsRef.current) {
         setChats(
           chatsRef.current.map((chat: IChat) => (chat.id === updatedChat.id ? updatedChat : chat))
@@ -496,6 +519,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     updateMessage,
     deleteMessage,
     resendQuestion,
+    isDislikeSelectedMsg: isDislikeSelectedMsgRef.current,
+    dislikeSelectedMsg,
+    isResendSelectedMsg: isResendSelectedMsgRef.current,
 
     chatBriefs: chatBriefsRef.current,
     handleChatBriefs,

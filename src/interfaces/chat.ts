@@ -32,6 +32,8 @@ export interface IMessageWithoutRole {
   content: string;
   createdAt: number;
   file?: IFile;
+  dislike?: boolean;
+  like?: boolean;
 }
 
 export interface IMessage {

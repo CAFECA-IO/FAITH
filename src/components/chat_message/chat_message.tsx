@@ -2,41 +2,35 @@ import { Button } from '@/components/button/button';
 import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item';
 import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
 import { useUserCtx } from '@/contexts/user_context';
-import { MessageRole, DisplayedSender, IMessage, IMessageWithoutRole } from '@/interfaces/chat';
+import { MessageRole, DisplayedSender, IMessage } from '@/interfaces/chat';
 import { IFile } from '@/interfaces/file';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // TODO: replaced by IMessage (20240701 - Shirley)
 interface ChatMessageProps extends IMessage {
   sender: DisplayedSender;
   resend: () => void;
-  messages: IMessageWithoutRole[];
-  // role: MessageRole;
-  // content: string;
-  // file?: IFile;
+  dislike: (bool: boolean) => void;
 }
 
 const ChatMessage = ({
   sender,
   role,
   messages,
-  // content,
-  // file,
-  // createdAt,
-  // id,
   resend: resendCallback,
+  dislike: dislikeCallback,
 }: ChatMessageProps) => {
   const { signedIn } = useUserCtx();
   const [isCopySuccess, setIsCopySuccess] = useState(false);
-  const [isLikeSuccess, setIsLikeSuccess] = useState(false);
-  const [isDislikeSuccess, setIsDislikeSuccess] = useState(false);
   const [selectedMsgIndex, setSelectedMsgIndex] = useState(messages.length - 1 ?? 0);
-  // const [isFileExist, setIsFileExist] = useState(!!messages[selectedMsgIndex].file);
+  const [isLikeSuccess, setIsLikeSuccess] = useState(!!messages[selectedMsgIndex].like);
+  const [isDislikeSuccess, setIsDislikeSuccess] = useState(!!messages[selectedMsgIndex].dislike);
 
-  // useEffect(() => {
-  //   setIsFileExist(!!messages[selectedMsgIndex].file);
-  // }, [selectedMsgIndex]);
+  useEffect(() => {
+    setIsLikeSuccess(!!messages[selectedMsgIndex].like);
+    setIsDislikeSuccess(!!messages[selectedMsgIndex].dislike);
+  }, [selectedMsgIndex]);
 
   const readAloadClickHandler = () => {
     // TODO: 點擊後，開始朗誦答案 (20240701 - Shirley)
@@ -64,19 +58,24 @@ const ChatMessage = ({
   };
 
   const likeClickHandler = () => {
-    // TODO: 點擊後，點讚 (20240701 - Shirley)
-    // eslint-disable-next-line
-    console.log('likeClickHandler');
-
     setIsLikeSuccess(true);
+    if (!messages[selectedMsgIndex].like) {
+      setIsLikeSuccess(true);
+      // TODO: refactor with `const updatedMessage = { ...messages[selectedMsgIndex], like: true };` after calling API (20240702 - Shirley)
+      // eslint-disable-next-line no-param-reassign
+      messages[selectedMsgIndex].like = true;
+    }
   };
 
   const dislikeClickHandler = () => {
-    // TODO: 點擊後，點踩 (20240701 - Shirley)
-    // eslint-disable-next-line
-    console.log('dislikeClickHandler');
-
     setIsDislikeSuccess(true);
+    if (!messages[selectedMsgIndex].dislike) {
+      setIsDislikeSuccess(true);
+      dislikeCallback(true);
+      // TODO: refactor with `const updatedMessage = { ...messages[selectedMsgIndex], dislike: true };` after calling API (20240702 - Shirley)
+      // eslint-disable-next-line no-param-reassign
+      messages[selectedMsgIndex].dislike = true;
+    }
   };
 
   const displayedAvatar =
@@ -135,7 +134,7 @@ const ChatMessage = ({
 
             {/* Info: 用戶登入後，機器人的訊息 (20240701 - Shirley) */}
             {role === MessageRole.BOT && signedIn ? (
-              <div className="flex gap-2">
+              <div className="my-0 flex gap-2">
                 {!!messages[selectedMsgIndex].file && (
                   <div className="mt-2">
                     <UploadedFileItem
@@ -147,7 +146,7 @@ const ChatMessage = ({
                 )}
 
                 {messages.length > 1 && (
-                  <div className="mt-3 flex flex-row items-center">
+                  <div className="mt-4 flex flex-row items-center justify-start">
                     <Button
                       onClick={() => setSelectedMsgIndex(Math.max(0, selectedMsgIndex - 1))}
                       size={'extraSmall'}
@@ -290,7 +289,7 @@ const ChatMessage = ({
                   onClick={likeClickHandler}
                   size={'extraSmall'}
                   variant={'secondaryBorderless'}
-                  className={`px-1 pt-5 ${isLikeSuccess ? 'hidden' : ''}`}
+                  className={`px-1 pt-5 ${isDislikeSuccess ? 'hidden' : isLikeSuccess ? 'text-surface-brand-primary' : ''}`}
                 >
                   {' '}
                   <svg
@@ -312,7 +311,7 @@ const ChatMessage = ({
                   onClick={dislikeClickHandler}
                   size={'extraSmall'}
                   variant={'secondaryBorderless'}
-                  className={`px-1 pt-5 ${isDislikeSuccess ? 'text-surface-brand-primary' : ''}`}
+                  className={`px-1 pt-5 ${isDislikeSuccess ? 'text-surface-brand-primary' : isLikeSuccess ? 'hidden' : ''}`}
                 >
                   {' '}
                   <svg

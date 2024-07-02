@@ -1,6 +1,6 @@
 {
   "name": "FAITH",
-  "version": "0.1.0+11",
+  "version": "0.1.0+12",
   "private": false,
   "scripts": {
     "dev": "next dev",
@@ -21,6 +21,7 @@
     "cookie": "^0.6.0",
     "next": "14.2.4",
     "react": "^18",
+    "react-dnd": "^16.0.1",
     "react-dom": "^18",
     "react-usestateref": "^1.0.9",
     "tailwind-merge": "^2.3.0",

@@ -7,21 +7,75 @@ import ChatThreadSection from '@/components/chat_thread_section/chat_thread_sect
 import { useGlobalCtx } from '@/contexts/global_context';
 import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item';
 import { FileStatus } from '@/interfaces/file';
+import { Button } from '@/components/button/button';
+import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
 
 const ChatPageBody = () => {
   const { signedIn } = useUserCtx();
-  const { userAddMessage, selectedChat, file, cancelUpload, clearFile, retryFileUpload } =
-    useChatCtx();
+  const {
+    userAddMessage,
+    selectedChat,
+    file,
+    cancelUpload,
+    clearFile,
+    retryFileUpload,
+    isDislikeSelectedMsg,
+    isResendSelectedMsg,
+  } = useChatCtx();
   const { fileUploadModalVisibilityHandler } = useGlobalCtx();
 
   const [prompt, setPrompt] = useState('');
   const [rows, setRows] = useState(1);
   const [isComposing, setIsComposing] = useState(false);
+  const [isFeedbackVisible, setIsFeedbackVisible] = useState(false);
+  const [isFeedbackSubmitted, setIsFeedbackSubmitted] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Info: 如果檔案正在上傳或者上傳失敗，就不能送出；有檔案並且檔案上傳成功，或者輸入框有文字，則可以送出 (20240701 - Shirley)
   const isSubmitAllowed = file?.status === FileStatus.success || (!file && !!prompt);
+
+  const feedbackClickHandler = () => {
+    setIsFeedbackVisible(!isFeedbackVisible);
+  };
+
+  // TODO: 點不同 message 的 dislike 需跳出 feedback section (20240702 - Shirley)
+  // eslint-disable-next-line no-console
+  console.log(
+    'isResendSelectedMsg in ChatPageBody',
+    isResendSelectedMsg,
+    'isDislikeSelectedMsg',
+    isDislikeSelectedMsg,
+    'isFeedbackVisible',
+    isFeedbackVisible,
+    'isFeedbackSubmitted',
+    isFeedbackSubmitted
+  );
+
+  const feedbackSubmitHandler = (msg: string) => {
+    setIsFeedbackSubmitted(true);
+    // TODO: send message to server (20240702 - Shirley)
+    // eslint-disable-next-line no-console
+    console.log('feedbackSubmitHandler', msg);
+  };
+
+  useEffect(() => {
+    if (isFeedbackSubmitted) {
+      setTimeout(() => {
+        setIsFeedbackSubmitted(false);
+        setIsFeedbackVisible(false);
+      }, DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS);
+    }
+  }, [isFeedbackSubmitted]);
+
+  useEffect(() => {
+    if (isDislikeSelectedMsg || isResendSelectedMsg) {
+      setIsFeedbackVisible(true);
+    } else {
+      setIsFeedbackVisible(false);
+      setIsFeedbackSubmitted(false);
+    }
+  }, [isDislikeSelectedMsg, isResendSelectedMsg]);
 
   const retryUploadClickHandler = () => {
     retryFileUpload();
@@ -115,6 +169,184 @@ const ChatPageBody = () => {
     }
   }, [selectedChat?.id]);
 
+  /*
+isFeedbackSubmitted ? (
+      <div className="w-full py-5">
+        <div className="relative flex w-full items-start rounded-sm border border-dashed border-stroke-neutral-mute px-5 py-5">
+          <div className="flex w-full items-center justify-center">
+            <div className="text-base font-normal text-text-neutral-tertiary">
+              Thank you for your feedback!
+            </div>
+          </div>
+          <Button
+            onClick={feedbackClickHandler}
+            className="absolute right-0 top-0"
+            variant={'secondaryBorderless'}
+            size={'extraSmall'}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="none"
+              viewBox="0 0 16 16"
+            >
+              <path
+                className="fill-current"
+                fillRule="evenodd"
+                d="M4.376 4.375a.75.75 0 011.06 0L8.162 7.1l2.725-2.725a.75.75 0 011.061 1.06L9.222 8.16l2.725 2.725a.75.75 0 11-1.06 1.061L8.16 9.221l-2.724 2.725a.75.75 0 01-1.061-1.06L7.1 8.16 4.376 5.436a.75.75 0 010-1.061z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+          </Button>
+        </div>
+      </div>
+    ) :
+  */
+
+  const feedbackSection = isFeedbackVisible ? (
+    isDislikeSelectedMsg ? (
+      <div className="w-full py-5">
+        <div className="relative flex w-full items-start rounded-sm border border-dashed border-stroke-neutral-mute px-5 py-5">
+          {isFeedbackSubmitted ? (
+            <div className="flex w-full items-center justify-center">
+              <div className="text-base font-normal text-text-neutral-tertiary">
+                Thank you for your feedback!
+              </div>
+            </div>
+          ) : (
+            <div className="flex w-full items-center gap-5">
+              <div className="text-base font-normal text-text-neutral-tertiary">
+                Tell us your idea:
+              </div>
+              <div className="flex gap-2 whitespace-nowrap text-sm">
+                <Button
+                  onClick={() => feedbackSubmitHandler(`I don’t like this answer`)}
+                  variant={'secondaryOutline'}
+                  size={'medium'}
+                  className=""
+                >
+                  I don&apos;t like this answer
+                </Button>
+                <Button
+                  onClick={() => feedbackSubmitHandler('Error answer')}
+                  variant={'secondaryOutline'}
+                  size={'medium'}
+                  className=""
+                >
+                  Error answer
+                </Button>
+                <Button
+                  onClick={() => feedbackSubmitHandler('Incomplete information')}
+                  variant={'secondaryOutline'}
+                  size={'medium'}
+                  className=""
+                >
+                  Incomplete information
+                </Button>
+                {/* TODO: open the feedback input modal (20240702 - Shirley) */}
+                <Button
+                  onClick={() => {}}
+                  variant={'secondaryOutline'}
+                  size={'extraSmall'}
+                  className=""
+                >
+                  ...{' '}
+                </Button>
+              </div>
+            </div>
+          )}
+          <Button
+            onClick={feedbackClickHandler}
+            className="absolute right-0 top-0"
+            variant={'secondaryBorderless'}
+            size={'extraSmall'}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="none"
+              viewBox="0 0 16 16"
+            >
+              <path
+                className="fill-current"
+                fillRule="evenodd"
+                d="M4.376 4.375a.75.75 0 011.06 0L8.162 7.1l2.725-2.725a.75.75 0 011.061 1.06L9.222 8.16l2.725 2.725a.75.75 0 11-1.06 1.061L8.16 9.221l-2.724 2.725a.75.75 0 01-1.061-1.06L7.1 8.16 4.376 5.436a.75.75 0 010-1.061z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+          </Button>
+        </div>
+      </div>
+    ) : isResendSelectedMsg ? (
+      <div className="w-full py-5">
+        <div className="relative flex w-full items-start rounded-sm border border-dashed border-stroke-neutral-mute px-5 py-3">
+          {isFeedbackSubmitted ? (
+            <div className="flex w-full items-center justify-center">
+              <div className="text-base font-normal text-text-neutral-tertiary">
+                Thank you for your feedback!
+              </div>
+            </div>
+          ) : (
+            <div className="flex w-full items-center gap-5">
+              <div className="text-base font-normal text-text-neutral-tertiary">
+                Is this response better or worse?
+              </div>
+              <div className="flex gap-2 whitespace-nowrap text-sm">
+                <Button
+                  onClick={() => feedbackSubmitHandler('better')}
+                  variant={'secondaryOutline'}
+                  size={'medium'}
+                  className=""
+                >
+                  Better
+                </Button>
+                <Button
+                  onClick={() => feedbackSubmitHandler('worse')}
+                  variant={'secondaryOutline'}
+                  size={'medium'}
+                  className=""
+                >
+                  Worse
+                </Button>
+                <Button
+                  onClick={() => feedbackSubmitHandler('same')}
+                  variant={'secondaryOutline'}
+                  size={'medium'}
+                  className=""
+                >
+                  Same
+                </Button>
+              </div>
+            </div>
+          )}
+          <Button
+            onClick={feedbackClickHandler}
+            className="absolute right-0 top-0"
+            variant={'secondaryBorderless'}
+            size={'extraSmall'}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="none"
+              viewBox="0 0 16 16"
+            >
+              <path
+                className="fill-current"
+                fillRule="evenodd"
+                d="M4.376 4.375a.75.75 0 011.06 0L8.162 7.1l2.725-2.725a.75.75 0 011.061 1.06L9.222 8.16l2.725 2.725a.75.75 0 11-1.06 1.061L8.16 9.221l-2.724 2.725a.75.75 0 01-1.061-1.06L7.1 8.16 4.376 5.436a.75.75 0 010-1.061z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+          </Button>
+        </div>
+      </div>
+    ) : null
+  ) : null;
+
   const displayedPromptInput = (
     <div className="relative flex-1">
       {/* Info: file uploading status displaying (20240701 - Shirley) */}
@@ -191,17 +423,19 @@ const ChatPageBody = () => {
 
   return (
     // TODO: mobile version is not implemented yet (20240627 - Shirley)
-    <div className="hidden lg:block">
-      <div className="flex w-full flex-col">
+    <div className="hidden lg:flex lg:h-screen lg:flex-col">
+      <div className="hideScrollbar grow overflow-auto">
         <ChatThreadSection />
+      </div>
 
-        {/* Info: Chat input (20240626 - Shirley) */}
-        <div className={`mb-5 mt-9 flex w-full flex-col px-20 max-md:max-w-full`}>
-          <div>{displayedPromptInput}</div>
+      {/* Info: Chat input (20240626 - Shirley) */}
+      <div className={`mb-2 mt-1 flex w-full flex-col px-20 max-md:max-w-full`}>
+        {feedbackSection}
 
-          <div className="mt-2 text-sm leading-5 tracking-normal text-input-text-secondary max-md:max-w-full">
-            Faith may encounter errors. Please check important information.
-          </div>
+        <div>{displayedPromptInput}</div>
+
+        <div className="mt-2 text-sm leading-5 tracking-normal text-input-text-secondary max-md:max-w-full">
+          Faith may encounter errors. Please check important information.
         </div>
       </div>
     </div>
