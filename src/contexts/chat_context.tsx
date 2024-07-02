@@ -36,6 +36,7 @@ interface ChatContextType {
   isDislikeSelectedMsg: boolean;
   dislikeSelectedMsg: (bool: boolean) => void;
   isResendSelectedMsg: boolean;
+  resendSelectedMsg: (bool: boolean) => void;
 
   chatBriefs: IChatBrief[] | null;
   handleChatBriefs: (chatBriefs: IChatBrief[]) => void;
@@ -78,6 +79,7 @@ const ChatContext = createContext<ChatContextType>({
   isDislikeSelectedMsg: false,
   dislikeSelectedMsg: () => {},
   isResendSelectedMsg: false,
+  resendSelectedMsg: () => {},
 
   chatBriefs: null as IChatBrief[] | null,
   handleChatBriefs: () => {},
@@ -522,6 +524,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     isDislikeSelectedMsg: isDislikeSelectedMsgRef.current,
     dislikeSelectedMsg,
     isResendSelectedMsg: isResendSelectedMsgRef.current,
+    resendSelectedMsg,
 
     chatBriefs: chatBriefsRef.current,
     handleChatBriefs,

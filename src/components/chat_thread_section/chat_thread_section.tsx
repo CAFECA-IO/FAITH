@@ -17,7 +17,13 @@ import { TopicIcons } from '@/constants/display';
 
 const ChatThreadSection = () => {
   const { signedIn } = useUserCtx();
-  const { selectedChat: chat, userAddMessage, resendQuestion, dislikeSelectedMsg } = useChatCtx();
+  const {
+    selectedChat: chat,
+    userAddMessage,
+    resendQuestion,
+    dislikeSelectedMsg,
+    resendSelectedMsg,
+  } = useChatCtx();
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -27,7 +33,8 @@ const ChatThreadSection = () => {
 
   useEffect(() => {
     dislikeSelectedMsg(false);
-  }, [chat]);
+    resendSelectedMsg(false);
+  }, [chat?.id]);
 
   const getDislike = (bool: boolean) => {
     dislikeSelectedMsg(bool);

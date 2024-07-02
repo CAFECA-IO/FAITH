@@ -29,6 +29,8 @@ const ChatPageBody = () => {
   const [isComposing, setIsComposing] = useState(false);
   const [isFeedbackVisible, setIsFeedbackVisible] = useState(false);
   const [isFeedbackSubmitted, setIsFeedbackSubmitted] = useState(false);
+  const [isMsgDisliked, setIsMsgDisliked] = useState(false);
+  const [isMsgResent, setIsMsgResent] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -44,8 +46,12 @@ const ChatPageBody = () => {
   console.log(
     'isResendSelectedMsg in ChatPageBody',
     isResendSelectedMsg,
+    'isMsgResent',
+    isMsgResent,
     'isDislikeSelectedMsg',
     isDislikeSelectedMsg,
+    'isMsgDisliked',
+    isMsgDisliked,
     'isFeedbackVisible',
     isFeedbackVisible,
     'isFeedbackSubmitted',
@@ -60,22 +66,41 @@ const ChatPageBody = () => {
   };
 
   useEffect(() => {
+    setIsFeedbackVisible(false);
+    setIsFeedbackSubmitted(false);
+
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+
+      setIsMsgDisliked(false);
+      setIsMsgResent(false);
+    }
+  }, [selectedChat?.id]);
+
+  useEffect(() => {
     if (isFeedbackSubmitted) {
       setTimeout(() => {
         setIsFeedbackSubmitted(false);
         setIsFeedbackVisible(false);
+        setIsMsgDisliked(false);
+        setIsMsgResent(false);
       }, DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS);
     }
   }, [isFeedbackSubmitted]);
 
   useEffect(() => {
-    if (isDislikeSelectedMsg || isResendSelectedMsg) {
+    setIsMsgDisliked(isDislikeSelectedMsg);
+    setIsMsgResent(isResendSelectedMsg);
+  }, [isDislikeSelectedMsg, isResendSelectedMsg]);
+
+  useEffect(() => {
+    if (isMsgDisliked || isMsgResent) {
       setIsFeedbackVisible(true);
     } else {
       setIsFeedbackVisible(false);
       setIsFeedbackSubmitted(false);
     }
-  }, [isDislikeSelectedMsg, isResendSelectedMsg]);
+  }, [isMsgDisliked, isMsgResent]);
 
   const retryUploadClickHandler = () => {
     retryFileUpload();
@@ -162,47 +187,6 @@ const ChatPageBody = () => {
       lessenTextArea(e);
     }
   };
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.focus();
-    }
-  }, [selectedChat?.id]);
-
-  /*
-isFeedbackSubmitted ? (
-      <div className="w-full py-5">
-        <div className="relative flex w-full items-start rounded-sm border border-dashed border-stroke-neutral-mute px-5 py-5">
-          <div className="flex w-full items-center justify-center">
-            <div className="text-base font-normal text-text-neutral-tertiary">
-              Thank you for your feedback!
-            </div>
-          </div>
-          <Button
-            onClick={feedbackClickHandler}
-            className="absolute right-0 top-0"
-            variant={'secondaryBorderless'}
-            size={'extraSmall'}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="none"
-              viewBox="0 0 16 16"
-            >
-              <path
-                className="fill-current"
-                fillRule="evenodd"
-                d="M4.376 4.375a.75.75 0 011.06 0L8.162 7.1l2.725-2.725a.75.75 0 011.061 1.06L9.222 8.16l2.725 2.725a.75.75 0 11-1.06 1.061L8.16 9.221l-2.724 2.725a.75.75 0 01-1.061-1.06L7.1 8.16 4.376 5.436a.75.75 0 010-1.061z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-          </Button>
-        </div>
-      </div>
-    ) :
-  */
 
   const feedbackSection = isFeedbackVisible ? (
     isDislikeSelectedMsg ? (
