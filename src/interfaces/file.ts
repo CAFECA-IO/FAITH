@@ -17,7 +17,7 @@ export const FileTypeIcons = {
   png: '/icons/png.svg',
   jpg: '/icons/jpg.svg',
   svg: '/icons/svg.svg',
-  json: '/icons/txt.svg',
+  json: '/icons/json.svg',
 };
 
 export const ALLOWED_FILE_TYPES = [

@@ -67,7 +67,7 @@ const ChatThreadSection = () => {
           </div>
 
           <div className="self-center text-3xl font-bold text-stroke-neutral-secondary">
-            How can I help you today?
+            Hi, I am Faith, the AI Accountant.
           </div>
 
           {displayedChatTopics}
