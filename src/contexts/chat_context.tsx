@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useUserCtx } from '@/contexts/user_context';
 import {
+  DisplayedFeedback,
   IChat,
   IChatBrief,
   IFolder,
@@ -32,11 +33,12 @@ interface ChatContextType {
   userAddMessage: (message: IMessageWithoutRole) => void;
   updateMessage: (messageIndex: number, updatedMessage: IMessage) => void;
   deleteMessage: (messageIndex: number) => void;
-  resendQuestion: (messageIndex: number) => void;
-  isDislikeSelectedMsg: boolean;
-  dislikeSelectedMsg: (bool: boolean) => void;
-  isResendSelectedMsg: boolean;
-  resendSelectedMsg: (bool: boolean) => void;
+  resendMessage: (messageIndex: number) => void;
+  dislikedMsg: string[];
+  resentMsg: string[];
+  addDislikedMsg: (messageId: string) => void;
+  addResentMsg: (messageId: string) => void;
+  displayedFeedback: DisplayedFeedback;
 
   chatBriefs: IChatBrief[] | null;
   handleChatBriefs: (chatBriefs: IChatBrief[]) => void;
@@ -75,11 +77,12 @@ const ChatContext = createContext<ChatContextType>({
   userAddMessage: () => {},
   updateMessage: () => {},
   deleteMessage: () => {},
-  resendQuestion: () => {},
-  isDislikeSelectedMsg: false,
-  dislikeSelectedMsg: () => {},
-  isResendSelectedMsg: false,
-  resendSelectedMsg: () => {},
+  resendMessage: () => {},
+  dislikedMsg: [],
+  resentMsg: [],
+  addDislikedMsg: () => {},
+  addResentMsg: () => {},
+  displayedFeedback: DisplayedFeedback.RESEND,
 
   chatBriefs: null as IChatBrief[] | null,
   handleChatBriefs: () => {},
@@ -123,17 +126,21 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [file, setFile] = useStateRef<IFile | null>(null);
   const [uploadTimeout, setUploadTimeout] = useStateRef<NodeJS.Timeout | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isDislikeSelectedMsg, setIsDislikeSelectedMsg, isDislikeSelectedMsgRef] =
-    useStateRef(false);
+  const [dislikedMsg, setDislikedMsg, dislikedMsgRef] = useStateRef<string[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isResendSelectedMsg, setIsResendSelectedMsg, isResendSelectedMsgRef] = useStateRef(false);
+  const [resentMsg, setResentMsg, resentMsgRef] = useStateRef<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [displayedFeedback, setDisplayedFeedback, displayedFeedbackRef] =
+    useStateRef<DisplayedFeedback>(DisplayedFeedback.RESEND);
 
-  const dislikeSelectedMsg = (bool: boolean) => {
-    setIsDislikeSelectedMsg(bool);
+  const addDislikedMsg = (messageId: string) => {
+    setDislikedMsg((prev) => [...prev, messageId]);
+    setDisplayedFeedback(DisplayedFeedback.DISLIKE);
   };
 
-  const resendSelectedMsg = (bool: boolean) => {
-    setIsResendSelectedMsg(bool);
+  const addResentMsg = (messageId: string) => {
+    setResentMsg((prev) => [...prev, messageId]);
+    setDisplayedFeedback(DisplayedFeedback.RESEND);
   };
 
   const saveFile = (item: IFile) => {
@@ -258,7 +265,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const resendQuestion = (messageIndex: number) => {
+  const resendMessage = (messageIndex: number) => {
     if (selectedChatRef.current) {
       const updatedChat = {
         ...selectedChatRef.current,
@@ -281,8 +288,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         }),
       };
       setSelectedChat(updatedChat);
-      // Info: this is to trigger the feedback section to show up (20240702 - Shirley)
-      resendSelectedMsg(true);
+      // TODO: add the latest msg into resentMsg array (20240702 - Shirley)
+      // addResentMsg(updatedChat.messages[0].messages[0].id);
       if (chatsRef.current) {
         setChats(
           chatsRef.current.map((chat: IChat) => (chat.id === updatedChat.id ? updatedChat : chat))
@@ -520,11 +527,16 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     userAddMessage,
     updateMessage,
     deleteMessage,
-    resendQuestion,
-    isDislikeSelectedMsg: isDislikeSelectedMsgRef.current,
-    dislikeSelectedMsg,
-    isResendSelectedMsg: isResendSelectedMsgRef.current,
-    resendSelectedMsg,
+    resendMessage,
+    // isDislikeSelectedMsg: isDislikeSelectedMsgRef.current,
+    // dislikeSelectedMsg,
+    // isResendSelectedMsg: isResendSelectedMsgRef.current,
+    // resendSelectedMsg,
+    dislikedMsg: dislikedMsgRef.current,
+    addDislikedMsg,
+    resentMsg: resentMsgRef.current,
+    addResentMsg,
+    displayedFeedback: displayedFeedbackRef.current,
 
     chatBriefs: chatBriefsRef.current,
     handleChatBriefs,

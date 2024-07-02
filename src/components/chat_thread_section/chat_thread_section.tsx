@@ -17,28 +17,13 @@ import { TopicIcons } from '@/constants/display';
 
 const ChatThreadSection = () => {
   const { signedIn } = useUserCtx();
-  const {
-    selectedChat: chat,
-    userAddMessage,
-    resendQuestion,
-    dislikeSelectedMsg,
-    resendSelectedMsg,
-  } = useChatCtx();
+  const { selectedChat: chat, userAddMessage, resendMessage } = useChatCtx();
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   // TODO: dummy data (20240627 - Shirley)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [topicOptions, setTopicOptions] = useState<IChatTopic[]>(dummyChatTopics);
-
-  useEffect(() => {
-    dislikeSelectedMsg(false);
-    resendSelectedMsg(false);
-  }, [chat?.id]);
-
-  const getDislike = (bool: boolean) => {
-    dislikeSelectedMsg(bool);
-  };
 
   const topicClickHandler = (title: string) => {
     userAddMessage({
@@ -96,7 +81,7 @@ const ChatThreadSection = () => {
         <div className="mx-20 flex flex-col gap-10">
           {chat.messages.map((message: IMessage, index: number) => (
             <ChatMessage
-              resend={() => resendQuestion(index)}
+              resend={() => resendMessage(index)}
               sender={
                 message.role === MessageRole.VISITOR
                   ? DisplayedSender.VISITOR
@@ -107,7 +92,6 @@ const ChatThreadSection = () => {
               key={message.messages[0].id}
               role={message.role}
               messages={message.messages}
-              dislike={getDislike}
             />
           ))}
         </div>

@@ -1,6 +1,7 @@
 import { Button } from '@/components/button/button';
 import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item';
 import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
+import { useChatCtx } from '@/contexts/chat_context';
 import { useUserCtx } from '@/contexts/user_context';
 import { MessageRole, DisplayedSender, IMessage } from '@/interfaces/chat';
 import { IFile } from '@/interfaces/file';
@@ -11,17 +12,11 @@ import React, { useEffect, useState } from 'react';
 interface ChatMessageProps extends IMessage {
   sender: DisplayedSender;
   resend: () => void;
-  dislike: (bool: boolean) => void;
 }
 
-const ChatMessage = ({
-  sender,
-  role,
-  messages,
-  resend: resendCallback,
-  dislike: dislikeCallback,
-}: ChatMessageProps) => {
+const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMessageProps) => {
   const { signedIn } = useUserCtx();
+  const { addResentMsg, addDislikedMsg } = useChatCtx();
   const [isCopySuccess, setIsCopySuccess] = useState(false);
   const [selectedMsgIndex, setSelectedMsgIndex] = useState(messages.length - 1 ?? 0);
   const [isLikeSuccess, setIsLikeSuccess] = useState(!!messages[selectedMsgIndex].like);
@@ -40,21 +35,17 @@ const ChatMessage = ({
 
   const copyClickHandler = () => {
     navigator.clipboard.writeText(messages[selectedMsgIndex].content);
-
-    // navigator.clipboard.writeText(content);
-
     setIsCopySuccess(true);
-    // Info: 3 秒後將 isCopySuccess 設回 false (20240701 - Shirley)
+
+    // Info: 1 秒後將 isCopySuccess 設回 false (20240701 - Shirley)
     setTimeout(() => {
       setIsCopySuccess(false);
     }, DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS);
   };
 
   const resendClickHandler = () => {
-    // TODO: 對機器人回答不滿意，點擊後，重新送出訊息 (20240701 - Shirley)
-    // eslint-disable-next-line
-    console.log('resendClickHandler');
     resendCallback();
+    addResentMsg(messages[selectedMsgIndex].id);
   };
 
   const likeClickHandler = () => {
@@ -71,7 +62,9 @@ const ChatMessage = ({
     setIsDislikeSuccess(true);
     if (!messages[selectedMsgIndex].dislike) {
       setIsDislikeSuccess(true);
-      dislikeCallback(true);
+      // dislikeCallback(true);
+      addDislikedMsg(messages[selectedMsgIndex].id);
+
       // TODO: refactor with `const updatedMessage = { ...messages[selectedMsgIndex], dislike: true };` after calling API (20240702 - Shirley)
       // eslint-disable-next-line no-param-reassign
       messages[selectedMsgIndex].dislike = true;

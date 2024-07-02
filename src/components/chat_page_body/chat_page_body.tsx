@@ -9,6 +9,7 @@ import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item
 import { FileStatus } from '@/interfaces/file';
 import { Button } from '@/components/button/button';
 import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
+import { DisplayedFeedback } from '@/interfaces/chat';
 
 const ChatPageBody = () => {
   const { signedIn } = useUserCtx();
@@ -19,8 +20,9 @@ const ChatPageBody = () => {
     cancelUpload,
     clearFile,
     retryFileUpload,
-    isDislikeSelectedMsg,
-    isResendSelectedMsg,
+    dislikedMsg,
+    resentMsg,
+    displayedFeedback,
   } = useChatCtx();
   const { fileUploadModalVisibilityHandler } = useGlobalCtx();
 
@@ -40,23 +42,6 @@ const ChatPageBody = () => {
   const feedbackClickHandler = () => {
     setIsFeedbackVisible(!isFeedbackVisible);
   };
-
-  // TODO: 點不同 message 的 dislike 需跳出 feedback section (20240702 - Shirley)
-  // eslint-disable-next-line no-console
-  console.log(
-    'isResendSelectedMsg in ChatPageBody',
-    isResendSelectedMsg,
-    'isMsgResent',
-    isMsgResent,
-    'isDislikeSelectedMsg',
-    isDislikeSelectedMsg,
-    'isMsgDisliked',
-    isMsgDisliked,
-    'isFeedbackVisible',
-    isFeedbackVisible,
-    'isFeedbackSubmitted',
-    isFeedbackSubmitted
-  );
 
   const feedbackSubmitHandler = (msg: string) => {
     setIsFeedbackSubmitted(true);
@@ -89,9 +74,20 @@ const ChatPageBody = () => {
   }, [isFeedbackSubmitted]);
 
   useEffect(() => {
-    setIsMsgDisliked(isDislikeSelectedMsg);
-    setIsMsgResent(isResendSelectedMsg);
-  }, [isDislikeSelectedMsg, isResendSelectedMsg]);
+    if (dislikedMsg.length > 0 || resentMsg.length > 0) {
+      setIsFeedbackVisible(true);
+      if (displayedFeedback === DisplayedFeedback.DISLIKE) {
+        setIsMsgDisliked(true);
+        setIsMsgResent(false);
+      } else {
+        setIsMsgResent(true);
+        setIsMsgDisliked(false);
+      }
+    } else {
+      setIsFeedbackVisible(false);
+      setIsFeedbackSubmitted(false);
+    }
+  }, [dislikedMsg.length, resentMsg.length]);
 
   useEffect(() => {
     if (isMsgDisliked || isMsgResent) {
@@ -189,7 +185,7 @@ const ChatPageBody = () => {
   };
 
   const feedbackSection = isFeedbackVisible ? (
-    isDislikeSelectedMsg ? (
+    isMsgDisliked ? (
       <div className="w-full py-5">
         <div className="relative flex w-full items-start rounded-sm border border-dashed border-stroke-neutral-mute px-5 py-5">
           {isFeedbackSubmitted ? (
@@ -263,7 +259,7 @@ const ChatPageBody = () => {
           </Button>
         </div>
       </div>
-    ) : isResendSelectedMsg ? (
+    ) : isMsgResent ? (
       <div className="w-full py-5">
         <div className="relative flex w-full items-start rounded-sm border border-dashed border-stroke-neutral-mute px-5 py-3">
           {isFeedbackSubmitted ? (

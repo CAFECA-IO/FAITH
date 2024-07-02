@@ -1,6 +1,11 @@
 import { IFile } from '@/interfaces/file';
 import { v4 as uuidv4 } from 'uuid';
 
+export enum DisplayedFeedback {
+  DISLIKE = 'dislike',
+  RESEND = 'resend',
+}
+
 export interface IFolder {
   id: string;
   name: string;
