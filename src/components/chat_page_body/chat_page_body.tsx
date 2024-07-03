@@ -27,6 +27,7 @@ const ChatPageBody = () => {
     dislikedMsg,
     resentMsg,
     displayedFeedback,
+    pendingMsg,
   } = useChatCtx();
   const { fileUploadModalVisibilityHandler, toastHandler } = useGlobalCtx();
 
@@ -41,7 +42,8 @@ const ChatPageBody = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Info: 如果檔案正在上傳或者上傳失敗，就不能送出；有檔案並且檔案上傳成功，或者輸入框有文字，則可以送出 (20240701 - Shirley)
-  const isSubmitAllowed = file?.status === FileStatus.success || (!file && !!prompt);
+  const isSubmitAllowed =
+    (file?.status === FileStatus.success || (!file && !!prompt)) && pendingMsg.length === 0;
 
   const feedbackClickHandler = () => {
     setIsFeedbackVisible(!isFeedbackVisible);

@@ -12,8 +12,7 @@ import typingIndicator from '../../../public/animations/typing_indicator.json';
 
 interface ChatMessageProps extends IMessageWithRole {
   sender: DisplayedSender;
-  resend: () => void;
-  isPending?: boolean;
+  resend: () => Promise<void>;
 }
 
 interface BotPendingMessageProps {
@@ -21,24 +20,23 @@ interface BotPendingMessageProps {
   role: MessageRole;
 }
 
-const ChatMessage = ({
-  sender,
-  role,
-  messages,
-  resend: resendCallback,
-  isPending,
-}: ChatMessageProps) => {
+const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMessageProps) => {
   const { signedIn } = useUserCtx();
   const { addResentMsg, addDislikedMsg } = useChatCtx();
   const [isCopySuccess, setIsCopySuccess] = useState(false);
   const [selectedMsgIndex, setSelectedMsgIndex] = useState(messages.length - 1 ?? 0);
-  const [isLikeSuccess, setIsLikeSuccess] = useState(!!messages[selectedMsgIndex].like);
-  const [isDislikeSuccess, setIsDislikeSuccess] = useState(!!messages[selectedMsgIndex].dislike);
+  const [isLikeSuccess, setIsLikeSuccess] = useState(!!messages[selectedMsgIndex]?.like);
+  const [isDislikeSuccess, setIsDislikeSuccess] = useState(!!messages[selectedMsgIndex]?.dislike);
+  const [isPending, setIsPending] = useState(!!messages[selectedMsgIndex]?.isPending);
 
   useEffect(() => {
-    setIsLikeSuccess(!!messages[selectedMsgIndex].like);
-    setIsDislikeSuccess(!!messages[selectedMsgIndex].dislike);
+    setIsLikeSuccess(!!messages[selectedMsgIndex]?.like);
+    setIsDislikeSuccess(!!messages[selectedMsgIndex]?.dislike);
   }, [selectedMsgIndex]);
+
+  useEffect(() => {
+    setIsPending(!!messages[selectedMsgIndex]?.isPending);
+  }, [messages[selectedMsgIndex]?.isPending]);
 
   const readAloadClickHandler = () => {
     // TODO: 點擊後，開始朗誦答案 (20240701 - Shirley)
@@ -56,8 +54,8 @@ const ChatMessage = ({
     }, DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS);
   };
 
-  const resendClickHandler = () => {
-    resendCallback();
+  const resendClickHandler = async () => {
+    await resendCallback();
     addResentMsg(messages[selectedMsgIndex].id);
   };
 
@@ -136,7 +134,7 @@ const ChatMessage = ({
             <div className="text-xl font-bold leading-8">{sender}</div>
             <div className="mt-2 whitespace-pre-wrap text-base leading-6 tracking-normal">
               {/* {messages[selectedMsgIndex].content} */}
-              {isPending ? (
+              {messages[selectedMsgIndex].isPending ? (
                 <Lottie className="w-50px" animationData={typingIndicator} loop />
               ) : (
                 messages[selectedMsgIndex].content
@@ -209,6 +207,7 @@ const ChatMessage = ({
                     </div>
                   )}
                   <Button
+                    disabled={isPending}
                     onClick={readAloadClickHandler}
                     size={'extraSmall'}
                     variant={'secondaryBorderless'}
@@ -232,6 +231,7 @@ const ChatMessage = ({
                   </Button>
 
                   <Button
+                    disabled={isPending}
                     onClick={copyClickHandler}
                     size={'extraSmall'}
                     variant={'secondaryBorderless'}
@@ -272,6 +272,7 @@ const ChatMessage = ({
                   </Button>
 
                   <Button
+                    disabled={isPending}
                     onClick={() => {
                       setSelectedMsgIndex(selectedMsgIndex + 1);
                       resendClickHandler();
@@ -297,6 +298,7 @@ const ChatMessage = ({
                     </svg>
                   </Button>
                   <Button
+                    disabled={isPending}
                     onClick={likeClickHandler}
                     size={'extraSmall'}
                     variant={'secondaryBorderless'}
@@ -319,6 +321,7 @@ const ChatMessage = ({
                     </svg>
                   </Button>
                   <Button
+                    disabled={isPending}
                     onClick={dislikeClickHandler}
                     size={'extraSmall'}
                     variant={'secondaryBorderless'}

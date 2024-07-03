@@ -39,6 +39,7 @@ export interface IMessage {
   file?: IFile;
   dislike?: boolean;
   like?: boolean;
+  isPending?: boolean;
 }
 
 export interface IMessageWithRole {
