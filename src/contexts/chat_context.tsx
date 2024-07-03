@@ -5,8 +5,8 @@ import {
   IChat,
   IChatBrief,
   IFolder,
+  IMessageWithRole,
   IMessage,
-  IMessageWithoutRole,
   MessageRole,
   dummyChatBriefs,
   dummyChats,
@@ -26,9 +26,9 @@ interface ChatContextType {
   setSelectedChat: (chat: IChat | null) => void;
   selectChat: (id: string) => void;
 
-  addMessage: (message: IMessage) => void;
-  userAddMessage: (message: IMessageWithoutRole) => void;
-  updateMessage: (messageIndex: number, updatedMessage: IMessage) => void;
+  addMessage: (message: IMessageWithRole) => void;
+  userAddMessage: (message: IMessage) => void;
+  updateMessage: (messageIndex: number, updatedMessage: IMessageWithRole) => void;
   deleteMessage: (messageIndex: number) => void;
   resendMessage: (messageIndex: number) => void;
   dislikedMsg: string[];
@@ -213,7 +213,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setFile(null);
   };
 
-  const addMessage = (message: IMessage) => {
+  const addMessage = (message: IMessageWithRole) => {
     if (selectedChatRef.current) {
       const updatedChat = {
         ...selectedChatRef.current,
@@ -228,16 +228,16 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const userAddMessage = (message: IMessageWithoutRole) => {
+  const userAddMessage = (message: IMessage) => {
     const role = signedIn ? MessageRole.USER : MessageRole.VISITOR;
     addMessage({ role, messages: [message] });
   };
 
-  const updateMessage = (messageIndex: number, updatedMessage: IMessage) => {
+  const updateMessage = (messageIndex: number, updatedMessage: IMessageWithRole) => {
     if (selectedChatRef.current) {
       const updatedChat = {
         ...selectedChatRef.current,
-        messages: selectedChatRef.current.messages.map((msg: IMessage, index: number) =>
+        messages: selectedChatRef.current.messages.map((msg: IMessageWithRole, index: number) =>
           index === messageIndex ? updatedMessage : msg
         ),
       };
@@ -255,7 +255,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       const updatedChat = {
         ...selectedChatRef.current,
         messages: selectedChatRef.current.messages.filter(
-          (_: IMessage, index: number) => index !== messageIndex
+          (_: IMessageWithRole, index: number) => index !== messageIndex
         ),
       };
       setSelectedChat(updatedChat);
@@ -516,7 +516,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
           console.log('answer', answer);
         }
 
-        const botMessage: IMessage = {
+        const botMessage: IMessageWithRole = {
           role: MessageRole.BOT,
           messages: [
             {
@@ -533,7 +533,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         // eslint-disable-next-line no-console
         console.error('Error calling API:', error);
 
-        const errorMessage: IMessage = {
+        const errorMessage: IMessageWithRole = {
           role: MessageRole.BOT,
           messages: [
             {

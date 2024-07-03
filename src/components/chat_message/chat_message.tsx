@@ -4,13 +4,13 @@ import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item
 import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
 import { useChatCtx } from '@/contexts/chat_context';
 import { useUserCtx } from '@/contexts/user_context';
-import { MessageRole, DisplayedSender, IMessage } from '@/interfaces/chat';
+import { MessageRole, DisplayedSender, IMessageWithRole } from '@/interfaces/chat';
 import { IFile } from '@/interfaces/file';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import typingIndicator from '../../../public/animations/typing_indicator.json';
 
-interface ChatMessageProps extends IMessage {
+interface ChatMessageProps extends IMessageWithRole {
   sender: DisplayedSender;
   resend: () => void;
   isPending?: boolean;

@@ -3,7 +3,7 @@ import ChatTopicOption from '@/components/chat_topic_option/chat_topic_option';
 import { useChatCtx } from '@/contexts/chat_context';
 import {
   IChatTopic,
-  IMessage,
+  IMessageWithRole,
   MessageRole,
   DisplayedSender,
   dummyChatTopics,
@@ -82,7 +82,7 @@ const ChatThreadSection = () => {
         )}
       >
         <div className="mx-20 flex flex-col gap-10">
-          {selectedChat.messages.map((message: IMessage, index: number) => (
+          {selectedChat.messages.map((message: IMessageWithRole, index: number) => (
             <ChatMessage
               resend={() => resendMessage(index)}
               sender={
