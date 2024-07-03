@@ -9,7 +9,7 @@ import { Button } from '@/components/button/button';
 import { useGlobalCtx } from '@/contexts/global_context';
 import { MessageType } from '@/interfaces/message_modal';
 import { ISharedLink, dummySharedLinks } from '@/interfaces/shared_link';
-import Pagination from '../pagination/pagination';
+import Pagination from '@/components/pagination/pagination';
 
 interface IChatSettingModalProps {
   isModalVisible: boolean;

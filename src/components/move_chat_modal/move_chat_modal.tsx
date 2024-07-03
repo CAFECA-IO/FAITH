@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import useOuterClick from '@/lib/hooks/use_outer_click';
-import { Button } from '../button/button';
+import { Button } from '@/components/button/button';
 
 interface IMoveChatModalProps {
   isModalVisible: boolean;
@@ -51,6 +51,7 @@ const MoveChatModal = ({ isModalVisible, modalVisibilityHandler }: IMoveChatModa
           };
           return (
             <button
+              key={folder}
               type="button"
               className="flex w-full items-center justify-between px-12px py-10px text-base hover:bg-dropdown-surface-item-hover"
               onClick={clickHandler}

@@ -13,8 +13,9 @@ import TopicModal from '@/components/topic_modal/topic_modal';
 import ReportCommentModal from '@/components/report_comment_modal/report_comment_modal';
 import RegisterFormModal from '@/components/register_form_modal/register_form_modal';
 import FileUploadModal from '@/components/file_upload_modal/file_upload_modal';
-import Toast from '@/components/toast/toast';
 import MoveChatModal from '@/components/move_chat_modal/move_chat_modal';
+import UpdateLinkModal from '@/components/update_link_modal/update_link_modal';
+import Toast from '@/components/toast/toast';
 
 interface IGlobalContext {
   isMessageModalVisible: boolean;
@@ -44,6 +45,9 @@ interface IGlobalContext {
   isMoveChatModalVisible: boolean;
   moveChatModalVisibilityHandler: () => void;
 
+  isUpdateLinkModalVisible: boolean;
+  updateLinkModalVisibilityHandler: () => void;
+
   toastHandler: (props: IToastify) => void;
   eliminateToast: (id?: string) => void;
 }
@@ -72,6 +76,8 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
   const [isFileUploadModalVisible, setIsFileUploadModalVisible] = useState(false);
 
   const [isMoveChatModalVisible, setIsMoveChatModalVisible] = useState(false);
+
+  const [isUpdateLinkModalVisible, setIsUpdateLinkModalVisible] = useState(false);
 
   const messageModalVisibilityHandler = () => {
     setIsMessageModalVisible(!isMessageModalVisible);
@@ -110,6 +116,10 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
 
   const moveChatModalVisibilityHandler = () => {
     setIsMoveChatModalVisible(!isMoveChatModalVisible);
+  };
+
+  const updateLinkModalVisibilityHandler = () => {
+    setIsUpdateLinkModalVisible(!isUpdateLinkModalVisible);
   };
 
   // Info: (20240509 - Julian) toast handler
@@ -242,6 +252,8 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     fileUploadModalVisibilityHandler,
     isMoveChatModalVisible,
     moveChatModalVisibilityHandler,
+    isUpdateLinkModalVisible,
+    updateLinkModalVisibilityHandler,
     toastHandler,
     eliminateToast,
   };
@@ -283,6 +295,11 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
       <MoveChatModal
         isModalVisible={isMoveChatModalVisible}
         modalVisibilityHandler={moveChatModalVisibilityHandler}
+      />
+
+      <UpdateLinkModal
+        isModalVisible={isUpdateLinkModalVisible}
+        modalVisibilityHandler={updateLinkModalVisibilityHandler}
       />
 
       <Toast />
