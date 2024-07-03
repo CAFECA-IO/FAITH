@@ -487,8 +487,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       // eslint-disable-next-line no-console
       console.log('userMessage', userMessage);
 
-      // const workaround = '/api/v1/chat';
-
       try {
         const response = await fetch(EXTERNAL_API.LLAMA_API, {
           method: 'POST',
