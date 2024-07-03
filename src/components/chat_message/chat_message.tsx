@@ -8,7 +8,7 @@ import { MessageRole, DisplayedSender, IMessageWithRole } from '@/interfaces/cha
 import { IFile } from '@/interfaces/file';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import typingIndicator from '../../../public/animations/typing_indicator.json';
+import typingIndicator from '@public/animations/typing_indicator.json';
 
 interface ChatMessageProps extends IMessageWithRole {
   sender: DisplayedSender;
