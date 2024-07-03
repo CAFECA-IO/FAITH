@@ -14,6 +14,7 @@ import ReportCommentModal from '@/components/report_comment_modal/report_comment
 import RegisterFormModal from '@/components/register_form_modal/register_form_modal';
 import FileUploadModal from '@/components/file_upload_modal/file_upload_modal';
 import Toast from '@/components/toast/toast';
+import MoveChatModal from '@/components/move_chat_modal/move_chat_modal';
 
 interface IGlobalContext {
   isMessageModalVisible: boolean;
@@ -39,6 +40,9 @@ interface IGlobalContext {
 
   isFileUploadModalVisible: boolean;
   fileUploadModalVisibilityHandler: () => void;
+
+  isMoveChatModalVisible: boolean;
+  moveChatModalVisibilityHandler: () => void;
 
   toastHandler: (props: IToastify) => void;
   eliminateToast: (id?: string) => void;
@@ -66,6 +70,8 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
   );
 
   const [isFileUploadModalVisible, setIsFileUploadModalVisible] = useState(false);
+
+  const [isMoveChatModalVisible, setIsMoveChatModalVisible] = useState(false);
 
   const messageModalVisibilityHandler = () => {
     setIsMessageModalVisible(!isMessageModalVisible);
@@ -100,6 +106,10 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
 
   const fileUploadModalVisibilityHandler = () => {
     setIsFileUploadModalVisible(!isFileUploadModalVisible);
+  };
+
+  const moveChatModalVisibilityHandler = () => {
+    setIsMoveChatModalVisible(!isMoveChatModalVisible);
   };
 
   // Info: (20240509 - Julian) toast handler
@@ -230,6 +240,8 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     registerModalVisibilityHandler,
     isFileUploadModalVisible,
     fileUploadModalVisibilityHandler,
+    isMoveChatModalVisible,
+    moveChatModalVisibilityHandler,
     toastHandler,
     eliminateToast,
   };
@@ -266,6 +278,11 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
       <FileUploadModal
         isModalVisible={isFileUploadModalVisible}
         modalVisibilityHandler={fileUploadModalVisibilityHandler}
+      />
+
+      <MoveChatModal
+        isModalVisible={isMoveChatModalVisible}
+        modalVisibilityHandler={moveChatModalVisibilityHandler}
       />
 
       <Toast />
