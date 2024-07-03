@@ -522,6 +522,12 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
       setSelectedChat(updatedChat);
 
+      if (chatsRef.current) {
+        setChats(
+          chatsRef.current.map((chat: IChat) => (chat.id === updatedChat.id ? updatedChat : chat))
+        );
+      }
+
       try {
         const newAnswer = await askBot(
           selectedChatRef.current.messages[messageIndex - 1].messages[0].content
