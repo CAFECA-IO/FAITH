@@ -12,15 +12,12 @@ import {
   dummyChats,
   dummyFolders,
 } from '@/interfaces/chat';
-import { getTimestamp, isValidFileType, timestampToString, wait } from '@/lib/utils/common';
-import {
-  DELAYED_FILE_UPLOAD_MILLISECONDS,
-  DELAYED_RESPONSE_MILLISECONDS,
-} from '@/constants/display';
+import { getTimestamp, isValidFileType, timestampToString } from '@/lib/utils/common';
+import { DELAYED_FILE_UPLOAD_MILLISECONDS } from '@/constants/display';
 import { createContext, useContext, useEffect } from 'react';
 import useStateRef from 'react-usestateref';
 import { useRouter } from 'next/router';
-import { NATIVE_ROUTE } from '@/constants/url';
+import { EXTERNAL_API, NATIVE_ROUTE } from '@/constants/url';
 import { FileStatus, FileStatusUnion, IFile } from '@/interfaces/file';
 import { LIMIT_FOR_FILE_SIZE } from '@/constants/config';
 
@@ -39,6 +36,7 @@ interface ChatContextType {
   addDislikedMsg: (messageId: string) => void;
   addResentMsg: (messageId: string) => void;
   displayedFeedback: DisplayedFeedback;
+  isPendingBotMsg: boolean;
 
   chatBriefs: IChatBrief[] | null;
   handleChatBriefs: (chatBriefs: IChatBrief[]) => void;
@@ -83,6 +81,7 @@ const ChatContext = createContext<ChatContextType>({
   addDislikedMsg: () => {},
   addResentMsg: () => {},
   displayedFeedback: DisplayedFeedback.RESEND,
+  isPendingBotMsg: false,
 
   chatBriefs: null as IChatBrief[] | null,
   handleChatBriefs: () => {},
@@ -132,6 +131,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [displayedFeedback, setDisplayedFeedback, displayedFeedbackRef] =
     useStateRef<DisplayedFeedback>(DisplayedFeedback.RESEND);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isPendingBotMsg, setIsPendingBotMsg, isPendingBotMsgRef] = useStateRef<boolean>(false);
+  // const [pendingMsg, setPendingMsg, pendingMsgRef] = useStateRef<IMessage[]>([]);
 
   const addDislikedMsg = (messageId: string) => {
     setDislikedMsg((prev) => [...prev, messageId]);
@@ -472,6 +474,85 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setFolders([]);
   };
 
+  const addBotMessage = async () => {
+    if (
+      selectedChatRef?.current?.messages &&
+      selectedChatRef?.current?.messages.length > 0 &&
+      selectedChatRef.current?.messages.at(-1)?.role !== MessageRole.BOT
+    ) {
+      setIsPendingBotMsg(true);
+      const userMessage = selectedChatRef.current?.messages.at(-1)?.messages.at(-1)?.content;
+      // const userMessage = selectedChatRef.current?.messages.at(-1)?.messages[0].content;
+      // Deprecated: (20240720 - Shirley)
+      // eslint-disable-next-line no-console
+      console.log('userMessage', userMessage);
+
+      // const workaround = '/api/v1/chat';
+
+      try {
+        const response = await fetch(EXTERNAL_API.LLAMA_API, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ question: userMessage }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        let answer = 'Sorry, I cannot answer this question.';
+        if (data) {
+          answer = JSON.stringify(data);
+
+          if (data.answerJson && data.answerJson.answer) {
+            answer = data.answerJson.answer;
+          } else if (data.answer && data.answer.answer) {
+            answer = data.answer.answer;
+          }
+          // Deprecated: (20240720 - Shirley)
+          // eslint-disable-next-line no-console
+          console.log('answer', answer);
+        }
+
+        const botMessage: IMessage = {
+          role: MessageRole.BOT,
+          messages: [
+            {
+              id: uuidv4(),
+              content: answer,
+              createdAt: getTimestamp(),
+            },
+          ],
+        };
+
+        addMessage(botMessage);
+      } catch (error) {
+        // Deprecated: (20240720 - Shirley)
+        // eslint-disable-next-line no-console
+        console.error('Error calling API:', error);
+
+        const errorMessage: IMessage = {
+          role: MessageRole.BOT,
+          messages: [
+            {
+              id: uuidv4(),
+              content: 'Sorry, an error occurred. Please try again later.',
+              createdAt: getTimestamp(),
+            },
+          ],
+        };
+
+        addMessage(errorMessage);
+      } finally {
+        setIsPendingBotMsg(false);
+      }
+    }
+  };
+
   useEffect(() => {
     if (signedIn) {
       setChats(dummyChats);
@@ -491,29 +572,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (selectedChatRef?.current?.messages.length === 0) return;
-    const addBotMessage = async () => {
-      if (
-        selectedChatRef?.current?.messages &&
-        selectedChatRef?.current?.messages.length > 0 &&
-        selectedChatRef.current?.messages.at(-1)?.role !== MessageRole.BOT
-      ) {
-        const botMessage: IMessage = {
-          role: MessageRole.BOT,
-          messages: [
-            {
-              id: uuidv4(),
-              content: 'Sure!',
-              createdAt: getTimestamp(),
-            },
-          ],
-        };
-
-        await wait(DELAYED_RESPONSE_MILLISECONDS);
-
-        addMessage(botMessage);
-      }
-    };
-
     addBotMessage();
   }, [selectedChatRef.current?.messages]);
 
@@ -533,6 +591,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     resentMsg: resentMsgRef.current,
     addResentMsg,
     displayedFeedback: displayedFeedbackRef.current,
+    isPendingBotMsg: isPendingBotMsgRef.current,
 
     chatBriefs: chatBriefsRef.current,
     handleChatBriefs,
