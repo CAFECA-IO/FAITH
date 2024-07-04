@@ -27,27 +27,28 @@ export enum DisplayedSender {
 }
 
 export enum MessageRole {
+  VISITOR = 'visitor',
   USER = 'user',
   BOT = 'bot',
-  VISITOR = 'visitor',
 }
 
-export interface IMessageWithoutRole {
+export interface IMessage {
   id: string;
   content: string;
   createdAt: number;
   file?: IFile;
   dislike?: boolean;
   like?: boolean;
+  isPending?: boolean;
 }
 
-export interface IMessage {
+export interface IMessageWithRole {
   role: MessageRole;
-  messages: IMessageWithoutRole[];
+  messages: IMessage[];
 }
 
 export interface IChat extends IChatBrief {
-  messages: IMessage[];
+  messages: IMessageWithRole[];
 }
 
 export enum ChatTopicType {
@@ -72,7 +73,7 @@ export const dummyChatBrief: IChatBrief = {
 
 export const dummyChatBriefs: IChatBrief[] = [dummyChatBrief];
 
-export const dummyMessage: IMessage = {
+export const dummyMessage: IMessageWithRole = {
   role: MessageRole.USER,
   messages: [
     {
@@ -83,7 +84,7 @@ export const dummyMessage: IMessage = {
   ],
 };
 
-export const dummyMessages: IMessage[] = [
+export const dummyMessages: IMessageWithRole[] = [
   {
     role: MessageRole.USER,
     messages: [
