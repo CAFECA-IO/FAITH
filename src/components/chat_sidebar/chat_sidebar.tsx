@@ -157,9 +157,11 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
 
   return (
     <Draggable
-      draggableId={chatBrief.id}
+      draggableId={`chat-${chatBrief.id}`}
       index={index}
-      isDragDisabled={chatBrief.id !== selectedChat?.id}
+      isDragDisabled={false} // Always allow dragging
+
+      // isDragDisabled={chatBrief.id !== selectedChat?.id}
     >
       {(provided) => (
         <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
@@ -316,12 +318,21 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
     </div>
   );
 
-  return <div>{displayedFolder}</div>;
+  return (
+    <Droppable droppableId={`folder-${chatFolder.id}`}>
+      {(provided) => (
+        <div {...provided.droppableProps} ref={provided.innerRef}>
+          {displayedFolder}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
+  );
 };
 
 const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
   const { signedIn } = useUserCtx();
-  const { chatBriefs, folders, addFolder } = useChatCtx();
+  const { chatBriefs, folders, addFolder, moveChatToFolder } = useChatCtx();
 
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -337,8 +348,14 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
       return;
     }
 
-    if (result.destination.droppableId === 'new-folder') {
-      const chatId = result.draggableId;
+    const chatId = result.draggableId.replace('chat-', '');
+    const destinationId = result.destination.droppableId;
+
+    // Deprecated: (20240720 - Shirley)
+    // eslint-disable-next-line no-console
+    console.log('onDragEnd', 'result:', result, 'ids:', chatId, destinationId);
+
+    if (destinationId === 'new-folder') {
       if (chatBriefs) {
         const chat = chatBriefs.find((item) => item.id === chatId);
 
@@ -352,6 +369,9 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
           addFolder(newFolder, chat);
         }
       }
+    } else if (destinationId.startsWith('folder-')) {
+      const folderId = destinationId.replace('folder-', '');
+      moveChatToFolder(chatId, folderId);
     }
   };
 
@@ -359,7 +379,34 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
     signedIn && // TODO: for demo，實際上要限制沒登入就不能新增資料夾，理論上這個條件不應該發生 (20240628 - Shirley)
     folders &&
     folders.length > 0 &&
-    folders.map((folder) => <ChatFolderItem chatFolder={folder} key={folder.id} />);
+    folders.map((folder) => (
+      <Droppable droppableId={`folder-${folder.id}`} key={folder.id}>
+        {(provided) => (
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            <ChatFolderItem chatFolder={folder} key={folder.id} />
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    ));
+
+  // const displayedFolders =
+  //   signedIn &&
+  //   folders &&
+  //   folders.length > 0 &&
+  //   folders.map((folder) => (
+  //     <Droppable droppableId={`folder-${folder.id}`} key={folder.id}>
+  //       {(provided) => (
+  //         <div {...provided.droppableProps} ref={provided.innerRef}>
+  //           <ChatFolderItem chatFolder={folder} key={folder.id} />
+  //           {folder.chats.map((chat, index) => (
+  //             <ChatBriefItem chatBrief={chat} key={chat.id} index={index} />
+  //           ))}
+  //           {provided.placeholder}
+  //         </div>
+  //       )}
+  //     </Droppable>
+  //   ));
 
   const displayedChatBriefs =
     signedIn && // TODO: for demo，實際上要限制沒登入就只能替代 chats array 中最後一個 chat (20240628 - Shirley)
@@ -444,10 +491,10 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
               </p>
             </div>
             <div className="hideScrollbar mb-10 mt-5 grow overflow-y-auto overflow-x-hidden">
+              {displayedFolders}
               <Droppable droppableId="chat-list">
                 {(provided) => (
                   <div {...provided.droppableProps} ref={provided.innerRef}>
-                    {displayedFolders}
                     {displayedChatBriefs}
                     {provided.placeholder}
                   </div>
@@ -475,7 +522,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
                 <Button
                   size={'medium'}
                   variant={'secondaryOutline'}
-                  className="text-button-text-secondary"
+                  className="px-4 text-button-text-secondary"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -491,7 +538,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                  <p className="text-base">Drop to Add Folder</p>{' '}
+                  <p className="text-base">Drop Chat to Add Folder</p>{' '}
                 </Button>
                 <div style={{ display: 'none' }}>{provided.placeholder}</div> {/* 隱藏佔位元素 */}
               </div>

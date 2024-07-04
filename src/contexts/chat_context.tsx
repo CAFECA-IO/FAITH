@@ -59,6 +59,7 @@ interface ChatContextType {
   addFolder: (folder: IFolder, chat?: IChatBrief) => void;
   renameFolder: (id: string, newName: string) => void;
   deleteFolder: (id: string) => void;
+  moveChatToFolder: (chatId: string, folderId: string) => void;
 
   file: IFile | null;
   handleFile: (file: File) => void;
@@ -107,6 +108,7 @@ const ChatContext = createContext<ChatContextType>({
   addFolder: () => {},
   renameFolder: () => {},
   deleteFolder: () => {},
+  moveChatToFolder: () => {},
 
   file: null,
   handleFile: () => {},
@@ -454,10 +456,14 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
           prevFolders
             ?.map((folder) => {
               if (folder.id === newFolderId) {
-                // 將聊天添加到新資料夾
+                // 將聊天添加到新資料夾並排序
+                const updatedChats = [
+                  ...folder.chats.filter((chat) => chat.id !== chatId),
+                  chatToMove,
+                ];
                 return {
                   ...folder,
-                  chats: [...folder.chats.filter((chat) => chat.id !== chatId), chatToMove],
+                  chats: updatedChats.sort((a, b) => b.createdAt - a.createdAt), // 新到舊排序
                 };
               } else {
                 // 從其他資料夾中移除聊天
@@ -469,6 +475,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
             })
             .filter((folder) => folder.chats.length > 0) || []
       );
+      // Deprecated: (20240720 - Shirley)
+      // eslint-disable-next-line no-console
+      console.log('foldersRef.current', foldersRef.current);
     }
   };
 
@@ -769,6 +778,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     addFolder,
     renameFolder,
     deleteFolder,
+    moveChatToFolder,
 
     file,
     handleFile,
