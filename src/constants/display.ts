@@ -15,7 +15,7 @@ export enum SortOptions {
 
 // Info: (20240628 - Julian) checkbox CSS style
 export const checkboxStyle =
-  'relative h-16px w-16px appearance-none rounded-xxs border border-navyBlue2 bg-white outline-none after:absolute after:top-0 after:-mt-3px after:ml-px after:hidden after:text-sm after:text-white after:content-checked checked:bg-navyBlue2 checked:after:block';
+  'relative h-16px w-16px appearance-none rounded-xxs border border-checkbox-surface-selected bg-white outline-none after:absolute after:top-0 after:-mt-3px after:ml-px after:hidden after:text-sm after:text-checkbox-stroke-check-mark after:content-checked checked:bg-checkbox-surface-selected checked:after:block';
 
 export const DELAYED_FILE_UPLOAD_MILLISECONDS = 1000;
 export const DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS = 1000;
