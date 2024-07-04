@@ -174,7 +174,7 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
       >
         {/* Info: (20240625 - Julian) Header */}
         <div className="flex items-center justify-between pl-40px pr-20px text-2xl font-bold text-text-neutral-primary">
-          <h1>User Code of Conduct </h1>
+          <h1>User Code of Conduct</h1>
           <button type="button" onClick={modalVisibilityHandler}>
             <Image src="/icons/cross.svg" width={32} height={32} alt="cross_icon" />
           </button>
