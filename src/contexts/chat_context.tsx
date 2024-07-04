@@ -56,9 +56,10 @@ interface ChatContextType {
 
   folders: IFolder[] | null;
   handleFolders: (folders: IFolder[]) => void;
-  addFolder: (folder: IFolder) => void;
+  addFolder: (folder: IFolder, chat?: IChatBrief) => void;
   renameFolder: (id: string, newName: string) => void;
   deleteFolder: (id: string) => void;
+  moveChatToFolder: (chatId: string, folderId: string) => void;
 
   file: IFile | null;
   handleFile: (file: File) => void;
@@ -107,6 +108,7 @@ const ChatContext = createContext<ChatContextType>({
   addFolder: () => {},
   renameFolder: () => {},
   deleteFolder: () => {},
+  moveChatToFolder: () => {},
 
   file: null,
   handleFile: () => {},
@@ -297,7 +299,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         description: item.description,
         messages: [],
         createdAt: item.createdAt,
-        folders: [],
+        folder: '',
       };
       setChats([...(chatsRef.current || []), newChat]);
     }
@@ -333,7 +335,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         name: item.name,
         description: item.description,
         createdAt: item.createdAt,
-        folders: item.folders,
+        folder: item.folder,
       }))
     );
   };
@@ -363,7 +365,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         name: item.name,
         description: item.description,
         createdAt: item.createdAt,
-        folders: [],
+        folder: '',
       });
       sortChats();
     }
@@ -379,7 +381,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       messages: [],
       description: `Chat - ${date} ${time}`,
       createdAt: nowTs,
-      folders: [],
+      folder: '',
     };
     addChat(chat);
   };
@@ -426,11 +428,87 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setFolders(items);
   };
 
-  const addFolder = (item: IFolder) => {
+  const moveChatToFolder = (chatId: string, newFolderId: string) => {
+    if (chatBriefsRef.current && foldersRef.current) {
+      // Info: 找到要移動的聊天 (20240704 - Shirley)
+      const chatToMove = chatBriefsRef.current.find((brief) => brief.id === chatId);
+      if (!chatToMove) return;
+
+      // Info: 更新 chatBriefs (20240704 - Shirley)
+      setChatBriefs(
+        (prevBriefs) =>
+          prevBriefs?.map((brief) =>
+            brief.id === chatId ? { ...brief, folder: newFolderId } : brief
+          ) || []
+      );
+
+      // Info: 更新 chats (20240704 - Shirley)
+      setChats(
+        (prevChats) =>
+          prevChats?.map((chat) =>
+            chat.id === chatId ? { ...chat, folder: newFolderId } : chat
+          ) || []
+      );
+
+      // Info: 更新 folders (20240704 - Shirley)
+      setFolders(
+        (prevFolders) =>
+          prevFolders
+            ?.map((folder) => {
+              if (folder.id === newFolderId) {
+                // Info: 將聊天添加到新資料夾並排序 (20240704 - Shirley)
+                const updatedChats = [
+                  ...folder.chats.filter((chat) => chat.id !== chatId),
+                  chatToMove,
+                ];
+                return {
+                  ...folder,
+                  chats: updatedChats.sort((a, b) => b.createdAt - a.createdAt), // Info: 新到舊排序 (20240704 - Shirley)
+                };
+              } else {
+                // Info: 從其他資料夾中移除聊天 (20240704 - Shirley)
+                return {
+                  ...folder,
+                  chats: folder.chats.filter((chat) => chat.id !== chatId),
+                };
+              }
+            })
+            .filter((folder) => folder.chats.length > 0) || []
+      );
+    }
+  };
+
+  const addFolder = (item: IFolder, chat?: IChatBrief) => {
     if (!signedIn) return;
 
-    if (foldersRef.current) {
-      setFolders([...foldersRef.current, item]);
+    setFolders((prevFolders) => [...(prevFolders || []), item]);
+
+    if (chat) {
+      // Info: 更新 chat 的 folders (20240704 - Shirley)
+      const updatedChat = {
+        ...chat,
+        folder: item.id,
+      };
+
+      if (chat.folder !== '') {
+        moveChatToFolder(chat.id, item.id);
+      } else {
+        // Info: 更新 chatBriefs (20240704 - Shirley)
+        setChatBriefs((prevChatBriefs) => {
+          return (
+            prevChatBriefs?.map((brief) => {
+              return brief.id === chat.id ? updatedChat : brief;
+            }) || []
+          );
+        });
+
+        // Info: 更新 chats (20240704 - Shirley)
+        setChats(
+          (prevChats) =>
+            prevChats?.map((c) => (c.id === chat.id ? { ...c, folder: updatedChat.folder } : c)) ||
+            []
+        );
+      }
     }
   };
 
@@ -456,41 +534,91 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setFolders([]);
   };
 
-  const askBot = async (question: string) => {
-    setIsPendingBotMsg(true);
+  const addBotMessage = async () => {
+    if (
+      selectedChatRef?.current?.messages &&
+      selectedChatRef?.current?.messages.length > 0 &&
+      selectedChatRef.current?.messages.at(-1)?.role !== MessageRole.BOT
+    ) {
+      setIsPendingBotMsg(true);
+      const userMessage = selectedChatRef.current?.messages.at(-1)?.messages.at(-1)?.content;
 
-    try {
-      const response = await fetch(EXTERNAL_API.LLAMA_API, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ question }),
-      });
+      const newMsgId = uuidv4();
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+      try {
+        addPendingMsg(newMsgId);
 
-      const data = await response.json();
+        const response = await fetch(EXTERNAL_API.LLAMA_API, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ question: userMessage }),
+        });
 
-      let answer = 'Sorry, I cannot answer this question.';
-      if (data) {
-        if (data.answerJson && data.answerJson.answer) {
-          answer = data.answerJson.answer;
-        } else if (data.answer && data.answer.answer) {
-          answer = data.answer.answer;
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
-      }
 
-      return answer;
-    } catch (error) {
-      // Deprecated: 20240720 - Shirley
-      // eslint-disable-next-line no-console
-      console.error('Error calling API:', error);
-      return 'Sorry, an error occurred. Please try again later.';
-    } finally {
-      setIsPendingBotMsg(false);
+        const reader = response.body?.getReader();
+        let answer = '';
+
+        const botMessage: IMessageWithRole = {
+          role: MessageRole.BOT,
+          messages: [
+            {
+              id: newMsgId,
+              content: '',
+              createdAt: getTimestamp(),
+              isPending: true,
+              like: false,
+              dislike: false,
+            },
+          ],
+        };
+
+        addMessage(botMessage);
+
+        while (reader) {
+          // Info: text animation (20240704 - Shirley)
+          // eslint-disable-next-line no-await-in-loop
+          const { done, value } = await reader.read();
+          if (done) {
+            break;
+          }
+          const chunkAnswer = new TextDecoder().decode(value);
+          answer += chunkAnswer;
+
+          // Info: 更新最後一條消息的內容 (20240704 - Shirley)
+          updateMessage(selectedChatRef.current.messages.length - 1, {
+            ...botMessage,
+            messages: [{ ...botMessage.messages[0], content: answer, isPending: false }],
+          });
+        }
+      } catch (error) {
+        // Deprecated: (20240720 - Shirley)
+        // eslint-disable-next-line no-console
+        console.error('Error calling API:', error);
+
+        const errorMessage: IMessageWithRole = {
+          role: MessageRole.BOT,
+          messages: [
+            {
+              id: newMsgId,
+              content: 'Sorry, an error occurred. Please try again later.',
+              createdAt: getTimestamp(),
+              isPending: false,
+              like: false,
+              dislike: false,
+            },
+          ],
+        };
+
+        addMessage(errorMessage);
+      } finally {
+        setIsPendingBotMsg(false);
+        removePendingMsg(newMsgId);
+      }
     }
   };
 
@@ -529,107 +657,66 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       try {
-        const newAnswer = await askBot(
-          selectedChatRef.current.messages[messageIndex - 1].messages[0].content
-        );
-
-        const finalUpdatedChat = {
-          ...updatedChat,
-          messages: updatedChat.messages.map((msg, index) => {
-            if (index === messageIndex && msg.role === MessageRole.BOT) {
-              const lastMessage = msg.messages[msg.messages.length - 1];
-              removePendingMsg(lastMessage.id);
-              return {
-                ...msg,
-                messages: [
-                  ...msg.messages.slice(0, -1),
-                  { ...lastMessage, content: newAnswer, isPending: false },
-                ],
-              };
-            }
-            return msg;
-          }),
-        };
-        setSelectedChat(finalUpdatedChat);
-      } catch (error) {
-        // Deprecated: 20240720 - Shirley
-        // eslint-disable-next-line no-console
-        console.error('Error calling API:', error);
-      }
-    }
-  };
-
-  const addBotMessage = async () => {
-    if (
-      selectedChatRef?.current?.messages &&
-      selectedChatRef?.current?.messages.length > 0 &&
-      selectedChatRef.current?.messages.at(-1)?.role !== MessageRole.BOT
-    ) {
-      setIsPendingBotMsg(true);
-      const userMessage = selectedChatRef.current?.messages.at(-1)?.messages.at(-1)?.content;
-
-      const newMsgId = uuidv4();
-
-      try {
-        addPendingMsg(newMsgId);
-
         const response = await fetch(EXTERNAL_API.LLAMA_API, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ question: userMessage }),
+          body: JSON.stringify({
+            question: selectedChatRef.current.messages[messageIndex - 1].messages[0].content,
+          }),
         });
 
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
 
-        const data = await response.json();
+        const reader = response.body?.getReader();
+        let answer = '';
+        while (reader) {
+          // Info: text animation (20240704 - Shirley)
+          // eslint-disable-next-line no-await-in-loop
+          const { done, value } = await reader.read();
+          if (done) {
+            break;
+          }
 
-        let answer = 'Sorry, I cannot answer this question.';
-        if (data) {
-          answer = JSON.stringify(data);
+          const chunkAnswer = new TextDecoder().decode(value);
+          answer += chunkAnswer;
 
-          if (data.answerJson && data.answerJson.answer) {
-            answer = data.answerJson.answer;
-          } else if (data.answer && data.answer.answer) {
-            answer = data.answer.answer;
+          const finalUpdatedChat = {
+            ...updatedChat,
+            // Info: 更新最後一條消息的內容 (20240704 - Shirley)
+            /* eslint-disable @typescript-eslint/no-loop-func */
+            messages: updatedChat.messages.map((msg, index) => {
+              if (index === messageIndex && msg.role === MessageRole.BOT) {
+                const lastMessage = msg.messages[msg.messages.length - 1];
+                removePendingMsg(lastMessage.id);
+                return {
+                  ...msg,
+                  messages: [
+                    ...msg.messages.slice(0, -1),
+                    { ...lastMessage, content: answer, isPending: false },
+                  ],
+                };
+              }
+              return msg;
+            }),
+          };
+
+          setSelectedChat(finalUpdatedChat);
+          if (chatsRef.current) {
+            setChats(
+              chatsRef.current.map((chat) =>
+                chat.id === finalUpdatedChat.id ? finalUpdatedChat : chat
+              )
+            );
           }
         }
-
-        const botMessage: IMessageWithRole = {
-          role: MessageRole.BOT,
-          messages: [
-            {
-              id: newMsgId,
-              content: answer,
-              createdAt: getTimestamp(),
-            },
-          ],
-        };
-
-        addMessage(botMessage);
       } catch (error) {
         // Deprecated: (20240720 - Shirley)
         // eslint-disable-next-line no-console
         console.error('Error calling API:', error);
-
-        const errorMessage: IMessageWithRole = {
-          role: MessageRole.BOT,
-          messages: [
-            {
-              id: newMsgId,
-              content: 'Sorry, an error occurred. Please try again later.',
-              createdAt: getTimestamp(),
-            },
-          ],
-        };
-
-        addMessage(errorMessage);
-      } finally {
-        setIsPendingBotMsg(false);
-        removePendingMsg(newMsgId);
       }
     }
   };
@@ -695,6 +782,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     addFolder,
     renameFolder,
     deleteFolder,
+    moveChatToFolder,
 
     file,
     handleFile,

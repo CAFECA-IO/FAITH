@@ -41,7 +41,7 @@ export default function Home() {
             className={`flex h-screen flex-col justify-end transition-all duration-300 ease-in-out ${isSidebarExpanded ? 'ml-240px' : ''}`}
           >
             {' '}
-            <ChatPageBody />
+            <ChatPageBody isSidebarExpanded={isSidebarExpanded} />
           </div>
         </div>
       </div>

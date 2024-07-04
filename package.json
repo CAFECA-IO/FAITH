@@ -1,6 +1,6 @@
 {
   "name": "FAITH",
-  "version": "0.1.0+14",
+  "version": "0.1.0+15",
   "private": false,
   "scripts": {
     "dev": "next dev",
@@ -14,6 +14,7 @@
     "production": "next start -p 80"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^16.6.0",
     "@passwordless-id/webauthn": "^1.6.1",
     "@types/cookie": "^0.6.0",
     "class-variance-authority": "^0.7.0",

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useUserCtx } from '@/contexts/user_context';
 import { useChatCtx } from '@/contexts/chat_context';
-import { getTimestamp } from '@/lib/utils/common';
+import { cn, getTimestamp } from '@/lib/utils/common';
 import React, { useEffect, useRef, useState } from 'react';
 import router from 'next/router';
 import ChatThreadSection from '@/components/chat_thread_section/chat_thread_section';
@@ -14,8 +14,13 @@ import { NATIVE_ROUTE } from '@/constants/url';
 import { Button } from '@/components/button/button';
 import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
 import { DisplayedFeedback } from '@/interfaces/chat';
+import Image from 'next/image';
 
-const ChatPageBody = () => {
+interface IChatPageBodyProps {
+  isSidebarExpanded: boolean;
+}
+
+const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
   const { signedIn } = useUserCtx();
   const {
     userAddMessage,
@@ -28,6 +33,7 @@ const ChatPageBody = () => {
     resentMsg,
     displayedFeedback,
     pendingMsg,
+    handleFile,
   } = useChatCtx();
   const { fileUploadModalVisibilityHandler, toastHandler } = useGlobalCtx();
 
@@ -38,6 +44,7 @@ const ChatPageBody = () => {
   const [isFeedbackSubmitted, setIsFeedbackSubmitted] = useState(false);
   const [isMsgDisliked, setIsMsgDisliked] = useState(false);
   const [isMsgResent, setIsMsgResent] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -211,6 +218,30 @@ const ChatPageBody = () => {
       submitPrompt();
     } else if (e.key === 'Backspace') {
       lessenTextArea(e);
+    }
+  };
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    setIsDragOver(true);
+
+    event.preventDefault();
+  };
+
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    setIsDragOver(false);
+
+    event.preventDefault();
+  };
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+
+    const droppedFile = event.dataTransfer.files[0];
+
+    if (droppedFile) {
+      setIsDragOver(false);
+
+      handleFile(droppedFile);
     }
   };
 
@@ -431,21 +462,57 @@ const ChatPageBody = () => {
     </div>
   );
 
-  return (
-    // TODO: mobile version is not implemented yet (20240627 - Shirley)
-    <div className="hidden lg:flex lg:h-screen lg:flex-col">
-      <div className="hideScrollbar grow overflow-auto">
-        <ChatThreadSection />
+  const displayedDragOverMask = isDragOver && (
+    <div
+      className={cn('absolute inset-0 z-100 mt-3.5rem bg-white/80', {
+        'ml-240px': isSidebarExpanded,
+      })}
+    >
+      {' '}
+      <div className="relative mx-auto flex h-full w-50vw items-center justify-center">
+        <div className="h-1/10 w-1/10">
+          {' '}
+          <Image src="/elements/dnd_bg.svg" alt="dnd_bg" layout="fill" objectFit="contain" />{' '}
+        </div>
+
+        {/* Info: remarks of allowed file (20240704 - Shirley) */}
+        <div className="absolute inset-x-0 bottom-0 z-100 mb-4 text-center">
+          <div className="flex flex-row items-end justify-around gap-5">
+            {' '}
+            <p className="mt-2 text-sm text-lightGray4">
+              Supported formats: PDF, TXT, PNG, JPEG, SVG, JSON
+            </p>
+            <p className="text-sm text-lightGray4">Maximum size: 50MB</p>
+          </div>
+        </div>
       </div>
+    </div>
+  );
 
-      {/* Info: Chat input (20240626 - Shirley) */}
-      <div className={`mb-2 mt-1 flex w-full flex-col px-20 max-md:max-w-full`}>
-        {feedbackSection}
+  return (
+    <div
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      className="hidden lg:block"
+    >
+      {/* TODO: mobile version is not implemented yet (20240627 - Shirley) */}
+      {displayedDragOverMask}
 
-        <div>{displayedPromptInput}</div>
+      <div className="flex lg:h-screen lg:flex-col">
+        <div className="hideScrollbar grow overflow-auto">
+          <ChatThreadSection />
+        </div>
 
-        <div className="mt-2 text-sm leading-5 tracking-normal text-input-text-secondary max-md:max-w-full">
-          Faith may encounter errors. Please check important information.
+        {/* Info: Chat input (20240626 - Shirley) */}
+        <div className={`mb-2 mt-1 flex w-full flex-col px-20 max-md:max-w-full`}>
+          {feedbackSection}
+
+          <div>{displayedPromptInput}</div>
+
+          <div className="mt-2 text-sm leading-5 tracking-normal text-input-text-secondary max-md:max-w-full">
+            Faith may encounter errors. Please check important information.
+          </div>
         </div>
       </div>
     </div>
