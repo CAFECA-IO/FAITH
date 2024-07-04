@@ -1,14 +1,26 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/button/button';
 import { useGlobalCtx } from '@/contexts/global_context';
 import { useUserCtx } from '@/contexts/user_context';
 import Image from 'next/image';
 import { ToastType } from '@/interfaces/toastify';
 import { ToastId } from '@/constants/toast_id';
+import { checkboxStyle } from '@/constants/display';
 
 const LoginPageBody = () => {
   const { signIn, signedIn } = useUserCtx();
-  const { registerModalVisibilityHandler, toastHandler, eliminateToast } = useGlobalCtx();
+  const {
+    registerModalVisibilityHandler,
+    toastHandler,
+    eliminateToast,
+    userCodeModalVisibilityHandler,
+  } = useGlobalCtx();
+
+  const [isUserGuideChecked, setIsUserGuideChecked] = useState(false);
+
+  const userGuideCheckHandler = () => {
+    setIsUserGuideChecked(!isUserGuideChecked);
+  };
 
   const logInClickHandler = () => {
     signIn();
@@ -88,6 +100,26 @@ const LoginPageBody = () => {
                 >
                   <div className="justify-center rounded-sm">Register your Device</div>
                 </button>
+
+                <div className="flex text-sm text-checkbox-text-primary">
+                  <input
+                    type="checkbox"
+                    checked={isUserGuideChecked}
+                    onChange={userGuideCheckHandler}
+                    className={`${checkboxStyle} mr-2`}
+                  />
+                  <p>
+                    I have read the{' '}
+                    <button
+                      type="button"
+                      className="font-semibold text-text-neutral-link hover:underline"
+                      onClick={userCodeModalVisibilityHandler}
+                    >
+                      User guide
+                    </button>{' '}
+                    and agree to comply with the platform&apos;s regulations.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

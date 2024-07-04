@@ -15,6 +15,8 @@ import RegisterFormModal from '@/components/register_form_modal/register_form_mo
 import FileUploadModal from '@/components/file_upload_modal/file_upload_modal';
 import MoveChatModal from '@/components/move_chat_modal/move_chat_modal';
 import UpdateLinkModal from '@/components/update_link_modal/update_link_modal';
+import UserCodeModal from '@/components/user_code_modal/user_code_modal';
+import FeedbackModal from '@/components/feedback_modal/feedback_modal';
 import Toast from '@/components/toast/toast';
 
 interface IGlobalContext {
@@ -48,6 +50,12 @@ interface IGlobalContext {
   isUpdateLinkModalVisible: boolean;
   updateLinkModalVisibilityHandler: () => void;
 
+  isUserCodeModalVisible: boolean;
+  userCodeModalVisibilityHandler: () => void;
+
+  isFeedbackModalVisible: boolean;
+  feedbackModalVisibilityHandler: () => void;
+
   toastHandler: (props: IToastify) => void;
   eliminateToast: (id?: string) => void;
 }
@@ -78,6 +86,10 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
   const [isMoveChatModalVisible, setIsMoveChatModalVisible] = useState(false);
 
   const [isUpdateLinkModalVisible, setIsUpdateLinkModalVisible] = useState(false);
+
+  const [isUserCodeModalVisible, setIsUserCodeModalVisible] = useState(false);
+
+  const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false);
 
   const messageModalVisibilityHandler = () => {
     setIsMessageModalVisible(!isMessageModalVisible);
@@ -120,6 +132,14 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
 
   const updateLinkModalVisibilityHandler = () => {
     setIsUpdateLinkModalVisible(!isUpdateLinkModalVisible);
+  };
+
+  const userCodeModalVisibilityHandler = () => {
+    setIsUserCodeModalVisible(!isUserCodeModalVisible);
+  };
+
+  const feedbackModalVisibilityHandler = () => {
+    setIsFeedbackModalVisible(!isFeedbackModalVisible);
   };
 
   // Info: (20240509 - Julian) toast handler
@@ -254,6 +274,10 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     moveChatModalVisibilityHandler,
     isUpdateLinkModalVisible,
     updateLinkModalVisibilityHandler,
+    isUserCodeModalVisible,
+    userCodeModalVisibilityHandler,
+    isFeedbackModalVisible,
+    feedbackModalVisibilityHandler,
     toastHandler,
     eliminateToast,
   };
@@ -300,6 +324,16 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
       <UpdateLinkModal
         isModalVisible={isUpdateLinkModalVisible}
         modalVisibilityHandler={updateLinkModalVisibilityHandler}
+      />
+
+      <UserCodeModal
+        isModalVisible={isUserCodeModalVisible}
+        modalVisibilityHandler={userCodeModalVisibilityHandler}
+      />
+
+      <FeedbackModal
+        isModalVisible={isFeedbackModalVisible}
+        modalVisibilityHandler={feedbackModalVisibilityHandler}
       />
 
       <Toast />

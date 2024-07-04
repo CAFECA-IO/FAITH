@@ -35,7 +35,8 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
     pendingMsg,
     handleFile,
   } = useChatCtx();
-  const { fileUploadModalVisibilityHandler, toastHandler } = useGlobalCtx();
+  const { fileUploadModalVisibilityHandler, toastHandler, feedbackModalVisibilityHandler } =
+    useGlobalCtx();
 
   const [prompt, setPrompt] = useState('');
   const [rows, setRows] = useState(1);
@@ -287,7 +288,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
                 </Button>
                 {/* TODO: open the feedback input modal (20240702 - Shirley) */}
                 <Button
-                  onClick={() => {}}
+                  onClick={feedbackModalVisibilityHandler}
                   variant={'secondaryOutline'}
                   size={'extraSmall'}
                   className=""
