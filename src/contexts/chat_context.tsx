@@ -56,7 +56,7 @@ interface ChatContextType {
 
   folders: IFolder[] | null;
   handleFolders: (folders: IFolder[]) => void;
-  addFolder: (folder: IFolder) => void;
+  addFolder: (folder: IFolder, chat?: IChatBrief) => void;
   renameFolder: (id: string, newName: string) => void;
   deleteFolder: (id: string) => void;
 
@@ -297,7 +297,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         description: item.description,
         messages: [],
         createdAt: item.createdAt,
-        folders: [],
+        folder: '',
       };
       setChats([...(chatsRef.current || []), newChat]);
     }
@@ -333,7 +333,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         name: item.name,
         description: item.description,
         createdAt: item.createdAt,
-        folders: item.folders,
+        folder: item.folder,
       }))
     );
   };
@@ -363,7 +363,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         name: item.name,
         description: item.description,
         createdAt: item.createdAt,
-        folders: [],
+        folder: '',
       });
       sortChats();
     }
@@ -379,7 +379,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       messages: [],
       description: `Chat - ${date} ${time}`,
       createdAt: nowTs,
-      folders: [],
+      folder: '',
     };
     addChat(chat);
   };
@@ -426,11 +426,85 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setFolders(items);
   };
 
-  const addFolder = (item: IFolder) => {
+  const moveChatToFolder = (chatId: string, newFolderId: string) => {
+    if (chatBriefsRef.current && foldersRef.current) {
+      // 找到要移動的聊天
+      const chatToMove = chatBriefsRef.current.find((brief) => brief.id === chatId);
+      if (!chatToMove) return;
+
+      // 更新 chatBriefs
+      setChatBriefs(
+        (prevBriefs) =>
+          prevBriefs?.map((brief) =>
+            brief.id === chatId ? { ...brief, folder: newFolderId } : brief
+          ) || []
+      );
+
+      // 更新 chats
+      setChats(
+        (prevChats) =>
+          prevChats?.map((chat) =>
+            chat.id === chatId ? { ...chat, folder: newFolderId } : chat
+          ) || []
+      );
+
+      // 更新 folders
+      setFolders(
+        (prevFolders) =>
+          prevFolders
+            ?.map((folder) => {
+              if (folder.id === newFolderId) {
+                // 將聊天添加到新資料夾
+                return {
+                  ...folder,
+                  chats: [...folder.chats.filter((chat) => chat.id !== chatId), chatToMove],
+                };
+              } else {
+                // 從其他資料夾中移除聊天
+                return {
+                  ...folder,
+                  chats: folder.chats.filter((chat) => chat.id !== chatId),
+                };
+              }
+            })
+            .filter((folder) => folder.chats.length > 0) || []
+      );
+    }
+  };
+
+  const addFolder = (item: IFolder, chat?: IChatBrief) => {
     if (!signedIn) return;
 
-    if (foldersRef.current) {
-      setFolders([...foldersRef.current, item]);
+    setFolders((prevFolders) => [...(prevFolders || []), item]);
+
+    if (chat) {
+      // 更新 chat 的 folders
+      const updatedChat = {
+        ...chat,
+        folder: item.id,
+      };
+
+      if (chat.folder !== '') {
+        moveChatToFolder(chat.id, item.id);
+      } else {
+        // // 更新 chatBriefs
+        setChatBriefs((prevChatBriefs) => {
+          return (
+            prevChatBriefs?.map((brief) => {
+              return brief.id === chat.id ? updatedChat : brief;
+            }) || []
+          );
+        });
+
+        // 更新 chats
+        setChats(
+          (prevChats) =>
+            prevChats?.map((c) => (c.id === chat.id ? { ...c, folder: updatedChat.folder } : c)) ||
+            []
+        );
+      }
+
+      // setChatBriefs((prev) => [...(prev || []), updatedChat]);
     }
   };
 

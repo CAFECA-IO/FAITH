@@ -17,7 +17,7 @@ export interface IChatBrief {
   name: string;
   description: string;
   createdAt: number;
-  folders: string[];
+  folder: string;
 }
 
 export enum DisplayedSender {
@@ -68,7 +68,7 @@ export const dummyChatBrief: IChatBrief = {
   name: '遞迴函數',
   description: '遞迴函數的基本概念',
   createdAt: Date.now(),
-  folders: ['Programming'],
+  folder: 'Programming',
 };
 
 export const dummyChatBriefs: IChatBrief[] = [dummyChatBrief];
@@ -270,7 +270,7 @@ export const dummyChat: IChat = {
   description: '遞迴函數的基本概念',
   createdAt: Date.now() - 172800000, // 兩天前
   messages: dummyMessages,
-  folders: ['Programming'],
+  folder: 'Programming',
 };
 
 export const dummyChats: IChat[] = [dummyChat];
