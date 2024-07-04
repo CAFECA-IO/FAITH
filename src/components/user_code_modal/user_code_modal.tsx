@@ -220,7 +220,8 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
               variant="tertiary"
               onClick={modalVisibilityHandler}
             >
-              Agreed, I confirm acceptance of the above terms.
+              Agreed
+              <span className="hidden md:block">, I confirm acceptance of the above terms.</span>
             </Button>
           </div>
         </div>
