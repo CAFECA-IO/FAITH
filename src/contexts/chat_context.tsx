@@ -475,9 +475,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
             })
             .filter((folder) => folder.chats.length > 0) || []
       );
-      // Deprecated: (20240720 - Shirley)
-      // eslint-disable-next-line no-console
-      console.log('foldersRef.current', foldersRef.current);
     }
   };
 
