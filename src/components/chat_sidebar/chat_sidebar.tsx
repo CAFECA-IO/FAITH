@@ -460,10 +460,10 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
 
         {/* Info: ----- desktop version (20240423 - Shirley) ----- */}
         <div
-          className={`fixed z-10 hidden h-screen flex-col items-center bg-surface-brand-primary-5 lg:flex ${isExpanded ? 'w-240px' : 'w-0 -translate-x-240px'} px-12px pb-40px pt-100px transition-all duration-300 ease-in-out`}
+          className={`fixed z-10 hidden h-screen flex-col items-center bg-surface-brand-primary-5 lg:flex ${isExpanded ? 'w-240px' : 'w-0 -translate-x-240px'} px-12px pb-40px pt-80px transition-all duration-300 ease-in-out`}
         >
-          <div className="flex h-full w-full flex-col">
-            <div className="mx-3 -mt-5 flex items-center gap-3">
+          <div className="flex h-full w-full flex-col pb-0">
+            <div className="mx-3 flex items-center gap-3">
               <div className="relative flex h-10 w-10 items-center justify-center">
                 <Image
                   src={'/logo/isunfa_pure_logo.svg'}
@@ -518,7 +518,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
 
           <Droppable droppableId="new-folder">
             {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps} className="-mt-5">
+              <div ref={provided.innerRef} {...provided.droppableProps} className="-mt-8 h-50px">
                 <Button
                   size={'medium'}
                   variant={'secondaryOutline'}
@@ -540,7 +540,8 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
                   </svg>
                   <p className="text-base">Drop Chat to Add Folder</p>{' '}
                 </Button>
-                <div style={{ display: 'none' }}>{provided.placeholder}</div> {/* 隱藏佔位元素 */}
+                <div style={{ display: 'none' }}>{provided.placeholder}</div>{' '}
+                {/* Info: 隱藏佔位元素，固定 button 位置，不受 drag-and-drop 影響 (20240704 - Shirley) */}
               </div>
             )}
           </Droppable>
