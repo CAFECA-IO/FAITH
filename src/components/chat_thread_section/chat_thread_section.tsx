@@ -3,21 +3,21 @@ import ChatTopicOption from '@/components/chat_topic_option/chat_topic_option';
 import { useChatCtx } from '@/contexts/chat_context';
 import {
   IChatTopic,
-  IMessage,
+  IMessageWithRole,
   MessageRole,
   DisplayedSender,
   dummyChatTopics,
 } from '@/interfaces/chat';
-import { getTimestamp } from '@/lib/utils/common';
+import { cn, getTimestamp } from '@/lib/utils/common';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
-import ChatMessage from '@/components/chat_message/chat_message';
+import ChatMessage, { BotPendingMessage } from '@/components/chat_message/chat_message';
 import { useUserCtx } from '@/contexts/user_context';
 import { TopicIcons } from '@/constants/display';
 
 const ChatThreadSection = () => {
   const { signedIn } = useUserCtx();
-  const { selectedChat: chat, userAddMessage, resendMessage } = useChatCtx();
+  const { selectedChat, userAddMessage, resendMessage, isPendingBotMsg } = useChatCtx();
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -51,8 +51,8 @@ const ChatThreadSection = () => {
 
   // Info: if chat list is not empty, show chat list, otherwise show default chat content (20240626 - Shirley)
   const displayedChatContent =
-    !chat || chat.messages.length === 0 ? (
-      <div className="flex h-screen flex-col justify-center pt-28">
+    !selectedChat || selectedChat.messages.length === 0 ? (
+      <div className="flex h-screen flex-col justify-center pt-40">
         {/* Info: logo, greetings, random chat topics (20240626 - Shirley) */}
         <div className="flex flex-col px-5">
           <div className="flex w-full justify-center">
@@ -73,13 +73,16 @@ const ChatThreadSection = () => {
           {displayedChatTopics}
         </div>
       </div>
-    ) : chat.messages.length > 0 ? (
+    ) : selectedChat.messages.length > 0 ? (
       <div
         ref={chatContainerRef}
-        className="hideScrollbar h-screen overflow-y-auto overflow-x-hidden pb-10 pt-20"
+        className={cn(
+          'hideScrollbar overflow-y-auto overflow-x-hidden pt-20',
+          selectedChat.messages.length > 3 ? 'h-screen pb-10' : 'pb-2'
+        )}
       >
         <div className="mx-20 flex flex-col gap-10">
-          {chat.messages.map((message: IMessage, index: number) => (
+          {selectedChat.messages.map((message: IMessageWithRole, index: number) => (
             <ChatMessage
               resend={() => resendMessage(index)}
               sender={
@@ -94,6 +97,9 @@ const ChatThreadSection = () => {
               messages={message.messages}
             />
           ))}
+          {selectedChat?.messages.at(-1)?.role !== MessageRole.BOT && isPendingBotMsg && (
+            <BotPendingMessage sender={DisplayedSender.BOT} role={MessageRole.BOT} />
+          )}
         </div>
       </div>
     ) : null;
@@ -102,7 +108,7 @@ const ChatThreadSection = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  }, [chat?.messages.length]);
+  }, [selectedChat?.messages.length]);
 
   return <div>{displayedChatContent}</div>;
 };
