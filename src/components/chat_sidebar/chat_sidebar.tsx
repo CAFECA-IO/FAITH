@@ -240,11 +240,15 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
     <div key={chatFolder.id} className="w-full pb-2 pt-0">
       <div
         onClick={() => setIsFolderExpanded(!isFolderExpanded)}
-        className={`flex w-full items-center justify-between gap-5 px-2 text-base font-medium leading-6 tracking-normal text-slate-700 hover:cursor-pointer`}
+        className={cn(
+          'flex w-full items-center justify-between gap-2 px-2 text-base font-medium leading-6 tracking-normal text-slate-700 hover:cursor-pointer'
+        )}
       >
         <div className="flex gap-2.5">
+          {/* Info: 橘色圓圈 (20240704 - Shirley) */}
           <div className="my-auto h-2 w-2 shrink-0 rounded-full bg-orange-400" />
-          <div className="w-120px">
+
+          <div className={cn(isFolderExpanded ? 'w-120px' : 'w-160px')}>
             <p className="truncate">{chatFolder.name}</p>
           </div>
         </div>
@@ -272,7 +276,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
               <Button
                 onClick={editIconClickHandler}
                 variant={'secondaryBorderless'}
-                className="px-2 py-1"
+                className={cn('px-2 py-1', isEditMenuVisible ? 'text-surface-brand-primary' : '')}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
