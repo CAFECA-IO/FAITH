@@ -171,7 +171,7 @@ const NavBar = () => {
   ) : null;
 
   const isDisplayedDiscoverButton = isSignedIn ? (
-    <Link href={'/discover'} className="my-auto hidden lg:flex">
+    <Link href={NATIVE_ROUTE.DISCOVER} className="my-auto hidden lg:flex">
       <Button size={'small'} variant={'secondaryBorderless'}>
         <svg
           width="24"

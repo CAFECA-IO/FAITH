@@ -554,7 +554,27 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   const deleteFolder = (id: string) => {
     if (foldersRef.current) {
-      setFolders(foldersRef.current.filter((folder: IFolder) => folder.id !== id));
+      // Info: 找到要刪除的資料夾 (20240705 - Shirley)
+      const folderToDelete = foldersRef.current.find((folder) => folder.id === id);
+
+      if (folderToDelete) {
+        // Info: 更新 chatBriefs (20240705 - Shirley)
+        setChatBriefs(
+          (prevChatBriefs) =>
+            prevChatBriefs?.map((brief) =>
+              brief.folder === id ? { ...brief, folder: '' } : brief
+            ) || []
+        );
+
+        // Info: 更新 chats (20240705 - Shirley)
+        setChats(
+          (prevChats) =>
+            prevChats?.map((chat) => (chat.folder === id ? { ...chat, folder: '' } : chat)) || []
+        );
+
+        // Info: 刪除資料夾 (20240705 - Shirley)
+        setFolders(foldersRef.current.filter((folder: IFolder) => folder.id !== id));
+      }
     }
   };
 
