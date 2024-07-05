@@ -1,7 +1,7 @@
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { v4 as uuidv4 } from 'uuid';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/button/button';
 import { useChatCtx } from '@/contexts/chat_context';
 import { useGlobalCtx } from '@/contexts/global_context';
@@ -27,14 +27,25 @@ interface IChatSidebarProps {
 
 const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
   const router = useRouter();
-  const { selectChat, selectedChat, deleteChat } = useChatCtx();
+  const { selectChat, selectedChat, deleteChat, renameChatBrief } = useChatCtx();
   const { messageModalVisibilityHandler, messageModalDataHandler } = useGlobalCtx();
+
+  const [isRenaming, setIsRenaming] = useState(false);
+  const [isComposing, setIsComposing] = useState(false);
+  const [newName, setNewName] = useState(chatBrief.name);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const {
     targetRef: editMenuRef,
     componentVisible: isEditMenuVisible,
     setComponentVisible: setEditMenuVisible,
   } = useOuterClick<HTMLDivElement>(false);
+
+  useEffect(() => {
+    if (isRenaming && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isRenaming]);
 
   const chatBriefClickHandler = () => {
     selectChat(chatBrief.id);
@@ -49,7 +60,25 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
   };
 
   const renameClickHandler = () => {
+    setIsRenaming(true);
     setEditMenuVisible(false);
+  };
+
+  const handleRenameSubmit = () => {
+    if (newName.trim() !== '' && !isComposing) {
+      renameChatBrief(chatBrief.id, newName.trim());
+      setNewName(newName.trim());
+      setIsRenaming(false);
+    }
+  };
+
+  const handleCompositionStart = () => setIsComposing(true);
+  const handleCompositionEnd = () => setIsComposing(false);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !isComposing) {
+      handleRenameSubmit();
+    }
   };
 
   const shareClickHandler = () => {
@@ -79,12 +108,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
     <div className="relative">
       <div key={chatBrief.id} ref={editMenuRef} className="absolute right-0 top-0 z-50">
         <div className="flex flex-col gap-1 rounded-sm bg-white py-2 text-base font-normal leading-6 tracking-normal shadow-userMenu">
-          <Button
-            disabled
-            variant={'secondaryBorderless'}
-            className=""
-            onClick={renameClickHandler}
-          >
+          <Button variant={'secondaryBorderless'} className="" onClick={renameClickHandler}>
             Rename
           </Button>
           <Button disabled variant={'secondaryBorderless'} className="" onClick={shareClickHandler}>
@@ -110,24 +134,38 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
     <>
       <div
         key={chatBrief.id}
-        onClick={chatBriefClickHandler}
+        onClick={isRenaming ? undefined : chatBriefClickHandler}
         className={cn(
           'flex w-full items-center justify-between',
           chatBrief.id === selectedChat?.id ? 'bg-surface-brand-primary-10' : ''
         )}
       >
-        <Button
-          variant={'secondaryBorderless'}
-          className={cn(
-            'justify-start px-2 py-2 text-start',
-            chatBrief.id === selectedChat?.id
-              ? 'pointer-events-none w-150px hover:text-button-text-secondary'
-              : 'w-full'
-          )}
-        >
-          <p className="truncate text-start text-sm font-normal">{chatBrief.name}</p>
-        </Button>
-        {chatBrief.id === selectedChat?.id && (
+        {isRenaming ? (
+          <input
+            ref={inputRef}
+            type="text"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            onCompositionStart={handleCompositionStart}
+            onCompositionEnd={handleCompositionEnd}
+            onBlur={handleRenameSubmit}
+            onKeyDown={handleKeyDown}
+            className="w-full rounded border bg-white px-2 py-2 text-sm font-normal"
+          />
+        ) : (
+          <Button
+            variant={'secondaryBorderless'}
+            className={cn(
+              'justify-start px-2 py-2 text-start',
+              chatBrief.id === selectedChat?.id
+                ? 'pointer-events-none w-150px hover:text-button-text-secondary'
+                : 'w-full'
+            )}
+          >
+            <p className="truncate text-start text-sm font-normal">{newName}</p>
+          </Button>
+        )}
+        {chatBrief.id === selectedChat?.id && !isRenaming && (
           <Button
             onClick={editIconClickHandler}
             variant={'secondaryBorderless'}
