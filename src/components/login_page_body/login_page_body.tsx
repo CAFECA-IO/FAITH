@@ -120,7 +120,7 @@ const LoginPageBody = () => {
                       className={`${checkboxStyle}`}
                     />
                   </div>
-                  <p>
+                  <p className="text-xs md:text-sm">
                     I have read the{' '}
                     <button
                       type="button"
