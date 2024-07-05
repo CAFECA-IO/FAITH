@@ -183,8 +183,8 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
         <hr className="my-20px bg-divider-stroke-lv-4" />
 
         {/* Info: (20240625 - Julian) Content */}
-        <div className="flex w-full flex-col items-center gap-y-20px px-40px pt-20px">
-          <div className="h-500px overflow-y-auto rounded-sm border border-surface-brand-secondary bg-surface-neutral-main-background p-20px">
+        <div className="flex w-full flex-col items-center gap-y-20px px-20px pt-20px md:px-40px">
+          <div className="h-400px overflow-y-auto rounded-sm border border-surface-brand-secondary bg-surface-neutral-main-background p-20px md:h-500px">
             <ol className="list-inside list-decimal text-lg font-semibold text-text-neutral-primary">
               {/* Info: (20240704 - Julian) 1. Purpose */}
               {firstItem}
