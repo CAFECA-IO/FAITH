@@ -188,7 +188,7 @@ const LoginPageBody = () => {
             ref={lanRef}
             className={`absolute bottom-12 right-0 flex flex-col gap-y-16px rounded-xs border border-stroke-neutral-solid-light ${
               lanVisible ? 'visible opacity-100' : 'invisible opacity-0'
-            } px-20px py-16px text-base text-text-neutral-invert transition-all duration-300 ease-in-out`}
+            } overflow-hidden bg-white/40 px-20px py-16px text-base text-text-neutral-invert backdrop-blur-md transition-all duration-300 ease-in-out`}
           >
             <button
               type="button"
