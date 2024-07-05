@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/button/button';
 import { useGlobalCtx } from '@/contexts/global_context';
 import { useUserCtx } from '@/contexts/user_context';
-import Image from 'next/image';
 import { ToastType } from '@/interfaces/toastify';
 import { ToastId } from '@/constants/toast_id';
 import { checkboxStyle } from '@/constants/display';
+import useOuterClick from '@/lib/hooks/use_outer_click';
 
 const LoginPageBody = () => {
   const { signIn, isSignedIn } = useUserCtx();
@@ -17,6 +18,12 @@ const LoginPageBody = () => {
   } = useGlobalCtx();
 
   const [isUserGuideChecked, setIsUserGuideChecked] = useState(false);
+
+  const {
+    targetRef: lanRef,
+    componentVisible: lanVisible,
+    setComponentVisible: setLanVisible,
+  } = useOuterClick<HTMLDivElement>(false);
 
   const userGuideCheckHandler = () => {
     setIsUserGuideChecked(!isUserGuideChecked);
@@ -30,6 +37,8 @@ const LoginPageBody = () => {
     registerModalVisibilityHandler();
     // signUp();
   };
+
+  const languageClickHandler = () => setLanVisible(!lanVisible);
 
   useEffect(() => {
     if (isSignedIn) {
@@ -45,30 +54,41 @@ const LoginPageBody = () => {
   }, [isSignedIn]);
 
   return (
-    <div
-      className="flex items-center justify-center bg-white px-16 pb-20 pt-10 max-md:px-5"
-      style={{
-        backgroundImage: 'url("/elements/login_page_bg.png")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        minHeight: '100vh',
-      }}
-    >
+    <div className="md:bg-login bg-loginMobile relative flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat px-16 pb-20 pt-10 max-md:px-5">
       <div className="flex items-center justify-center px-16 max-md:px-5">
-        <div className="flex w-600px max-w-full flex-col items-center">
-          <Image src="/logo/isunfa_logo_with_ring.svg" alt="isunfa logo" width={60} height={60} />
-          <div className="my-5 text-5xl font-bold leading-8 text-text-neutral-primary">
+        <div className="flex max-w-full flex-col items-center md:w-600px">
+          <Image
+            src="/logo/isunfa_logo_with_ring.svg"
+            alt="isunfa logo"
+            width={60}
+            height={60}
+            className="hidden md:block"
+          />
+          <div className="my-5 hidden text-5xl font-bold leading-8 text-text-neutral-primary md:block">
             Welcome Back!
           </div>
-          <div className="mt-5 justify-end self-stretch rounded-3xl bg-white/30 px-12 py-20 max-md:mt-10 max-md:max-w-full max-md:px-5">
+
+          {/* ToDo: (20240705 - Julian) mobile title */}
+          <div className="flex items-center gap-x-16px text-2xl font-bold text-surface-brand-secondary md:hidden">
+            <Image src="/logo/isunfa_logo_with_ring.svg" alt="isunfa logo" width={40} height={40} />
+            <p>Welcome Back!</p>
+          </div>
+          <div className="mt-5 rounded-3xl bg-white/30 px-32px py-40px max-md:mt-10 max-md:max-w-full md:px-48px md:py-80px">
             <div className="mt-10 flex flex-col items-center">
-              <Image src="/elements/avatar_login.svg" alt="avatar" width={180} height={180} />
+              <div className="relative h-100px w-100px md:h-180px md:w-180px">
+                <Image
+                  src="/elements/avatar_login.svg"
+                  alt="avatar"
+                  fill
+                  style={{ objectFit: 'contain' }}
+                />
+              </div>
 
               <div className="mt-8 flex w-full flex-col justify-center gap-8">
                 <Button
                   variant={'default'}
                   onClick={logInClickHandler}
+                  disabled={!isUserGuideChecked}
                   className="mx-auto mt-0 flex max-w-400px justify-center rounded-sm bg-button-surface-strong-primary px-4 py-1 text-button-text-primary-solid hover:bg-button-surface-strong-primary-hover lg:gap-2 lg:space-x-2 lg:px-6 lg:py-3.5"
                 >
                   <svg
@@ -101,14 +121,16 @@ const LoginPageBody = () => {
                   <div className="justify-center rounded-sm">Register your Device</div>
                 </button>
 
-                <div className="flex text-sm text-checkbox-text-primary">
-                  <input
-                    type="checkbox"
-                    checked={isUserGuideChecked}
-                    onChange={userGuideCheckHandler}
-                    className={`${checkboxStyle} mr-2`}
-                  />
-                  <p>
+                <div className="flex gap-x-8px text-sm text-checkbox-text-primary">
+                  <div className="relative h-16px w-16px">
+                    <input
+                      type="checkbox"
+                      checked={isUserGuideChecked}
+                      onChange={userGuideCheckHandler}
+                      className={`${checkboxStyle}`}
+                    />
+                  </div>
+                  <p className="text-xs md:text-sm">
                     I have read the{' '}
                     <button
                       type="button"
@@ -123,6 +145,98 @@ const LoginPageBody = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      {/* Info: (20240705 - Julian) i18n & contact us */}
+      <div className="absolute bottom-0 right-0 m-20px flex items-center gap-x-40px">
+        <div className="relative drop-shadow-md">
+          <button
+            id="language-button"
+            type="button"
+            className="p-12px text-surface-neutral-surface-lv1 hover:text-button-text-secondary"
+            onClick={languageClickHandler}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="16 16 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <filter id="shadow">
+                <feOffset in="SourceGraphic" dx="1" dy="1" />
+                <feColorMatrix
+                  type="matrix"
+                  values="0 0 0 0 0.192157 0 0 0 0 0.262745 0 0 0 0 0.384314 0 0 0 0.1 0"
+                />
+                <feGaussianBlur stdDeviation="1" />
+                <feBlend in="SourceGraphic" in2="offOut" />
+              </filter>
+
+              <path
+                filter="url(#shadow)"
+                className="fill-current"
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M19.2259 26.0012C19.08 26.6444 19.0029 27.3138 19.0029 28.0012C19.0029 28.6886 19.08 29.358 19.2259 30.0012H23.1653C23.0715 29.3484 23.017 28.6876 23.0031 28.022C23.0029 28.0082 23.0029 27.9943 23.0031 27.9804C23.017 27.3149 23.0715 26.654 23.1653 26.0012H19.2259ZM19.9384 24.0012H23.5821C24.0413 22.33 24.7651 20.7393 25.7286 19.291C23.1877 19.9526 21.0837 21.6967 19.9384 24.0012ZM28.0029 19.552C26.9633 20.8915 26.1749 22.3991 25.6673 24.0012H30.3385C29.831 22.3991 29.0426 20.8915 28.0029 19.552ZM30.8171 26.0012H25.1888C25.0807 26.6594 25.0182 27.3275 25.0032 28.0012C25.0182 28.6749 25.0807 29.3431 25.1888 30.0012H30.8171C30.9252 29.3431 30.9877 28.6749 31.0027 28.0012C30.9877 27.3275 30.9252 26.6594 30.8171 26.0012ZM32.8405 30.0012C32.9343 29.3484 32.9888 28.6876 33.0027 28.022C33.003 28.0082 33.003 27.9943 33.0027 27.9804C32.9888 27.3149 32.9343 26.654 32.8405 26.0012H36.7799C36.9259 26.6444 37.0029 27.3138 37.0029 28.0012C37.0029 28.6886 36.9259 29.358 36.7799 30.0012H32.8405ZM30.3385 32.0012H25.6673C26.1749 33.6033 26.9633 35.111 28.0029 36.4504C29.0426 35.111 29.831 33.6033 30.3385 32.0012ZM25.7286 36.7114C24.7651 35.2632 24.0413 33.6724 23.5821 32.0012H19.9384C21.0837 34.3058 23.1877 36.0498 25.7286 36.7114ZM30.2772 36.7114C31.2407 35.2632 31.9645 33.6724 32.4237 32.0012H36.0674C34.9221 34.3058 32.8181 36.0498 30.2772 36.7114ZM36.0674 24.0012H32.4237C31.9645 22.33 31.2407 20.7393 30.2772 19.291C32.8181 19.9526 34.9221 21.6967 36.0674 24.0012ZM17.0029 28.0012C17.0029 21.9261 21.9278 17.0012 28.0029 17.0012C34.0781 17.0012 39.0029 21.9261 39.0029 28.0012C39.0029 34.0764 34.0781 39.0012 28.0029 39.0012C21.9278 39.0012 17.0029 34.0764 17.0029 28.0012Z"
+                fill="#FCFDFF"
+              />
+            </svg>
+          </button>
+          {/* ToDo: (20240705 - Julian) i18n */}
+          <div
+            ref={lanRef}
+            className={`absolute bottom-12 right-0 flex flex-col gap-y-16px rounded-xs border border-stroke-neutral-solid-light ${
+              lanVisible ? 'visible opacity-100' : 'invisible opacity-0'
+            } overflow-hidden bg-white/40 px-20px py-16px text-base text-text-neutral-invert backdrop-blur-md transition-all duration-300 ease-in-out`}
+          >
+            <button
+              type="button"
+              className="w-full whitespace-nowrap border-b border-stroke-neutral-solid-light px-24px py-10px hover:border-button-stroke-primary-hover hover:text-button-text-primary-hover"
+            >
+              EN
+            </button>
+            <button
+              type="button"
+              className="w-full whitespace-nowrap border-b border-stroke-neutral-solid-light px-24px py-10px hover:border-button-stroke-primary-hover hover:text-button-text-primary-hover"
+            >
+              繁體中文
+            </button>
+          </div>
+        </div>
+        <div>
+          <button
+            id="contact-us-button"
+            type="button"
+            className="p-12px text-surface-neutral-surface-lv1 hover:text-button-text-secondary"
+            // ToDo: (20240705 - Julian) link to contact us
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <filter id="shadow">
+                <feOffset in="SourceGraphic" dx="1" dy="1" />
+                <feColorMatrix
+                  type="matrix"
+                  values="0 0 0 0 0.192157 0 0 0 0 0.262745 0 0 0 0 0.384314 0 0 0 0.1 0"
+                />
+                <feGaussianBlur stdDeviation="1" />
+                <feBlend in="SourceGraphic" in2="offOut" />
+              </filter>
+
+              <path
+                filter="url(#shadow)"
+                className="fill-current"
+                fillRule="evenodd"
+                d="M5.629 2.334H14.376c.666 0 1.225 0 1.683.038.479.039.934.124 1.366.344a3.5 3.5 0 011.53 1.53c.209.41.296.843.337 1.296.047.152.055.31.03.462.014.375.014.804.014 1.29v5.414c0 .666 0 1.225-.038 1.683-.039.479-.124.934-.344 1.366a3.5 3.5 0 01-1.53 1.53c-.431.22-.886.304-1.365.343-.458.038-1.017.038-1.683.038H5.629c-.666 0-1.225 0-1.683-.038-.479-.039-.934-.124-1.366-.344a3.5 3.5 0 01-1.53-1.53c-.22-.431-.304-.886-.344-1.365C.67 13.933.67 13.374.67 12.708V7.294c0-.486 0-.915.015-1.29a1 1 0 01.028-.462c.042-.453.13-.885.339-1.297a3.5 3.5 0 011.53-1.53c.431-.22.886-.304 1.365-.343.458-.038 1.017-.038 1.683-.038zm-2.96 5.421v4.913c0 .716 0 1.194.03 1.56.03.355.081.518.134.62a1.5 1.5 0 00.655.656c.103.053.266.104.62.133.367.03.845.03 1.561.03h8.667c.716 0 1.194 0 1.56-.03.355-.029.518-.08.62-.133a1.5 1.5 0 00.656-.655c.053-.103.104-.266.133-.62.03-.367.03-.845.03-1.561V7.755l-5.23 3.661a58.34 58.34 0 00-.103.073c-.445.313-.87.61-1.355.732a2.666 2.666 0 01-1.29 0c-.485-.121-.91-.42-1.354-.732l-.103-.073-5.23-3.66zm14.58-2.38l-6.29 4.403c-.62.433-.719.483-.795.502a.667.667 0 01-.323 0c-.076-.019-.176-.069-.794-.502l-6.29-4.403c.022-.101.049-.17.076-.222a1.5 1.5 0 01.655-.655c.103-.053.265-.104.62-.133.367-.03.845-.03 1.561-.03h8.667c.716 0 1.194 0 1.56.03.355.03.518.08.62.133a1.5 1.5 0 01.656.655c.027.053.053.12.077.222z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+          </button>
         </div>
       </div>
     </div>

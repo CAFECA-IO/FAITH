@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { NATIVE_ROUTE } from '@/constants/url';
 import version from '@/lib/version';
 import { Button } from '@/components/button/button';
+import { ChatSidebarMobile } from '@/components/chat_sidebar/chat_sidebar';
 import { cn } from '@/lib/utils/common';
 import { useChatCtx } from '@/contexts/chat_context';
 import { useUserCtx } from '@/contexts/user_context';
@@ -282,7 +283,7 @@ const NavBar = () => {
 
   return (
     <div className="fixed top-0 z-20 flex w-screen">
-      <div className="z-60 flex h-80px w-full items-center gap-5 bg-surface-neutral-surface-lv1 px-80px py-8px shadow-navbar max-md:flex-wrap max-md:px-5 lg:h-60px">
+      <div className="z-60 flex h-80px w-full items-center justify-end gap-5 bg-surface-neutral-surface-lv1 px-80px py-8px shadow-navbar max-md:flex-wrap max-md:px-5 lg:h-60px">
         <div className="my-auto hidden flex-1 items-center lg:flex">
           <div className="flex flex-col items-center justify-center gap-2 lg:flex-row lg:items-end lg:justify-end">
             <Link href={NATIVE_ROUTE.HOME} className="shrink-0">
@@ -353,26 +354,7 @@ const NavBar = () => {
         </div>
 
         {/* TODO: (20240704 - Julian) Mobile sidebar */}
-        <div className="block flex-1 lg:hidden">
-          <button id="mobile-sidebar-toggle" type="button" className="p-10px">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g>
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M2.25293 6.0011C2.25293 5.58689 2.58872 5.2511 3.00293 5.2511H21.0029C21.4171 5.2511 21.7529 5.58689 21.7529 6.0011C21.7529 6.41531 21.4171 6.7511 21.0029 6.7511H3.00293C2.58872 6.7511 2.25293 6.41531 2.25293 6.0011ZM2.25293 12.0011C2.25293 11.5869 2.58872 11.2511 3.00293 11.2511H21.0029C21.4171 11.2511 21.7529 11.5869 21.7529 12.0011C21.7529 12.4153 21.4171 12.7511 21.0029 12.7511H3.00293C2.58872 12.7511 2.25293 12.4153 2.25293 12.0011ZM2.25293 18.0011C2.25293 17.5869 2.58872 17.2511 3.00293 17.2511H21.0029C21.4171 17.2511 21.7529 17.5869 21.7529 18.0011C21.7529 18.4153 21.4171 18.7511 21.0029 18.7511H3.00293C2.58872 18.7511 2.25293 18.4153 2.25293 18.0011Z"
-                  fill="#001840"
-                />
-              </g>
-            </svg>
-          </button>
-        </div>
+        {ChatSidebarMobile()}
 
         <div className="my-auto">{displayedLogInBtn}</div>
       </div>
