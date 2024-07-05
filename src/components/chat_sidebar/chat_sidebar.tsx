@@ -272,7 +272,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
       submitBtnStr: 'Remove',
       submitBtnFunction: () => {
         // ToDo: (20240702 - Julian) 這邊要寫刪除資料夾的 function ---> done (20240705 - Shirley)
-        deleteFolder(chatFolder.id); // 使用 deleteFolder 函數
+        deleteFolder(chatFolder.id);
       },
     });
     messageModalVisibilityHandler();
@@ -380,10 +380,8 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
                 <Link href={NATIVE_ROUTE.HOME}>
                   <Button
                     variant={'secondaryBorderless'}
-                    className={cn(
-                      'px-2 py-1',
-                      isEditMenuVisible ? 'text-surface-brand-primary' : ''
-                    )}
+                    className={cn('px-2 py-1')}
+                    onClick={editIconClickHandler}
                   >
                     {' '}
                     <svg
