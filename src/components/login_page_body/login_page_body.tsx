@@ -9,7 +9,7 @@ import { checkboxStyle } from '@/constants/display';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 
 const LoginPageBody = () => {
-  const { signIn, signedIn } = useUserCtx();
+  const { signIn, isSignedIn } = useUserCtx();
   const {
     registerModalVisibilityHandler,
     toastHandler,
@@ -41,7 +41,7 @@ const LoginPageBody = () => {
   const languageClickHandler = () => setLanVisible(!lanVisible);
 
   useEffect(() => {
-    if (signedIn) {
+    if (isSignedIn) {
       eliminateToast();
       toastHandler({
         id: ToastId.LOGIN,
@@ -51,7 +51,7 @@ const LoginPageBody = () => {
         autoClose: 3000,
       });
     }
-  }, [signedIn]);
+  }, [isSignedIn]);
 
   return (
     <div className="md:bg-login bg-loginMobile relative flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat px-16 pb-20 pt-10 max-md:px-5">

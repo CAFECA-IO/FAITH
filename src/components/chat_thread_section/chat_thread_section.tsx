@@ -16,7 +16,7 @@ import { useUserCtx } from '@/contexts/user_context';
 import { TopicIcons } from '@/constants/display';
 
 const ChatThreadSection = () => {
-  const { signedIn } = useUserCtx();
+  const { isSignedIn } = useUserCtx();
   const { selectedChat, userAddMessage, resendMessage, isPendingBotMsg } = useChatCtx();
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -42,7 +42,7 @@ const ChatThreadSection = () => {
             title={topic.title}
             description={topic.description}
             onClick={() => topicClickHandler(topic.title)}
-            icon={signedIn ? TopicIcons[topic.type] : undefined}
+            icon={isSignedIn ? TopicIcons[topic.type] : undefined}
           />
         ))}
       </div>
@@ -78,7 +78,7 @@ const ChatThreadSection = () => {
         ref={chatContainerRef}
         className={cn(
           'hideScrollbar overflow-y-auto overflow-x-hidden pt-20',
-          selectedChat.messages.length > 3 ? 'h-screen pb-10' : 'pb-2'
+          selectedChat.messages.length > 1 ? 'h-screen pb-10' : 'pb-2'
         )}
       >
         <div className="mx-20 flex flex-col gap-10">
