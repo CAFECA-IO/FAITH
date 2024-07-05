@@ -264,23 +264,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // const updateMessage = (messageIndex: number, updatedMessage: IMessageWithRole) => {
-  //   if (selectedChatRef.current) {
-  //     const updatedChat = {
-  //       ...selectedChatRef.current,
-  //       messages: selectedChatRef.current.messages.map((msg: IMessageWithRole, index: number) =>
-  //         index === messageIndex ? updatedMessage : msg
-  //       ),
-  //     };
-  //     setSelectedChat(updatedChat);
-  //     if (chatsRef.current) {
-  //       setChats(
-  //         chatsRef.current.map((chat: IChat) => (chat.id === updatedChat.id ? updatedChat : chat))
-  //       );
-  //     }
-  //   }
-  // };
-
   const updateMessage = (
     chatId: string,
     messageIndex: number,
@@ -581,94 +564,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setFolders([]);
   };
 
-  // const botAddMessage = async () => {
-  //   if (
-  //     selectedChatRef?.current?.messages &&
-  //     selectedChatRef?.current?.messages.length > 0 &&
-  //     selectedChatRef.current?.messages.at(-1)?.role !== MessageRole.BOT
-  //   ) {
-  //     setIsPendingBotMsg(true);
-  //     const userMessage = selectedChatRef.current?.messages.at(-1)?.messages.at(-1)?.content;
-
-  //     const newMsgId = uuidv4();
-
-  //     try {
-  //       addPendingMsg(newMsgId);
-
-  //       const response = await fetch(EXTERNAL_API.LLAMA_API, {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify({ question: userMessage }),
-  //       });
-
-  //       if (!response.ok) {
-  //         throw new Error('Network response was not ok');
-  //       }
-
-  //       const reader = response.body?.getReader();
-  //       let answer = '';
-
-  //       const botMessage: IMessageWithRole = {
-  //         role: MessageRole.BOT,
-  //         messages: [
-  //           {
-  //             id: newMsgId,
-  //             content: '',
-  //             createdAt: getTimestamp(),
-  //             isPending: true,
-  //             like: false,
-  //             dislike: false,
-  //           },
-  //         ],
-  //       };
-
-  //       addMessage(botMessage);
-
-  //       while (reader) {
-  //         // Info: text animation (20240704 - Shirley)
-  //         // eslint-disable-next-line no-await-in-loop
-  //         const { done, value } = await reader.read();
-  //         if (done) {
-  //           break;
-  //         }
-  //         const chunkAnswer = new TextDecoder().decode(value);
-  //         answer += chunkAnswer;
-
-  //         // Info: 更新最後一條消息的內容 (20240704 - Shirley)
-  //         updateMessage(selectedChatRef.current.messages.length - 1, {
-  //           ...botMessage,
-  //           messages: [{ ...botMessage.messages[0], content: answer, isPending: false }],
-  //         });
-  //       }
-  //     } catch (error) {
-  //       // Deprecated: (20240720 - Shirley)
-  //       // eslint-disable-next-line no-console
-  //       console.error('Error calling API:', error);
-
-  //       const errorMessage: IMessageWithRole = {
-  //         role: MessageRole.BOT,
-  //         messages: [
-  //           {
-  //             id: newMsgId,
-  //             content: 'Sorry, an error occurred. Please try again later.',
-  //             createdAt: getTimestamp(),
-  //             isPending: false,
-  //             like: false,
-  //             dislike: false,
-  //           },
-  //         ],
-  //       };
-
-  //       addMessage(errorMessage);
-  //     } finally {
-  //       setIsPendingBotMsg(false);
-  //       removePendingMsg(newMsgId);
-  //     }
-  //   }
-  // };
-
   const botAddMessage = async () => {
     setIsPendingBotMsg(true);
     const userMessage = selectedChatRef.current?.messages.at(-1)?.messages.at(-1)?.content;
@@ -754,111 +649,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // const resendMessage = async (messageIndex: number) => {
-  //   if (selectedChatRef.current) {
-  //     setIsPendingBotMsg(true);
-  //     const userMessage = selectedChatRef.current.messages[messageIndex - 1].messages[0].content;
-
-  //     const newMsgId = uuidv4();
-
-  //     try {
-  //       addPendingMsg(newMsgId);
-
-  // // 等待三秒
-  // await new Promise(resolve => setTimeout(resolve, 3000));
-
-  // // 拋出錯誤
-  // throw new Error('模擬的錯誤');
-
-  //       const response = await fetch(EXTERNAL_API.LLAMA_API, {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify({ question: userMessage }),
-  //       });
-
-  //       if (!response.ok) {
-  //         throw new Error('Network response was not ok');
-  //       }
-
-  //       const reader = response.body?.getReader();
-  //       let answer = '';
-
-  //       const botMessage: IMessageWithRole = {
-  //         role: MessageRole.BOT,
-  //         messages: [
-  //           {
-  //             id: newMsgId,
-  //             content: '',
-  //             createdAt: getTimestamp(),
-  //             isPending: true,
-  //             like: false,
-  //             dislike: false,
-  //           },
-  //         ],
-  //       };
-
-  //       // 更新選定的聊天
-  //       const updatedChat = {
-  //         ...selectedChatRef.current,
-  //         messages: [
-  //           ...selectedChatRef.current.messages.slice(0, messageIndex),
-  //           botMessage,
-  //           ...selectedChatRef.current.messages.slice(messageIndex + 1),
-  //         ],
-  //       };
-  //       setSelectedChat(updatedChat);
-
-  //       if (chatsRef.current) {
-  //         setChats(
-  //           chatsRef.current.map((chat: IChat) => (chat.id === updatedChat.id ? updatedChat : chat))
-  //         );
-  //       }
-
-  //       while (reader) {
-  //         // Info: text animation (20240704 - Shirley)
-  //         // eslint-disable-next-line no-await-in-loop
-  //         const { done, value } = await reader.read();
-  //         if (done) {
-  //           break;
-  //         }
-  //         const chunkAnswer = new TextDecoder().decode(value);
-  //         answer += chunkAnswer;
-
-  //         // 更新最後一條消息的內容
-  //         updateMessage(messageIndex, {
-  //           ...botMessage,
-  //           messages: [{ ...botMessage.messages[0], content: answer, isPending: false }],
-  //         });
-  //       }
-  //     } catch (error) {
-  //       // Deprecated: (20240720 - Shirley)
-  //       // eslint-disable-next-line no-console
-  //       console.error('Error calling API:', error);
-
-  //       const errorMessage: IMessageWithRole = {
-  //         role: MessageRole.BOT,
-  //         messages: [
-  //           {
-  //             id: newMsgId,
-  //             content: 'Sorry, an error occurred. Please try again later.',
-  //             createdAt: getTimestamp(),
-  //             isPending: false,
-  //             like: false,
-  //             dislike: false,
-  //           },
-  //         ],
-  //       };
-
-  //       updateMessage(messageIndex, errorMessage);
-  //     } finally {
-  //       setIsPendingBotMsg(false);
-  //       removePendingMsg(newMsgId);
-  //     }
-  //   }
-  // };
-
   const resendMessage = async (messageIndex: number) => {
     if (selectedChatRef.current) {
       const updatedChat = {
@@ -894,12 +684,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       try {
-        // // 等待三秒
-        // await new Promise((resolve) => setTimeout(resolve, 3000));
-
-        // // 拋出錯誤
-        // throw new Error('模擬的錯誤');
-
         const response = await fetch(EXTERNAL_API.LLAMA_API, {
           method: 'POST',
           headers: {
@@ -1017,11 +801,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       addEmptyChat();
     }
   }, [router.pathname]);
-
-  // useEffect(() => {
-  //   if (selectedChatRef?.current?.messages.length === 0) return;
-  //   botAddMessage();
-  // }, [selectedChatRef.current?.messages]);
 
   /* eslint-disable react/jsx-no-constructed-context-values */
   const value = {
