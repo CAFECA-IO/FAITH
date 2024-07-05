@@ -514,4 +514,156 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
   );
 };
 
+export const ChatSidebarMobile = () => {
+  const router = useRouter();
+  const { addEmptyChat } = useChatCtx();
+  const { signedIn } = useUserCtx();
+
+  const {
+    targetRef: sidebarRef,
+    componentVisible: isSidebarOpen,
+    setComponentVisible: setIsSidebarOpen,
+  } = useOuterClick<HTMLDivElement>(false);
+
+  const newChatClickHandler = () => {
+    // Info: redirect to / if now is not on / (20240627 - Shirley)
+    if (router.pathname !== NATIVE_ROUTE.HOME) {
+      router.push(NATIVE_ROUTE.HOME);
+    } else {
+      addEmptyChat();
+    }
+  };
+
+  const discoverClickHandler = () => {
+    router.push(NATIVE_ROUTE.DISCOVER);
+  };
+
+  const isDiscoverBtn = signedIn ? (
+    <Button
+      id="mobile-discover-button"
+      type="button"
+      onClick={discoverClickHandler}
+      size={'small'}
+      variant={'secondaryBorderless'}
+      className="flex justify-center px-32px py-14px"
+    >
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g>
+          <path
+            className="fill-current"
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M12.0029 1.2511C12.4171 1.2511 12.7529 1.58689 12.7529 2.0011V3.0011C12.7529 3.41531 12.4171 3.7511 12.0029 3.7511C11.5887 3.7511 11.2529 3.41531 11.2529 3.0011V2.0011C11.2529 1.58689 11.5887 1.2511 12.0029 1.2511ZM4.3725 4.37067C4.6654 4.07778 5.14027 4.07778 5.43316 4.37067L6.03326 4.97077C6.32615 5.26366 6.32615 5.73854 6.03326 6.03143C5.74037 6.32432 5.26549 6.32432 4.9726 6.03143L4.3725 5.43133C4.07961 5.13844 4.07961 4.66356 4.3725 4.37067ZM19.6336 4.37074C19.9264 4.66367 19.9264 5.13854 19.6334 5.4314L19.0332 6.0315C18.7403 6.32435 18.2654 6.32429 17.9725 6.03136C17.6797 5.73843 17.6797 5.26356 17.9727 4.9707L18.5729 4.3706C18.8658 4.07775 19.3407 4.07781 19.6336 4.37074ZM12.0029 6.7511C9.10343 6.7511 6.75293 9.1016 6.75293 12.0011C6.75293 14.9006 9.10343 17.2511 12.0029 17.2511C14.9024 17.2511 17.2529 14.9006 17.2529 12.0011C17.2529 9.1016 14.9024 6.7511 12.0029 6.7511ZM5.25293 12.0011C5.25293 8.27318 8.27501 5.2511 12.0029 5.2511C15.7309 5.2511 18.7529 8.27318 18.7529 12.0011C18.7529 14.7496 17.1102 17.1145 14.7529 18.1674V20.0011C14.7529 21.5199 13.5217 22.7511 12.0029 22.7511C10.4841 22.7511 9.25293 21.5199 9.25293 20.0011V18.1674C6.8957 17.1145 5.25293 14.7496 5.25293 12.0011ZM10.7529 18.6356V20.0011C10.7529 20.6915 11.3126 21.2511 12.0029 21.2511C12.6933 21.2511 13.2529 20.6915 13.2529 20.0011V18.6356C12.8478 18.7114 12.43 18.7511 12.0029 18.7511C11.5758 18.7511 11.158 18.7114 10.7529 18.6356ZM1.25293 12.0011C1.25293 11.5869 1.58872 11.2511 2.00293 11.2511H3.00293C3.41714 11.2511 3.75293 11.5869 3.75293 12.0011C3.75293 12.4153 3.41714 12.7511 3.00293 12.7511H2.00293C1.58872 12.7511 1.25293 12.4153 1.25293 12.0011ZM20.2529 12.0011C20.2529 11.5869 20.5887 11.2511 21.0029 11.2511H22.0029C22.4171 11.2511 22.7529 11.5869 22.7529 12.0011C22.7529 12.4153 22.4171 12.7511 22.0029 12.7511H21.0029C20.5887 12.7511 20.2529 12.4153 20.2529 12.0011Z"
+          />
+        </g>
+      </svg>
+
+      <div className="text-base font-normal leading-6 tracking-normal">Discover</div>
+    </Button>
+  ) : null;
+
+  return (
+    <div
+      ref={sidebarRef}
+      className={`absolute left-0 top-0 z-80 flex ${isSidebarOpen ? 'translate-x-0' : '-translate-x-250px'} items-start transition-all duration-300 ease-in-out lg:hidden`}
+    >
+      {/* Info: (20240705 - Julian) Mobile sidebar */}
+      <div className={`h-screen w-250px bg-white`}>
+        <div className="flex h-full w-full flex-col bg-surface-brand-primary-5 px-24px py-20px">
+          {/* Info: (20240705 - Julian) New Chat Button */}
+          <Button
+            id="mobile-new-chat-button"
+            type="button"
+            onClick={newChatClickHandler}
+            size={'small'}
+            variant={'secondaryBorderless'}
+            className="flex justify-center px-32px py-14px"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <g>
+                <path
+                  className="stroke-current"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d="M5.079 9.357A6.674 6.674 0 015 8.333c0-3.682 3.004-6.666 6.71-6.666 3.707 0 6.711 2.984 6.711 6.666 0 .832-.153 1.628-.433 2.362-.058.153-.088.23-.1.289a.744.744 0 00-.02.16c-.002.062.006.129.023.263l.335 2.725c.037.295.055.443.006.55a.417.417 0 01-.214.21c-.109.046-.256.024-.55-.019l-2.654-.389c-.139-.02-.208-.03-.271-.03a.743.743 0 00-.167.018c-.062.013-.14.042-.298.101a6.735 6.735 0 01-3.393.35m-4.325 3.41c2.47 0 4.473-2.052 4.473-4.583S8.83 9.167 6.36 9.167c-2.471 0-4.474 2.052-4.474 4.583 0 .509.08.998.23 1.456.063.193.095.29.105.356a.71.71 0 01.01.177c-.005.067-.022.142-.055.293l-.51 2.301 2.496-.34c.137-.02.205-.028.264-.028.063 0 .096.004.157.016.059.012.145.042.319.103a4.37 4.37 0 001.458.25z"
+                ></path>
+              </g>
+            </svg>
+            <div className="text-base font-normal leading-6 tracking-normal">New Chat</div>
+          </Button>
+          {/* Info: (20240705 - Julian) Discover Button */}
+          {isDiscoverBtn}
+          <hr className="my-16px bg-divider-stroke-lv-4" />
+          <div className="flex flex-col">
+            <div className="mx-3 flex items-center gap-3">
+              <div className="relative flex h-10 w-10 items-center justify-center">
+                <Image
+                  src={'/logo/isunfa_pure_logo.svg'}
+                  width={20}
+                  height={20}
+                  alt="isunfa logo"
+                  className="z-10 h-5 w-5"
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="40"
+                  height="40"
+                  fill="none"
+                  viewBox="0 0 40 40"
+                  className="absolute"
+                >
+                  <circle cx="20" cy="20" r="19" stroke="#CDD1D9" strokeWidth="2"></circle>
+                </svg>
+              </div>
+
+              <p
+                className={`text-lg font-medium text-button-text-secondary transition-all duration-300 ease-in-out`}
+              >
+                My Chat List
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Info: (20240705 - Julian) Mobile sidebar toggle */}
+      <button
+        id="mobile-sidebar-toggle"
+        type="button"
+        className="bg-bg-surface-neutral-surface-lv1 mx-8px my-16px p-10px md:mx-80px"
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g>
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M2.25293 6.0011C2.25293 5.58689 2.58872 5.2511 3.00293 5.2511H21.0029C21.4171 5.2511 21.7529 5.58689 21.7529 6.0011C21.7529 6.41531 21.4171 6.7511 21.0029 6.7511H3.00293C2.58872 6.7511 2.25293 6.41531 2.25293 6.0011ZM2.25293 12.0011C2.25293 11.5869 2.58872 11.2511 3.00293 11.2511H21.0029C21.4171 11.2511 21.7529 11.5869 21.7529 12.0011C21.7529 12.4153 21.4171 12.7511 21.0029 12.7511H3.00293C2.58872 12.7511 2.25293 12.4153 2.25293 12.0011ZM2.25293 18.0011C2.25293 17.5869 2.58872 17.2511 3.00293 17.2511H21.0029C21.4171 17.2511 21.7529 17.5869 21.7529 18.0011C21.7529 18.4153 21.4171 18.7511 21.0029 18.7511H3.00293C2.58872 18.7511 2.25293 18.4153 2.25293 18.0011Z"
+              fill="#001840"
+            />
+          </g>
+        </svg>
+      </button>
+    </div>
+  );
+};
+
 export default ChatSidebar;
