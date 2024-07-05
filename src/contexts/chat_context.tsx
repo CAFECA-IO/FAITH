@@ -17,7 +17,7 @@ import { DELAYED_FILE_UPLOAD_MILLISECONDS } from '@/constants/display';
 import { createContext, useContext, useEffect } from 'react';
 import useStateRef from 'react-usestateref';
 import { useRouter } from 'next/router';
-import { EXTERNAL_API, NATIVE_ROUTE } from '@/constants/url';
+import { NATIVE_ROUTE } from '@/constants/url';
 import { FileStatus, FileStatusUnion, IFile } from '@/interfaces/file';
 import { LIMIT_FOR_FILE_SIZE } from '@/constants/config';
 import { setTimeout } from 'timers';
@@ -594,7 +594,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       addPendingMsg(newMsgId);
 
-      const response = await fetch(EXTERNAL_API.LLAMA_API, {
+      const response = await fetch('/api/v1/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -704,7 +704,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       try {
-        const response = await fetch(EXTERNAL_API.LLAMA_API, {
+        const response = await fetch('/api/v1/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
