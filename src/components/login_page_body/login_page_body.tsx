@@ -45,25 +45,35 @@ const LoginPageBody = () => {
   }, [signedIn]);
 
   return (
-    <div
-      className="flex items-center justify-center bg-white px-16 pb-20 pt-10 max-md:px-5"
-      style={{
-        backgroundImage: 'url("/elements/login_page_bg.png")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        minHeight: '100vh',
-      }}
-    >
+    <div className="md:bg-login bg-loginMobile flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat px-16 pb-20 pt-10 max-md:px-5">
       <div className="flex items-center justify-center px-16 max-md:px-5">
-        <div className="flex w-600px max-w-full flex-col items-center">
-          <Image src="/logo/isunfa_logo_with_ring.svg" alt="isunfa logo" width={60} height={60} />
-          <div className="my-5 text-5xl font-bold leading-8 text-text-neutral-primary">
+        <div className="flex max-w-full flex-col items-center md:w-600px">
+          <Image
+            src="/logo/isunfa_logo_with_ring.svg"
+            alt="isunfa logo"
+            width={60}
+            height={60}
+            className="hidden md:block"
+          />
+          <div className="my-5 hidden text-5xl font-bold leading-8 text-text-neutral-primary md:block">
             Welcome Back!
           </div>
-          <div className="mt-5 justify-end self-stretch rounded-3xl bg-white/30 px-12 py-20 max-md:mt-10 max-md:max-w-full max-md:px-5">
+
+          {/* ToDo: (20240705 - Julian) mobile title */}
+          <div className="flex items-center gap-x-16px text-2xl font-bold text-surface-brand-secondary md:hidden">
+            <Image src="/logo/isunfa_logo_with_ring.svg" alt="isunfa logo" width={40} height={40} />
+            <p>Welcome Back!</p>
+          </div>
+          <div className="mt-5 rounded-3xl bg-white/30 px-32px py-40px max-md:mt-10 max-md:max-w-full md:px-48px md:py-80px">
             <div className="mt-10 flex flex-col items-center">
-              <Image src="/elements/avatar_login.svg" alt="avatar" width={180} height={180} />
+              <div className="relative h-100px w-100px md:h-180px md:w-180px">
+                <Image
+                  src="/elements/avatar_login.svg"
+                  alt="avatar"
+                  fill
+                  style={{ objectFit: 'contain' }}
+                />
+              </div>
 
               <div className="mt-8 flex w-full flex-col justify-center gap-8">
                 <Button
@@ -101,13 +111,15 @@ const LoginPageBody = () => {
                   <div className="justify-center rounded-sm">Register your Device</div>
                 </button>
 
-                <div className="flex text-sm text-checkbox-text-primary">
-                  <input
-                    type="checkbox"
-                    checked={isUserGuideChecked}
-                    onChange={userGuideCheckHandler}
-                    className={`${checkboxStyle} mr-2`}
-                  />
+                <div className="flex gap-x-8px text-sm text-checkbox-text-primary">
+                  <div className="relative h-16px w-16px">
+                    <input
+                      type="checkbox"
+                      checked={isUserGuideChecked}
+                      onChange={userGuideCheckHandler}
+                      className={`${checkboxStyle}`}
+                    />
+                  </div>
                   <p>
                     I have read the{' '}
                     <button

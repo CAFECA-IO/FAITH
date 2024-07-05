@@ -736,41 +736,8 @@ module.exports = {
         lightYellow: '#FFA5020D',
       },
       backgroundImage: {
-        web: 'url("/elements/web.svg")',
-        light_up: 'url("/elements/light_up.svg")',
-        light_down: 'url("/elements/light_down.svg")',
-        mask: 'url("/elements/mask.svg")',
-        blended_light: 'url("/elements/blended_light.svg")',
-        green_light: 'url("/elements/green_light.svg")',
-        shadow_01: 'url("/elements/shadow_01.svg")',
-        light_01: 'url("/elements/light_01.svg")',
-        light_02: 'url("/elements/light_02.svg")',
-        light_03: 'url("/elements/light_03.svg")',
-        light_04: 'url("/elements/light_04.svg")',
-        customGradient: 'linear-gradient(180deg, rgba(0, 24, 64, 0) 10%, rgb(0, 24, 64) 85.5%)',
-        contact_bg: 'url("/elements/contact_bg.svg")',
-        background_pattern: 'url("/elements/background_pattern.svg")',
-        green_light_left: 'url("/elements/green_light_left.svg")',
-        green_light_right: 'url("/elements/green_light_right.svg")',
-
-        purpleLinear: 'linear-gradient(180deg, #3F497A 0%, #313866 100%)',
-        purpleLinear2:
-          'linear-gradient(315deg, rgba(104, 87, 215, 0.30) 0%, rgba(104, 87, 215, 0.10) 100%);',
-
-        pipe: 'url("/elements/pipe.svg")',
-        neon: 'url("/animations/neon.svg")',
-        101: 'url("/elements/101.png")',
-        lightBalls: 'url("/elements/light_balls.svg")',
-        lightBallsReverse: 'url("/elements/light_balls_reverse.svg")',
-
-        bubbleAbove: 'url("/elements/bubble_above.svg")',
-        bubbleBelow: 'url("/elements/bubble_below.svg")',
-
-        reportCover: 'url("/documents/cover.svg")',
-        contentBg: 'url("/documents/content_bg.svg"), linear-gradient(#F2F2F2,#F2F2F2)',
-        headerBg: 'url("/documents/header_bg.svg"), linear-gradient(#F2F2F2,#F2F2F2)',
-
-        spotlight: 'radial-gradient(transparent 70%, #00000080 70%)',
+        login: 'url("/elements/login_page_bg.png")',
+        loginMobile: 'url("/elements/mobile-login.png")',
       },
       zIndex: {
         '-10': '-10',
