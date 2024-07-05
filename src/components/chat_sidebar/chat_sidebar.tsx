@@ -12,6 +12,7 @@ import { useUserCtx } from '@/contexts/user_context';
 import { useRouter } from 'next/router';
 import { NATIVE_ROUTE } from '@/constants/url';
 import { MessageType } from '@/interfaces/message_modal';
+import Link from 'next/link';
 
 interface IChatBriefItemProps {
   chatBrief: IChatBrief;
@@ -306,7 +307,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
       >
         <div className="flex gap-2.5">
           <div className="my-auto h-2 w-2 shrink-0 rounded-full bg-orange-400" />
-          <div className={cn(isFolderExpanded ? 'w-120px' : 'w-160px')}>
+          <div className={cn(isFolderExpanded ? 'w-100px' : 'w-160px')}>
             {isRenaming ? (
               <input
                 ref={inputRef}
@@ -346,33 +347,62 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
           {/* Info: folder edit icon (20240628 - Shirley) */}
           {isFolderExpanded && (
             <div className="pointer-events-auto">
-              <Button
-                onClick={editIconClickHandler}
-                variant={'secondaryBorderless'}
-                className={cn('px-2 py-1', isEditMenuVisible ? 'text-surface-brand-primary' : '')}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="none"
-                  viewBox="0 0 16 16"
+              <div className="flex gap-0">
+                <Button
+                  onClick={editIconClickHandler}
+                  variant={'secondaryBorderless'}
+                  className={cn('px-2 py-1', isEditMenuVisible ? 'text-surface-brand-primary' : '')}
                 >
-                  <g clipPath="url(#clip0_487_4271)">
-                    <path
-                      className="fill-current"
-                      fillRule="evenodd"
-                      d="M11.863 1.445a2.131 2.131 0 013.014 3.014L8.65 10.685l-.04.04c-.185.185-.358.359-.568.487a2.053 2.053 0 01-.593.246c-.239.057-.484.057-.745.057H5.557a.75.75 0 01-.75-.75v-1.09-.058c0-.261 0-.506.057-.745.05-.21.133-.41.245-.593.129-.21.302-.383.487-.567a38.7 38.7 0 00.041-.041l6.226-6.226zm1.953 1.06a.631.631 0 00-.893 0L6.698 8.733c-.25.25-.286.292-.31.33a.552.552 0 00-.066.16c-.01.043-.015.098-.015.452v.34h.34c.354 0 .41-.004.453-.015a.552.552 0 00.16-.066c.037-.023.08-.058.33-.309l6.226-6.226a.631.631 0 000-.892zm-9.07-.303H7.51a.75.75 0 010 1.5H4.776c-.56 0-.934 0-1.222.024-.28.023-.41.064-.496.107-.227.116-.41.3-.526.526-.044.086-.084.217-.107.496a16.76 16.76 0 00-.024 1.222v5.469c0 .56 0 .934.024 1.222.023.279.063.41.107.496.115.226.3.41.526.526.085.043.217.084.496.107.288.023.663.024 1.222.024h5.469c.559 0 .933 0 1.221-.024.28-.023.411-.064.497-.107.226-.116.41-.3.526-.526.043-.086.084-.217.106-.496.024-.289.025-.663.025-1.222V8.81a.75.75 0 011.5 0V11.576c0 .521 0 .957-.03 1.314-.03.372-.096.723-.265 1.055-.26.508-.673.922-1.181 1.181-.333.17-.683.235-1.056.266-.356.029-.792.029-1.313.029h-5.53c-.52 0-.957 0-1.313-.03-.372-.03-.723-.095-1.055-.265a2.703 2.703 0 01-1.181-1.181c-.17-.332-.236-.683-.266-1.055-.03-.357-.03-.793-.03-1.314V6.047c0-.521 0-.957.03-1.314.03-.372.096-.723.265-1.055.26-.509.673-.922 1.182-1.181.332-.17.683-.235 1.055-.266.356-.029.792-.029 1.314-.029z"
-                      clipRule="evenodd"
-                    ></path>
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_487_4271">
-                      <path fill="#fff" d="M0 0H16V16H0z"></path>
-                    </clipPath>
-                  </defs>
-                </svg>
-              </Button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="none"
+                    viewBox="0 0 16 16"
+                  >
+                    <g clipPath="url(#clip0_487_4271)">
+                      <path
+                        className="fill-current"
+                        fillRule="evenodd"
+                        d="M11.863 1.445a2.131 2.131 0 013.014 3.014L8.65 10.685l-.04.04c-.185.185-.358.359-.568.487a2.053 2.053 0 01-.593.246c-.239.057-.484.057-.745.057H5.557a.75.75 0 01-.75-.75v-1.09-.058c0-.261 0-.506.057-.745.05-.21.133-.41.245-.593.129-.21.302-.383.487-.567a38.7 38.7 0 00.041-.041l6.226-6.226zm1.953 1.06a.631.631 0 00-.893 0L6.698 8.733c-.25.25-.286.292-.31.33a.552.552 0 00-.066.16c-.01.043-.015.098-.015.452v.34h.34c.354 0 .41-.004.453-.015a.552.552 0 00.16-.066c.037-.023.08-.058.33-.309l6.226-6.226a.631.631 0 000-.892zm-9.07-.303H7.51a.75.75 0 010 1.5H4.776c-.56 0-.934 0-1.222.024-.28.023-.41.064-.496.107-.227.116-.41.3-.526.526-.044.086-.084.217-.107.496a16.76 16.76 0 00-.024 1.222v5.469c0 .56 0 .934.024 1.222.023.279.063.41.107.496.115.226.3.41.526.526.085.043.217.084.496.107.288.023.663.024 1.222.024h5.469c.559 0 .933 0 1.221-.024.28-.023.411-.064.497-.107.226-.116.41-.3.526-.526.043-.086.084-.217.106-.496.024-.289.025-.663.025-1.222V8.81a.75.75 0 011.5 0V11.576c0 .521 0 .957-.03 1.314-.03.372-.096.723-.265 1.055-.26.508-.673.922-1.181 1.181-.333.17-.683.235-1.056.266-.356.029-.792.029-1.313.029h-5.53c-.52 0-.957 0-1.313-.03-.372-.03-.723-.095-1.055-.265a2.703 2.703 0 01-1.181-1.181c-.17-.332-.236-.683-.266-1.055-.03-.357-.03-.793-.03-1.314V6.047c0-.521 0-.957.03-1.314.03-.372.096-.723.265-1.055.26-.509.673-.922 1.182-1.181.332-.17.683-.235 1.055-.266.356-.029.792-.029 1.314-.029z"
+                        clipRule="evenodd"
+                      ></path>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_487_4271">
+                        <path fill="#fff" d="M0 0H16V16H0z"></path>
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </Button>
+
+                {/* TODO: link to chat list page (20240705 - Shirley) */}
+                <Link href={NATIVE_ROUTE.HOME}>
+                  <Button
+                    variant={'secondaryBorderless'}
+                    className={cn(
+                      'px-2 py-1',
+                      isEditMenuVisible ? 'text-surface-brand-primary' : ''
+                    )}
+                  >
+                    {' '}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="none"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        className="fill-current"
+                        fillRule="evenodd"
+                        d="M3.604 8.26a.099.099 0 100-.199.099.099 0 000 .198zm-1.4-.1a1.401 1.401 0 112.801 0 1.401 1.401 0 01-2.802 0zm5.957.1a.099.099 0 100-.199.099.099 0 000 .198zm-1.4-.1a1.401 1.401 0 112.801 0 1.401 1.401 0 01-2.802 0zm5.958.1a.099.099 0 100-.199.099.099 0 000 .198zm-1.401-.1a1.401 1.401 0 112.802 0 1.401 1.401 0 01-2.802 0z"
+                        clipRule="evenodd"
+                      ></path>
+                    </svg>
+                  </Button>
+                </Link>
+              </div>
             </div>
           )}
 
@@ -538,6 +568,25 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
               >
                 My Chat List
               </p>
+
+              {/* TODO: link to folder list page (20240705 - Shirley) */}
+              <Link href={NATIVE_ROUTE.HOME} className="hover:text-button-text-primary">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    className="stroke-current"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M12 2.5V12m0 0l8.5-4.722M12 12L3.5 7.278M12 12v9.5m8.5-4.778l-7.723-4.29c-.284-.158-.425-.237-.575-.268a1.001 1.001 0 00-.403 0c-.15.031-.292.11-.576.268L3.5 16.722M21 16.06V7.942c0-.343 0-.514-.05-.667a1 1 0 00-.215-.364c-.109-.119-.258-.202-.558-.368l-7.4-4.111c-.284-.158-.425-.237-.575-.267a1 1 0 00-.403 0c-.15.03-.292.11-.576.267l-7.4 4.11c-.3.167-.45.25-.558.369a1 1 0 00-.215.364C3 7.428 3 7.599 3 7.942v8.117c0 .342 0 .514.05.666a1 1 0 00.215.364c.109.119.258.202.558.368l7.4 4.111c.284.158.425.237.576.268.133.027.27.027.402 0 .15-.031.292-.11.576-.268l7.4-4.11c.3-.167.45-.25.558-.369a.999.999 0 00.215-.364c.05-.152.05-.324.05-.666z"
+                  ></path>
+                </svg>
+              </Link>
             </div>
             <div className="hideScrollbar mb-10 mt-5 grow overflow-y-auto overflow-x-hidden">
               {displayedFolders}
