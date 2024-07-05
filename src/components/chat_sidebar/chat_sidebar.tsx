@@ -171,6 +171,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
 };
 
 const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
+  const { deleteFolder } = useChatCtx();
   const { messageModalDataHandler, messageModalVisibilityHandler } = useGlobalCtx();
   const [isFolderExpanded, setIsFolderExpanded] = useState(true);
 
@@ -194,6 +195,8 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
   };
 
   const removeClickHandler = () => {
+    setEditMenuVisible(false);
+
     messageModalDataHandler({
       title: 'Remove Folder',
       messageType: MessageType.WARNING,
@@ -201,8 +204,8 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
       backBtnStr: 'Cancel',
       submitBtnStr: 'Remove',
       submitBtnFunction: () => {
-        // ToDo: (20240702 - Julian) 這邊要寫刪除資料夾的 function
-        setEditMenuVisible(false);
+        // ToDo: (20240702 - Julian) 這邊要寫刪除資料夾的 function ---> done (20240705 - Shirley)
+        deleteFolder(chatFolder.id); // 使用 deleteFolder 函數
       },
     });
     messageModalVisibilityHandler();
@@ -224,12 +227,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
             Share Folder
           </Button>
 
-          <Button
-            disabled
-            variant={'secondaryBorderless'}
-            className=""
-            onClick={removeClickHandler}
-          >
+          <Button variant={'secondaryBorderless'} className="" onClick={removeClickHandler}>
             Remove Folder
           </Button>
         </div>
