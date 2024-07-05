@@ -209,9 +209,13 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
 };
 
 const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
-  const { deleteFolder } = useChatCtx();
+  const { deleteFolder, renameFolder } = useChatCtx();
   const { messageModalDataHandler, messageModalVisibilityHandler } = useGlobalCtx();
   const [isFolderExpanded, setIsFolderExpanded] = useState(true);
+  const [isRenaming, setIsRenaming] = useState(false);
+  const [isComposing, setIsComposing] = useState(false);
+  const [newName, setNewName] = useState(chatFolder.name);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const {
     targetRef: editMenuRef,
@@ -219,12 +223,36 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
     setComponentVisible: setEditMenuVisible,
   } = useOuterClick<HTMLDivElement>(false);
 
+  useEffect(() => {
+    if (isRenaming && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isRenaming]);
+
+  const handleRenameSubmit = () => {
+    if (newName.trim() !== '' && !isComposing) {
+      renameFolder(chatFolder.id, newName.trim());
+      setNewName(newName.trim());
+      setIsRenaming(false);
+    }
+  };
+
+  const handleCompositionStart = () => setIsComposing(true);
+  const handleCompositionEnd = () => setIsComposing(false);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !isComposing) {
+      handleRenameSubmit();
+    }
+  };
+
   const editIconClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setEditMenuVisible(!isEditMenuVisible);
   };
 
   const renameClickHandler = () => {
+    setIsRenaming(true);
     setEditMenuVisible(false);
   };
 
@@ -253,12 +281,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
     <div className="relative">
       <div key={chatFolder.id} ref={editMenuRef} className="absolute right-4 top-6 z-50">
         <div className="flex flex-col gap-1 rounded-sm bg-white py-2 text-base font-normal leading-6 tracking-normal shadow-userMenu">
-          <Button
-            disabled
-            variant={'secondaryBorderless'}
-            className=""
-            onClick={renameClickHandler}
-          >
+          <Button variant={'secondaryBorderless'} className="" onClick={renameClickHandler}>
             Rename Folder
           </Button>
           <Button disabled variant={'secondaryBorderless'} className="" onClick={shareClickHandler}>
@@ -272,20 +295,34 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
       </div>
     </div>
   );
+
   const displayedFolder = (
     <div key={chatFolder.id} className="w-full pb-2 pt-0">
       <div
-        onClick={() => setIsFolderExpanded(!isFolderExpanded)}
+        onClick={() => !isRenaming && setIsFolderExpanded(!isFolderExpanded)}
         className={cn(
           'flex w-full items-center justify-between gap-2 px-2 text-base font-medium leading-6 tracking-normal text-slate-700 hover:cursor-pointer'
         )}
       >
         <div className="flex gap-2.5">
-          {/* Info: 橘色圓圈 (20240704 - Shirley) */}
           <div className="my-auto h-2 w-2 shrink-0 rounded-full bg-orange-400" />
-
           <div className={cn(isFolderExpanded ? 'w-120px' : 'w-160px')}>
-            <p className="truncate">{chatFolder.name}</p>
+            {isRenaming ? (
+              <input
+                ref={inputRef}
+                type="text"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                onBlur={handleRenameSubmit}
+                onKeyDown={handleKeyDown}
+                onCompositionStart={handleCompositionStart}
+                onCompositionEnd={handleCompositionEnd}
+                className="w-full rounded border bg-white px-2 py-1 text-sm font-normal"
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              <p className="truncate">{newName}</p>
+            )}
           </div>
         </div>
 
