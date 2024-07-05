@@ -16,7 +16,7 @@ import { ToastId } from '@/constants/toast_id';
 const NavBar = () => {
   const router = useRouter();
 
-  const { signedIn, signOut } = useUserCtx();
+  const { isSignedIn, signOut } = useUserCtx();
   const { addEmptyChat } = useChatCtx();
   const { chatSettingModalVisibilityHandler, toastHandler, eliminateToast } = useGlobalCtx();
 
@@ -170,7 +170,7 @@ const NavBar = () => {
     </div>
   ) : null;
 
-  const isDisplayedDiscoverButton = signedIn ? (
+  const isDisplayedDiscoverButton = isSignedIn ? (
     <Link href={'/discover'} className="my-auto hidden lg:flex">
       <Button size={'small'} variant={'secondaryBorderless'}>
         <svg
@@ -194,7 +194,7 @@ const NavBar = () => {
     </Link>
   ) : null;
 
-  const displayedLogInBtn = signedIn ? (
+  const displayedLogInBtn = isSignedIn ? (
     <div ref={userMenuRef}>
       <button
         type="button"

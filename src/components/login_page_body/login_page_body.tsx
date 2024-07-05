@@ -8,7 +8,7 @@ import { ToastId } from '@/constants/toast_id';
 import { checkboxStyle } from '@/constants/display';
 
 const LoginPageBody = () => {
-  const { signIn, signedIn } = useUserCtx();
+  const { signIn, isSignedIn } = useUserCtx();
   const {
     registerModalVisibilityHandler,
     toastHandler,
@@ -32,7 +32,7 @@ const LoginPageBody = () => {
   };
 
   useEffect(() => {
-    if (signedIn) {
+    if (isSignedIn) {
       eliminateToast();
       toastHandler({
         id: ToastId.LOGIN,
@@ -42,7 +42,7 @@ const LoginPageBody = () => {
         autoClose: 3000,
       });
     }
-  }, [signedIn]);
+  }, [isSignedIn]);
 
   return (
     <div

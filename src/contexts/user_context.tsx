@@ -15,7 +15,7 @@ interface UserContextType {
   signIn: () => Promise<void>;
   signOut: () => Promise<void>;
   userAuth: IUserAuth | null;
-  signedIn: boolean;
+  isSignedIn: boolean;
 }
 
 const UserContext = createContext<UserContextType>({
@@ -25,7 +25,7 @@ const UserContext = createContext<UserContextType>({
   signIn: async () => {},
   signOut: async () => {},
   userAuth: null,
-  signedIn: false,
+  isSignedIn: false,
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -35,7 +35,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [userAuth, setUserAuth, userAuthRef] = useStateRef<IUserAuth | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [signedIn, setSignedIn, signedInRef] = useStateRef(false);
+  const [isSignedIn, setIsSignedIn, isSignedInRef] = useStateRef(false);
 
   const writeCookie = async () => {
     const expiration = new Date();
@@ -66,7 +66,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       const data = (await response.json()).payload as IUserAuth;
       setUserAuth(data);
       setUser(data.credential);
-      setSignedIn(true);
+      setIsSignedIn(true);
 
       const registrationArray = JSON.parse(localStorage.getItem('registrationArray') || '[]');
       registrationArray.push(data);
@@ -90,7 +90,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (authentication) {
         setUser({} as ICredential);
-        setSignedIn(true);
+        setIsSignedIn(true);
         writeCookie();
       }
     } catch (error) {
@@ -110,7 +110,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
       setUserAuth(null);
       setUser(null);
-      setSignedIn(false);
+      setIsSignedIn(false);
     } catch (error) {
       // Deprecated: (20240715 - Shirley)
       // eslint-disable-next-line no-console
@@ -122,7 +122,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const credentialFromCookie = checkFIDO2Cookie();
     if (credentialFromCookie) {
       setUser(credentialFromCookie[0]);
-      setSignedIn(true);
+      setIsSignedIn(true);
     }
   };
 
@@ -131,10 +131,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (signedIn) {
+    if (isSignedIn) {
       router.push('/');
     }
-  }, [signedIn]);
+  }, [isSignedIn]);
 
   // TODO: test the user auth status (20240627 -Shirley)
   // const value = useMemo(
@@ -145,9 +145,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   //     signIn,
   //     signOut,
   //     userAuth: userAuthRef.current,
-  //     signedIn: signedInRef.current,
+  //     isSignedIn: isSignedInRef.current,
   //   }),
-  //   [userRef.current, signedInRef.current, userAuthRef.current]
+  //   [userRef.current, isSignedInRef.current, userAuthRef.current]
   // );
 
   // TODO: test the user auth status (20240627 -Shirley)
@@ -159,7 +159,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     signIn,
     signOut,
     userAuth: userAuthRef.current,
-    signedIn: signedInRef.current,
+    isSignedIn: isSignedInRef.current,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

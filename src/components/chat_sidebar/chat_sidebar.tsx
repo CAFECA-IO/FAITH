@@ -329,7 +329,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
 };
 
 const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
-  const { signedIn } = useUserCtx();
+  const { isSignedIn } = useUserCtx();
   const { chatBriefs, folders, addFolder, moveChatToFolder } = useChatCtx();
 
   const [isExpanded, setIsExpanded] = useState(true);
@@ -357,7 +357,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
           const id = uuidv4();
           const newFolder: IFolder = {
             id,
-            name: `New Folder ${id}`,
+            name: `Folder ${id}`,
             chats: [chat],
           };
           addFolder(newFolder, chat);
@@ -370,7 +370,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
   };
 
   const displayedFolders =
-    signedIn && // TODO: for demo，實際上要限制沒登入就不能新增資料夾，理論上這個條件不應該發生 (20240628 - Shirley)
+    isSignedIn && // TODO: for demo，實際上要限制沒登入就不能新增資料夾，理論上這個條件不應該發生 (20240628 - Shirley)
     folders &&
     folders.length > 0 &&
     folders.map((folder) => (
@@ -385,7 +385,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
     ));
 
   const displayedChatBriefs =
-    signedIn && // TODO: for demo，實際上要限制沒登入就只能替代 chats array 中最後一個 chat (20240628 - Shirley)
+    isSignedIn && // TODO: for demo，實際上要限制沒登入就只能替代 chats array 中最後一個 chat (20240628 - Shirley)
     chatBriefs &&
     chatBriefs.length > 0 &&
     chatBriefs
@@ -480,12 +480,17 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
           </div>
 
           <Droppable droppableId="new-folder">
-            {(provided) => (
+            {(provided, snapshot) => (
               <div ref={provided.innerRef} {...provided.droppableProps} className="-mt-8 h-50px">
                 <Button
                   size={'medium'}
                   variant={'secondaryOutline'}
-                  className="px-4 text-button-text-secondary"
+                  className={cn(
+                    'px-4 text-button-text-secondary hover:cursor-grab',
+                    snapshot.isDraggingOver
+                      ? 'hover:border-button-text-primary hover:text-button-text-primary group-hover:border-button-text-primary group-hover:text-button-text-primary'
+                      : 'hover:border-button-text-secondary hover:text-button-text-secondary group-hover:border-button-text-secondary group-hover:text-button-text-secondary'
+                  )}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
