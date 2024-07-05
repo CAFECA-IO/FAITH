@@ -16,7 +16,7 @@ import { useUserCtx } from '@/contexts/user_context';
 import { TopicIcons } from '@/constants/display';
 
 const ChatThreadSection = () => {
-  const { signedIn } = useUserCtx();
+  const { isSignedIn } = useUserCtx();
   const { selectedChat, userAddMessage, resendMessage, isPendingBotMsg } = useChatCtx();
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -42,7 +42,7 @@ const ChatThreadSection = () => {
             title={topic.title}
             description={topic.description}
             onClick={() => topicClickHandler(topic.title)}
-            icon={signedIn ? TopicIcons[topic.type] : undefined}
+            icon={isSignedIn ? TopicIcons[topic.type] : undefined}
           />
         ))}
       </div>

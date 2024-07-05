@@ -124,7 +124,7 @@ const ChatContext = createContext<ChatContextType>({
 
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const { signedIn } = useUserCtx();
+  const { isSignedIn } = useUserCtx();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [chatBriefs, setChatBriefs, chatBriefsRef] = useStateRef<IChatBrief[] | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -336,7 +336,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const addChatBrief = (item: IChatBrief) => {
-    if (!signedIn) return;
+    if (!isSignedIn) return;
     const existingBrief = chatBriefsRef.current?.find((brief) => brief.id === item.id);
     if (!existingBrief) {
       setChatBriefs([...(chatBriefsRef.current || []), item]);
@@ -526,7 +526,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const addFolder = (item: IFolder, chat?: IChatBrief) => {
-    if (!signedIn) return;
+    if (!isSignedIn) return;
 
     setFolders((prevFolders) => [...(prevFolders || []), item]);
 
@@ -996,13 +996,13 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const userAddMessage = async (message: IMessage) => {
-    const role = signedIn ? MessageRole.USER : MessageRole.VISITOR;
+    const role = isSignedIn ? MessageRole.USER : MessageRole.VISITOR;
     addMessage({ role, messages: [message] });
     await botAddMessage();
   };
 
   useEffect(() => {
-    if (signedIn) {
+    if (isSignedIn) {
       setChats(dummyChats);
       setSelectedChat(dummyChats[0]);
       setChatBriefs(dummyChatBriefs);
@@ -1010,10 +1010,10 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     } else {
       clearData();
     }
-  }, [signedIn]);
+  }, [isSignedIn]);
 
   useEffect(() => {
-    if (router.pathname === NATIVE_ROUTE.HOME && !signedIn) {
+    if (router.pathname === NATIVE_ROUTE.HOME && !isSignedIn) {
       addEmptyChat();
     }
   }, [router.pathname]);

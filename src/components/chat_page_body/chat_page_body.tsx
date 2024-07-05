@@ -21,7 +21,7 @@ interface IChatPageBodyProps {
 }
 
 const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
-  const { signedIn } = useUserCtx();
+  const { isSignedIn } = useUserCtx();
   const {
     userAddMessage,
     selectedChat,
@@ -141,7 +141,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
       });
       clearFile();
 
-      if (!signedIn) {
+      if (!isSignedIn) {
         // Info: (20240702 - Julian) wait for 3 seconds before showing the toast
         setTimeout(() => {
           toastHandler({
@@ -223,25 +223,23 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    if (!isSignedIn) return;
     setIsDragOver(true);
-
     event.preventDefault();
   };
 
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    if (!isSignedIn) return;
     setIsDragOver(false);
-
     event.preventDefault();
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    if (!isSignedIn) return;
     event.preventDefault();
-
     const droppedFile = event.dataTransfer.files[0];
-
     if (droppedFile) {
       setIsDragOver(false);
-
       handleFile(droppedFile);
     }
   };
@@ -412,9 +410,9 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
         rows={rows}
         // TODO: i18n (20240626 - Shirley)
         placeholder="Say something..."
-        className={`relative flex max-h-150px w-full resize-none items-center justify-between overflow-auto rounded-sm border border-lightGray3 bg-white ${signedIn ? `pl-12 pr-5` : `px-5`} py-3 outline-none transition-all duration-300`}
+        className={`relative flex max-h-150px w-full resize-none items-center justify-between overflow-auto rounded-sm border border-lightGray3 bg-white ${isSignedIn ? `pl-12 pr-5` : `px-5`} py-3 outline-none transition-all duration-300`}
       />
-      {signedIn && (
+      {isSignedIn && (
         // Info: upload file icon (20240628 - Shirley)
         <button
           onClick={uploadIconClickHandler}
@@ -463,7 +461,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
     </div>
   );
 
-  const displayedDragOverMask = isDragOver && (
+  const displayedDragOverMask = isDragOver && isSignedIn && (
     <div
       className={cn('absolute inset-0 z-100 mt-3.5rem bg-white/80', {
         'ml-240px': isSidebarExpanded,

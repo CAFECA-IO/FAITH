@@ -21,7 +21,7 @@ interface BotPendingMessageProps {
 }
 
 const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMessageProps) => {
-  const { signedIn } = useUserCtx();
+  const { isSignedIn } = useUserCtx();
   const { addResentMsg, addDislikedMsg } = useChatCtx();
   const [isCopySuccess, setIsCopySuccess] = useState(false);
   const [selectedMsgIndex, setSelectedMsgIndex] = useState(messages.length - 1 ?? 0);
@@ -141,7 +141,7 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
             </div>
 
             {/* Info: 用戶登入後，機器人的訊息 (20240701 - Shirley) */}
-            {role === MessageRole.BOT && signedIn ? (
+            {role === MessageRole.BOT && isSignedIn ? (
               <div className="my-0 flex gap-2">
                 {!!messages[selectedMsgIndex].file && (
                   <div className="mt-2">
