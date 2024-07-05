@@ -642,7 +642,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
 export const ChatSidebarMobile = () => {
   const router = useRouter();
   const { addEmptyChat } = useChatCtx();
-  const { signedIn } = useUserCtx();
+  const { isSignedIn } = useUserCtx();
 
   const {
     targetRef: sidebarRef,
@@ -663,7 +663,7 @@ export const ChatSidebarMobile = () => {
     router.push(NATIVE_ROUTE.DISCOVER);
   };
 
-  const isDiscoverBtn = signedIn ? (
+  const isDiscoverBtn = isSignedIn ? (
     <Button
       id="mobile-discover-button"
       type="button"
