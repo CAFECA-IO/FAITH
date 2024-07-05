@@ -607,34 +607,33 @@ export const ChatSidebarMobile = () => {
           {/* Info: (20240705 - Julian) Discover Button */}
           {isDiscoverBtn}
           <hr className="my-16px bg-divider-stroke-lv-4" />
-          <div className="flex flex-col">
-            <div className="mx-3 flex items-center gap-3">
-              <div className="relative flex h-10 w-10 items-center justify-center">
-                <Image
-                  src={'/logo/isunfa_pure_logo.svg'}
-                  width={20}
-                  height={20}
-                  alt="isunfa logo"
-                  className="z-10 h-5 w-5"
-                />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="40"
-                  height="40"
-                  fill="none"
-                  viewBox="0 0 40 40"
-                  className="absolute"
-                >
-                  <circle cx="20" cy="20" r="19" stroke="#CDD1D9" strokeWidth="2"></circle>
-                </svg>
-              </div>
-
-              <p
-                className={`text-lg font-medium text-button-text-secondary transition-all duration-300 ease-in-out`}
+          <div className="mx-3 flex items-center gap-3">
+            <div className="relative flex h-10 w-10 items-center justify-center">
+              <Image
+                src={'/logo/isunfa_pure_logo.svg'}
+                width={20}
+                height={20}
+                alt="isunfa logo"
+                className="z-10 h-5 w-5"
+              />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="40"
+                height="40"
+                fill="none"
+                viewBox="0 0 40 40"
+                className="absolute"
               >
-                My Chat List
-              </p>
+                <circle cx="20" cy="20" r="19" stroke="#CDD1D9" strokeWidth="2"></circle>
+              </svg>
             </div>
+
+            <p
+              className={`text-lg font-medium text-button-text-secondary transition-all duration-300 ease-in-out`}
+            >
+              My Chat List
+            </p>
+            {/* ToDo: (20240705 - Julian) Folders & Chats */}
           </div>
         </div>
       </div>
@@ -642,7 +641,7 @@ export const ChatSidebarMobile = () => {
       <button
         id="mobile-sidebar-toggle"
         type="button"
-        className="bg-bg-surface-neutral-surface-lv1 mx-8px my-16px p-10px md:mx-80px"
+        className="mx-8px my-16px bg-surface-neutral-surface-lv1 p-10px md:mx-80px"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
         <svg
