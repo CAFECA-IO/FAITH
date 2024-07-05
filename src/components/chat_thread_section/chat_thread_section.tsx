@@ -78,7 +78,7 @@ const ChatThreadSection = () => {
         ref={chatContainerRef}
         className={cn(
           'hideScrollbar overflow-y-auto overflow-x-hidden pt-20',
-          selectedChat.messages.length > 3 ? 'h-screen pb-10' : 'pb-2'
+          selectedChat.messages.length > 1 ? 'h-screen pb-10' : 'pb-2'
         )}
       >
         <div className="mx-20 flex flex-col gap-10">

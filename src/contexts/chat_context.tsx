@@ -20,6 +20,7 @@ import { useRouter } from 'next/router';
 import { EXTERNAL_API, NATIVE_ROUTE } from '@/constants/url';
 import { FileStatus, FileStatusUnion, IFile } from '@/interfaces/file';
 import { LIMIT_FOR_FILE_SIZE } from '@/constants/config';
+import { setTimeout } from 'timers';
 
 interface ChatContextType {
   selectedChat: IChat | null;
@@ -28,7 +29,7 @@ interface ChatContextType {
 
   addMessage: (message: IMessageWithRole) => void;
   userAddMessage: (message: IMessage) => void;
-  updateMessage: (messageIndex: number, updatedMessage: IMessageWithRole) => void;
+  updateMessage: (chatId: string, messageIndex: number, updatedMessage: IMessageWithRole) => void;
   deleteMessage: (messageIndex: number) => void;
   resendMessage: (messageIndex: number) => Promise<void>;
   dislikedMsg: string[];
@@ -40,6 +41,7 @@ interface ChatContextType {
   pendingMsg: string[];
   addPendingMsg: (messageId: string) => void;
   removePendingMsg: (messageId: string) => void;
+  botAddMessage: () => Promise<void>;
 
   chatBriefs: IChatBrief[] | null;
   handleChatBriefs: (chatBriefs: IChatBrief[]) => void;
@@ -89,6 +91,7 @@ const ChatContext = createContext<ChatContextType>({
   pendingMsg: [],
   addPendingMsg: () => {},
   removePendingMsg: () => {},
+  botAddMessage: () => Promise.resolve(),
 
   chatBriefs: null as IChatBrief[] | null,
   handleChatBriefs: () => {},
@@ -230,8 +233,24 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setFile(null);
   };
 
-  const addMessage = (message: IMessageWithRole) => {
-    if (selectedChatRef.current) {
+  const addMessage = (message: IMessageWithRole, chatId?: string) => {
+    if (chatId) {
+      // 如果指定了 chatId，將消息添加到指定的聊天中
+      setChats(
+        (prevChats) =>
+          prevChats?.map((chat) =>
+            chat.id === chatId ? { ...chat, messages: [...chat.messages, message] } : chat
+          ) || []
+      );
+
+      // 如果當前選中的聊天就是指定的聊天，也更新 selectedChat
+      if (selectedChatRef.current?.id === chatId) {
+        setSelectedChat((prevChat) =>
+          prevChat ? { ...prevChat, messages: [...prevChat.messages, message] } : null
+        );
+      }
+    } else if (selectedChatRef.current) {
+      // 如果沒有指定 chatId，則添加到當前選中的聊天中
       const updatedChat = {
         ...selectedChatRef.current,
         messages: [...selectedChatRef.current.messages, message],
@@ -245,25 +264,53 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const userAddMessage = (message: IMessage) => {
-    const role = signedIn ? MessageRole.USER : MessageRole.VISITOR;
-    addMessage({ role, messages: [message] });
-  };
+  // const updateMessage = (messageIndex: number, updatedMessage: IMessageWithRole) => {
+  //   if (selectedChatRef.current) {
+  //     const updatedChat = {
+  //       ...selectedChatRef.current,
+  //       messages: selectedChatRef.current.messages.map((msg: IMessageWithRole, index: number) =>
+  //         index === messageIndex ? updatedMessage : msg
+  //       ),
+  //     };
+  //     setSelectedChat(updatedChat);
+  //     if (chatsRef.current) {
+  //       setChats(
+  //         chatsRef.current.map((chat: IChat) => (chat.id === updatedChat.id ? updatedChat : chat))
+  //       );
+  //     }
+  //   }
+  // };
 
-  const updateMessage = (messageIndex: number, updatedMessage: IMessageWithRole) => {
-    if (selectedChatRef.current) {
-      const updatedChat = {
-        ...selectedChatRef.current,
-        messages: selectedChatRef.current.messages.map((msg: IMessageWithRole, index: number) =>
-          index === messageIndex ? updatedMessage : msg
-        ),
-      };
-      setSelectedChat(updatedChat);
-      if (chatsRef.current) {
-        setChats(
-          chatsRef.current.map((chat: IChat) => (chat.id === updatedChat.id ? updatedChat : chat))
-        );
-      }
+  const updateMessage = (
+    chatId: string,
+    messageIndex: number,
+    updatedMessage: IMessageWithRole
+  ) => {
+    setChats(
+      (prevChats) =>
+        prevChats?.map((chat) =>
+          chat.id === chatId
+            ? {
+                ...chat,
+                messages: chat.messages.map((msg, index) =>
+                  index === messageIndex ? updatedMessage : msg
+                ),
+              }
+            : chat
+        ) || []
+    );
+
+    if (selectedChatRef.current?.id === chatId) {
+      setSelectedChat((prevChat) =>
+        prevChat
+          ? {
+              ...prevChat,
+              messages: prevChat.messages.map((msg, index) =>
+                index === messageIndex ? updatedMessage : msg
+              ),
+            }
+          : null
+      );
     }
   };
 
@@ -534,93 +581,283 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setFolders([]);
   };
 
-  const addBotMessage = async () => {
-    if (
-      selectedChatRef?.current?.messages &&
-      selectedChatRef?.current?.messages.length > 0 &&
-      selectedChatRef.current?.messages.at(-1)?.role !== MessageRole.BOT
-    ) {
-      setIsPendingBotMsg(true);
-      const userMessage = selectedChatRef.current?.messages.at(-1)?.messages.at(-1)?.content;
+  // const botAddMessage = async () => {
+  //   if (
+  //     selectedChatRef?.current?.messages &&
+  //     selectedChatRef?.current?.messages.length > 0 &&
+  //     selectedChatRef.current?.messages.at(-1)?.role !== MessageRole.BOT
+  //   ) {
+  //     setIsPendingBotMsg(true);
+  //     const userMessage = selectedChatRef.current?.messages.at(-1)?.messages.at(-1)?.content;
 
-      const newMsgId = uuidv4();
+  //     const newMsgId = uuidv4();
 
-      try {
-        addPendingMsg(newMsgId);
+  //     try {
+  //       addPendingMsg(newMsgId);
 
-        const response = await fetch(EXTERNAL_API.LLAMA_API, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+  //       const response = await fetch(EXTERNAL_API.LLAMA_API, {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ question: userMessage }),
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+
+  //       const reader = response.body?.getReader();
+  //       let answer = '';
+
+  //       const botMessage: IMessageWithRole = {
+  //         role: MessageRole.BOT,
+  //         messages: [
+  //           {
+  //             id: newMsgId,
+  //             content: '',
+  //             createdAt: getTimestamp(),
+  //             isPending: true,
+  //             like: false,
+  //             dislike: false,
+  //           },
+  //         ],
+  //       };
+
+  //       addMessage(botMessage);
+
+  //       while (reader) {
+  //         // Info: text animation (20240704 - Shirley)
+  //         // eslint-disable-next-line no-await-in-loop
+  //         const { done, value } = await reader.read();
+  //         if (done) {
+  //           break;
+  //         }
+  //         const chunkAnswer = new TextDecoder().decode(value);
+  //         answer += chunkAnswer;
+
+  //         // Info: 更新最後一條消息的內容 (20240704 - Shirley)
+  //         updateMessage(selectedChatRef.current.messages.length - 1, {
+  //           ...botMessage,
+  //           messages: [{ ...botMessage.messages[0], content: answer, isPending: false }],
+  //         });
+  //       }
+  //     } catch (error) {
+  //       // Deprecated: (20240720 - Shirley)
+  //       // eslint-disable-next-line no-console
+  //       console.error('Error calling API:', error);
+
+  //       const errorMessage: IMessageWithRole = {
+  //         role: MessageRole.BOT,
+  //         messages: [
+  //           {
+  //             id: newMsgId,
+  //             content: 'Sorry, an error occurred. Please try again later.',
+  //             createdAt: getTimestamp(),
+  //             isPending: false,
+  //             like: false,
+  //             dislike: false,
+  //           },
+  //         ],
+  //       };
+
+  //       addMessage(errorMessage);
+  //     } finally {
+  //       setIsPendingBotMsg(false);
+  //       removePendingMsg(newMsgId);
+  //     }
+  //   }
+  // };
+
+  const botAddMessage = async () => {
+    setIsPendingBotMsg(true);
+    const userMessage = selectedChatRef.current?.messages.at(-1)?.messages.at(-1)?.content;
+    const chatId = selectedChatRef.current?.id; // 獲取當前選中聊天的 ID
+
+    const newMsgId = uuidv4();
+
+    try {
+      addPendingMsg(newMsgId);
+
+      const response = await fetch(EXTERNAL_API.LLAMA_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ question: userMessage }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const reader = response.body?.getReader();
+      let answer = '';
+
+      const botMessage: IMessageWithRole = {
+        role: MessageRole.BOT,
+        messages: [
+          {
+            id: newMsgId,
+            content: '',
+            createdAt: getTimestamp(),
+            isPending: true,
+            like: false,
+            dislike: false,
           },
-          body: JSON.stringify({ question: userMessage }),
-        });
+        ],
+      };
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+      addMessage(botMessage, chatId); // 在這裡指定 chatId
+
+      while (reader) {
+        // Info: text animation (20240704 - Shirley)
+        // eslint-disable-next-line no-await-in-loop
+        const { done, value } = await reader.read();
+        if (done) {
+          break;
         }
+        const chunkAnswer = new TextDecoder().decode(value);
+        answer += chunkAnswer;
 
-        const reader = response.body?.getReader();
-        let answer = '';
-
-        const botMessage: IMessageWithRole = {
-          role: MessageRole.BOT,
-          messages: [
-            {
-              id: newMsgId,
-              content: '',
-              createdAt: getTimestamp(),
-              isPending: true,
-              like: false,
-              dislike: false,
-            },
-          ],
-        };
-
-        addMessage(botMessage);
-
-        while (reader) {
-          // Info: text animation (20240704 - Shirley)
-          // eslint-disable-next-line no-await-in-loop
-          const { done, value } = await reader.read();
-          if (done) {
-            break;
-          }
-          const chunkAnswer = new TextDecoder().decode(value);
-          answer += chunkAnswer;
-
-          // Info: 更新最後一條消息的內容 (20240704 - Shirley)
-          updateMessage(selectedChatRef.current.messages.length - 1, {
+        // Info: 更新最後一條消息的內容 (20240704 - Shirley)
+        if (chatId && selectedChatRef.current) {
+          updateMessage(chatId, selectedChatRef.current.messages.length - 1, {
             ...botMessage,
             messages: [{ ...botMessage.messages[0], content: answer, isPending: false }],
           });
         }
-      } catch (error) {
-        // Deprecated: (20240720 - Shirley)
-        // eslint-disable-next-line no-console
-        console.error('Error calling API:', error);
-
-        const errorMessage: IMessageWithRole = {
-          role: MessageRole.BOT,
-          messages: [
-            {
-              id: newMsgId,
-              content: 'Sorry, an error occurred. Please try again later.',
-              createdAt: getTimestamp(),
-              isPending: false,
-              like: false,
-              dislike: false,
-            },
-          ],
-        };
-
-        addMessage(errorMessage);
-      } finally {
-        setIsPendingBotMsg(false);
-        removePendingMsg(newMsgId);
       }
+    } catch (error) {
+      // Deprecated: (20240720 - Shirley)
+      // eslint-disable-next-line no-console
+      console.error('Error calling API:', error);
+
+      const errorMessage: IMessageWithRole = {
+        role: MessageRole.BOT,
+        messages: [
+          {
+            id: newMsgId,
+            content: 'Sorry, an error occurred. Please try again later.',
+            createdAt: getTimestamp(),
+            isPending: false,
+            like: false,
+            dislike: false,
+          },
+        ],
+      };
+
+      addMessage(errorMessage, chatId); // 在這裡也指定 chatId
+    } finally {
+      setIsPendingBotMsg(false);
+      removePendingMsg(newMsgId);
     }
   };
+
+  // const resendMessage = async (messageIndex: number) => {
+  //   if (selectedChatRef.current) {
+  //     setIsPendingBotMsg(true);
+  //     const userMessage = selectedChatRef.current.messages[messageIndex - 1].messages[0].content;
+
+  //     const newMsgId = uuidv4();
+
+  //     try {
+  //       addPendingMsg(newMsgId);
+
+  // // 等待三秒
+  // await new Promise(resolve => setTimeout(resolve, 3000));
+
+  // // 拋出錯誤
+  // throw new Error('模擬的錯誤');
+
+  //       const response = await fetch(EXTERNAL_API.LLAMA_API, {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ question: userMessage }),
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+
+  //       const reader = response.body?.getReader();
+  //       let answer = '';
+
+  //       const botMessage: IMessageWithRole = {
+  //         role: MessageRole.BOT,
+  //         messages: [
+  //           {
+  //             id: newMsgId,
+  //             content: '',
+  //             createdAt: getTimestamp(),
+  //             isPending: true,
+  //             like: false,
+  //             dislike: false,
+  //           },
+  //         ],
+  //       };
+
+  //       // 更新選定的聊天
+  //       const updatedChat = {
+  //         ...selectedChatRef.current,
+  //         messages: [
+  //           ...selectedChatRef.current.messages.slice(0, messageIndex),
+  //           botMessage,
+  //           ...selectedChatRef.current.messages.slice(messageIndex + 1),
+  //         ],
+  //       };
+  //       setSelectedChat(updatedChat);
+
+  //       if (chatsRef.current) {
+  //         setChats(
+  //           chatsRef.current.map((chat: IChat) => (chat.id === updatedChat.id ? updatedChat : chat))
+  //         );
+  //       }
+
+  //       while (reader) {
+  //         // Info: text animation (20240704 - Shirley)
+  //         // eslint-disable-next-line no-await-in-loop
+  //         const { done, value } = await reader.read();
+  //         if (done) {
+  //           break;
+  //         }
+  //         const chunkAnswer = new TextDecoder().decode(value);
+  //         answer += chunkAnswer;
+
+  //         // 更新最後一條消息的內容
+  //         updateMessage(messageIndex, {
+  //           ...botMessage,
+  //           messages: [{ ...botMessage.messages[0], content: answer, isPending: false }],
+  //         });
+  //       }
+  //     } catch (error) {
+  //       // Deprecated: (20240720 - Shirley)
+  //       // eslint-disable-next-line no-console
+  //       console.error('Error calling API:', error);
+
+  //       const errorMessage: IMessageWithRole = {
+  //         role: MessageRole.BOT,
+  //         messages: [
+  //           {
+  //             id: newMsgId,
+  //             content: 'Sorry, an error occurred. Please try again later.',
+  //             createdAt: getTimestamp(),
+  //             isPending: false,
+  //             like: false,
+  //             dislike: false,
+  //           },
+  //         ],
+  //       };
+
+  //       updateMessage(messageIndex, errorMessage);
+  //     } finally {
+  //       setIsPendingBotMsg(false);
+  //       removePendingMsg(newMsgId);
+  //     }
+  //   }
+  // };
 
   const resendMessage = async (messageIndex: number) => {
     if (selectedChatRef.current) {
@@ -657,6 +894,12 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       try {
+        // // 等待三秒
+        // await new Promise((resolve) => setTimeout(resolve, 3000));
+
+        // // 拋出錯誤
+        // throw new Error('模擬的錯誤');
+
         const response = await fetch(EXTERNAL_API.LLAMA_API, {
           method: 'POST',
           headers: {
@@ -717,8 +960,45 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         // Deprecated: (20240720 - Shirley)
         // eslint-disable-next-line no-console
         console.error('Error calling API:', error);
+
+        const answer = 'Sorry, an error occurred. Please try again later.';
+
+        const finalUpdatedChat = {
+          ...updatedChat,
+          // Info: 更新最後一條消息的內容 (20240704 - Shirley)
+          /* eslint-disable @typescript-eslint/no-loop-func */
+          messages: updatedChat.messages.map((msg, index) => {
+            if (index === messageIndex && msg.role === MessageRole.BOT) {
+              const lastMessage = msg.messages[msg.messages.length - 1];
+              removePendingMsg(lastMessage.id);
+              return {
+                ...msg,
+                messages: [
+                  ...msg.messages.slice(0, -1),
+                  { ...lastMessage, content: answer, isPending: false },
+                ],
+              };
+            }
+            return msg;
+          }),
+        };
+
+        setSelectedChat(finalUpdatedChat);
+        if (chatsRef.current) {
+          setChats(
+            chatsRef.current.map((chat) =>
+              chat.id === finalUpdatedChat.id ? finalUpdatedChat : chat
+            )
+          );
+        }
       }
     }
+  };
+
+  const userAddMessage = async (message: IMessage) => {
+    const role = signedIn ? MessageRole.USER : MessageRole.VISITOR;
+    addMessage({ role, messages: [message] });
+    await botAddMessage();
   };
 
   useEffect(() => {
@@ -738,10 +1018,10 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [router.pathname]);
 
-  useEffect(() => {
-    if (selectedChatRef?.current?.messages.length === 0) return;
-    addBotMessage();
-  }, [selectedChatRef.current?.messages]);
+  // useEffect(() => {
+  //   if (selectedChatRef?.current?.messages.length === 0) return;
+  //   botAddMessage();
+  // }, [selectedChatRef.current?.messages]);
 
   /* eslint-disable react/jsx-no-constructed-context-values */
   const value = {
@@ -763,6 +1043,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     pendingMsg: pendingMsgRef.current,
     addPendingMsg,
     removePendingMsg,
+    botAddMessage,
 
     chatBriefs: chatBriefsRef.current,
     handleChatBriefs,
