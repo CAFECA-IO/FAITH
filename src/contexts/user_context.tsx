@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect } from 'react';
 import { client } from '@passwordless-id/webauthn';
 import useStateRef from 'react-usestateref';
 import { DUMMY_TIMESTAMP, FIDO2_USER_HANDLE } from '@/constants/config';
-import { NATIVE_API } from '@/constants/url';
+import { NATIVE_API, NATIVE_ROUTE } from '@/constants/url';
 import { checkFIDO2Cookie, createChallenge } from '@/lib/utils/authorization';
 import { DEFAULT_USER_NAME } from '@/constants/display';
 import { ICredential, IUserAuth } from '@/interfaces/webauthn';
@@ -132,23 +132,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (isSignedIn) {
-      router.push('/');
+      router.push(NATIVE_ROUTE.HOME);
     }
   }, [isSignedIn]);
-
-  // TODO: test the user auth status (20240627 -Shirley)
-  // const value = useMemo(
-  //   () => ({
-  //     user: userRef.current,
-  //     setUser,
-  //     signUp,
-  //     signIn,
-  //     signOut,
-  //     userAuth: userAuthRef.current,
-  //     isSignedIn: isSignedInRef.current,
-  //   }),
-  //   [userRef.current, isSignedInRef.current, userAuthRef.current]
-  // );
 
   // TODO: test the user auth status (20240627 -Shirley)
   /* eslint-disable react/jsx-no-constructed-context-values */
