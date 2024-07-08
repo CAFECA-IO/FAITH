@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { dummyTopicList } from '@/interfaces/topic';
 import { TopicCategory } from '@/constants/topic';
 import TopicSection from '@/components/topic_section/topic_section';
+import { NATIVE_ROUTE } from '@/constants/url';
 
 const TopicBrowsePageBody = () => {
   const topicCategories = Object.values(TopicCategory);
@@ -16,7 +17,7 @@ const TopicBrowsePageBody = () => {
   const displayTopicCategories = topicCategories.map((category) => {
     return (
       <Link
-        href={`/discover#${category}`}
+        href={`${NATIVE_ROUTE.DISCOVER}#${category}`}
         key={`${category}_tab`}
         className="flex flex-col items-center border-b-2 px-12px py-8px hover:border-tabs-stroke-hover hover:text-tabs-text-hover"
       >

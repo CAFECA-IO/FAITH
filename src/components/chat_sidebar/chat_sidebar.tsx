@@ -360,7 +360,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
                     fill="none"
                     viewBox="0 0 16 16"
                   >
-                    <g clipPath="url(#clip0_487_4271)">
+                    <g>
                       <path
                         className="fill-current"
                         fillRule="evenodd"
@@ -368,22 +368,12 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
                         clipRule="evenodd"
                       ></path>
                     </g>
-                    <defs>
-                      <clipPath id="clip0_487_4271">
-                        <path fill="#fff" d="M0 0H16V16H0z"></path>
-                      </clipPath>
-                    </defs>
                   </svg>
                 </Button>
 
                 {/* TODO: link to chat list page (20240705 - Shirley) */}
-                <Link href={NATIVE_ROUTE.HOME}>
-                  <Button
-                    variant={'secondaryBorderless'}
-                    className={cn('px-2 py-1')}
-                    onClick={editIconClickHandler}
-                  >
-                    {' '}
+                <Link href={`/folder/${chatFolder.id}`}>
+                  <Button variant={'secondaryBorderless'} className={cn('px-2 py-1')}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
