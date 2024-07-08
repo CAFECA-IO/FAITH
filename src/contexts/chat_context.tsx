@@ -34,8 +34,8 @@ interface ChatContextType {
   resendMessage: (messageIndex: number) => Promise<void>;
   dislikedMsg: string[];
   resentMsg: string[];
-  addDislikedMsg: (messageId: string) => void;
-  addResentMsg: (messageId: string) => void;
+  addDislikedMsg: (chatId: string) => void;
+  addResentMsg: (chatId: string) => void;
   displayedFeedback: DisplayedFeedback;
   isPendingBotMsg: boolean;
   pendingMsg: string[];
@@ -116,7 +116,7 @@ const ChatContext = createContext<ChatContextType>({
   file: null,
   handleFile: () => {},
   cancelUpload: () => {},
-  createIFile: () => ({ id: '', data: new File([], ''), status: FileStatus.success }) as IFile,
+  createIFile: () => ({ id: '', data: new File([], ''), status: FileStatus.success }),
   clearFile: () => {},
   saveFile: () => {},
   retryFileUpload: () => {},
@@ -147,6 +147,33 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [pendingMsg, setPendingMsg, pendingMsgRef] = useStateRef<string[]>([]);
 
+  /* TODO: dev (20240708 - Shirley)
+  // const _updateChats = (updater: (prevChats: IChat[]) => IChat[]) => {
+  //   setChats((prevChats) => (prevChats ? updater(prevChats) : []));
+  // };
+
+  // const _updateChatBriefs = (updater: (prevBriefs: IChatBrief[]) => IChatBrief[]) => {
+  //   setChatBriefs((prevBriefs) => (prevBriefs ? updater(prevBriefs) : []));
+  // };
+
+  // const _updateFolders = (updater: (prevFolders: IFolder[]) => IFolder[]) => {
+  //   setFolders((prevFolders) => (prevFolders ? updater(prevFolders) : []));
+  // };
+
+  // const _updateSelectedChat = (updater: (prevChat: IChat | null) => IChat | null) => {
+  //   setSelectedChat((prevChat) => updater(prevChat));
+  // };
+
+  // const _createNewMessage = (content: string, isPending: boolean = false): IMessage => ({
+  //   id: uuidv4(),
+  //   content,
+  //   createdAt: getTimestamp(),
+  //   isPending,
+  //   like: false,
+  //   dislike: false,
+  // });
+  */
+
   const addPendingMsg = (messageId: string) => {
     setPendingMsg((prev) => [...prev, messageId]);
   };
@@ -155,13 +182,13 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setPendingMsg((prev) => prev.filter((id) => id !== messageId));
   };
 
-  const addDislikedMsg = (messageId: string) => {
-    setDislikedMsg((prev) => [...prev, messageId]);
+  const addDislikedMsg = (chatId: string) => {
+    setDislikedMsg((prev) => [...prev, chatId]);
     setDisplayedFeedback(DisplayedFeedback.DISLIKE);
   };
 
-  const addResentMsg = (messageId: string) => {
-    setResentMsg((prev) => [...prev, messageId]);
+  const addResentMsg = (chatId: string) => {
+    setResentMsg((prev) => [...prev, chatId]);
     setDisplayedFeedback(DisplayedFeedback.RESEND);
   };
 
@@ -589,7 +616,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const botAddMessage = async () => {
     setIsPendingBotMsg(true);
     const userMessage = selectedChatRef.current?.messages.at(-1)?.messages.at(-1)?.content;
-    const chatId = selectedChatRef.current?.id; // 獲取當前選中聊天的 ID
+    const chatId = selectedChatRef.current?.id;
 
     const newMsgId = uuidv4();
 
@@ -625,10 +652,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         ],
       };
 
-      addMessage(botMessage, chatId); // 在這裡指定 chatId
+      addMessage(botMessage, chatId);
 
       while (reader) {
-        // Info: text animation (20240704 - Shirley)
         // eslint-disable-next-line no-await-in-loop
         const { done, value } = await reader.read();
         if (done) {
@@ -637,16 +663,36 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         const chunkAnswer = new TextDecoder().decode(value);
         answer += chunkAnswer;
 
-        // Info: 更新最後一條消息的內容 (20240704 - Shirley)
-        if (chatId && selectedChatRef.current) {
-          updateMessage(chatId, selectedChatRef.current.messages.length - 1, {
-            ...botMessage,
-            messages: [{ ...botMessage.messages[0], content: answer, isPending: false }],
+        // 更新消息內容
+        const updatedBotMessage = {
+          ...botMessage,
+          messages: [{ ...botMessage.messages[0], content: answer, isPending: false }],
+        };
+
+        // 更新 selectedChat
+        if (selectedChatRef.current?.id === chatId) {
+          setSelectedChat((prevChat) => {
+            if (!prevChat) return null;
+            const updatedMessages = [...prevChat.messages];
+            updatedMessages[updatedMessages.length - 1] = updatedBotMessage;
+            return { ...prevChat, messages: updatedMessages };
           });
         }
+
+        // 更新 chats
+        setChats(
+          (prevChats) =>
+            prevChats?.map((chat) => {
+              if (chat.id === chatId) {
+                const updatedMessages = [...chat.messages];
+                updatedMessages[updatedMessages.length - 1] = updatedBotMessage;
+                return { ...chat, messages: updatedMessages };
+              }
+              return chat;
+            }) || []
+        );
       }
     } catch (error) {
-      // Deprecated: (20240720 - Shirley)
       // eslint-disable-next-line no-console
       console.error('Error calling API:', error);
 
@@ -664,7 +710,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         ],
       };
 
-      addMessage(errorMessage, chatId); // 在這裡也指定 chatId
+      addMessage(errorMessage, chatId);
     } finally {
       setIsPendingBotMsg(false);
       removePendingMsg(newMsgId);
@@ -673,37 +719,38 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   const resendMessage = async (messageIndex: number) => {
     if (selectedChatRef.current) {
-      const updatedChat = {
-        ...selectedChatRef.current,
-        messages: selectedChatRef.current.messages.map((msg, index) => {
+      const chatId = selectedChatRef.current.id;
+      const newMessageId = uuidv4();
+
+      // 更新聊天狀態，添加新的待處理消息
+      const updateChat = (chat: IChat) => {
+        const updatedMessages = chat.messages.map((msg, index) => {
           if (index === messageIndex && msg.role === MessageRole.BOT) {
             const newMessage: IMessage = {
-              id: uuidv4(),
+              id: newMessageId,
               content: '',
               createdAt: getTimestamp(),
               isPending: true,
               like: false,
               dislike: false,
             };
-
-            addPendingMsg(newMessage.id);
-
             return {
               ...msg,
               messages: [...msg.messages, newMessage],
             };
           }
           return msg;
-        }),
+        });
+        return { ...chat, messages: updatedMessages };
       };
 
-      setSelectedChat(updatedChat);
+      setSelectedChat((prevChat) => (prevChat ? updateChat(prevChat) : null));
+      setChats(
+        (prevChats) =>
+          prevChats?.map((chat) => (chat.id === chatId ? updateChat(chat) : chat)) || []
+      );
 
-      if (chatsRef.current) {
-        setChats(
-          chatsRef.current.map((chat: IChat) => (chat.id === updatedChat.id ? updatedChat : chat))
-        );
-      }
+      addPendingMsg(newMessageId);
 
       try {
         const response = await fetch(EXTERNAL_API.LLAMA_API, {
@@ -722,81 +769,72 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
         const reader = response.body?.getReader();
         let answer = '';
+
         while (reader) {
-          // Info: text animation (20240704 - Shirley)
           // eslint-disable-next-line no-await-in-loop
           const { done, value } = await reader.read();
-          if (done) {
-            break;
-          }
+          if (done) break;
 
           const chunkAnswer = new TextDecoder().decode(value);
           answer += chunkAnswer;
-
-          const finalUpdatedChat = {
-            ...updatedChat,
-            // Info: 更新最後一條消息的內容 (20240704 - Shirley)
-            /* eslint-disable @typescript-eslint/no-loop-func */
-            messages: updatedChat.messages.map((msg, index) => {
+          /* eslint-disable */
+          const updateChatWithAnswer = (chat: IChat) => {
+            const updatedMessages = chat.messages.map((msg, index) => {
               if (index === messageIndex && msg.role === MessageRole.BOT) {
                 const lastMessage = msg.messages[msg.messages.length - 1];
-                removePendingMsg(lastMessage.id);
+                if (lastMessage.id === newMessageId) {
+                  return {
+                    ...msg,
+                    messages: [
+                      ...msg.messages.slice(0, -1),
+                      { ...lastMessage, content: answer, isPending: false },
+                    ],
+                  };
+                }
+              }
+              return msg;
+            });
+            return { ...chat, messages: updatedMessages };
+          };
+
+          setSelectedChat((prevChat) => (prevChat ? updateChatWithAnswer(prevChat) : null));
+          setChats(
+            (prevChats) =>
+              prevChats?.map((chat) => (chat.id === chatId ? updateChatWithAnswer(chat) : chat)) ||
+              []
+          );
+        }
+      } catch (error) {
+        console.error('Error calling API:', error);
+        const errorAnswer = 'Sorry, an error occurred. Please try again later.';
+
+        const updateChatWithError = (chat: IChat) => {
+          const updatedMessages = chat.messages.map((msg, index) => {
+            if (index === messageIndex && msg.role === MessageRole.BOT) {
+              const lastMessage = msg.messages[msg.messages.length - 1];
+              if (lastMessage.id === newMessageId) {
                 return {
                   ...msg,
                   messages: [
                     ...msg.messages.slice(0, -1),
-                    { ...lastMessage, content: answer, isPending: false },
+                    { ...lastMessage, content: errorAnswer, isPending: false },
                   ],
                 };
               }
-              return msg;
-            }),
-          };
-
-          setSelectedChat(finalUpdatedChat);
-          if (chatsRef.current) {
-            setChats(
-              chatsRef.current.map((chat) =>
-                chat.id === finalUpdatedChat.id ? finalUpdatedChat : chat
-              )
-            );
-          }
-        }
-      } catch (error) {
-        // Deprecated: (20240720 - Shirley)
-        // eslint-disable-next-line no-console
-        console.error('Error calling API:', error);
-
-        const answer = 'Sorry, an error occurred. Please try again later.';
-
-        const finalUpdatedChat = {
-          ...updatedChat,
-          // Info: 更新最後一條消息的內容 (20240704 - Shirley)
-          /* eslint-disable @typescript-eslint/no-loop-func */
-          messages: updatedChat.messages.map((msg, index) => {
-            if (index === messageIndex && msg.role === MessageRole.BOT) {
-              const lastMessage = msg.messages[msg.messages.length - 1];
-              removePendingMsg(lastMessage.id);
-              return {
-                ...msg,
-                messages: [
-                  ...msg.messages.slice(0, -1),
-                  { ...lastMessage, content: answer, isPending: false },
-                ],
-              };
             }
             return msg;
-          }),
+          });
+          return { ...chat, messages: updatedMessages };
         };
 
-        setSelectedChat(finalUpdatedChat);
-        if (chatsRef.current) {
-          setChats(
-            chatsRef.current.map((chat) =>
-              chat.id === finalUpdatedChat.id ? finalUpdatedChat : chat
-            )
-          );
-        }
+        setSelectedChat((prevChat) => (prevChat ? updateChatWithError(prevChat) : null));
+        setChats(
+          (prevChats) =>
+            prevChats?.map((chat) => (chat.id === chatId ? updateChatWithError(chat) : chat)) || []
+        );
+      } finally {
+        removePendingMsg(newMessageId);
+        addResentMsg(chatId);
       }
     }
   };

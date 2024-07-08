@@ -22,7 +22,7 @@ interface BotPendingMessageProps {
 
 const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMessageProps) => {
   const { isSignedIn } = useUserCtx();
-  const { addResentMsg, addDislikedMsg } = useChatCtx();
+  const { addDislikedMsg, selectedChat } = useChatCtx();
   const [isCopySuccess, setIsCopySuccess] = useState(false);
   const [selectedMsgIndex, setSelectedMsgIndex] = useState(messages.length - 1 ?? 0);
   const [isLikeSuccess, setIsLikeSuccess] = useState(!!messages[selectedMsgIndex]?.like);
@@ -56,7 +56,6 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
 
   const resendClickHandler = async () => {
     await resendCallback();
-    addResentMsg(messages[selectedMsgIndex].id);
   };
 
   const likeClickHandler = () => {
@@ -73,8 +72,7 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
     setIsDislikeSuccess(true);
     if (!messages[selectedMsgIndex].dislike) {
       setIsDislikeSuccess(true);
-      // dislikeCallback(true);
-      addDislikedMsg(messages[selectedMsgIndex].id);
+      addDislikedMsg(selectedChat?.id || '');
 
       // TODO: refactor with `const updatedMessage = { ...messages[selectedMsgIndex], dislike: true };` after calling API (20240702 - Shirley)
       // eslint-disable-next-line no-param-reassign
