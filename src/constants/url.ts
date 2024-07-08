@@ -12,5 +12,5 @@ export const NATIVE_API = {
 };
 
 export const EXTERNAL_API = {
-  LLAMA_API: 'http://211.22.118.150/api/v1/rag/chat-with-history',
+  LLAMA_API: 'https://aich.isunfa.com/api/v1/rag/chat-with-history',
 };
