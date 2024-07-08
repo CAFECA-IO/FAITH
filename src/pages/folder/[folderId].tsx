@@ -1,10 +1,21 @@
 import Head from 'next/head';
+import Image from 'next/image';
+import { useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { useChatCtx } from '@/contexts/chat_context';
 import ChatSidebar from '@/components/chat_sidebar/chat_sidebar';
 import NavBar from '@/components/nav_bar/nav_bar';
 import { Button } from '@/components/button/button';
 import { cn } from '@/lib/utils/common';
+import useOuterClick from '@/lib/hooks/use_outer_click';
+import { SortOptions } from '@/constants/display';
+import SortToggle from '@/components/sort_toggle/sort_toggle';
+
+enum FolderType {
+  ALL = 'All Type',
+  SHARED = 'Shared Chats',
+  PRIVATE = 'Private Chats',
+}
 
 interface IFolderOverviewPageProps {
   folderId: string;
@@ -26,7 +37,57 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
 
   const { name } = folderData;
 
+  const [filteredType, setFilteredType] = useState<FolderType>(FolderType.ALL);
+  const [search, setSearch] = useState<string>('');
+  const [sort, setSort] = useState<SortOptions>(SortOptions.NEWEST);
+
+  const {
+    targetRef: typeRef,
+    componentVisible: typeVisible,
+    setComponentVisible: setTypeVisible,
+  } = useOuterClick<HTMLDivElement>(false);
+
+  const searchChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+  const sortClickHandler = () => {
+    setSort(sort === SortOptions.NEWEST ? SortOptions.OLDEST : SortOptions.NEWEST);
+  };
+  const typeToggleHandler = () => {
+    setTypeVisible(!typeVisible);
+  };
+
   // ToDo: (20240708 - Julian) Description needed
+  const description =
+    'The UI/UX folder collects related questions and information about UI and UX.';
+  const totalChatCount = 99;
+  const sharedChatCount = 46;
+  const privateChatCount = 11;
+
+  const displayedTypeOptions = (
+    <div
+      ref={typeRef}
+      className={`absolute top-50px flex flex-col gap-y-16px rounded-sm ${typeVisible ? 'visible opacity-100' : 'invisible opacity-0'} bg-surface-neutral-surface-lv2 py-16px text-base shadow-dropmenu transition-all duration-150 ease-in-out`}
+    >
+      {Object.values(FolderType).map((type) => {
+        const clickHandler = () => {
+          setFilteredType(type as FolderType);
+          setTypeVisible(false);
+        };
+        return (
+          <Button
+            key={type}
+            type="button"
+            variant="tertiaryBorderless"
+            className="w-full py-8px"
+            onClick={clickHandler}
+          >
+            {type}
+          </Button>
+        );
+      })}
+    </div>
+  );
 
   return (
     <>
@@ -43,7 +104,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
 
         <div className="flex min-h-screen justify-center bg-surface-neutral-main-background font-barlow">
           <ChatSidebar />
-          <div className="mx-80px my-140px flex w-screen flex-col items-center">
+          <div className="mx-80px my-140px flex w-screen flex-col items-center gap-y-40px">
             {/* Info: (20240709 - Julian) Title */}
             <div className="relative flex w-full flex-col items-center gap-y-20px">
               <div className="flex items-center gap-x-16px">
@@ -67,9 +128,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
                 </Button>
               </div>
               {/* ToDo: (20240709 - Julian) Description */}
-              <p className="text-base font-semibold text-text-neutral-tertiary">
-                The UI/UX folder collects related questions and information about UI and UX.
-              </p>
+              <p className="text-base font-semibold text-text-neutral-tertiary">{description}</p>
               {/* Info: (20240709 - Julian) Share button */}
               <Button
                 type="button"
@@ -93,6 +152,67 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
 
                 <p>Share Folder</p>
               </Button>
+            </div>
+            {/* Info: (20240708 - Julian) Info blocks */}
+            <div className="grid grid-cols-3 items-center gap-x-40px">
+              {/* Info: (20240708 - Julian) Chat in the folder */}
+              <div className="flex items-end justify-between rounded-sm border border-stroke-brand-secondary p-12px">
+                <div className="flex flex-col gap-y-12px">
+                  <p className="text-lg font-semibold text-text-neutral-secondary">
+                    Chat in the folder
+                  </p>
+                  <Image src="/icons/chat_box.svg" width={32} height={32} alt="chat_box_icon" />
+                </div>
+                <p className="text-4xl font-bold text-text-neutral-primary">{totalChatCount}</p>
+              </div>
+              {/* Info: (20240708 - Julian) Shared Chats */}
+              <div className="flex items-end justify-between rounded-sm border border-stroke-brand-secondary p-12px">
+                <div className="flex flex-col gap-y-12px">
+                  <p className="text-lg font-semibold text-text-neutral-secondary">Shared Chats</p>
+                  <Image src="/icons/share.svg" width={32} height={32} alt="share_icon" />
+                </div>
+                <p className="text-4xl font-bold text-text-neutral-primary">{sharedChatCount}</p>
+              </div>
+              {/* Info: (20240708 - Julian) Private Chats */}
+              <div className="flex items-end justify-between rounded-sm border border-stroke-brand-secondary p-12px">
+                <div className="flex flex-col gap-y-12px">
+                  <p className="text-lg font-semibold text-text-neutral-secondary">Private Chats</p>
+                  <Image src="/icons/lock.svg" width={32} height={32} alt="lock_icon" />
+                </div>
+                <p className="text-4xl font-bold text-text-neutral-primary">{privateChatCount}</p>
+              </div>
+            </div>
+            {/* Info: (20240708 - Julian) Filter */}
+            <div className="flex w-full items-center gap-x-40px">
+              {/* Info: (20240708 - Julian) Type */}
+              <div
+                onClick={typeToggleHandler}
+                className={`relative flex w-180px items-center gap-x-12px rounded-sm border bg-input-surface-input-background ${typeVisible ? 'border-input-stroke-selected' : 'border-input-stroke-input'} px-12px py-10px font-medium text-input-text-input-placeholder hover:cursor-pointer`}
+              >
+                <Image src="/icons/funnel.svg" width={16} height={16} alt="funnel_icon" />
+
+                <p className="flex-1">{filteredType}</p>
+                <Image
+                  src="/icons/chevron_down.svg"
+                  width={20}
+                  height={20}
+                  alt="chevron_down_icon"
+                />
+                {displayedTypeOptions}
+              </div>
+              {/* Info: (20240708 - Julian) Search */}
+              <div className="flex flex-1 rounded-sm border border-input-stroke-input bg-input-surface-input-background px-12px py-10px">
+                <input
+                  type="text"
+                  value={search}
+                  onChange={searchChangeHandler}
+                  placeholder="Search"
+                  className="w-full bg-transparent outline-none placeholder:text-input-text-input-placeholder"
+                />
+                <Image src="/icons/search.svg" width={20} height={20} alt="search_icon" />
+              </div>
+              {/* Info: (20240708 - Julian) Sort */}
+              <SortToggle currentSort={sort} clickHandler={sortClickHandler} />
             </div>
           </div>
         </div>
