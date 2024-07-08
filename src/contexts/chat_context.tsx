@@ -587,7 +587,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const botAddMessage = async () => {
     setIsPendingBotMsg(true);
     const userMessage = selectedChatRef.current?.messages.at(-1)?.messages.at(-1)?.content;
-    const chatId = selectedChatRef.current?.id; // 獲取當前選中聊天的 ID
+    const chatId = selectedChatRef.current?.id;
 
     const newMsgId = uuidv4();
 
@@ -623,10 +623,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         ],
       };
 
-      addMessage(botMessage, chatId); // 在這裡指定 chatId
+      addMessage(botMessage, chatId);
 
       while (reader) {
-        // Info: text animation (20240704 - Shirley)
         // eslint-disable-next-line no-await-in-loop
         const { done, value } = await reader.read();
         if (done) {
@@ -635,16 +634,36 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         const chunkAnswer = new TextDecoder().decode(value);
         answer += chunkAnswer;
 
-        // Info: 更新最後一條消息的內容 (20240704 - Shirley)
-        if (chatId && selectedChatRef.current) {
-          updateMessage(chatId, selectedChatRef.current.messages.length - 1, {
-            ...botMessage,
-            messages: [{ ...botMessage.messages[0], content: answer, isPending: false }],
+        // 更新消息內容
+        const updatedBotMessage = {
+          ...botMessage,
+          messages: [{ ...botMessage.messages[0], content: answer, isPending: false }],
+        };
+
+        // 更新 selectedChat
+        if (selectedChatRef.current?.id === chatId) {
+          setSelectedChat((prevChat) => {
+            if (!prevChat) return null;
+            const updatedMessages = [...prevChat.messages];
+            updatedMessages[updatedMessages.length - 1] = updatedBotMessage;
+            return { ...prevChat, messages: updatedMessages };
           });
         }
+
+        // 更新 chats
+        setChats(
+          (prevChats) =>
+            prevChats?.map((chat) => {
+              if (chat.id === chatId) {
+                const updatedMessages = [...chat.messages];
+                updatedMessages[updatedMessages.length - 1] = updatedBotMessage;
+                return { ...chat, messages: updatedMessages };
+              }
+              return chat;
+            }) || []
+        );
       }
     } catch (error) {
-      // Deprecated: (20240720 - Shirley)
       // eslint-disable-next-line no-console
       console.error('Error calling API:', error);
 
@@ -662,7 +681,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         ],
       };
 
-      addMessage(errorMessage, chatId); // 在這裡也指定 chatId
+      addMessage(errorMessage, chatId);
     } finally {
       setIsPendingBotMsg(false);
       removePendingMsg(newMsgId);
