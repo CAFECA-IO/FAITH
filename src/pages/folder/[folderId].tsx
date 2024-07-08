@@ -12,6 +12,7 @@ import { SortOptions } from '@/constants/display';
 import SortToggle from '@/components/sort_toggle/sort_toggle';
 import { IChat, dummyChats } from '@/interfaces/chat';
 import ChatList from '@/components/chat_list/chat_list';
+import Pagination from '@/components/pagination/pagination';
 
 enum FolderType {
   ALL = 'All Type',
@@ -28,7 +29,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
 
   const folderData = folders ? folders.find((f) => f.id === folderId) : null;
 
-  // Info: (20240708 - Julian) If the folder is not exist, show not found message
+  // ToDo: (20240708 - Julian) Not found page
   if (!folderData) {
     return (
       <div className="mx-100px my-140px flex w-screen flex-col items-center">
@@ -42,7 +43,12 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
   const [selectedType, setSelectedType] = useState<FolderType>(FolderType.ALL);
   const [search, setSearch] = useState<string>('');
   const [sort, setSort] = useState<SortOptions>(SortOptions.NEWEST);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  // ToDo: (20240708 - Julian) Filtered chats
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [filteredChats, setFilteredChats] = useState<IChat[]>(dummyChats);
+  // ToDo: (20240708 - Julian) Get total page from API
+  const totalPages = 5;
 
   const {
     targetRef: typeRef,
@@ -92,6 +98,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
     </div>
   );
 
+  // ToDo: (20240708 - Julian) 高度須調整
   const displayedChatList = filteredChats ? (
     <ChatList chats={filteredChats} />
   ) : (
@@ -119,7 +126,12 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
               <div className="flex items-center gap-x-16px">
                 <h1 className="text-48px font-bold text-text-neutral-primary">{name}</h1>
 
-                <Button type="button" variant={'secondaryBorderless'} className={cn('px-2 py-1')}>
+                <Button
+                  type="button"
+                  variant={'secondaryBorderless'}
+                  className={cn('px-2 py-1')}
+                  // ToDo: (20240708 - Julian) Rename Handler
+                >
                   <svg
                     width="20"
                     height="20"
@@ -223,9 +235,14 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
               {/* Info: (20240708 - Julian) Sort */}
               <SortToggle currentSort={sort} clickHandler={sortClickHandler} />
             </div>
-
             {/* Info: (20240708 - Julian) Chat list */}
             {displayedChatList}
+            {/* Info: (20240708 - Julian) Pagination */}
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              totalPages={totalPages}
+            />
           </div>
         </div>
       </div>
