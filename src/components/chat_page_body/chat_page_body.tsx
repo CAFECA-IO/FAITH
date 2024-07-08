@@ -88,7 +88,10 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
   }, [isFeedbackSubmitted]);
 
   useEffect(() => {
-    if (dislikedMsg.length > 0 || resentMsg.length > 0) {
+    if (
+      (dislikedMsg.length > 0 && dislikedMsg.includes(selectedChat?.id ?? '')) ||
+      (resentMsg.length > 0 && resentMsg.includes(selectedChat?.id ?? ''))
+    ) {
       setIsFeedbackVisible(true);
       if (displayedFeedback === DisplayedFeedback.DISLIKE) {
         setIsMsgDisliked(true);
@@ -101,7 +104,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
       setIsFeedbackVisible(false);
       setIsFeedbackSubmitted(false);
     }
-  }, [dislikedMsg.length, resentMsg.length]);
+  }, [dislikedMsg.length, resentMsg.length, selectedChat?.id]);
 
   useEffect(() => {
     if (isMsgDisliked || isMsgResent) {
