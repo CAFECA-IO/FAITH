@@ -381,7 +381,9 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
                   <Button
                     variant={'secondaryBorderless'}
                     className={cn('px-2 py-1')}
-                    onClick={editIconClickHandler}
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                      e.stopPropagation();
+                    }}
                   >
                     {' '}
                     <svg
