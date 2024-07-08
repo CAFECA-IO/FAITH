@@ -116,7 +116,7 @@ const ChatContext = createContext<ChatContextType>({
   file: null,
   handleFile: () => {},
   cancelUpload: () => {},
-  createIFile: () => ({ id: '', data: new File([], ''), status: FileStatus.success }) as IFile,
+  createIFile: () => ({ id: '', data: new File([], ''), status: FileStatus.success }),
   clearFile: () => {},
   saveFile: () => {},
   retryFileUpload: () => {},
@@ -146,6 +146,33 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [isPendingBotMsg, setIsPendingBotMsg, isPendingBotMsgRef] = useStateRef<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [pendingMsg, setPendingMsg, pendingMsgRef] = useStateRef<string[]>([]);
+
+  /* TODO: dev (20240708 - Shirley)
+  // const _updateChats = (updater: (prevChats: IChat[]) => IChat[]) => {
+  //   setChats((prevChats) => (prevChats ? updater(prevChats) : []));
+  // };
+
+  // const _updateChatBriefs = (updater: (prevBriefs: IChatBrief[]) => IChatBrief[]) => {
+  //   setChatBriefs((prevBriefs) => (prevBriefs ? updater(prevBriefs) : []));
+  // };
+
+  // const _updateFolders = (updater: (prevFolders: IFolder[]) => IFolder[]) => {
+  //   setFolders((prevFolders) => (prevFolders ? updater(prevFolders) : []));
+  // };
+
+  // const _updateSelectedChat = (updater: (prevChat: IChat | null) => IChat | null) => {
+  //   setSelectedChat((prevChat) => updater(prevChat));
+  // };
+
+  // const _createNewMessage = (content: string, isPending: boolean = false): IMessage => ({
+  //   id: uuidv4(),
+  //   content,
+  //   createdAt: getTimestamp(),
+  //   isPending,
+  //   like: false,
+  //   dislike: false,
+  // });
+  */
 
   const addPendingMsg = (messageId: string) => {
     setPendingMsg((prev) => [...prev, messageId]);
