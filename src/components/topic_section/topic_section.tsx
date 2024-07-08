@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ITopicBrief } from '@/interfaces/topic';
 import { TopicCategory } from '@/constants/topic';
 import TopicItem from '@/components/topic_item/topic_item';
+import { NATIVE_ROUTE } from '@/constants/url';
 
 interface ITopicBrowsePageBody {
   category: TopicCategory;
@@ -30,7 +31,7 @@ const TopicSection = ({ category, topics }: ITopicBrowsePageBody) => {
     topics.length > 3 ? (
       // ToDo: (20240626 - Julian) link
       <Link
-        href={`/discover/see-more?category=${category}`}
+        href={`${NATIVE_ROUTE.DISCOVER}/see-more?category=${category}`}
         className="text-base font-semibold text-link-text-primary"
       >
         See More
