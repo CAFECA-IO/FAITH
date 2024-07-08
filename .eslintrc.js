@@ -79,7 +79,6 @@ module.exports = {
         'no-confusing-arrow': 'off',
         'implicit-arrow-linebreak': 'off',
         'react/jsx-curly-newline': 'off',
-        'no-underscore-dangle': 'off',
       },
     },
   ],
@@ -136,7 +135,6 @@ module.exports = {
     'function-paren-newline': 'off',
     'no-confusing-arrow': 'off',
     'implicit-arrow-linebreak': 'off',
-    'no-underscore-dangle': 'off',
   },
 
   // 整合 prettier 和解決 prettier 衝突問題
