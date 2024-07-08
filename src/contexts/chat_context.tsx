@@ -34,7 +34,7 @@ interface ChatContextType {
   resendMessage: (messageIndex: number) => Promise<void>;
   dislikedMsg: string[];
   resentMsg: string[];
-  addDislikedMsg: (messageId: string) => void;
+  addDislikedMsg: (chatId: string) => void;
   addResentMsg: (chatId: string) => void;
   displayedFeedback: DisplayedFeedback;
   isPendingBotMsg: boolean;
@@ -182,8 +182,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setPendingMsg((prev) => prev.filter((id) => id !== messageId));
   };
 
-  const addDislikedMsg = (messageId: string) => {
-    setDislikedMsg((prev) => [...prev, messageId]);
+  const addDislikedMsg = (chatId: string) => {
+    setDislikedMsg((prev) => [...prev, chatId]);
     setDisplayedFeedback(DisplayedFeedback.DISLIKE);
   };
 
