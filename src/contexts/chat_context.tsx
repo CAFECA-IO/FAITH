@@ -330,6 +330,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         messages: [],
         createdAt: item.createdAt,
         folder: '',
+        isPrivate: false,
       };
       setChats([...(chatsRef.current || []), newChat]);
     }
@@ -412,6 +413,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       description: `Chat - ${date} ${time}`,
       createdAt: nowTs,
       folder: '',
+      isPrivate: false,
     };
     addChat(chat);
   };

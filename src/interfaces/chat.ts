@@ -10,6 +10,7 @@ export enum DisplayedFeedback {
 export interface IFolder {
   id: string;
   name: string;
+  description: string;
   chats: IChatBrief[];
 }
 
@@ -50,6 +51,7 @@ export interface IMessageWithRole {
 
 export interface IChat extends IChatBrief {
   messages: IMessageWithRole[];
+  isPrivate: boolean;
 }
 
 export enum ChatTopicType {
@@ -272,6 +274,7 @@ export const dummyChat: IChat = {
   createdAt: getTimestamp() - 172800000, // 兩天前
   messages: dummyMessages,
   folder: 'Programming',
+  isPrivate: false,
 };
 
 export const dummyChats: IChat[] = [dummyChat];
@@ -280,6 +283,7 @@ export const dummyFolders: IFolder[] = [
   {
     id: 'Programming',
     name: '程式學習',
+    description: '關於程式語言的學習',
     chats: [dummyChatBrief],
   },
 ];

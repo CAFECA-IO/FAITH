@@ -450,6 +450,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
             id,
             name: `Folder ${id}`,
             chats: [chat],
+            description: 'This is a new folder.',
           };
           addFolder(newFolder, chat);
         }

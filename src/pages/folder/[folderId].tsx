@@ -10,6 +10,8 @@ import { cn } from '@/lib/utils/common';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 import { SortOptions } from '@/constants/display';
 import SortToggle from '@/components/sort_toggle/sort_toggle';
+import { IChat, dummyChats } from '@/interfaces/chat';
+import ChatList from '@/components/chat_list/chat_list';
 
 enum FolderType {
   ALL = 'All Type',
@@ -37,9 +39,10 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
 
   const { name } = folderData;
 
-  const [filteredType, setFilteredType] = useState<FolderType>(FolderType.ALL);
+  const [selectedType, setSelectedType] = useState<FolderType>(FolderType.ALL);
   const [search, setSearch] = useState<string>('');
   const [sort, setSort] = useState<SortOptions>(SortOptions.NEWEST);
+  const [filteredChats, setFilteredChats] = useState<IChat[]>(dummyChats);
 
   const {
     targetRef: typeRef,
@@ -71,7 +74,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
     >
       {Object.values(FolderType).map((type) => {
         const clickHandler = () => {
-          setFilteredType(type as FolderType);
+          setSelectedType(type as FolderType);
           setTypeVisible(false);
         };
         return (
@@ -87,6 +90,12 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
         );
       })}
     </div>
+  );
+
+  const displayedChatList = filteredChats ? (
+    <ChatList chats={filteredChats} />
+  ) : (
+    <p>No chats found</p>
   );
 
   return (
@@ -191,7 +200,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
               >
                 <Image src="/icons/funnel.svg" width={16} height={16} alt="funnel_icon" />
 
-                <p className="flex-1">{filteredType}</p>
+                <p className="flex-1">{selectedType}</p>
                 <Image
                   src="/icons/chevron_down.svg"
                   width={20}
@@ -214,6 +223,9 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
               {/* Info: (20240708 - Julian) Sort */}
               <SortToggle currentSort={sort} clickHandler={sortClickHandler} />
             </div>
+
+            {/* Info: (20240708 - Julian) Chat list */}
+            {displayedChatList}
           </div>
         </div>
       </div>
