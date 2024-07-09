@@ -56,7 +56,8 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
     }
   };
 
-  const editIconClickHandler = () => {
+  const editIconClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     setEditMenuVisible(!isEditMenuVisible);
   };
 
