@@ -2,7 +2,7 @@ import { IFile } from '@/interfaces/file';
 import { getTimestamp } from '@/lib/utils/common';
 import { v4 as uuidv4 } from 'uuid';
 
-export enum DisplayedFeedback {
+export enum ActionCausingFeedback {
   DISLIKE = 'dislike',
   RESEND = 'resend',
 }

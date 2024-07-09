@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useUserCtx } from '@/contexts/user_context';
 import {
-  DisplayedFeedback,
+  ActionCausingFeedback,
   IChat,
   IChatBrief,
   IFolder,
@@ -36,12 +36,14 @@ interface ChatContextType {
   resentMsg: string[];
   addDislikedMsg: (chatId: string) => void;
   addResentMsg: (chatId: string) => void;
-  displayedFeedback: DisplayedFeedback;
+  displayedFeedback: ActionCausingFeedback;
   isLatestBotMsgPending: boolean;
   pendingMsg: string[];
   addPendingMsg: (messageId: string) => void;
   removePendingMsg: (messageId: string) => void;
   addBotMessage: () => Promise<void>;
+  removeDislikedMsg: (chatId: string) => void;
+  removeResentMsg: (chatId: string) => void;
 
   chatBriefs: IChatBrief[] | null;
   handleChatBriefs: (chatBriefs: IChatBrief[]) => void;
@@ -85,12 +87,14 @@ const ChatContext = createContext<ChatContextType>({
   resentMsg: [],
   addDislikedMsg: () => {},
   addResentMsg: () => {},
-  displayedFeedback: DisplayedFeedback.RESEND,
+  displayedFeedback: ActionCausingFeedback.RESEND,
   isLatestBotMsgPending: false,
   pendingMsg: [],
   addPendingMsg: () => {},
   removePendingMsg: () => {},
   addBotMessage: () => Promise.resolve(),
+  removeDislikedMsg: () => {},
+  removeResentMsg: () => {},
 
   chatBriefs: null as IChatBrief[] | null,
   handleChatBriefs: () => {},
@@ -139,7 +143,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [resentMsg, setResentMsg, resentMsgRef] = useStateRef<string[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [displayedFeedback, setDisplayedFeedback, displayedFeedbackRef] =
-    useStateRef<DisplayedFeedback>(DisplayedFeedback.RESEND);
+    useStateRef<ActionCausingFeedback>(ActionCausingFeedback.RESEND);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLatestBotMsgPending, setIsLatestBotMsgPending, isLatestBotMsgPendingRef] =
     useStateRef<boolean>(false);
@@ -156,12 +160,20 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   const addDislikedMsg = (chatId: string) => {
     setDislikedMsg((prev) => [...prev, chatId]);
-    setDisplayedFeedback(DisplayedFeedback.DISLIKE);
+    setDisplayedFeedback(ActionCausingFeedback.DISLIKE);
+  };
+
+  const removeDislikedMsg = (chatId: string) => {
+    setDislikedMsg((prev) => prev.filter((id) => id !== chatId));
   };
 
   const addResentMsg = (chatId: string) => {
     setResentMsg((prev) => [...prev, chatId]);
-    setDisplayedFeedback(DisplayedFeedback.RESEND);
+    setDisplayedFeedback(ActionCausingFeedback.RESEND);
+  };
+
+  const removeResentMsg = (chatId: string) => {
+    setResentMsg((prev) => prev.filter((id) => id !== chatId));
   };
 
   const saveFile = (item: IFile) => {
@@ -872,6 +884,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     displayedFeedback: displayedFeedbackRef.current,
     isLatestBotMsgPending: isLatestBotMsgPendingRef.current,
     pendingMsg: pendingMsgRef.current,
+    removeDislikedMsg,
+    removeResentMsg,
 
     folders: foldersRef.current,
     addFolder,
