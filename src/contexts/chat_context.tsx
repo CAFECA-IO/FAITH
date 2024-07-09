@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useUserCtx } from '@/contexts/user_context';
 import {
-  DisplayedFeedback,
+  ActionCausingFeedback,
   IChat,
   IChatBrief,
   IFolder,
@@ -24,24 +24,26 @@ import { setTimeout } from 'timers';
 
 interface ChatContextType {
   selectedChat: IChat | null;
-  setSelectedChat: (chat: IChat | null) => void;
   selectChat: (id: string) => void;
 
   addMessage: (message: IMessageWithRole) => void;
-  userAddMessage: (message: IMessage) => void;
+  addUserMessage: ({ content, file }: { content: string; file?: IFile }) => void;
   updateMessage: (chatId: string, messageIndex: number, updatedMessage: IMessageWithRole) => void;
   deleteMessage: (messageIndex: number) => void;
-  resendMessage: (messageIndex: number) => Promise<void>;
+  resendUserMessage: (messageIndex: number) => Promise<void>;
+  dislikeBotMessage: (chatId: string) => void;
   dislikedMsg: string[];
   resentMsg: string[];
   addDislikedMsg: (chatId: string) => void;
   addResentMsg: (chatId: string) => void;
-  displayedFeedback: DisplayedFeedback;
-  isPendingBotMsg: boolean;
+  displayedFeedback: ActionCausingFeedback;
+  isLatestBotMsgPending: boolean;
   pendingMsg: string[];
   addPendingMsg: (messageId: string) => void;
   removePendingMsg: (messageId: string) => void;
-  botAddMessage: () => Promise<void>;
+  addBotMessage: () => Promise<void>;
+  removeDislikedMsg: (chatId: string) => void;
+  removeResentMsg: (chatId: string) => void;
 
   chatBriefs: IChatBrief[] | null;
   handleChatBriefs: (chatBriefs: IChatBrief[]) => void;
@@ -65,7 +67,6 @@ interface ChatContextType {
 
   file: IFile | null;
   handleFile: (file: File) => void;
-  cancelUpload: () => void;
   createIFile: (file: File, status: FileStatusUnion) => IFile;
   clearFile: () => void;
   saveFile: (item: IFile) => void;
@@ -74,24 +75,26 @@ interface ChatContextType {
 
 const ChatContext = createContext<ChatContextType>({
   selectedChat: null,
-  setSelectedChat: () => {},
   selectChat: () => {},
 
   addMessage: () => {},
-  userAddMessage: () => {},
+  addUserMessage: () => {},
   updateMessage: () => {},
   deleteMessage: () => {},
-  resendMessage: () => Promise.resolve(),
+  resendUserMessage: () => Promise.resolve(),
+  dislikeBotMessage: () => {},
   dislikedMsg: [],
   resentMsg: [],
   addDislikedMsg: () => {},
   addResentMsg: () => {},
-  displayedFeedback: DisplayedFeedback.RESEND,
-  isPendingBotMsg: false,
+  displayedFeedback: ActionCausingFeedback.RESEND,
+  isLatestBotMsgPending: false,
   pendingMsg: [],
   addPendingMsg: () => {},
   removePendingMsg: () => {},
-  botAddMessage: () => Promise.resolve(),
+  addBotMessage: () => Promise.resolve(),
+  removeDislikedMsg: () => {},
+  removeResentMsg: () => {},
 
   chatBriefs: null as IChatBrief[] | null,
   handleChatBriefs: () => {},
@@ -115,7 +118,6 @@ const ChatContext = createContext<ChatContextType>({
 
   file: null,
   handleFile: () => {},
-  cancelUpload: () => {},
   createIFile: () => ({ id: '', data: new File([], ''), status: FileStatus.success }),
   clearFile: () => {},
   saveFile: () => {},
@@ -141,38 +143,12 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [resentMsg, setResentMsg, resentMsgRef] = useStateRef<string[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [displayedFeedback, setDisplayedFeedback, displayedFeedbackRef] =
-    useStateRef<DisplayedFeedback>(DisplayedFeedback.RESEND);
+    useStateRef<ActionCausingFeedback>(ActionCausingFeedback.RESEND);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isPendingBotMsg, setIsPendingBotMsg, isPendingBotMsgRef] = useStateRef<boolean>(false);
+  const [isLatestBotMsgPending, setIsLatestBotMsgPending, isLatestBotMsgPendingRef] =
+    useStateRef<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [pendingMsg, setPendingMsg, pendingMsgRef] = useStateRef<string[]>([]);
-
-  /* TODO: dev (20240708 - Shirley)
-  // const _updateChats = (updater: (prevChats: IChat[]) => IChat[]) => {
-  //   setChats((prevChats) => (prevChats ? updater(prevChats) : []));
-  // };
-
-  // const _updateChatBriefs = (updater: (prevBriefs: IChatBrief[]) => IChatBrief[]) => {
-  //   setChatBriefs((prevBriefs) => (prevBriefs ? updater(prevBriefs) : []));
-  // };
-
-  // const _updateFolders = (updater: (prevFolders: IFolder[]) => IFolder[]) => {
-  //   setFolders((prevFolders) => (prevFolders ? updater(prevFolders) : []));
-  // };
-
-  // const _updateSelectedChat = (updater: (prevChat: IChat | null) => IChat | null) => {
-  //   setSelectedChat((prevChat) => updater(prevChat));
-  // };
-
-  // const _createNewMessage = (content: string, isPending: boolean = false): IMessage => ({
-  //   id: uuidv4(),
-  //   content,
-  //   createdAt: getTimestamp(),
-  //   isPending,
-  //   like: false,
-  //   dislike: false,
-  // });
-  */
 
   const addPendingMsg = (messageId: string) => {
     setPendingMsg((prev) => [...prev, messageId]);
@@ -184,12 +160,20 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   const addDislikedMsg = (chatId: string) => {
     setDislikedMsg((prev) => [...prev, chatId]);
-    setDisplayedFeedback(DisplayedFeedback.DISLIKE);
+    setDisplayedFeedback(ActionCausingFeedback.DISLIKE);
+  };
+
+  const removeDislikedMsg = (chatId: string) => {
+    setDislikedMsg((prev) => prev.filter((id) => id !== chatId));
   };
 
   const addResentMsg = (chatId: string) => {
     setResentMsg((prev) => [...prev, chatId]);
-    setDisplayedFeedback(DisplayedFeedback.RESEND);
+    setDisplayedFeedback(ActionCausingFeedback.RESEND);
+  };
+
+  const removeResentMsg = (chatId: string) => {
+    setResentMsg((prev) => prev.filter((id) => id !== chatId));
   };
 
   const saveFile = (item: IFile) => {
@@ -242,14 +226,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     if (file && file.status === FileStatus.error) {
       handleFile(file.data);
     }
-  };
-
-  const cancelUpload = () => {
-    if (uploadTimeout) {
-      clearTimeout(uploadTimeout);
-      setUploadTimeout(null);
-    }
-    setFile(null);
   };
 
   const clearFile = () => {
@@ -613,8 +589,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setFolders([]);
   };
 
-  const botAddMessage = async () => {
-    setIsPendingBotMsg(true);
+  const addBotMessage = async () => {
+    setIsLatestBotMsgPending(true);
     const userMessage = selectedChatRef.current?.messages.at(-1)?.messages.at(-1)?.content;
     const chatId = selectedChatRef.current?.id;
 
@@ -663,13 +639,13 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         const chunkAnswer = new TextDecoder().decode(value);
         answer += chunkAnswer;
 
-        // 更新消息內容
+        // Info: 更新消息內容 (20240709 - Shirley)
         const updatedBotMessage = {
           ...botMessage,
           messages: [{ ...botMessage.messages[0], content: answer, isPending: false }],
         };
 
-        // 更新 selectedChat
+        // Info: 更新 selectedChat (20240709 - Shirley)
         if (selectedChatRef.current?.id === chatId) {
           setSelectedChat((prevChat) => {
             if (!prevChat) return null;
@@ -679,7 +655,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
           });
         }
 
-        // 更新 chats
+        // Info: 更新 chats (20240709 - Shirley)
         setChats(
           (prevChats) =>
             prevChats?.map((chat) => {
@@ -693,6 +669,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         );
       }
     } catch (error) {
+      // Deprecated: 20240709 - Shirley
       // eslint-disable-next-line no-console
       console.error('Error calling API:', error);
 
@@ -712,17 +689,17 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
       addMessage(errorMessage, chatId);
     } finally {
-      setIsPendingBotMsg(false);
+      setIsLatestBotMsgPending(false);
       removePendingMsg(newMsgId);
     }
   };
 
-  const resendMessage = async (messageIndex: number) => {
+  const resendUserMessage = async (messageIndex: number) => {
     if (selectedChatRef.current) {
       const chatId = selectedChatRef.current.id;
       const newMessageId = uuidv4();
 
-      // 更新聊天狀態，添加新的待處理消息
+      // Info: 更新聊天狀態，添加新的待處理消息 (20240709 - Shirley)
       const updateChat = (chat: IChat) => {
         const updatedMessages = chat.messages.map((msg, index) => {
           if (index === messageIndex && msg.role === MessageRole.BOT) {
@@ -777,7 +754,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
           const chunkAnswer = new TextDecoder().decode(value);
           answer += chunkAnswer;
-          /* eslint-disable */
+          // eslint-disable-next-line @typescript-eslint/no-loop-func
           const updateChatWithAnswer = (chat: IChat) => {
             const updatedMessages = chat.messages.map((msg, index) => {
               if (index === messageIndex && msg.role === MessageRole.BOT) {
@@ -805,6 +782,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
           );
         }
       } catch (error) {
+        // Deprecated: 20240720 - Shirley
+        // eslint-disable-next-line no-console
         console.error('Error calling API:', error);
         const errorAnswer = 'Sorry, an error occurred. Please try again later.';
 
@@ -839,10 +818,16 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const userAddMessage = async (message: IMessage) => {
+  const dislikeBotMessage = (chatId: string) => {
+    addDislikedMsg(chatId);
+  };
+
+  const addUserMessage = async ({ content, file: fileItem }: { content: string; file?: IFile }) => {
     const role = isSignedIn ? MessageRole.USER : MessageRole.VISITOR;
-    addMessage({ role, messages: [message] });
-    await botAddMessage();
+    const id = uuidv4();
+    const createdAt = getTimestamp();
+    addMessage({ role, messages: [{ id, content, file: fileItem, createdAt }] });
+    await addBotMessage();
   };
 
   useEffect(() => {
@@ -864,41 +849,45 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   /* eslint-disable react/jsx-no-constructed-context-values */
   const value = {
-    selectedChat: selectedChatRef.current,
-    setSelectedChat,
-    selectChat,
-
     addMessage,
-    userAddMessage,
     updateMessage,
     deleteMessage,
-    resendMessage,
-    dislikedMsg: dislikedMsgRef.current,
-    addDislikedMsg,
-    resentMsg: resentMsgRef.current,
     addResentMsg,
-    displayedFeedback: displayedFeedbackRef.current,
-    isPendingBotMsg: isPendingBotMsgRef.current,
-    pendingMsg: pendingMsgRef.current,
+    addDislikedMsg,
     addPendingMsg,
     removePendingMsg,
-    botAddMessage,
-
-    chatBriefs: chatBriefsRef.current,
+    addBotMessage,
     handleChatBriefs,
     addChatBrief,
-    renameChatBrief,
     deleteChatBrief,
-
-    chats: chatsRef.current,
     handleChats,
     addChat,
+    handleFolders,
+    saveFile,
+    createIFile,
+    renameChatBrief,
+
+    // Info: --- 已經有在其他 component 使用的 variables / functions --- (20240709 - Shirley)
+    selectedChat: selectedChatRef.current,
+    selectChat,
     addEmptyChat,
     renameChat,
     deleteChat,
+    chats: chatsRef.current,
+    chatBriefs: chatBriefsRef.current,
+
+    addUserMessage,
+    resendUserMessage,
+    dislikeBotMessage,
+    dislikedMsg: dislikedMsgRef.current,
+    resentMsg: resentMsgRef.current,
+    displayedFeedback: displayedFeedbackRef.current,
+    isLatestBotMsgPending: isLatestBotMsgPendingRef.current,
+    pendingMsg: pendingMsgRef.current,
+    removeDislikedMsg,
+    removeResentMsg,
 
     folders: foldersRef.current,
-    handleFolders,
     addFolder,
     renameFolder,
     deleteFolder,
@@ -906,9 +895,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
     file,
     handleFile,
-    cancelUpload,
-    saveFile,
-    createIFile,
     clearFile,
     retryFileUpload,
   };

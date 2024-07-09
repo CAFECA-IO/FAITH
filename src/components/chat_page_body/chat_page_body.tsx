@@ -1,7 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
 import { useUserCtx } from '@/contexts/user_context';
 import { useChatCtx } from '@/contexts/chat_context';
-import { cn, getTimestamp } from '@/lib/utils/common';
+import { cn } from '@/lib/utils/common';
 import React, { useEffect, useRef, useState } from 'react';
 import router from 'next/router';
 import ChatThreadSection from '@/components/chat_thread_section/chat_thread_section';
@@ -13,7 +12,7 @@ import { ToastType } from '@/interfaces/toastify';
 import { NATIVE_ROUTE } from '@/constants/url';
 import { Button } from '@/components/button/button';
 import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
-import { DisplayedFeedback } from '@/interfaces/chat';
+import { ActionCausingFeedback } from '@/interfaces/chat';
 import Image from 'next/image';
 
 interface IChatPageBodyProps {
@@ -23,10 +22,9 @@ interface IChatPageBodyProps {
 const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
   const { isSignedIn } = useUserCtx();
   const {
-    userAddMessage,
+    addUserMessage,
     selectedChat,
     file,
-    cancelUpload,
     clearFile,
     retryFileUpload,
     dislikedMsg,
@@ -34,6 +32,8 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
     displayedFeedback,
     pendingMsg,
     handleFile,
+    removeDislikedMsg,
+    removeResentMsg,
   } = useChatCtx();
   const { fileUploadModalVisibilityHandler, toastHandler, feedbackModalVisibilityHandler } =
     useGlobalCtx();
@@ -57,8 +57,14 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
     setIsFeedbackVisible(!isFeedbackVisible);
   };
 
-  const feedbackSubmitHandler = (msg: string) => {
+  const feedbackSubmitHandler = (msg: string, action: ActionCausingFeedback) => {
     setIsFeedbackSubmitted(true);
+
+    if (action === ActionCausingFeedback.DISLIKE) {
+      removeDislikedMsg(selectedChat?.id || '');
+    } else {
+      removeResentMsg(selectedChat?.id || '');
+    }
     // TODO: send message to server (20240702 - Shirley)
     // eslint-disable-next-line no-console
     console.log('feedbackSubmitHandler', msg);
@@ -93,7 +99,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
       (resentMsg.length > 0 && resentMsg.includes(selectedChat?.id ?? ''))
     ) {
       setIsFeedbackVisible(true);
-      if (displayedFeedback === DisplayedFeedback.DISLIKE) {
+      if (displayedFeedback === ActionCausingFeedback.DISLIKE) {
         setIsMsgDisliked(true);
         setIsMsgResent(false);
       } else {
@@ -120,7 +126,6 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
   };
 
   const cancelFileClickHandler = () => {
-    cancelUpload();
     clearFile();
   };
 
@@ -136,10 +141,8 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
     if (isSubmitAllowed) {
       setPrompt('');
       setRows(1);
-      userAddMessage({
-        id: uuidv4(),
+      addUserMessage({
         content: prompt,
-        createdAt: getTimestamp(),
         file: file && file.status === FileStatus.success ? file : undefined,
       });
       clearFile();
@@ -264,7 +267,9 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
               </div>
               <div className="flex gap-2 whitespace-nowrap text-sm">
                 <Button
-                  onClick={() => feedbackSubmitHandler(`I don’t like this answer`)}
+                  onClick={() =>
+                    feedbackSubmitHandler(`I don’t like this answer`, ActionCausingFeedback.DISLIKE)
+                  }
                   variant={'secondaryOutline'}
                   size={'medium'}
                   className=""
@@ -272,7 +277,9 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
                   I don&apos;t like this answer
                 </Button>
                 <Button
-                  onClick={() => feedbackSubmitHandler('Error answer')}
+                  onClick={() =>
+                    feedbackSubmitHandler('Error answer', ActionCausingFeedback.DISLIKE)
+                  }
                   variant={'secondaryOutline'}
                   size={'medium'}
                   className=""
@@ -280,14 +287,15 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
                   Error answer
                 </Button>
                 <Button
-                  onClick={() => feedbackSubmitHandler('Incomplete information')}
+                  onClick={() =>
+                    feedbackSubmitHandler('Incomplete information', ActionCausingFeedback.DISLIKE)
+                  }
                   variant={'secondaryOutline'}
                   size={'medium'}
                   className=""
                 >
                   Incomplete information
                 </Button>
-                {/* TODO: open the feedback input modal (20240702 - Shirley) */}
                 <Button
                   onClick={feedbackModalVisibilityHandler}
                   variant={'secondaryOutline'}
@@ -338,7 +346,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
               </div>
               <div className="flex gap-2 whitespace-nowrap text-sm">
                 <Button
-                  onClick={() => feedbackSubmitHandler('better')}
+                  onClick={() => feedbackSubmitHandler('better', ActionCausingFeedback.RESEND)}
                   variant={'secondaryOutline'}
                   size={'medium'}
                   className=""
@@ -346,7 +354,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
                   Better
                 </Button>
                 <Button
-                  onClick={() => feedbackSubmitHandler('worse')}
+                  onClick={() => feedbackSubmitHandler('worse', ActionCausingFeedback.RESEND)}
                   variant={'secondaryOutline'}
                   size={'medium'}
                   className=""
@@ -354,7 +362,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
                   Worse
                 </Button>
                 <Button
-                  onClick={() => feedbackSubmitHandler('same')}
+                  onClick={() => feedbackSubmitHandler('same', ActionCausingFeedback.RESEND)}
                   variant={'secondaryOutline'}
                   size={'medium'}
                   className=""

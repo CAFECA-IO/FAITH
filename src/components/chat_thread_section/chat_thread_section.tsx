@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import ChatTopicOption from '@/components/chat_topic_option/chat_topic_option';
 import { useChatCtx } from '@/contexts/chat_context';
 import {
@@ -8,7 +7,7 @@ import {
   DisplayedSender,
   dummyChatTopics,
 } from '@/interfaces/chat';
-import { cn, getTimestamp } from '@/lib/utils/common';
+import { cn } from '@/lib/utils/common';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import ChatMessage, { BotPendingMessage } from '@/components/chat_message/chat_message';
@@ -17,7 +16,7 @@ import { TopicIcons } from '@/constants/display';
 
 const ChatThreadSection = () => {
   const { isSignedIn } = useUserCtx();
-  const { selectedChat, userAddMessage, resendMessage, isPendingBotMsg } = useChatCtx();
+  const { selectedChat, addUserMessage, resendUserMessage, isLatestBotMsgPending } = useChatCtx();
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -26,10 +25,8 @@ const ChatThreadSection = () => {
   const [topicOptions, setTopicOptions] = useState<IChatTopic[]>(dummyChatTopics);
 
   const topicClickHandler = (title: string) => {
-    userAddMessage({
-      id: uuidv4(),
+    addUserMessage({
       content: `${title}`,
-      createdAt: getTimestamp(),
     });
   };
 
@@ -84,7 +81,7 @@ const ChatThreadSection = () => {
         <div className="mx-20 flex flex-col gap-10">
           {selectedChat.messages.map((message: IMessageWithRole, index: number) => (
             <ChatMessage
-              resend={() => resendMessage(index)}
+              resend={() => resendUserMessage(index)}
               sender={
                 message.role === MessageRole.VISITOR
                   ? DisplayedSender.VISITOR
@@ -97,7 +94,7 @@ const ChatThreadSection = () => {
               messages={message.messages}
             />
           ))}
-          {selectedChat?.messages.at(-1)?.role !== MessageRole.BOT && isPendingBotMsg && (
+          {selectedChat?.messages.at(-1)?.role !== MessageRole.BOT && isLatestBotMsgPending && (
             <BotPendingMessage sender={DisplayedSender.BOT} role={MessageRole.BOT} />
           )}
         </div>
