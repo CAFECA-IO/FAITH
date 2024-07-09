@@ -1,7 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
 import { useUserCtx } from '@/contexts/user_context';
 import { useChatCtx } from '@/contexts/chat_context';
-import { cn, getTimestamp } from '@/lib/utils/common';
+import { cn } from '@/lib/utils/common';
 import React, { useEffect, useRef, useState } from 'react';
 import router from 'next/router';
 import ChatThreadSection from '@/components/chat_thread_section/chat_thread_section';
@@ -23,10 +22,9 @@ interface IChatPageBodyProps {
 const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
   const { isSignedIn } = useUserCtx();
   const {
-    userAddMessage,
+    addUserMessage,
     selectedChat,
     file,
-    cancelUpload,
     clearFile,
     retryFileUpload,
     dislikedMsg,
@@ -120,7 +118,6 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
   };
 
   const cancelFileClickHandler = () => {
-    cancelUpload();
     clearFile();
   };
 
@@ -136,10 +133,8 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
     if (isSubmitAllowed) {
       setPrompt('');
       setRows(1);
-      userAddMessage({
-        id: uuidv4(),
+      addUserMessage({
         content: prompt,
-        createdAt: getTimestamp(),
         file: file && file.status === FileStatus.success ? file : undefined,
       });
       clearFile();

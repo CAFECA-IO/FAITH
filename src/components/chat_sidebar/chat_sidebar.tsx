@@ -28,7 +28,7 @@ interface IChatSidebarProps {
 
 const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
   const router = useRouter();
-  const { selectChat, selectedChat, deleteChat, renameChatBrief } = useChatCtx();
+  const { selectChat, selectedChat, deleteChat, renameChat } = useChatCtx();
   const { messageModalVisibilityHandler, messageModalDataHandler } = useGlobalCtx();
 
   const [isRenaming, setIsRenaming] = useState(false);
@@ -67,7 +67,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
 
   const handleRenameSubmit = () => {
     if (newName.trim() !== '' && !isComposing) {
-      renameChatBrief(chatBrief.id, newName.trim());
+      renameChat(chatBrief.id, newName.trim());
       setNewName(newName.trim());
       setIsRenaming(false);
     }
