@@ -13,7 +13,7 @@ interface IChatItemProps {
 
 const ChatItem = ({ chat }: IChatItemProps) => {
   const { renameChat, deleteChat } = useChatCtx();
-  const { moveChatModalVisibilityHandler } = useGlobalCtx();
+  const { moveChatModalVisibilityHandler, updateLinkModalVisibilityHandler } = useGlobalCtx();
   const { id, name, createdAt, messages } = chat;
 
   // Info: (20240708 - Julian) Renaming state
@@ -62,6 +62,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
   };
 
   const shareChatHandler = () => {
+    updateLinkModalVisibilityHandler();
     // ToDo: (20240708 - Julian) Share chat handler
     setActionVisible(false);
   };
