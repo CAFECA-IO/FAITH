@@ -75,6 +75,10 @@ module.exports = {
             leadingUnderscore: 'allow',
           },
         ],
+        'function-paren-newline': 'off',
+        'no-confusing-arrow': 'off',
+        'implicit-arrow-linebreak': 'off',
+        'react/jsx-curly-newline': 'off',
       },
     },
   ],
@@ -128,6 +132,9 @@ module.exports = {
     'react/jsx-wrap-multilines': 'off',
     'no-nested-ternary': 'off',
     'react/require-default-props': 'off',
+    'function-paren-newline': 'off',
+    'no-confusing-arrow': 'off',
+    'implicit-arrow-linebreak': 'off',
   },
 
   // 整合 prettier 和解決 prettier 衝突問題

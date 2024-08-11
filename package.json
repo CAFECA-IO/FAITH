@@ -1,6 +1,6 @@
 {
   "name": "FAITH",
-  "version": "0.1.0",
+  "version": "0.8.0",
   "private": false,
   "scripts": {
     "dev": "next dev",
@@ -14,9 +14,20 @@
     "production": "next start -p 80"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^16.6.0",
+    "@passwordless-id/webauthn": "^1.6.1",
+    "@types/cookie": "^0.6.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "cookie": "^0.6.0",
+    "lottie-react": "^2.4.0",
     "next": "14.2.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-toastify": "^10.0.5",
+    "react-usestateref": "^1.0.9",
+    "tailwind-merge": "^2.3.0",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@babel/eslint-plugin": "^7.24.7",
@@ -26,6 +37,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "@typescript-eslint/parser": "^7.14.1",
     "eslint": "^8.57.0",
