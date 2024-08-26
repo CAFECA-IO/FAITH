@@ -12,5 +12,15 @@ export const NATIVE_API = {
 };
 
 export const EXTERNAL_API = {
-  LLAMA_API: 'https://aich.isunfa.com/api/v1/rag/chat-with-history',
+  LLAMA_API: 'https://aich.isunfa.com',
 };
+
+const AICH_ENDPOINTS: { [key: string]: string } = {
+  LLAMA_CHAT: '/api/v1/rag/chat',
+  LLAMA_HISTORY_CHAT: '/api/v1/rag/chat-with-history',
+  // Add more endpoints as needed
+};
+
+export function getApiUrl(baseUrl:string, endpointKey: string) {
+  return baseUrl + AICH_ENDPOINTS[endpointKey];
+}
