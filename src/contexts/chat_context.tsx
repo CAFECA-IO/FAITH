@@ -17,7 +17,7 @@ import { DELAYED_FILE_UPLOAD_MILLISECONDS } from '@/constants/display';
 import { createContext, useContext, useEffect } from 'react';
 import useStateRef from 'react-usestateref';
 import { useRouter } from 'next/router';
-import { DEFAULT_AICH_URL, getApiUrl, NATIVE_ROUTE } from '@/constants/url';
+import { CHAT_WITH_HISTORY_URL, NATIVE_ROUTE } from '@/constants/url';
 import { FileStatus, FileStatusUnion, IFile } from '@/interfaces/file';
 import { LIMIT_FOR_FILE_SIZE } from '@/constants/config';
 import { setTimeout } from 'timers';
@@ -545,8 +545,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
   };
-  const baseUrl = process.env.NEXT_PUBLIC_AICH_URL ?? DEFAULT_AICH_URL;
-  const llamaUrl = getApiUrl(baseUrl, 'LLAMA_CHAT');
   const renameFolder = (id: string, newName: string) => {
     if (foldersRef.current) {
       setFolders(
@@ -597,7 +595,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     const newMsgId = uuidv4();
     try {
       addPendingMsg(newMsgId);
-      const response = await fetch(llamaUrl, {
+      const response = await fetch(CHAT_WITH_HISTORY_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -727,7 +725,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
       addPendingMsg(newMessageId);
       try {
-        const response = await fetch(llamaUrl, {
+        const response = await fetch(CHAT_WITH_HISTORY_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
