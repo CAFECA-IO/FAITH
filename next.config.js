@@ -17,8 +17,9 @@ const requiredEnvVars = [
   'NEXT_PUBLIC_AICH_URL',
 ];
 
-// Validate environment variables
-getEnvVariables(requiredEnvVars);
+if (process.env.VERCEL !== '1') {
+  getEnvVariables(requiredEnvVars);
+}
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
