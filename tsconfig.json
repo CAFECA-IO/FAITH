@@ -25,7 +25,8 @@
     "**/*.ts",
     "**/*.tsx",
     "tailwind.config.ts",
-    "src/lib/utils/email.js"
+    "src/lib/utils/email.js",
+    "next.config.js"
   ],
   "exclude": ["node_modules"]
 }
