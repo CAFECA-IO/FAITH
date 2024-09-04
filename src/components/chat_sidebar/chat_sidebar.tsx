@@ -675,7 +675,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
       {/* Info: ----- (20240904 - Julian) Mobile sidebar ----- */}
       <div
         ref={sidebarRef}
-        className={`fixed left-0 top-0 z-80 flex lg:hidden ${isSidebarOpen ? 'translate-x-0' : '-translate-x-250px'} items-start transition-all duration-300 ease-in-out lg:hidden`}
+        className={`fixed left-0 top-0 z-50 flex lg:hidden ${isSidebarOpen ? 'translate-x-0' : '-translate-x-250px'} items-start transition-all duration-300 ease-in-out lg:hidden`}
       >
         {/* Info: (20240705 - Julian) Mobile sidebar */}
         <div className={`h-screen w-250px bg-white`}>
