@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { NATIVE_ROUTE } from '@/constants/url';
 import version from '@/lib/version';
 import { Button } from '@/components/button/button';
-import { ChatSidebarMobile } from '@/components/chat_sidebar/chat_sidebar';
 import { cn } from '@/lib/utils/common';
 import { useChatCtx } from '@/contexts/chat_context';
 import { useUserCtx } from '@/contexts/user_context';
@@ -339,9 +338,6 @@ const NavBar = () => {
         <div className="hidden flex-col items-start justify-center lg:flex">
           <div className="h-40px w-px shrink-0 bg-divider-stroke-lv-4" />
         </div>
-
-        {/* TODO: (20240704 - Julian) Mobile sidebar */}
-        {ChatSidebarMobile()}
 
         <div className="my-auto">{displayedLogInBtn}</div>
       </div>
