@@ -22,7 +22,9 @@ const SharedLinksModal = ({ isModalVisible, modalVisibilityHandler }: ISharedLin
   const totalLinkPagesMobile = Math.ceil(sharedLinkList.length / LINK_PER_PAGE_MOBILE);
 
   useEffect(() => {
-    if (!isDisplayModal) setCurrentLinkPage(1);
+    if (!isModalVisible) {
+      setCurrentLinkPage(1);
+    }
   }, [isModalVisible]);
 
   const displayedSharedLinks =
