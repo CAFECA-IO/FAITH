@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { timestampToString } from '@/lib/utils/common';
 import { ISharedLink, dummySharedLinks } from '@/interfaces/shared_link';
@@ -20,6 +20,10 @@ const SharedLinksModal = ({ isModalVisible, modalVisibilityHandler }: ISharedLin
 
   const totalLinkPages = Math.ceil(sharedLinkList.length / LINK_PER_PAGE_DESKTOP);
   const totalLinkPagesMobile = Math.ceil(sharedLinkList.length / LINK_PER_PAGE_MOBILE);
+
+  useEffect(() => {
+    if (!isDisplayModal) setCurrentLinkPage(1);
+  }, [isModalVisible]);
 
   const displayedSharedLinks =
     dummySharedLinks.length > 0 ? (
