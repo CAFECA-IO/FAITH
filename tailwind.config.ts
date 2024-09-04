@@ -387,11 +387,19 @@ module.exports = {
         },
 
         'alert-surface': {
-          background: 'var(--alert-surface-background)',
-          'surface-error': 'var(--alert-surface-error)',
-          'surface-success': 'var(--alert-surface-success)',
-          'surface-warning': 'var(--alert-surface-warning)',
-          'surface-info': 'var(--alert-surface-info)',
+          background: 'var(--alert-surface-surface-background)',
+          'surface-error': 'var(--alert-surface-surface-error)',
+          'surface-success': 'var(--alert-surface-surface-success)',
+          'surface-warning': 'var(--alert-surface-surface-warning)',
+          'surface-info': 'var(--alert-surface-surface-info)',
+        },
+
+        'alert-text': {
+          paragraph: 'var(--text-neutral-secondary)',
+          'title-error': 'var(--text-state-error)',
+          'title-info': 'var(--text-neutral-primary)',
+          'title-success': 'var(--text-state-success)',
+          'title-warning': 'var(--text-state-warning)',
         },
 
         avatar: {
@@ -670,70 +678,6 @@ module.exports = {
         'tree-stroke-divider': 'var(--tree-stroke-divider)',
         'tree-stroke-icon': 'var(--tree-stroke-icon)',
         'tree-text-primary': 'var(--tree-text-primary)',
-
-        darkPurple: '#24274A',
-        darkPurple2: '#2C315B',
-        darkPurple3: '#1F2243',
-        darkPurple4: '#3F497A',
-
-        lightWhite: '#FCFCFF',
-
-        lightGreen: '#2D7E58',
-
-        lightBlue: '#31D3F5',
-
-        lightRed: '#C84949',
-
-        lightOrange: '#F7931A',
-        darkOrange: '#FFA600',
-
-        lilac: '#ABA7BD',
-        lilac2: '#6857d733',
-        violet: '#6857D7',
-        violet2: '#9747FF',
-
-        bluePurple: '#627EEA',
-        primaryBlue: '#11FFF5',
-        'primaryBlue-500': 'rgba(17, 255, 245, 0.5)',
-        hoverWhite: '#F0F0F0',
-
-        primaryYellow: '#FFA502',
-        primaryYellow2: '#996301',
-        primaryYellow3: '#FFD892',
-        primaryYellow4: '#FFA600',
-        primaryYellow5: '#CC8401',
-        primaryYellow6: '#997C15',
-
-        secondaryBlue: '#001840',
-        tertiaryBlue: '#304872',
-        tertiaryBlue2: '#002462B2',
-
-        lightGray: '#CED1D7',
-        lightGray2: '#828998',
-        lightGray3: '#C1C9D5',
-        lightGray4: '#7F8A9D',
-        lightGray5: '#58667F',
-        lightGray6: '#CDD1D9',
-        lightGray7: '#F4F5F7',
-
-        navyBlue: '#002462',
-        navyBlue2: '#27354E',
-        darkBlue: '#1570EF',
-        darkBlue2: '#314362',
-
-        errorRed: '#963737',
-        errorRed2: '#FED7D7',
-        errorRed3: '#FB5C5C',
-
-        successGreen: '#1E543B',
-        successGreen2: '#D3F4E5',
-        successGreen3: '#4BD394',
-
-        warningYellow: '#FFCF24',
-
-        indigo: '#8098F9',
-        darkBlue3: '#0024620D',
-        lightYellow: '#FFA5020D',
       },
       backgroundImage: {
         login: 'url("/elements/login_page_bg.png")',
@@ -1296,9 +1240,6 @@ module.exports = {
         xl: '0 4px 24px rgba(0, 0, 0, 0.40)',
         xlReverse: '0px -4px 24px rgba(0, 0, 0, 0.40)',
         xlSide: '4px 0px 24px rgba(0, 0, 0, 0.40)',
-        purple: '0px 0px 6px 0px #AB50FF',
-        violet:
-          '0px 0px 12px 0px rgba(175, 80, 255, 0.30), 0px 0px 24px 0px rgba(175, 80, 255, 0.30) inset',
 
         custom1: '0px 18px 39px 0px rgba(32, 22, 93, 0.1)',
         custom2: '0px 71px 71px 0px rgba(32, 22, 93, 0.09)',
@@ -1335,7 +1276,6 @@ module.exports = {
         xl: '0px 4px 24px rgba(0, 0, 0, 0.40)',
         xlReverse: '0px -4px 24px rgba(0, 0, 0, 0.40)',
         xlSide: '4px 0px 24px rgba(0, 0, 0, 0.40)',
-        purple: '0 2px 10px #AB50FF',
 
         custom1: '0px 18px 39px 0px rgba(32, 22, 93, 0.1)',
         custom2: '0px 71px 71px 0px rgba(32, 22, 93, 0.09)',

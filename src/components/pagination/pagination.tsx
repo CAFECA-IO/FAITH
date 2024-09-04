@@ -8,6 +8,7 @@ import {
   KeyboardEvent,
 } from 'react';
 import { useRouter } from 'next/router';
+import { Button } from '@/components/button/button';
 
 interface IPaginationProps {
   currentPage: number;
@@ -84,11 +85,12 @@ const Pagination = ({
   const lastPageHandler = () => setCurrentPage(totalPages);
 
   const displayFirstButton = (
-    <button
+    <Button
       type="button"
       onClick={firstPageHandler}
       disabled={isFirstPage}
-      className="flex h-40px w-40px items-center justify-center rounded border border-secondaryBlue hover:border-primaryYellow hover:text-primaryYellow disabled:border-lightGray3 disabled:text-lightGray3"
+      variant="secondaryOutline"
+      className="h-40px w-40px p-0"
     >
       <svg
         width="20"
@@ -114,15 +116,16 @@ const Pagination = ({
           />
         </g>
       </svg>
-    </button>
+    </Button>
   );
 
   const displayPreviousButton = (
-    <button
+    <Button
       type="button"
       onClick={previousPageHandler}
       disabled={isFirstPage}
-      className="flex h-40px w-40px items-center justify-center rounded border border-secondaryBlue hover:border-primaryYellow hover:text-primaryYellow disabled:border-lightGray3 disabled:text-lightGray3"
+      variant="secondaryOutline"
+      className="h-40px w-40px p-0"
     >
       <svg
         width="20"
@@ -139,40 +142,16 @@ const Pagination = ({
           fill="#001840"
         />
       </svg>
-    </button>
+    </Button>
   );
 
   const displayLastButton = (
-    <button
+    <Button
       type="button"
       onClick={lastPageHandler}
       disabled={isLastPage}
-      className="flex h-40px w-40px items-center justify-center rounded border border-secondaryBlue hover:border-primaryYellow hover:text-primaryYellow disabled:border-lightGray3 disabled:text-lightGray3"
-    >
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          className="fill-current"
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M6.52703 3.71306C6.89315 3.34695 7.48674 3.34695 7.85285 3.71306L13.4779 9.33806C13.844 9.70418 13.844 10.2978 13.4779 10.6639L7.85285 16.2889C7.48674 16.655 6.89315 16.655 6.52703 16.2889C6.16091 15.9228 6.16091 15.3292 6.52703 14.9631L11.4891 10.001L6.52703 5.03889C6.16091 4.67277 6.16091 4.07918 6.52703 3.71306Z"
-          fill="#001840"
-        />
-      </svg>
-    </button>
-  );
-
-  const displayNextButton = (
-    <button
-      type="button"
-      onClick={nextPageHandler}
-      disabled={isLastPage}
-      className="flex h-40px w-40px items-center justify-center rounded border border-secondaryBlue hover:border-primaryYellow hover:text-primaryYellow disabled:border-lightGray3 disabled:text-lightGray3"
+      variant="secondaryOutline"
+      className="h-40px w-40px p-0"
     >
       <svg
         width="20"
@@ -198,7 +177,33 @@ const Pagination = ({
           />
         </g>
       </svg>
-    </button>
+    </Button>
+  );
+
+  const displayNextButton = (
+    <Button
+      type="button"
+      onClick={nextPageHandler}
+      disabled={isLastPage}
+      variant="secondaryOutline"
+      className="h-40px w-40px p-0"
+    >
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          className="fill-current"
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M6.52703 3.71306C6.89315 3.34695 7.48674 3.34695 7.85285 3.71306L13.4779 9.33806C13.844 9.70418 13.844 10.2978 13.4779 10.6639L7.85285 16.2889C7.48674 16.655 6.89315 16.655 6.52703 16.2889C6.16091 15.9228 6.16091 15.3292 6.52703 14.9631L11.4891 10.001L6.52703 5.03889C6.16091 4.67277 6.16091 4.07918 6.52703 3.71306Z"
+          fill="#001840"
+        />
+      </svg>
+    </Button>
   );
 
   const displayPageInput = (
@@ -211,18 +216,18 @@ const Pagination = ({
       value={targetPage}
       onChange={handlePageChange}
       onKeyDown={handleKeyDown}
-      className="h-40px w-40px rounded border border-secondaryBlue bg-transparent text-center text-sm font-semibold outline-none placeholder:text-lightGray3 disabled:border-lightGray3"
+      className="h-40px w-40px rounded border border-button-text-secondary bg-transparent text-center text-sm font-semibold outline-none placeholder:text-input-text-input-placeholder disabled:border-input-stroke-input disabled:bg-input-surface-input-disable disabled:text-input-text-disable"
     />
   );
 
   return (
-    <ul className="flex items-start gap-10px text-secondaryBlue">
+    <ul className="flex items-start gap-10px">
       {/* Info: (20240419 - Julian) 最前一頁 */}
       <li>{displayFirstButton}</li>
       {/* Info: (20240419 - Julian) 上一頁 */}
       <li>{displayPreviousButton}</li>
       {/* Info: (20240419 - Julian) 手動輸入/顯示當前頁數 */}
-      <li className="flex flex-col items-center">
+      <li className="flex flex-col items-center text-input-text-input-filled">
         {displayPageInput}
         {/* Info: (20240419 - Julian) 顯示總頁數 */}
         <p>OF {totalPages}</p>

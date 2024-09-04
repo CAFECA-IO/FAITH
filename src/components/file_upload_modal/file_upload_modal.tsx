@@ -58,13 +58,13 @@ const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUpload
         />
         <Image src="/icons/files.svg" width={55} height={60} alt="upload_file" />
         <div className="mt-10 flex flex-col items-center gap-2">
-          <p className="font-semibold text-navyBlue2">
-            Drag and drop files here or <span className="text-darkBlue">Browse</span>
+          <p className="font-semibold text-drag-n-drop-text-primary">
+            Drag and drop files here or <span className="text-link-text-primary">Browse</span>
           </p>
-          <p className="mt-2 text-center text-sm text-lightGray4">
+          <p className="mt-2 text-center text-sm text-drag-n-drop-text-note">
             Supported formats: PDF, TXT, PNG, JPEG, SVG, JSON
           </p>
-          <p className="text-center text-sm text-lightGray4">Maximum size: 50MB</p>
+          <p className="text-center text-sm text-drag-n-drop-text-note">Maximum size: 50MB</p>
         </div>
       </label>
     </div>
@@ -72,32 +72,15 @@ const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUpload
 
   const isDisplayedModal = isModalVisible ? (
     <div className="fixed inset-0 z-70 flex items-center justify-center bg-black/50 font-barlow">
-      <div className={`relative flex w-330px flex-col gap-20px rounded-md bg-white md:w-400px`}>
+      <div
+        className={`relative flex w-330px flex-col gap-20px rounded-md bg-surface-neutral-surface-lv2 md:w-400px`}
+      >
         <button
           type="button"
           onClick={modalVisibilityHandler}
-          className="absolute right-12px top-12px text-lightGray5"
+          className="absolute right-12px top-12px"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              className="fill-current"
-              fillRule="evenodd"
-              d="M6.223 6.22a.75.75 0 011.06 0l10.5 10.5a.75.75 0 01-1.06 1.062l-10.5-10.5a.75.75 0 010-1.061z"
-              clipRule="evenodd"
-            ></path>
-            <path
-              className="fill-current"
-              fillRule="evenodd"
-              d="M17.783 6.22a.75.75 0 010 1.062l-10.5 10.5a.75.75 0 01-1.06-1.061l10.5-10.5a.75.75 0 011.06 0z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
+          <Image src="/icons/cross.svg" width={32} height={32} alt="cross_icon" />
         </button>
         {/* Info: (20240628 - Shirley) Header */}
         <div className="flex flex-col items-center gap-2 p-16px">
