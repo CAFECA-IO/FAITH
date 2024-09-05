@@ -82,41 +82,27 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
 
   const displayedAvatar =
     role === MessageRole.VISITOR ? (
-      <div className="relative flex shrink-0 items-start justify-center">
+      <div className="relative flex h-32px w-32px shrink-0 items-center justify-center lg:h-60px lg:w-60px">
         <Image
           src={'/elements/anonymous_avatar.svg'}
-          width={60}
-          height={60}
+          fill
+          objectFit="contain"
           alt="isunfa logo with ring border"
         />
       </div>
     ) : role === MessageRole.BOT ? (
-      <div className="relative flex h-60px w-60px shrink-0 items-center justify-center">
-        <Image
-          src={'/logo/isunfa_pure_logo.svg'}
-          width={30}
-          height={30}
-          alt="isunfa logo"
-          className="z-10 h-30px w-30px"
-        />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="60"
-          height="60"
-          fill="none"
-          viewBox="0 0 60 60"
-          className="absolute"
-        >
-          <circle cx="30" cy="30" r="29" stroke="#CDD1D9" strokeWidth="2"></circle>
-        </svg>
+      <div className="relative flex h-32px w-32px shrink-0 items-center justify-center rounded-full border-2 border-stroke-neutral-quaternary lg:h-60px lg:w-60px">
+        <div className="relative z-10 h-15px w-15px lg:h-30px lg:w-30px">
+          <Image src={'/logo/isunfa_pure_logo.svg'} fill objectFit="contain" alt="isunfa logo" />
+        </div>
       </div>
     ) : (
       // TODO: use imageId in `user` data as user avatar (20240627 - Shirley)
-      <div className="relative flex shrink-0 items-start justify-center">
+      <div className="relative flex h-32px w-32px shrink-0 items-center justify-center lg:h-60px lg:w-60px">
         <Image
           src={'/elements/default_user.svg'}
-          width={60}
-          height={60}
+          fill
+          objectFit="contain"
           alt="isunfa logo with ring border"
         />
       </div>
@@ -126,11 +112,11 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
     <div>
       {/* Info: 用戶未登入時，訪客跟機器人的訊息 (20240701 - Shirley) */}
       {role !== MessageRole.USER ? (
-        <div className="mt-0 flex gap-5 self-start whitespace-nowrap font-barlow">
+        <div className="flex items-center gap-5 whitespace-nowrap font-barlow lg:items-start">
           {displayedAvatar}
           <div className="flex w-1200px flex-col overflow-x-auto">
-            <div className="text-xl font-bold leading-8">{sender}</div>
-            <div className="mt-2 whitespace-pre-wrap text-base leading-6 tracking-normal">
+            <div className="text-base font-bold leading-8 lg:text-xl">{sender}</div>
+            <div className="mt-2 whitespace-pre-wrap text-sm leading-6 tracking-normal lg:text-base">
               {messages[selectedMsgIndex].isPending ? (
                 <Lottie className="w-50px" animationData={typingIndicator} loop />
               ) : (
@@ -343,14 +329,14 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
                       </Button>
                     </div>
                   )}
-                </div>{' '}
+                </div>
               </div>
             ) : null}
           </div>
         </div>
       ) : (
         // Info: 用戶登入後，用戶的訊息 (20240701 - Shirley)
-        <div className="mt-0 flex w-full justify-end gap-5 self-start whitespace-nowrap font-barlow">
+        <div className="flex w-full items-center justify-end gap-5 whitespace-nowrap font-barlow lg:items-start">
           <div className="flex w-1200px flex-col items-end justify-center overflow-x-auto">
             {!!messages[selectedMsgIndex].file && (
               <div className="mt-2">
@@ -361,7 +347,7 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
               </div>
             )}
 
-            <div className="mt-2 whitespace-pre-wrap text-base leading-6 tracking-normal">
+            <div className="mt-2 whitespace-pre-wrap text-sm leading-6 tracking-normal lg:text-base">
               {messages[selectedMsgIndex].content}
             </div>
           </div>
@@ -404,8 +390,8 @@ export const BotPendingMessage = ({ sender, role }: BotPendingMessageProps) => {
       <div className="mt-0 flex gap-5 self-start whitespace-nowrap font-barlow">
         {displayedAvatar}
         <div className="flex w-1200px flex-col overflow-x-auto">
-          <div className="text-xl font-bold leading-8">{sender}</div>
-          <div className="mt-2 whitespace-pre-wrap text-base leading-6 tracking-normal">
+          <div className="text-base font-bold leading-8 lg:text-xl">{sender}</div>
+          <div className="mt-2 whitespace-pre-wrap text-sm leading-6 tracking-normal lg:text-base">
             <Lottie className="w-50px" animationData={typingIndicator} loop />
           </div>
         </div>

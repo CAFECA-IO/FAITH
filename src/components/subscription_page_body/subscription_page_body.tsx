@@ -6,10 +6,10 @@ import { checkboxStyle } from '@/constants/display';
 
 const SubscriptionPageBody = () => {
   // ToDo: (20240628 - Julian) replace with real data
-  const feeOfPerMonth = 3000;
-  const subtotal = 3000;
+  const feeOfPerMonth = 200;
+  const subtotal = 200;
   const tax = 0;
-  const totalDueToday = 3000;
+  const totalDueToday = 200;
 
   const [cardNo, setCardNo] = useState('');
   const [expirationMonth, setExpirationMonth] = useState('');
