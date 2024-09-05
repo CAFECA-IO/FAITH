@@ -31,7 +31,7 @@ const ChatThreadSection = () => {
   };
 
   const displayedChatTopics = (
-    <div className="mt-9 flex w-full justify-center px-20">
+    <div className="mt-20 flex w-full justify-center px-20 lg:mt-9">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {topicOptions.map((topic: IChatTopic) => (
           <ChatTopicOption
@@ -74,11 +74,11 @@ const ChatThreadSection = () => {
       <div
         ref={chatContainerRef}
         className={cn(
-          'hideScrollbar overflow-y-auto overflow-x-hidden pt-20',
+          'hideScrollbar overflow-y-auto overflow-x-hidden pt-200px lg:pt-20',
           selectedChat.messages.length > 1 ? 'h-screen pb-10' : 'pb-2'
         )}
       >
-        <div className="mx-20 flex flex-col gap-10">
+        <div className="mx-20px flex flex-col gap-10 lg:mx-20">
           {selectedChat.messages.map((message: IMessageWithRole, index: number) => (
             <ChatMessage
               resend={() => resendUserMessage(index)}

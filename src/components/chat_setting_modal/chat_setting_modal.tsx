@@ -40,7 +40,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
   // ToDo: (20240625 - Julian) replace with actual data
   const hasSubscription = false;
   const subscriptionPlan = 'Beta';
-  const monthlyFee = 'NTD 3000';
+  const monthlyFee = 'NTD 200';
   const nextPaymentTimestamp = 1719131200;
 
   const isNormalSettingSelected = currentTab === ChatSettingTab.NORMAL_SETTING;
@@ -302,10 +302,10 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       <div className="flex w-full items-end justify-center gap-x-50px pr-60px">
         <div className="flex flex-col items-center gap-y-10px font-bold">
           <p className="text-2xl text-text-brand-secondary-lv1">
-            NTD$ <span className="text-48px text-text-brand-primary-lv2">3,000</span>
+            NTD$ <span className="text-48px text-text-brand-primary-lv2">200</span>
           </p>
           <p className="text-4xl text-text-brand-secondary-lv2">Monthly</p>
-          <p className="text-xl text-text-brand-secondary-lv1">(30,000/Year)</p>
+          <p className="text-xl text-text-brand-secondary-lv1">(1,440/Year)</p>
         </div>
         <ul className="list-disc text-lg font-semibold">
           <li>
@@ -347,9 +347,9 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
         {/* Info: (20240904 - Julian) Fee */}
         <div className="flex flex-col items-center text-text-brand-secondary-lv2">
           <p className="text-xl font-bold">
-            NTD$ <span className="text-text-brand-primary-lv2">3,000</span> Monthly
+            NTD$ <span className="text-text-brand-primary-lv2">200</span> Monthly
           </p>
-          <p className="text-base font-semibold">(30,000/Year)</p>
+          <p className="text-base font-semibold">(1,440/Year)</p>
         </div>
         {/* Info: (20240904 - Julian) Features */}
         <ul className="list-disc text-sm font-semibold text-text-neutral-primary">

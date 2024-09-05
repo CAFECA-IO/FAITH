@@ -47,7 +47,9 @@ const TopicSection = ({ category, topics }: ITopicBrowsePageBody) => {
         <h2 className="text-2xl font-bold text-text-neutral-secondary">{category}</h2>
         {isShowSeeMore}
       </div>
-      <div className="grid flex-1 grid-cols-2 items-center gap-40px">{displayTopics}</div>
+      <div className="grid flex-1 grid-cols-1 items-center gap-20px md:grid-cols-2 md:gap-40px">
+        {displayTopics}
+      </div>
     </div>
   );
 };

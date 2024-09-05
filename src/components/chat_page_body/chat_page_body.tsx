@@ -495,22 +495,17 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
   );
 
   return (
-    <div
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-      className="hidden lg:block"
-    >
+    <div onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
       {/* TODO: mobile version is not implemented yet (20240627 - Shirley) */}
       {displayedDragOverMask}
 
-      <div className="flex lg:h-screen lg:flex-col">
+      <div className="flex flex-col lg:h-screen">
         <div className="hideScrollbar grow overflow-auto">
           <ChatThreadSection />
         </div>
 
         {/* Info: Chat input (20240626 - Shirley) */}
-        <div className={`mb-2 mt-1 flex w-full flex-col px-20 max-md:max-w-full`}>
+        <div className={`mb-2 mt-1 flex w-full flex-col px-20px max-md:max-w-full lg:px-20`}>
           {feedbackSection}
 
           <div>{displayedPromptInput}</div>
