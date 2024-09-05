@@ -86,10 +86,10 @@ const SubscriptionPageBody = () => {
 
   const displayedTitle = (
     <div className="flex flex-col items-center gap-y-8px">
-      <p className="text-lg font-semibold text-text-neutral-secondary">
+      <p className="text-sm font-semibold text-text-neutral-secondary md:text-lg">
         Subscribe to Faith Plus Subscription
       </p>
-      <p className="text-4xl font-bold text-text-neutral-primary">
+      <p className="text-2xl font-semibold text-text-neutral-primary md:text-4xl md:font-bold">
         NTD ${feeOfPerMonth}
         <span className="ml-16px text-lg font-semibold text-text-neutral-secondary">per/month</span>
       </p>
@@ -97,29 +97,33 @@ const SubscriptionPageBody = () => {
   );
 
   const displayedReceiptBlock = (
-    <div className="flex w-500px flex-col gap-y-20px rounded-sm bg-surface-neutral-surface-lv1 px-32px py-40px shadow-custom1">
+    <div className="flex w-4/5 flex-col gap-y-20px rounded-sm bg-surface-neutral-surface-lv1 p-20px shadow-custom1 md:w-500px md:px-32px md:py-40px">
       <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-8px text-lg font-semibold">
+        <div className="flex flex-col gap-8px text-sm font-semibold md:text-lg">
           <p className="text-text-neutral-tertiary">Faith Plus Subscription</p>
           <p className="text-text-brand-secondary-lv3">Billed monthly</p>
         </div>
-        <p className="text-xl font-bold text-text-neutral-secondary">$ {feeOfPerMonth}</p>
+        <p className="text-lg font-bold text-text-neutral-secondary lg:text-xl">
+          $ {feeOfPerMonth}
+        </p>
       </div>
       <hr className="border-divider-stroke-lv-4" />
       <div className="flex flex-col items-center gap-8px">
-        <div className="flex w-full justify-between text-lg font-semibold">
+        <div className="flex w-full justify-between text-sm font-semibold md:text-lg">
           <p className="text-text-neutral-tertiary">Subtotal</p>
-          <p className="text-xl font-bold text-text-neutral-secondary">$ {subtotal}</p>
+          <p className="text-lg font-bold text-text-neutral-secondary lg:text-xl">$ {subtotal}</p>
         </div>
-        <div className="flex w-full justify-between text-lg font-semibold">
+        <div className="flex w-full justify-between text-sm font-semibold md:text-lg">
           <p className="text-text-brand-secondary-lv3">Tax</p>
-          <p className="text-xl font-bold text-text-neutral-tertiary">$ {tax}</p>
+          <p className="text-lg font-bold text-text-neutral-tertiary lg:text-xl">$ {tax}</p>
         </div>
       </div>
       <hr className="border-divider-stroke-lv-4" />
-      <div className="flex w-full justify-between text-lg font-semibold">
+      <div className="flex w-full justify-between text-sm font-semibold md:text-lg">
         <p className="text-text-neutral-tertiary">Total due today</p>
-        <p className="text-xl font-bold text-text-neutral-secondary">$ {totalDueToday}</p>
+        <p className="text-lg font-bold text-text-neutral-secondary lg:text-xl">
+          $ {totalDueToday}
+        </p>
       </div>
     </div>
   );
@@ -177,9 +181,9 @@ const SubscriptionPageBody = () => {
   const displayedCardInformation = (
     <div className="row-span-4 flex flex-col gap-y-20px">
       <p className="text-lg font-semibold text-text-neutral-secondary">Card information</p>
-      <div className="grid grid-cols-2 gap-x-40px gap-y-16px text-input-text-primary">
+      <div className="grid grid-cols-1 gap-x-40px gap-y-16px text-input-text-primary md:grid-cols-2">
         {/* Info: (20240628 - Julian) Card No. */}
-        <div className="col-span-2 flex flex-col gap-y-8px">
+        <div className="flex flex-col gap-y-8px md:col-span-2">
           <p className="text-sm font-semibold">Card No.</p>
           <div className="flex items-center divide-x divide-input-stroke-input rounded-sm border border-input-stroke-input bg-input-surface-input-background">
             <p className="px-12px py-10px text-input-text-input-placeholder">Type</p>
@@ -324,12 +328,12 @@ const SubscriptionPageBody = () => {
   );
 
   return (
-    <div className="my-120px ml-100px flex w-screen items-stretch">
-      {/* Info: (20240628 - Julian) Back button */}
+    <div className="mb-40px mt-120px flex w-screen flex-col items-stretch md:ml-100px md:flex-row">
+      {/* Info: (20240628 - Julian) Desktop Back button */}
       <Button
         type="button"
         variant="secondaryOutline"
-        className="h-fit w-fit"
+        className="hidden h-fit w-fit md:flex"
         onClick={backHandler}
       >
         <svg
@@ -348,19 +352,29 @@ const SubscriptionPageBody = () => {
         </svg>
         <p>Back</p>
       </Button>
-      <div className="flex flex-1 flex-col gap-y-40px px-80px py-40px">
-        <div className="flex items-start justify-between">
+      {/* Info: (20240628 - Julian) Mobile Back button & Title */}
+      <div className="relative flex items-center justify-center px-20px text-2xl font-bold text-text-neutral-primary md:hidden">
+        <button type="button" className="absolute left-10 p-10px">
+          <Image src="/icons/back.svg" alt="back_icon" width={24} height={24} />
+        </button>
+        <h1>Subscribe</h1>
+      </div>
+      {/* Info: (20240628 - Julian) Main Body */}
+      <div className="flex flex-1 flex-col gap-y-40px px-20px py-40px md:px-80px">
+        <div className="flex flex-col items-center justify-between gap-y-20px md:flex-row md:items-start">
           {displayedTitle}
           {/* Info: (20240628 - Julian) block */}
           {displayedReceiptBlock}
         </div>
         {/* Info: (20240628 - Julian) Payment method */}
-        <div className="flex flex-col gap-y-40px">
-          <h2 className="text-2xl font-bold text-text-neutral-primary">Payment method</h2>
+        <div className="flex flex-col items-center gap-y-40px md:items-start">
+          <h2 className="text-xl font-bold text-text-neutral-primary md:text-2xl">
+            Payment method
+          </h2>
           <form
             id="subscription-form"
             onSubmit={handleSubmit}
-            className="grid grid-flow-col grid-rows-6 gap-x-80px gap-y-40px"
+            className="grid grid-flow-row gap-x-80px gap-y-40px md:grid-flow-col md:grid-rows-6"
           >
             {/* Info: (20240628 - Julian) Card information */}
             {displayedCardInformation}
