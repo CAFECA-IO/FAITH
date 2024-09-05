@@ -354,7 +354,7 @@ const SubscriptionPageBody = () => {
       </Button>
       {/* Info: (20240628 - Julian) Mobile Back button & Title */}
       <div className="relative flex items-center justify-center px-20px text-2xl font-bold text-text-neutral-primary md:hidden">
-        <button type="button" className="absolute left-10 p-10px">
+        <button type="button" onClick={backHandler} className="absolute left-10 p-10px">
           <Image src="/icons/back.svg" alt="back_icon" width={24} height={24} />
         </button>
         <h1>Subscribe</h1>
