@@ -305,7 +305,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
             NTD$ <span className="text-48px text-text-brand-primary-lv2">200</span>
           </p>
           <p className="text-4xl text-text-brand-secondary-lv2">Monthly</p>
-          <p className="text-xl text-text-brand-secondary-lv1">(1,000/Year)</p>
+          <p className="text-xl text-text-brand-secondary-lv1">(1,440/Year)</p>
         </div>
         <ul className="list-disc text-lg font-semibold">
           <li>
@@ -349,7 +349,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
           <p className="text-xl font-bold">
             NTD$ <span className="text-text-brand-primary-lv2">200</span> Monthly
           </p>
-          <p className="text-base font-semibold">(1,000/Year)</p>
+          <p className="text-base font-semibold">(1,440/Year)</p>
         </div>
         {/* Info: (20240904 - Julian) Features */}
         <ul className="list-disc text-sm font-semibold text-text-neutral-primary">
