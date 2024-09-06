@@ -95,6 +95,7 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
         `<pre class="bg-surface-neutral-main-background p-4 overflow-x-scroll"><code class="text-xs lg:text-sm $1">$2</code></pre>`
       );
     return (
+      // eslint-disable-next-line react/no-danger
       <article className="my-auto align-baseline" dangerouslySetInnerHTML={{ __html: result }} />
     );
   };

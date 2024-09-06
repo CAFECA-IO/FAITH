@@ -2,7 +2,7 @@ import Head from 'next/head';
 import NavBar from '@/components/nav_bar/nav_bar';
 import SubscriptionPageBody from '@/components/subscription_page_body/subscription_page_body';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { ILocale } from '@/interfaces/locale';
+import { GetServerSideProps } from 'next';
 
 const SubscriptionPage = () => {
   return (
@@ -26,12 +26,19 @@ const SubscriptionPage = () => {
   );
 };
 
+export const getServerSideProps: GetServerSideProps = async ({ locale, params }) => {
+  if (!params || !params.planId || typeof params.planId !== 'string') {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      folderId: params.planId,
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  };
+};
+
 export default SubscriptionPage;
-
-const getStaticPropsFunction = async ({ locale }: ILocale) => ({
-  props: {
-    ...(await serverSideTranslations(locale as string, ['common'])),
-  },
-});
-
-export const getStaticProps = getStaticPropsFunction;

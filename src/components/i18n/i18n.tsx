@@ -22,14 +22,7 @@ const I18n = () => {
 
   const languageList = internationalizationList.map((item) => {
     return (
-      <Link
-        key={item.value}
-        href={asPath}
-        scroll={false}
-        locale={item.value}
-        onClick={toggleMenu}
-        className="hover:text- w-full whitespace-nowrap text-center"
-      >
+      <Link key={item.value} href={asPath} scroll={false} locale={item.value} onClick={toggleMenu}>
         <Button type="button" variant="tertiaryBorderless">
           {item.label}
         </Button>
