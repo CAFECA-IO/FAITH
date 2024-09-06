@@ -1,0 +1,11 @@
+{
+  "NAV_BAR": {
+    "REGISTER": "注册",
+    "LOGIN": "登入",
+    "NEW_CHAT": "新聊天",
+    "CONTACT_US": "联络我们",
+    "SETTING": "设定",
+    "LOGOUT": "登出",
+    "DISCOVER": "发现"
+  }
+}

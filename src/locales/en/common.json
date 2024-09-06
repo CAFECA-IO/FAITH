@@ -1,0 +1,11 @@
+{
+  "NAV_BAR": {
+    "REGISTER": "Register",
+    "LOGIN": "Login",
+    "NEW_CHAT": "New Chat",
+    "CONTACT_US": "Contact Us",
+    "SETTING": "Setting",
+    "LOGOUT": "Logout",
+    "DISCOVER": "Discover"
+  }
+}

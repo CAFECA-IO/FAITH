@@ -4,8 +4,9 @@ import type { AppProps } from 'next/app';
 import { ChatProvider } from '@/contexts/chat_context';
 import { UserProvider } from '@/contexts/user_context';
 import { GlobalProvider } from '@/contexts/global_context';
+import { appWithTranslation } from 'next-i18next';
 
-export default function App({ Component, pageProps }: AppProps) {
+const App = ({ Component, pageProps }: AppProps) => {
   return (
     <UserProvider>
       <ChatProvider>
@@ -15,4 +16,6 @@ export default function App({ Component, pageProps }: AppProps) {
       </ChatProvider>
     </UserProvider>
   );
-}
+};
+
+export default appWithTranslation(App);
