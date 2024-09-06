@@ -2,16 +2,16 @@
   "NAV_BAR": {
     "REGISTER": "註冊",
     "LOGIN": "登入",
-    "NEW_CHAT": "新聊天",
+    "NEW_CHAT": "新聊天室",
     "CONTACT_US": "聯絡我們",
     "SETTING": "設定",
     "LOGOUT": "登出",
     "DISCOVER": "發現"
   },
   "SIDE_BAR": {
-    "MY_CHAT_LIST": "我的聊天列表",
-    "ADD_FOLDER": "拖曳聊天至此新增資料夾",
-    "REMOVE_CHAT": "刪除聊天"
+    "MY_CHAT_LIST": "我的聊天室列表",
+    "ADD_FOLDER": "拖曳聊天室至此新增資料夾",
+    "REMOVE_CHAT": "刪除聊天室"
   },
   "CHAT": {
     "I_AM_FAITH": "嗨，我是人工智慧會計師 Faith。",
@@ -34,9 +34,27 @@
     "ERROR_ANSWER": "答非所問",
     "INCOMPLETE": "資訊不完整"
   },
+  "FOLDER": {
+    "SHARE": "分享資料夾",
+    "CHAT_IN_FOLDER": "資料夾中的聊天室",
+    "SHARED_CHATS": "已分享的聊天室",
+    "PRIVATE_CHATS": "私人聊天室",
+    "NO_CHATS_FOUND": "找不到聊天室",
+    "CHAT_NAME": "聊天室名稱",
+    "LATEST_QUESTIONS": "最新問題",
+    "DATE": "日期",
+    "ACTION": "操作",
+    "NOT_FOUND": "找不到資料夾"
+  },
   "COMMON": {
     "RENAME": "重新命名",
     "SHARE": "分享",
-    "SET_TO_PRIVATE": "設為私人"
+    "SET_TO_PRIVATE": "設為私人",
+    "NEWEST": "最新",
+    "OLDEST": "最舊",
+    "SEARCH": "搜尋",
+    "ALL_TYPE": "所有類型",
+    "MOVE": "移動",
+    "BACK": "返回"
   }
 }

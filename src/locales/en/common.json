@@ -11,7 +11,7 @@
   "SIDE_BAR": {
     "MY_CHAT_LIST": "My Chat List",
     "ADD_FOLDER": "Drag Chat to Add Folder",
-    "REMOVE_CHAT": "Remove "
+    "REMOVE_CHAT": "Remove Chat"
   },
   "CHAT": {
     "I_AM_FAITH": "Hi, I am Faith, the AI Accountant.",
@@ -30,13 +30,31 @@
     "WORSE": "Worse",
     "SAME": "Same",
     "TELL_YOUR_IDEA": "Tell us your idea:",
-    "DONT_LIKE_ANSWER": "I don't like this answer",
+    "DONT_LIKE_ANSWER": "I don&apos;t like this answer",
     "ERROR_ANSWER": "Error answer",
     "INCOMPLETE": "Incomplete information"
+  },
+  "FOLDER": {
+    "SHARE": "Share Folder",
+    "CHAT_IN_FOLDER": "Chat in the folder",
+    "SHARED_CHATS": "Shared Chats",
+    "PRIVATE_CHATS": "Private Chats",
+    "NO_CHATS_FOUND": "No chats found",
+    "CHAT_NAME": "Chat Name",
+    "LATEST_QUESTIONS": "Latest Questions",
+    "DATE": "Date",
+    "ACTION": "Action",
+    "NOT_FOUND": "Folder not found"
   },
   "COMMON": {
     "RENAME": "Rename",
     "SHARE": "Share",
-    "SET_TO_PRIVATE": "Set to Private"
+    "SET_TO_PRIVATE": "Set to Private",
+    "NEWEST": "Newest",
+    "OLDEST": "Oldest",
+    "SEARCH": "Search",
+    "ALL_TYPE": "All Type",
+    "MOVE": "Move",
+    "BACK": "Back"
   }
 }

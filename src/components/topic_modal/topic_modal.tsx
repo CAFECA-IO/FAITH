@@ -5,6 +5,8 @@ import SortToggle from '@/components/sort_toggle/sort_toggle';
 // eslint-disable-next-line import/no-cycle
 import CommentItem from '@/components/comment_item/comment_item';
 import { SortOptions } from '@/constants/display';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface ITopicModalProps {
   isModalVisible: boolean;
@@ -13,6 +15,7 @@ interface ITopicModalProps {
 }
 
 const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopicModalProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const { title, summary, mainQuestion, bestAnswers, comments, isFavorite } = topicData;
 
   const [commentSort, setCommentSort] = useState(SortOptions.NEWEST);
@@ -247,7 +250,7 @@ const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopi
               type="type"
               value={commentInput}
               onChange={commentInputChangeHandler}
-              placeholder="Say something..."
+              placeholder={t('CHAT.SAY_SOMETHING')}
               className="flex-1 bg-transparent text-text-neutral-primary outline-none placeholder:text-input-text-input-placeholder"
             />
             <button
