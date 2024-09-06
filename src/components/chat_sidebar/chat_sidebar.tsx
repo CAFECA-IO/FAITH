@@ -13,6 +13,8 @@ import { useRouter } from 'next/router';
 import { NATIVE_ROUTE } from '@/constants/url';
 import { MessageType } from '@/interfaces/message_modal';
 import Link from 'next/link';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface IChatBriefItemProps {
   chatBrief: IChatBrief;
@@ -413,6 +415,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
 };
 
 const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const router = useRouter();
   const { isSignedIn } = useUserCtx();
   const { chatBriefs, folders, addFolder, moveChatToFolder, addEmptyChat } = useChatCtx();
@@ -593,7 +596,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
           className={`fixed z-10 hidden h-screen flex-col items-center bg-surface-brand-primary-5 lg:flex ${isExpanded ? 'w-240px' : 'w-0 -translate-x-240px'} px-12px pb-40px pt-80px transition-all duration-300 ease-in-out`}
         >
           <div className="flex h-full w-full flex-col pb-0">
-            <div className="mx-3 flex items-center gap-3">
+            <div className="flex items-center gap-3">
               <div className="relative flex h-10 w-10 items-center justify-center">
                 <Image
                   src={'/logo/isunfa_pure_logo.svg'}
@@ -617,7 +620,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
               <p
                 className={`text-lg font-medium text-button-text-secondary transition-all duration-300 ease-in-out`}
               >
-                My Chat List
+                {t('SIDE_BAR.MY_CHAT_LIST')}
               </p>
 
               {/* TODO: link to folder list page (20240705 - Shirley) */}
@@ -732,7 +735,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
               <p
                 className={`text-lg font-medium text-button-text-secondary transition-all duration-300 ease-in-out`}
               >
-                My Chat List
+                {t('SIDE_BAR.MY_CHAT_LIST')}
               </p>
             </div>
             {/* Info: (20240904 - Julian) Folders & Chats */}

@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import NavBar from '@/components/nav_bar/nav_bar';
 import SubscriptionPageBody from '@/components/subscription_page_body/subscription_page_body';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { ILocale } from '@/interfaces/locale';
 
 const SubscriptionPage = () => {
   return (
@@ -25,3 +27,11 @@ const SubscriptionPage = () => {
 };
 
 export default SubscriptionPage;
+
+const getStaticPropsFunction = async ({ locale }: ILocale) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ['common'])),
+  },
+});
+
+export const getStaticProps = getStaticPropsFunction;

@@ -7,5 +7,31 @@
     "SETTING": "设定",
     "LOGOUT": "登出",
     "DISCOVER": "发现"
+  },
+  "CHAT": {
+    "I_AM_FAITH": "嗨，我是人工智慧会计师 Faith。",
+    "FINANCIAL_TITLE": "解释财务报表",
+    "FINANCIAL_DESCRIPTION": "Faith 可以为您解释财务报表的组成部分。",
+    "CALCULATE_TITLE": "计算折旧",
+    "CALCULATE_DESCRIPTION": "Faith 可以协助您采用不同的折旧方法。",
+    "ACCOUNTING_TITLE": "最新会计准则",
+    "ACCOUNTING_DESCRIPTION": "Faith 可以分享最新的会计准则资讯。",
+    "BUDGETING_TITLE": "解释预算编制流程",
+    "BUDGETING_DESCRIPTION": "Faith 可以为您说明编制预算的步骤。",
+    "SAY_SOMETHING": "说些什么...",
+    "CHECK_INFO_HINT": "Faith 可能会发生错误。请再三查核重要资讯。",
+    "CHAT_FEEDBACK": "这个回答是更好还是更差？",
+    "BETTER": "更好",
+    "WORSE": "更差",
+    "SAME": "无差别",
+    "TELL_YOUR_IDEA": "告诉我们您的想法：",
+    "DONT_LIKE_ANSWER": "我不喜欢这个回答",
+    "ERROR_ANSWER": "答非所问",
+    "INCOMPLETE": "资讯不完整"
+  },
+  "COMMON": {
+    "RENAME": "重新命名",
+    "SHARE": "分享",
+    "SET_TO_PRIVATE": "设为私人"
   }
 }

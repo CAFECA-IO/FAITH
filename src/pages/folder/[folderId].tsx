@@ -13,6 +13,7 @@ import SortToggle from '@/components/sort_toggle/sort_toggle';
 import { IChat, dummyChats } from '@/interfaces/chat';
 import ChatList from '@/components/chat_list/chat_list';
 import Pagination from '@/components/pagination/pagination';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 enum FolderType {
   ALL = 'All Type',
@@ -292,7 +293,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ locale, params }) => {
   if (!params || !params.folderId || typeof params.folderId !== 'string') {
     return {
       notFound: true,
@@ -302,6 +303,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {
     props: {
       folderId: params.folderId,
+      ...(await serverSideTranslations(locale as string, ['common'])),
     },
   };
 };
