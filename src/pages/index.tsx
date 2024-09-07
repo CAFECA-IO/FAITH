@@ -3,8 +3,10 @@ import NavBar from '@/components/nav_bar/nav_bar';
 import ChatPageBody from '@/components/chat_page_body/chat_page_body';
 import Head from 'next/head';
 import { useState } from 'react';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { ILocale } from '@/interfaces/locale';
 
-export default function Home() {
+const HomePage = () => {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const getIsExpanded = (props: boolean) => {
     setIsSidebarExpanded(props);
@@ -46,4 +48,14 @@ export default function Home() {
       </div>
     </>
   );
-}
+};
+
+const getStaticPropsFunction = async ({ locale }: ILocale) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ['common'])),
+  },
+});
+
+export const getStaticProps = getStaticPropsFunction;
+
+export default HomePage;

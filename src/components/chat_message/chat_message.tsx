@@ -9,6 +9,7 @@ import { IFile } from '@/interfaces/file';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import typingIndicator from '@public/animations/typing_indicator.json';
+import { marked } from 'marked';
 
 interface ChatMessageProps extends IMessageWithRole {
   sender: DisplayedSender;
@@ -80,6 +81,25 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
     }
   };
 
+  // Info: (20240906 - Julian) 將 markdown 轉換成 html 並套用樣式
+  const getMarkdownStyle = (content: string) => {
+    const markedContent = marked(content) as string;
+    const result = markedContent
+      // Info: (20240906 - Julian) ul, ol, li ：縮排及列表樣式
+      .replace(/<ul/g, `<ul class="list-disc flex flex-col gap-4px marker:font-bold"`)
+      .replace(/<ol/g, `<ol class="list-decimal flex flex-col gap-4px marker:font-bold"`)
+      .replace(/<li/g, `<li class="ml-5"`)
+      // Info: (20240906 - Julian) 程式碼區塊：背景色、字體大小、捲軸
+      .replace(
+        /<pre><code class="([^"]+)">([^<]+)<\/code><\/pre>/g,
+        `<pre class="bg-surface-neutral-main-background p-4 overflow-x-scroll"><code class="text-xs lg:text-sm $1">$2</code></pre>`
+      );
+    return (
+      // eslint-disable-next-line react/no-danger
+      <article className="my-auto align-baseline" dangerouslySetInnerHTML={{ __html: result }} />
+    );
+  };
+
   const displayedAvatar =
     role === MessageRole.VISITOR ? (
       <div className="relative flex h-32px w-32px shrink-0 items-center justify-center lg:h-60px lg:w-60px">
@@ -120,7 +140,7 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
               {messages[selectedMsgIndex].isPending ? (
                 <Lottie className="w-50px" animationData={typingIndicator} loop />
               ) : (
-                messages[selectedMsgIndex].content
+                getMarkdownStyle(messages[selectedMsgIndex].content)
               )}
             </div>
 
@@ -348,7 +368,7 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
             )}
 
             <div className="mt-2 whitespace-pre-wrap text-sm leading-6 tracking-normal lg:text-base">
-              {messages[selectedMsgIndex].content}
+              {getMarkdownStyle(messages[selectedMsgIndex].content)}
             </div>
           </div>
 

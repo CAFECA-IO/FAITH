@@ -1,9 +1,14 @@
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
+
 interface ISortToggleProps {
   currentSort: string;
   clickHandler: () => void;
 }
 
 const SortToggle = ({ currentSort, clickHandler }: ISortToggleProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
+
   return (
     <div className="flex items-center gap-x-16px text-chat-bubbles-text-note">
       <div className="flex items-center gap-x-8px">
@@ -21,7 +26,7 @@ const SortToggle = ({ currentSort, clickHandler }: ISortToggleProps) => {
             fill="#7F8A9D"
           />
         </svg>
-        <p className="w-55px">{currentSort}</p>
+        <p className="w-55px">{t(currentSort)}</p>
       </div>
       <button type="button" onClick={clickHandler}>
         <svg

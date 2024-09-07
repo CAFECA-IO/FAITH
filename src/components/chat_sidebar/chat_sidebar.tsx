@@ -13,6 +13,8 @@ import { useRouter } from 'next/router';
 import { NATIVE_ROUTE } from '@/constants/url';
 import { MessageType } from '@/interfaces/message_modal';
 import Link from 'next/link';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface IChatBriefItemProps {
   chatBrief: IChatBrief;
@@ -27,6 +29,7 @@ interface IChatSidebarProps {
 }
 
 const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const router = useRouter();
   const { selectChat, selectedChat, deleteChat, renameChat } = useChatCtx();
   const { messageModalVisibilityHandler, messageModalDataHandler } = useGlobalCtx();
@@ -111,16 +114,16 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
       <div key={chatBrief.id} ref={editMenuRef} className="absolute right-0 top-0 z-50">
         <div className="flex flex-col gap-1 rounded-sm bg-surface-neutral-surface-lv2 py-2 text-base font-normal leading-6 tracking-normal shadow-userMenu">
           <Button variant={'secondaryBorderless'} onClick={renameClickHandler}>
-            Rename
+            {t('COMMON.RENAME')}
           </Button>
           <Button disabled variant={'secondaryBorderless'} onClick={shareClickHandler}>
-            Share
+            {t('COMMON.SHARE')}
           </Button>
           <Button disabled variant={'secondaryBorderless'} onClick={privateClickHandler}>
-            Set to Private
+            {t('COMMON.SET_TO_PRIVATE')}
           </Button>
           <Button variant={'secondaryBorderless'} onClick={removeClickHandler}>
-            Remove Chat
+            {t('SIDE_BAR.REMOVE_CHAT')}
           </Button>
         </div>
       </div>
@@ -413,6 +416,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
 };
 
 const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const router = useRouter();
   const { isSignedIn } = useUserCtx();
   const { chatBriefs, folders, addFolder, moveChatToFolder, addEmptyChat } = useChatCtx();
@@ -541,216 +545,105 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
         />
       </svg>
 
-      <div className="text-base font-normal leading-6 tracking-normal">Discover</div>
+      <div className="text-base font-normal leading-6 tracking-normal">{t('NAV_BAR.DISCOVER')}</div>
     </Button>
   ) : null;
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <>
       {/* Info: ----- (20240904 - Julian) Desktop sidebar ----- */}
-      <div className="hidden font-barlow lg:flex">
-        <div
-          className={`relative ${isExpanded ? 'w-200px' : 'w-0'} transition-all duration-300 ease-in-out`}
-        ></div>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className="hidden font-barlow lg:flex">
+          <div
+            className={`relative ${isExpanded ? 'w-200px' : 'w-0'} transition-all duration-300 ease-in-out`}
+          ></div>
 
-        <Button
-          variant={'secondaryBorderless'}
-          size={'extraSmall'}
-          type="button"
-          onClick={toggleSidebar}
-          className={`fixed top-96 ${isExpanded ? 'left-240px' : 'left-0'} z-40 transition-all duration-300 ease-in-out`}
-        >
-          {isExpanded ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="8"
-              height="38"
-              fill="none"
-              viewBox="0 0 8 38"
-            >
-              <path stroke="#C1C9D5" strokeLinecap="round" strokeWidth="6" d="M4 3v32"></path>
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="38"
-              fill="none"
-              viewBox="0 0 14 38"
-            >
-              <path
-                stroke="#C1C9D5"
-                strokeLinecap="round"
-                strokeWidth="6"
-                d="M3 35l6.882-13.764a5 5 0 000-4.472L3 3"
-              ></path>
-            </svg>
-          )}
-        </Button>
-
-        {/* Info: ----- desktop version (20240423 - Shirley) ----- */}
-        <div
-          className={`fixed z-10 hidden h-screen flex-col items-center bg-surface-brand-primary-5 lg:flex ${isExpanded ? 'w-240px' : 'w-0 -translate-x-240px'} px-12px pb-40px pt-80px transition-all duration-300 ease-in-out`}
-        >
-          <div className="flex h-full w-full flex-col pb-0">
-            <div className="mx-3 flex items-center gap-3">
-              <div className="relative flex h-10 w-10 items-center justify-center">
-                <Image
-                  src={'/logo/isunfa_pure_logo.svg'}
-                  width={20}
-                  height={20}
-                  alt="isunfa logo"
-                  className="z-10 h-5 w-5"
-                />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="40"
-                  height="40"
-                  fill="none"
-                  viewBox="0 0 40 40"
-                  className="absolute"
-                >
-                  <circle cx="20" cy="20" r="19" stroke="#CDD1D9" strokeWidth="2"></circle>
-                </svg>
-              </div>
-
-              <p
-                className={`text-lg font-medium text-button-text-secondary transition-all duration-300 ease-in-out`}
-              >
-                My Chat List
-              </p>
-
-              {/* TODO: link to folder list page (20240705 - Shirley) */}
-              {displayedFolderOverviewNavigator}
-            </div>
-            <div className="hideScrollbar mb-10 mt-5 grow overflow-y-auto overflow-x-hidden">
-              {displayedFolders}
-              <Droppable droppableId="chat-list">
-                {(provided) => (
-                  <div {...provided.droppableProps} ref={provided.innerRef}>
-                    {displayedChatBriefs}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </div>
-          </div>
-
-          <Droppable droppableId="new-folder">
-            {(provided, snapshot) => (
-              <div ref={provided.innerRef} {...provided.droppableProps} className="-mt-8 h-50px">
-                <Button
-                  size={'medium'}
-                  variant={'secondaryOutline'}
-                  className={cn(
-                    'px-4 text-button-text-secondary hover:cursor-grab',
-                    snapshot.isDraggingOver
-                      ? 'hover:border-button-text-primary hover:text-button-text-primary group-hover:border-button-text-primary group-hover:text-button-text-primary'
-                      : 'hover:border-button-text-secondary hover:text-button-text-secondary group-hover:border-button-text-secondary group-hover:text-button-text-secondary'
-                  )}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    fill="none"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      className="fill-current"
-                      fillRule="evenodd"
-                      d="M8.438 3.301c-.117-.04-.264-.05-.917-.05H4.336c-.48 0-.794 0-1.034.02-.231.02-.327.052-.382.08a.917.917 0 00-.401.4c-.028.056-.06.152-.08.383-.018.226-.02.518-.02.95h7.203l-.387-.773.636-.318-.636.318c-.291-.584-.366-.712-.455-.798a.917.917 0 00-.342-.212zm2.861 1.783l-.722-1.444-.044-.089c-.223-.447-.411-.824-.703-1.11l-.525.536.525-.536a2.417 2.417 0 00-.903-.558l-.2.58.2-.58c-.386-.133-.807-.133-1.307-.132H4.306c-.441 0-.817 0-1.126.025-.324.027-.64.085-.941.238a2.417 2.417 0 00-1.056 1.057c-.154.301-.212.617-.239.941C.92 4.321.92 4.697.92 5.138v8.395c0 .673 0 1.224.037 1.671.038.463.118.882.317 1.273a3.25 3.25 0 001.42 1.42c.391.199.81.28 1.273.318.448.036.998.036 1.672.036H14.367c.674 0 1.224 0 1.672-.037.463-.037.881-.118 1.272-.317a3.25 3.25 0 001.42-1.42c.2-.391.28-.81.318-1.273.037-.447.037-.998.037-1.671v-3.73c0-.673 0-1.224-.037-1.672-.038-.463-.118-.881-.317-1.272a3.25 3.25 0 00-1.42-1.42c-.392-.2-.81-.28-1.273-.318-.448-.037-.998-.037-1.672-.037H11.3zm-.478 1.5h3.515c.712 0 1.201.001 1.58.032.371.03.57.086.714.16.33.167.597.435.765.764.073.144.129.343.16.714.03.379.03.868.03 1.58v3.667c0 .713 0 1.202-.03 1.581-.031.37-.087.57-.16.714a1.75 1.75 0 01-.765.764c-.144.074-.343.13-.713.16-.38.03-.869.031-1.581.031H5.669c-.712 0-1.202 0-1.58-.032-.371-.03-.57-.085-.714-.159a1.75 1.75 0 01-.765-.764c-.074-.144-.129-.343-.16-.714-.03-.38-.03-.869-.03-1.58V6.583h8.4zm-.819 1.834a.75.75 0 01.75.75v1.75h1.75a.75.75 0 110 1.5h-1.75v1.75a.75.75 0 01-1.5 0v-1.75h-1.75a.75.75 0 010-1.5h1.75v-1.75a.75.75 0 01.75-.75z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                  <p className="text-base">Drop Chat to Add Folder</p>
-                </Button>
-                <div style={{ display: 'none' }}>{provided.placeholder}</div>
-                {/* Info: 隱藏佔位元素，固定 button 位置，不受 drag-and-drop 影響 (20240704 - Shirley) */}
-              </div>
-            )}
-          </Droppable>
-        </div>
-      </div>
-      {/* Info: ----- (20240904 - Julian) Mobile sidebar ----- */}
-      <div
-        ref={sidebarRef}
-        className={`fixed left-0 top-0 z-50 flex lg:hidden ${isSidebarOpen ? 'translate-x-0' : '-translate-x-250px'} items-start transition-all duration-300 ease-in-out lg:hidden`}
-      >
-        {/* Info: (20240705 - Julian) Mobile sidebar */}
-        <div className={`h-screen w-250px bg-white`}>
-          <div className="flex h-full w-full flex-col bg-surface-brand-primary-5 px-12px py-20px">
-            {/* Info: (20240705 - Julian) New Chat Button */}
-            <Button
-              id="mobile-new-chat-button"
-              type="button"
-              onClick={newChatClickHandler}
-              size={'small'}
-              variant={'secondaryBorderless'}
-              className="flex justify-center px-32px py-14px"
-            >
+          <Button
+            variant={'secondaryBorderless'}
+            size={'extraSmall'}
+            type="button"
+            onClick={toggleSidebar}
+            className={`fixed top-96 ${isExpanded ? 'left-280px' : 'left-0'} z-40 transition-all duration-300 ease-in-out`}
+          >
+            {isExpanded ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="8"
+                height="38"
                 fill="none"
-                viewBox="0 0 20 20"
+                viewBox="0 0 8 38"
+              >
+                <path stroke="#C1C9D5" strokeLinecap="round" strokeWidth="6" d="M4 3v32"></path>
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="38"
+                fill="none"
+                viewBox="0 0 14 38"
               >
                 <path
-                  className="stroke-current"
+                  stroke="#C1C9D5"
                   strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  d="M5.079 9.357A6.674 6.674 0 015 8.333c0-3.682 3.004-6.666 6.71-6.666 3.707 0 6.711 2.984 6.711 6.666 0 .832-.153 1.628-.433 2.362-.058.153-.088.23-.1.289a.744.744 0 00-.02.16c-.002.062.006.129.023.263l.335 2.725c.037.295.055.443.006.55a.417.417 0 01-.214.21c-.109.046-.256.024-.55-.019l-2.654-.389c-.139-.02-.208-.03-.271-.03a.743.743 0 00-.167.018c-.062.013-.14.042-.298.101a6.735 6.735 0 01-3.393.35m-4.325 3.41c2.47 0 4.473-2.052 4.473-4.583S8.83 9.167 6.36 9.167c-2.471 0-4.474 2.052-4.474 4.583 0 .509.08.998.23 1.456.063.193.095.29.105.356a.71.71 0 01.01.177c-.005.067-.022.142-.055.293l-.51 2.301 2.496-.34c.137-.02.205-.028.264-.028.063 0 .096.004.157.016.059.012.145.042.319.103a4.37 4.37 0 001.458.25z"
+                  strokeWidth="6"
+                  d="M3 35l6.882-13.764a5 5 0 000-4.472L3 3"
                 ></path>
               </svg>
-              <div className="text-base font-normal leading-6 tracking-normal">New Chat</div>
-            </Button>
-            {/* Info: (20240705 - Julian) Discover Button */}
-            {isDiscoverBtn}
-            <hr className="my-16px bg-divider-stroke-lv-4" />
-            <div className="mx-3 flex items-center gap-3">
-              <div className="relative flex h-10 w-10 items-center justify-center">
-                <Image
-                  src={'/logo/isunfa_pure_logo.svg'}
-                  width={20}
-                  height={20}
-                  alt="isunfa logo"
-                  className="z-10 h-5 w-5"
-                />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="40"
-                  height="40"
-                  fill="none"
-                  viewBox="0 0 40 40"
-                  className="absolute"
+            )}
+          </Button>
+
+          {/* Info: ----- desktop version (20240423 - Shirley) ----- */}
+          <div
+            className={`fixed z-10 hidden h-screen flex-col items-center bg-surface-brand-primary-5 lg:flex ${isExpanded ? 'w-280px' : 'w-0 -translate-x-280px'} px-12px pb-40px pt-80px transition-all duration-300 ease-in-out`}
+          >
+            <div className="flex h-full w-full flex-col pb-0">
+              <div className="flex items-center gap-3">
+                <div className="relative flex h-10 w-10 items-center justify-center">
+                  <Image
+                    src={'/logo/isunfa_pure_logo.svg'}
+                    width={20}
+                    height={20}
+                    alt="isunfa logo"
+                    className="z-10 h-5 w-5"
+                  />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="40"
+                    height="40"
+                    fill="none"
+                    viewBox="0 0 40 40"
+                    className="absolute"
+                  >
+                    <circle cx="20" cy="20" r="19" stroke="#CDD1D9" strokeWidth="2"></circle>
+                  </svg>
+                </div>
+
+                <p
+                  className={`text-lg font-medium text-button-text-secondary transition-all duration-300 ease-in-out`}
                 >
-                  <circle cx="20" cy="20" r="19" stroke="#CDD1D9" strokeWidth="2"></circle>
-                </svg>
+                  {t('SIDE_BAR.MY_CHAT_LIST')}
+                </p>
+
+                {/* TODO: link to folder list page (20240705 - Shirley) */}
+                {displayedFolderOverviewNavigator}
               </div>
-              <p
-                className={`text-lg font-medium text-button-text-secondary transition-all duration-300 ease-in-out`}
-              >
-                My Chat List
-              </p>
+              <div className="hideScrollbar mb-10 mt-5 grow overflow-y-auto overflow-x-hidden">
+                {displayedFolders}
+                <Droppable droppableId="chat-list">
+                  {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {displayedChatBriefs}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </div>
             </div>
-            {/* Info: (20240904 - Julian) Folders & Chats */}
-            <div className="hideScrollbar mb-10 mt-5 grow overflow-y-auto overflow-x-hidden">
-              {displayedFolders}
-              <Droppable droppableId="chat-list">
-                {(provided) => (
-                  <div {...provided.droppableProps} ref={provided.innerRef}>
-                    {displayedChatBriefs}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </div>
-            {/* Info: (20240904 - Julian) New Folder Button */}
+
             <Droppable droppableId="new-folder">
               {(provided, snapshot) => (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
+                <div ref={provided.innerRef} {...provided.droppableProps} className="-mt-8 h-50px">
                   <Button
                     size={'medium'}
                     variant={'secondaryOutline'}
@@ -775,7 +668,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
                         clipRule="evenodd"
                       ></path>
                     </svg>
-                    <p className="text-sm">Drop Chat to Add Folder</p>
+                    <p className="text-base">{t('SIDE_BAR.ADD_FOLDER')}</p>
                   </Button>
                   <div style={{ display: 'none' }}>{provided.placeholder}</div>
                   {/* Info: 隱藏佔位元素，固定 button 位置，不受 drag-and-drop 影響 (20240704 - Shirley) */}
@@ -784,30 +677,148 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
             </Droppable>
           </div>
         </div>
-        {/* Info: (20240705 - Julian) Mobile sidebar toggle */}
-        <button
-          id="mobile-sidebar-toggle"
-          type="button"
-          className="absolute left-250px mx-8px my-16px p-10px md:mx-80px"
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+      </DragDropContext>
+
+      {/* Info: ----- (20240904 - Julian) Mobile sidebar ----- */}
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div
+          ref={sidebarRef}
+          className={`fixed left-0 top-0 z-50 flex lg:hidden ${isSidebarOpen ? 'translate-x-0' : '-translate-x-250px'} items-start transition-all duration-300 ease-in-out lg:hidden`}
         >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+          {/* Info: (20240705 - Julian) Mobile sidebar */}
+          <div className={`h-screen w-250px bg-white`}>
+            <div className="flex h-full w-full flex-col bg-surface-brand-primary-5 px-12px py-20px">
+              {/* Info: (20240705 - Julian) New Chat Button */}
+              <Button
+                id="mobile-new-chat-button"
+                type="button"
+                onClick={newChatClickHandler}
+                size={'small'}
+                variant={'secondaryBorderless'}
+                className="flex justify-center px-32px py-14px"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    className="stroke-current"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M5.079 9.357A6.674 6.674 0 015 8.333c0-3.682 3.004-6.666 6.71-6.666 3.707 0 6.711 2.984 6.711 6.666 0 .832-.153 1.628-.433 2.362-.058.153-.088.23-.1.289a.744.744 0 00-.02.16c-.002.062.006.129.023.263l.335 2.725c.037.295.055.443.006.55a.417.417 0 01-.214.21c-.109.046-.256.024-.55-.019l-2.654-.389c-.139-.02-.208-.03-.271-.03a.743.743 0 00-.167.018c-.062.013-.14.042-.298.101a6.735 6.735 0 01-3.393.35m-4.325 3.41c2.47 0 4.473-2.052 4.473-4.583S8.83 9.167 6.36 9.167c-2.471 0-4.474 2.052-4.474 4.583 0 .509.08.998.23 1.456.063.193.095.29.105.356a.71.71 0 01.01.177c-.005.067-.022.142-.055.293l-.51 2.301 2.496-.34c.137-.02.205-.028.264-.028.063 0 .096.004.157.016.059.012.145.042.319.103a4.37 4.37 0 001.458.25z"
+                  ></path>
+                </svg>
+                <div className="text-base font-normal leading-6 tracking-normal">
+                  {t('NAV_BAR.NEW_CHAT')}
+                </div>
+              </Button>
+              {/* Info: (20240705 - Julian) Discover Button */}
+              {isDiscoverBtn}
+              <hr className="my-16px bg-divider-stroke-lv-4" />
+              <div className="mx-3 flex items-center gap-3">
+                <div className="relative flex h-10 w-10 items-center justify-center">
+                  <Image
+                    src={'/logo/isunfa_pure_logo.svg'}
+                    width={20}
+                    height={20}
+                    alt="isunfa logo"
+                    className="z-10 h-5 w-5"
+                  />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="40"
+                    height="40"
+                    fill="none"
+                    viewBox="0 0 40 40"
+                    className="absolute"
+                  >
+                    <circle cx="20" cy="20" r="19" stroke="#CDD1D9" strokeWidth="2"></circle>
+                  </svg>
+                </div>
+                <p
+                  className={`text-lg font-medium text-button-text-secondary transition-all duration-300 ease-in-out`}
+                >
+                  {t('SIDE_BAR.MY_CHAT_LIST')}
+                </p>
+              </div>
+              {/* Info: (20240904 - Julian) Folders & Chats */}
+              <div className="hideScrollbar mb-10 mt-5 grow overflow-y-auto overflow-x-hidden">
+                {displayedFolders}
+                <Droppable droppableId="chat-list">
+                  {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {displayedChatBriefs}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </div>
+              {/* Info: (20240904 - Julian) New Folder Button */}
+              <Droppable droppableId="new-folder">
+                {(provided, snapshot) => (
+                  <div ref={provided.innerRef} {...provided.droppableProps}>
+                    <Button
+                      size={'medium'}
+                      variant={'secondaryOutline'}
+                      className={cn(
+                        'px-4 text-button-text-secondary hover:cursor-grab',
+                        snapshot.isDraggingOver
+                          ? 'hover:border-button-text-primary hover:text-button-text-primary group-hover:border-button-text-primary group-hover:text-button-text-primary'
+                          : 'hover:border-button-text-secondary hover:text-button-text-secondary group-hover:border-button-text-secondary group-hover:text-button-text-secondary'
+                      )}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        fill="none"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          className="fill-current"
+                          fillRule="evenodd"
+                          d="M8.438 3.301c-.117-.04-.264-.05-.917-.05H4.336c-.48 0-.794 0-1.034.02-.231.02-.327.052-.382.08a.917.917 0 00-.401.4c-.028.056-.06.152-.08.383-.018.226-.02.518-.02.95h7.203l-.387-.773.636-.318-.636.318c-.291-.584-.366-.712-.455-.798a.917.917 0 00-.342-.212zm2.861 1.783l-.722-1.444-.044-.089c-.223-.447-.411-.824-.703-1.11l-.525.536.525-.536a2.417 2.417 0 00-.903-.558l-.2.58.2-.58c-.386-.133-.807-.133-1.307-.132H4.306c-.441 0-.817 0-1.126.025-.324.027-.64.085-.941.238a2.417 2.417 0 00-1.056 1.057c-.154.301-.212.617-.239.941C.92 4.321.92 4.697.92 5.138v8.395c0 .673 0 1.224.037 1.671.038.463.118.882.317 1.273a3.25 3.25 0 001.42 1.42c.391.199.81.28 1.273.318.448.036.998.036 1.672.036H14.367c.674 0 1.224 0 1.672-.037.463-.037.881-.118 1.272-.317a3.25 3.25 0 001.42-1.42c.2-.391.28-.81.318-1.273.037-.447.037-.998.037-1.671v-3.73c0-.673 0-1.224-.037-1.672-.038-.463-.118-.881-.317-1.272a3.25 3.25 0 00-1.42-1.42c-.392-.2-.81-.28-1.273-.318-.448-.037-.998-.037-1.672-.037H11.3zm-.478 1.5h3.515c.712 0 1.201.001 1.58.032.371.03.57.086.714.16.33.167.597.435.765.764.073.144.129.343.16.714.03.379.03.868.03 1.58v3.667c0 .713 0 1.202-.03 1.581-.031.37-.087.57-.16.714a1.75 1.75 0 01-.765.764c-.144.074-.343.13-.713.16-.38.03-.869.031-1.581.031H5.669c-.712 0-1.202 0-1.58-.032-.371-.03-.57-.085-.714-.159a1.75 1.75 0 01-.765-.764c-.074-.144-.129-.343-.16-.714-.03-.38-.03-.869-.03-1.58V6.583h8.4zm-.819 1.834a.75.75 0 01.75.75v1.75h1.75a.75.75 0 110 1.5h-1.75v1.75a.75.75 0 01-1.5 0v-1.75h-1.75a.75.75 0 010-1.5h1.75v-1.75a.75.75 0 01.75-.75z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                      <p className="text-sm">{t('SIDE_BAR.ADD_FOLDER')}</p>
+                    </Button>
+                    <div style={{ display: 'none' }}>{provided.placeholder}</div>
+                    {/* Info: 隱藏佔位元素，固定 button 位置，不受 drag-and-drop 影響 (20240704 - Shirley) */}
+                  </div>
+                )}
+              </Droppable>
+            </div>
+          </div>
+          {/* Info: (20240705 - Julian) Mobile sidebar toggle */}
+          <button
+            id="mobile-sidebar-toggle"
+            type="button"
+            className="absolute left-250px mx-8px my-16px p-10px md:mx-80px"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M2.25293 6.0011C2.25293 5.58689 2.58872 5.2511 3.00293 5.2511H21.0029C21.4171 5.2511 21.7529 5.58689 21.7529 6.0011C21.7529 6.41531 21.4171 6.7511 21.0029 6.7511H3.00293C2.58872 6.7511 2.25293 6.41531 2.25293 6.0011ZM2.25293 12.0011C2.25293 11.5869 2.58872 11.2511 3.00293 11.2511H21.0029C21.4171 11.2511 21.7529 11.5869 21.7529 12.0011C21.7529 12.4153 21.4171 12.7511 21.0029 12.7511H3.00293C2.58872 12.7511 2.25293 12.4153 2.25293 12.0011ZM2.25293 18.0011C2.25293 17.5869 2.58872 17.2511 3.00293 17.2511H21.0029C21.4171 17.2511 21.7529 17.5869 21.7529 18.0011C21.7529 18.4153 21.4171 18.7511 21.0029 18.7511H3.00293C2.58872 18.7511 2.25293 18.4153 2.25293 18.0011Z"
-              fill="#001840"
-            />
-          </svg>
-        </button>
-      </div>
-    </DragDropContext>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M2.25293 6.0011C2.25293 5.58689 2.58872 5.2511 3.00293 5.2511H21.0029C21.4171 5.2511 21.7529 5.58689 21.7529 6.0011C21.7529 6.41531 21.4171 6.7511 21.0029 6.7511H3.00293C2.58872 6.7511 2.25293 6.41531 2.25293 6.0011ZM2.25293 12.0011C2.25293 11.5869 2.58872 11.2511 3.00293 11.2511H21.0029C21.4171 11.2511 21.7529 11.5869 21.7529 12.0011C21.7529 12.4153 21.4171 12.7511 21.0029 12.7511H3.00293C2.58872 12.7511 2.25293 12.4153 2.25293 12.0011ZM2.25293 18.0011C2.25293 17.5869 2.58872 17.2511 3.00293 17.2511H21.0029C21.4171 17.2511 21.7529 17.5869 21.7529 18.0011C21.7529 18.4153 21.4171 18.7511 21.0029 18.7511H3.00293C2.58872 18.7511 2.25293 18.4153 2.25293 18.0011Z"
+                fill="#001840"
+              />
+            </svg>
+          </button>
+        </div>
+      </DragDropContext>
+    </>
   );
 };
 

@@ -12,15 +12,18 @@ import { useGlobalCtx } from '@/contexts/global_context';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 import { ToastType } from '@/interfaces/toastify';
 import { ToastId } from '@/constants/toast_id';
+import I18n from '@/components/i18n/i18n';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 const NavBar = () => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const router = useRouter();
 
   const { isSignedIn, signOut } = useUserCtx();
   const { addEmptyChat } = useChatCtx();
   const { chatSettingModalVisibilityHandler, toastHandler, eliminateToast } = useGlobalCtx();
 
-  // TODO: in dev (20240625 - Shirley)
   const {
     targetRef: userMenuRef,
     componentVisible: isUserMenuOpen,
@@ -59,25 +62,6 @@ const NavBar = () => {
     }
   };
 
-  const languageButton = (
-    <Button size={'small'} variant={'secondaryBorderless'}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <path
-          className="fill-current"
-          fillRule="evenodd"
-          d="M3.226 10.001a9.029 9.029 0 000 4h3.94a16.3 16.3 0 01-.163-2.02A16.3 16.3 0 017.165 10H3.226zm.712-2h3.644a16.302 16.302 0 012.147-4.71A9.02 9.02 0 003.939 8zm8.065-4.45a14.302 14.302 0 00-2.336 4.45h4.671a14.298 14.298 0 00-2.335-4.45zm2.814 6.45H9.19c-.108.658-.17 1.326-.186 2 .015.674.078 1.342.186 2h5.628c.108-.658.17-1.326.186-2a14.302 14.302 0 00-.186-2zm2.023 4a16.31 16.31 0 00.163-2.02A16.31 16.31 0 0016.84 10h3.94c.146.643.223 1.313.223 2 0 .688-.077 1.357-.223 2h-3.94zm-2.502 2h-4.67a14.302 14.302 0 002.335 4.45A14.298 14.298 0 0014.338 16zm-4.61 4.71a16.303 16.303 0 01-2.146-4.71H3.938a9.02 9.02 0 005.79 4.71zm4.55 0a16.303 16.303 0 002.146-4.71h3.643a9.02 9.02 0 01-5.79 4.71zm5.79-12.71h-3.644a16.302 16.302 0 00-2.147-4.71A9.02 9.02 0 0120.067 8zm-19.065 4c0-6.075 4.925-11 11-11s11 4.925 11 11-4.925 11-11 11-11-4.925-11-11z"
-          clipRule="evenodd"
-        ></path>
-      </svg>
-    </Button>
-  );
-
   const contactUsButton = (
     <Button
       size={'small'}
@@ -101,7 +85,7 @@ const NavBar = () => {
         </svg>
       </div>
       <div className="hidden text-base font-normal leading-6 tracking-normal lg:block">
-        Contact us
+        {t('NAV_BAR.CONTACT_US')}
       </div>
     </Button>
   );
@@ -110,8 +94,8 @@ const NavBar = () => {
     <div className="absolute right-10 top-4.5rem z-50">
       <div className="flex flex-col gap-5 rounded-xs bg-white p-8px shadow-userMenu lg:p-4">
         <div className="flex items-center border-b border-divider-stroke-lv-4 pb-8px lg:hidden">
-          <div>{languageButton}</div>
-          <div>{contactUsButton}</div>
+          <I18n />
+          {contactUsButton}
         </div>
 
         <Button
@@ -137,7 +121,7 @@ const NavBar = () => {
               <path d="M15.606 12.273a1.25 1.25 0 00.25 1.379l.046.045a1.517 1.517 0 11-2.144 2.144l-.046-.045a1.25 1.25 0 00-1.379-.25 1.25 1.25 0 00-.757 1.143v.13a1.515 1.515 0 01-3.03 0v-.069a1.25 1.25 0 00-.819-1.144 1.25 1.25 0 00-1.379.25l-.045.046a1.514 1.514 0 01-2.473-.492 1.515 1.515 0 01.329-1.652l.046-.046a1.25 1.25 0 00.25-1.379 1.25 1.25 0 00-1.144-.757h-.13a1.515 1.515 0 010-3.03h.069a1.25 1.25 0 001.144-.819 1.25 1.25 0 00-.25-1.379l-.046-.045a1.515 1.515 0 112.144-2.144l.046.046a1.25 1.25 0 001.379.25h.06a1.25 1.25 0 00.758-1.144v-.13a1.515 1.515 0 013.03 0v.069a1.25 1.25 0 00.758 1.144 1.25 1.25 0 001.379-.25l.045-.046a1.516 1.516 0 112.144 2.144l-.046.046a1.25 1.25 0 00-.25 1.379v.06a1.25 1.25 0 001.144.758h.13a1.515 1.515 0 110 3.03h-.069a1.25 1.25 0 00-1.144.758z"></path>
             </g>
           </svg>
-          <p className="font-normal">Setting</p>
+          <p className="font-normal">{t('NAV_BAR.SETTING')}</p>
         </Button>
 
         <Button
@@ -160,7 +144,7 @@ const NavBar = () => {
               clipRule="evenodd"
             ></path>
           </svg>
-          <p className="font-normal">Logout</p>
+          <p className="font-normal">{t('NAV_BAR.LOGOUT')}</p>
         </Button>
       </div>
     </div>
@@ -205,8 +189,7 @@ const NavBar = () => {
       {/* Info: (20240704 - Julian) Desktop login button */}
       <div className="hidden space-x-5 lg:flex">
         <Button onClick={buttonClickHandler} variant={'tertiary'} size={'medium'}>
-          <p>Register</p>
-
+          <p>{t('NAV_BAR.REGISTER')}</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -228,8 +211,7 @@ const NavBar = () => {
           variant={'tertiaryOutline'}
           size={'medium'}
         >
-          <p className={cn('text-base leading-6 tracking-normal')}>Login</p>
-
+          <p className={cn('text-base leading-6 tracking-normal')}>{t('NAV_BAR.LOGIN')}</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -324,7 +306,9 @@ const NavBar = () => {
                   ></path>
                 </svg>
               </div>
-              <div className="text-base font-normal leading-6 tracking-normal">New Chat</div>
+              <div className="text-base font-normal leading-6 tracking-normal">
+                {t('NAV_BAR.NEW_CHAT')}
+              </div>
             </Button>
             {contactUsButton}
           </div>
@@ -333,7 +317,9 @@ const NavBar = () => {
         {isDisplayedDiscoverButton}
 
         {/* TODO: icons on mobile (20240408 - Shirley) */}
-        <div className="my-auto hidden lg:flex">{languageButton}</div>
+        <div className="my-auto hidden lg:flex">
+          <I18n />
+        </div>
 
         <div className="hidden flex-col items-start justify-center lg:flex">
           <div className="h-40px w-px shrink-0 bg-divider-stroke-lv-4" />

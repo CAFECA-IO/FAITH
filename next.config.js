@@ -1,3 +1,5 @@
+const { i18n } = require('./next-i18next.config');
+
 function getEnvVariables(keys) {
   const missingKeys = [];
 
@@ -13,9 +15,7 @@ function getEnvVariables(keys) {
   }
 }
 
-const requiredEnvVars = [
-  'NEXT_PUBLIC_AICH_URL',
-];
+const requiredEnvVars = ['NEXT_PUBLIC_AICH_URL'];
 
 if (process.env.VERCEL !== '1') {
   getEnvVariables(requiredEnvVars);
@@ -25,6 +25,7 @@ if (process.env.VERCEL !== '1') {
 const nextConfig = {
   // Your Next.js config options
   reactStrictMode: true,
+  i18n,
 };
 
 module.exports = nextConfig;

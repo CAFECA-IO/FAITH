@@ -332,7 +332,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
   );
 
   const planIntroCardMobile = (
-    <div className="relative flex w-240px flex-col items-center rounded-sm p-20px shadow md:hidden">
+    <div className="relative flex w-280px flex-col items-center rounded-sm p-20px shadow md:hidden">
       {/* Info: (20240904 - Julian) Background (Beta) */}
       <div className="absolute top-0">
         <Image src="/elements/half_circle.svg" alt="background" width={160} height={80} />

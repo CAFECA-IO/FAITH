@@ -13,8 +13,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import ChatMessage, { BotPendingMessage } from '@/components/chat_message/chat_message';
 import { useUserCtx } from '@/contexts/user_context';
 import { TopicIcons } from '@/constants/display';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 const ChatThreadSection = () => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const { isSignedIn } = useUserCtx();
   const { selectedChat, addUserMessage, resendUserMessage, isLatestBotMsgPending } = useChatCtx();
 
@@ -36,8 +39,8 @@ const ChatThreadSection = () => {
         {topicOptions.map((topic: IChatTopic) => (
           <ChatTopicOption
             key={topic.title}
-            title={topic.title}
-            description={topic.description}
+            title={t(topic.title)}
+            description={t(topic.description)}
             onClick={() => topicClickHandler(topic.title)}
             icon={isSignedIn ? TopicIcons[topic.type] : undefined}
           />
@@ -64,7 +67,7 @@ const ChatThreadSection = () => {
           </div>
 
           <div className="self-center text-3xl font-bold text-stroke-neutral-secondary">
-            Hi, I am Faith, the AI Accountant.
+            {t('CHAT.I_AM_FAITH')}
           </div>
 
           {displayedChatTopics}

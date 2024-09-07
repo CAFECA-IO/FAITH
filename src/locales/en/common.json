@@ -1,0 +1,60 @@
+{
+  "NAV_BAR": {
+    "REGISTER": "Register",
+    "LOGIN": "Login",
+    "NEW_CHAT": "New Chat",
+    "CONTACT_US": "Contact Us",
+    "SETTING": "Setting",
+    "LOGOUT": "Logout",
+    "DISCOVER": "Discover"
+  },
+  "SIDE_BAR": {
+    "MY_CHAT_LIST": "My Chat List",
+    "ADD_FOLDER": "Drag Chat to Add Folder",
+    "REMOVE_CHAT": "Remove Chat"
+  },
+  "CHAT": {
+    "I_AM_FAITH": "Hi, I am Faith, the AI Accountant.",
+    "FINANCIAL_TITLE": "Explain financial statements",
+    "FINANCIAL_DESCRIPTION": "Faith can explain the components of financial statements.",
+    "CALCULATE_TITLE": "Calculate depreciation",
+    "CALCULATE_DESCRIPTION": "Faith can help with different depreciation methods.",
+    "ACCOUNTING_TITLE": "Recent accounting standards",
+    "ACCOUNTING_DESCRIPTION": "Faith can share information on recent accounting standards.",
+    "BUDGETING_TITLE": "Explain budgeting process",
+    "BUDGETING_DESCRIPTION": "Faith can explain the steps in creating a budget.",
+    "SAY_SOMETHING": "Say something...",
+    "CHECK_INFO_HINT": "Faith may encounter errors. Please check important information.",
+    "CHAT_FEEDBACK": "Is this response better or worse?",
+    "BETTER": "Better",
+    "WORSE": "Worse",
+    "SAME": "Same",
+    "TELL_YOUR_IDEA": "Tell us your idea:",
+    "DONT_LIKE_ANSWER": "I don&apos;t like this answer",
+    "ERROR_ANSWER": "Error answer",
+    "INCOMPLETE": "Incomplete information"
+  },
+  "FOLDER": {
+    "SHARE": "Share Folder",
+    "CHAT_IN_FOLDER": "Chat in the folder",
+    "SHARED_CHATS": "Shared Chats",
+    "PRIVATE_CHATS": "Private Chats",
+    "NO_CHATS_FOUND": "No chats found",
+    "CHAT_NAME": "Chat Name",
+    "LATEST_QUESTIONS": "Latest Questions",
+    "DATE": "Date",
+    "ACTION": "Action",
+    "NOT_FOUND": "Folder not found"
+  },
+  "COMMON": {
+    "RENAME": "Rename",
+    "SHARE": "Share",
+    "SET_TO_PRIVATE": "Set to Private",
+    "NEWEST": "Newest",
+    "OLDEST": "Oldest",
+    "SEARCH": "Search",
+    "ALL_TYPE": "All Type",
+    "MOVE": "Move",
+    "BACK": "Back"
+  }
+}
