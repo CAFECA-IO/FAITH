@@ -2,6 +2,8 @@ import Head from 'next/head';
 import ChatSidebar from '@/components/chat_sidebar/chat_sidebar';
 import NavBar from '@/components/nav_bar/nav_bar';
 import TopicSeeMorePageBody from '@/components/topic_see_more_page_body/topic_see_more_page_body';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { ILocale } from '@/interfaces/locale';
 
 const TopicSeeMorePage = () => {
   return (
@@ -25,5 +27,13 @@ const TopicSeeMorePage = () => {
     </>
   );
 };
+
+const getStaticPropsFunction = async ({ locale }: ILocale) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ['common'])),
+  },
+});
+
+export const getStaticProps = getStaticPropsFunction;
 
 export default TopicSeeMorePage;

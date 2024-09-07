@@ -290,23 +290,23 @@ export const dummyFolders: IFolder[] = [
 
 export const dummyChatTopics: IChatTopic[] = [
   {
-    title: 'Explain financial statements',
-    description: 'Faith can explain the components of financial statements.',
+    title: 'CHAT.FINANCIAL_TITLE',
+    description: 'CHAT.FINANCIAL_DESCRIPTION',
     type: ChatTopicType.TRENDING,
   },
   {
-    title: 'Calculate depreciation',
-    description: 'Faith can help with different depreciation methods.',
+    title: 'CHAT.CALCULATE_TITLE',
+    description: 'CHAT.CALCULATE_DESCRIPTION',
     type: ChatTopicType.TRENDING,
   },
   {
-    title: 'Recent accounting standards',
-    description: 'Faith can share information on recent accounting standards.',
+    title: 'CHAT.ACCOUNTING_TITLE',
+    description: 'CHAT.ACCOUNTING_DESCRIPTION',
     type: ChatTopicType.AI,
   },
   {
-    title: 'Explain budgeting process',
-    description: 'Faith can explain the steps in creating a budget.',
+    title: 'CHAT.BUDGETING_TITLE',
+    description: 'CHAT.BUDGETING_DESCRIPTION',
     type: ChatTopicType.OTHERS,
   },
 ];

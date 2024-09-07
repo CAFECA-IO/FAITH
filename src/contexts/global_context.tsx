@@ -17,6 +17,7 @@ import MoveChatModal from '@/components/move_chat_modal/move_chat_modal';
 import UpdateLinkModal from '@/components/update_link_modal/update_link_modal';
 import UserCodeModal from '@/components/user_code_modal/user_code_modal';
 import FeedbackModal from '@/components/feedback_modal/feedback_modal';
+import SharedLinksModal from '@/components/shared_links_modal/shared_links_modal';
 import Toast from '@/components/toast/toast';
 
 interface IGlobalContext {
@@ -56,6 +57,9 @@ interface IGlobalContext {
   isFeedbackModalVisible: boolean;
   feedbackModalVisibilityHandler: () => void;
 
+  isSharedLinksModalVisible: boolean;
+  sharedLinksModalVisibilityHandler: () => void;
+
   toastHandler: (props: IToastify) => void;
   eliminateToast: (id?: string) => void;
 }
@@ -90,6 +94,8 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
   const [isUserCodeModalVisible, setIsUserCodeModalVisible] = useState(false);
 
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false);
+
+  const [isSharedLinksModalVisible, setIsSharedLinksModalVisible] = useState(false);
 
   const messageModalVisibilityHandler = () => {
     setIsMessageModalVisible(!isMessageModalVisible);
@@ -142,6 +148,10 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     setIsFeedbackModalVisible(!isFeedbackModalVisible);
   };
 
+  const sharedLinksModalVisibilityHandler = () => {
+    setIsSharedLinksModalVisible(!isSharedLinksModalVisible);
+  };
+
   // Info: (20240509 - Julian) toast handler
   const toastHandler = useCallback(
     ({
@@ -161,7 +171,7 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
       const position = toastPosition ?? ToastPosition.TOP_CENTER; // Info:(20240513 - Julian) default position 'top-center'
 
       // Info:(20240513 - Julian) 如果 closeable 為 false，則 autoClose、closeOnClick、draggable 都會被設為 false
-      const autoClose = closeable ? isAutoClose ?? 5000 : false; // Info:(20240513 - Julian) default autoClose 5000ms
+      const autoClose = closeable ? (isAutoClose ?? 5000) : false; // Info:(20240513 - Julian) default autoClose 5000ms
 
       const closeOnClick = closeable; // Info:(20240513 - Julian) default closeOnClick true
       const draggable = closeable; // Info:(20240513 - Julian) default draggable true
@@ -181,7 +191,7 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
         case ToastType.SUCCESS:
           toastify.success(content, {
             icon: <Image src="/icons/success.svg" alt="success" width={24} height={24} />,
-            className: `${bodyStyle} before:bg-successGreen3`,
+            className: `${bodyStyle} before:bg-alert-surface-surface-success`,
             toastId,
             position,
             autoClose,
@@ -195,7 +205,7 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
         case ToastType.ERROR:
           toastify.error(content, {
             icon: <Image src="/icons/error.svg" alt="error" width={24} height={24} />,
-            className: `${bodyStyle} before:bg-errorRed3`,
+            className: `${bodyStyle} before:bg-alert-surface-surface-error`,
             toastId,
             position,
             autoClose,
@@ -209,7 +219,7 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
         case ToastType.WARNING:
           toastify.warning(content, {
             icon: <Image src="/icons/warning.svg" alt="warning" width={24} height={24} />,
-            className: `${bodyStyle} before:bg-warningYellow`,
+            className: `${bodyStyle} before:bg-alert-surface-surface-warning`,
             toastId,
             position,
             autoClose,
@@ -223,7 +233,7 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
         case ToastType.INFO:
           toastify.info(content, {
             icon: <Image src="/icons/info.svg" alt="info" width={24} height={24} />,
-            className: `${bodyStyle} before:bg-navyBlue2`,
+            className: `${bodyStyle} before:bg-alert-surface-surface-info`,
             toastId,
             position,
             autoClose,
@@ -278,6 +288,8 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     userCodeModalVisibilityHandler,
     isFeedbackModalVisible,
     feedbackModalVisibilityHandler,
+    isSharedLinksModalVisible,
+    sharedLinksModalVisibilityHandler,
     toastHandler,
     eliminateToast,
   };
@@ -334,6 +346,11 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
       <FeedbackModal
         isModalVisible={isFeedbackModalVisible}
         modalVisibilityHandler={feedbackModalVisibilityHandler}
+      />
+
+      <SharedLinksModal
+        isModalVisible={isSharedLinksModalVisible}
+        modalVisibilityHandler={sharedLinksModalVisibilityHandler}
       />
 
       <Toast />

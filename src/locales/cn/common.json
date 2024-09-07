@@ -1,0 +1,60 @@
+{
+  "NAV_BAR": {
+    "REGISTER": "注册",
+    "LOGIN": "登入",
+    "NEW_CHAT": "新聊天",
+    "CONTACT_US": "联络我们",
+    "SETTING": "设定",
+    "LOGOUT": "登出",
+    "DISCOVER": "发现"
+  },
+  "SIDE_BAR": {
+    "MY_CHAT_LIST": "我的聊天室列表",
+    "ADD_FOLDER": "拖曳聊天室至此新增资料夹",
+    "REMOVE_CHAT": "删除聊天室"
+  },
+  "CHAT": {
+    "I_AM_FAITH": "嗨，我是人工智慧会计师 Faith。",
+    "FINANCIAL_TITLE": "解释财务报表",
+    "FINANCIAL_DESCRIPTION": "Faith 可以为您解释财务报表的组成部分。",
+    "CALCULATE_TITLE": "计算折旧",
+    "CALCULATE_DESCRIPTION": "Faith 可以协助您采用不同的折旧方法。",
+    "ACCOUNTING_TITLE": "最新会计准则",
+    "ACCOUNTING_DESCRIPTION": "Faith 可以分享最新的会计准则资讯。",
+    "BUDGETING_TITLE": "解释预算编制流程",
+    "BUDGETING_DESCRIPTION": "Faith 可以为您说明编制预算的步骤。",
+    "SAY_SOMETHING": "说些什么...",
+    "CHECK_INFO_HINT": "Faith 可能会发生错误。请再三查核重要资讯。",
+    "CHAT_FEEDBACK": "这个回答是更好还是更差？",
+    "BETTER": "更好",
+    "WORSE": "更差",
+    "SAME": "无差别",
+    "TELL_YOUR_IDEA": "告诉我们您的想法：",
+    "DONT_LIKE_ANSWER": "我不喜欢这个回答",
+    "ERROR_ANSWER": "答非所问",
+    "INCOMPLETE": "资讯不完整"
+  },
+  "FOLDER": {
+    "SHARE": "分享资料夹",
+    "CHAT_IN_FOLDER": "资料夹中的聊天室",
+    "SHARED_CHATS": "已分享的聊天室",
+    "PRIVATE_CHATS": "私人聊天室",
+    "NO_CHATS_FOUND": "找不到聊天室",
+    "CHAT_NAME": "聊天室名称",
+    "LATEST_QUESTIONS": "最新问题",
+    "DATE": "日期",
+    "ACTION": "操作",
+    "NOT_FOUND": "找不到资料夹"
+  },
+  "COMMON": {
+    "RENAME": "重新命名",
+    "SHARE": "分享",
+    "SET_TO_PRIVATE": "设为私人",
+    "NEWEST": "最新",
+    "OLDEST": "最旧",
+    "SEARCH": "搜寻",
+    "ALL_TYPE": "所有类型",
+    "MOVE": "移动",
+    "BACK": "返回"
+  }
+}

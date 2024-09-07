@@ -13,11 +13,14 @@ import SortToggle from '@/components/sort_toggle/sort_toggle';
 import { IChat, dummyChats } from '@/interfaces/chat';
 import ChatList from '@/components/chat_list/chat_list';
 import Pagination from '@/components/pagination/pagination';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 enum FolderType {
-  ALL = 'All Type',
-  SHARED = 'Shared Chats',
-  PRIVATE = 'Private Chats',
+  ALL = 'COMMON.ALL_TYPE',
+  SHARED = 'FOLDER.SHARED_CHATS',
+  PRIVATE = 'FOLDER.PRIVATE_CHATS',
 }
 
 interface IFolderOverviewPageProps {
@@ -25,6 +28,7 @@ interface IFolderOverviewPageProps {
 }
 
 const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const { folders, renameFolder } = useChatCtx();
 
   const folderData = folders ? folders.find((f) => f.id === folderId) : null;
@@ -110,23 +114,24 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
             key={type}
             type="button"
             variant="tertiaryBorderless"
-            className="w-full py-8px"
+            className="w-full whitespace-nowrap py-8px"
             onClick={clickHandler}
           >
-            {type}
+            {t(type)}
           </Button>
         );
       })}
     </div>
   );
 
-  const displayedChatList = !filteredChats ? (
-    <ChatList chats={filteredChats} />
-  ) : (
-    <div className="py-30px text-center font-medium">
-      <p>No chats found</p>
-    </div>
-  );
+  const displayedChatList =
+    filteredChats.length > 0 ? (
+      <ChatList chats={filteredChats} />
+    ) : (
+      <div className="py-30px text-center font-medium">
+        <p>{t('FOLDER.NO_CHATS_FOUND')}</p>
+      </div>
+    );
 
   const displayTitle = isRenaming ? (
     <input
@@ -139,7 +144,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
       onKeyDown={handleKeyDown}
       onCompositionStart={handleCompositionStart}
       onCompositionEnd={handleCompositionEnd}
-      className="w-150px rounded border bg-white px-2 py-1 text-48px font-normal"
+      className="w-150px rounded border bg-input-surface-input-background px-2 py-1 text-48px font-normal"
     />
   ) : (
     <h1 className="text-48px font-bold text-text-neutral-primary">{folderName}</h1>
@@ -197,7 +202,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
             />
           </svg>
 
-          <p>Share Folder</p>
+          <p>{t('FOLDER.SHARE')}</p>
         </Button>
       </div>
       {/* Info: (20240708 - Julian) Info blocks */}
@@ -205,7 +210,9 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
         {/* Info: (20240708 - Julian) Chat in the folder */}
         <div className="flex items-end justify-between rounded-sm border border-stroke-brand-secondary p-12px">
           <div className="flex flex-col gap-y-12px">
-            <p className="text-lg font-semibold text-text-neutral-secondary">Chat in the folder</p>
+            <p className="text-lg font-semibold text-text-neutral-secondary">
+              {t('FOLDER.CHAT_IN_FOLDER')}
+            </p>
             <Image src="/icons/chat_box.svg" width={32} height={32} alt="chat_box_icon" />
           </div>
           <p className="text-4xl font-bold text-text-neutral-primary">{totalChatCount}</p>
@@ -213,7 +220,9 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
         {/* Info: (20240708 - Julian) Shared Chats */}
         <div className="flex items-end justify-between rounded-sm border border-stroke-brand-secondary p-12px">
           <div className="flex flex-col gap-y-12px">
-            <p className="text-lg font-semibold text-text-neutral-secondary">Shared Chats</p>
+            <p className="text-lg font-semibold text-text-neutral-secondary">
+              {t('FOLDER.SHARED_CHATS')}
+            </p>
             <Image src="/icons/share.svg" width={32} height={32} alt="share_icon" />
           </div>
           <p className="text-4xl font-bold text-text-neutral-primary">{sharedChatCount}</p>
@@ -221,7 +230,9 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
         {/* Info: (20240708 - Julian) Private Chats */}
         <div className="flex items-end justify-between rounded-sm border border-stroke-brand-secondary p-12px">
           <div className="flex flex-col gap-y-12px">
-            <p className="text-lg font-semibold text-text-neutral-secondary">Private Chats</p>
+            <p className="text-lg font-semibold text-text-neutral-secondary">
+              {t('FOLDER.PRIVATE_CHATS')}
+            </p>
             <Image src="/icons/lock.svg" width={32} height={32} alt="lock_icon" />
           </div>
           <p className="text-4xl font-bold text-text-neutral-primary">{privateChatCount}</p>
@@ -232,11 +243,11 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
         {/* Info: (20240708 - Julian) Type */}
         <div
           onClick={typeToggleHandler}
-          className={`relative flex w-180px items-center gap-x-12px rounded-sm border bg-input-surface-input-background ${typeVisible ? 'border-input-stroke-selected' : 'border-input-stroke-input'} px-12px py-10px font-medium text-input-text-input-placeholder hover:cursor-pointer`}
+          className={`relative flex w-200px items-center gap-x-12px rounded-sm border bg-input-surface-input-background ${typeVisible ? 'border-input-stroke-selected' : 'border-input-stroke-input'} px-12px py-10px font-medium text-input-text-input-placeholder hover:cursor-pointer`}
         >
           <Image src="/icons/funnel.svg" width={16} height={16} alt="funnel_icon" />
 
-          <p className="flex-1">{selectedType}</p>
+          <p className="flex-1 whitespace-nowrap">{t(selectedType)}</p>
           <Image src="/icons/chevron_down.svg" width={20} height={20} alt="chevron_down_icon" />
           {displayedTypeOptions}
         </div>
@@ -246,7 +257,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
             type="text"
             value={search}
             onChange={searchChangeHandler}
-            placeholder="Search"
+            placeholder={t('COMMON.SEARCH')}
             className="w-full bg-transparent outline-none placeholder:text-input-text-input-placeholder"
           />
           <Image src="/icons/search.svg" width={20} height={20} alt="search_icon" />
@@ -292,7 +303,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ locale, params }) => {
   if (!params || !params.folderId || typeof params.folderId !== 'string') {
     return {
       notFound: true,
@@ -302,6 +313,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {
     props: {
       folderId: params.folderId,
+      ...(await serverSideTranslations(locale as string, ['common'])),
     },
   };
 };

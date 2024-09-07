@@ -6,12 +6,15 @@ import { cn, timestampToString } from '@/lib/utils/common';
 import { IChat } from '@/interfaces/chat';
 import { useChatCtx } from '@/contexts/chat_context';
 import { useGlobalCtx } from '@/contexts/global_context';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface IChatItemProps {
   chat: IChat;
 }
 
 const ChatItem = ({ chat }: IChatItemProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const { renameChat, deleteChat } = useChatCtx();
   const { moveChatModalVisibilityHandler, updateLinkModalVisibilityHandler } = useGlobalCtx();
   const { id, name, createdAt, messages } = chat;
@@ -97,7 +100,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
       onKeyDown={handleKeyDown}
       onCompositionStart={handleCompositionStart}
       onCompositionEnd={handleCompositionEnd}
-      className="rounded border bg-white px-2 py-1 text-sm font-normal"
+      className="rounded border bg-input-surface-input-background px-2 py-1 text-sm font-normal"
       onClick={(e) => e.stopPropagation()}
     />
   ) : (
@@ -136,7 +139,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             className="w-full py-8px"
             onClick={renamingHandler}
           >
-            Rename
+            {t('COMMON.RENAME')}
           </Button>
           <Button
             type="button"
@@ -144,7 +147,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             className="w-full py-8px"
             onClick={shareChatHandler}
           >
-            Share
+            {t('COMMON.SHARE')}
           </Button>
           <Button
             type="button"
@@ -152,7 +155,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             className="w-full py-8px"
             onClick={moveChatHandler}
           >
-            Move
+            {t('COMMON.MOVE')}
           </Button>
           <Button
             type="button"
@@ -160,7 +163,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             className="w-full py-8px"
             onClick={setPrivateChatHandler}
           >
-            Set to Private
+            {t('COMMON.SET_TO_PRIVATE')}
           </Button>
           <Button
             type="button"
@@ -168,7 +171,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             className="w-full py-8px"
             onClick={removeChatHandler}
           >
-            Remove Chat
+            {t('SIDE_BAR.REMOVE_CHAT')}
           </Button>
         </div>
       </div>
@@ -181,15 +184,20 @@ interface IChatListProps {
 }
 
 const ChatList = ({ chats }: IChatListProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   return (
     <div className="table w-full border-separate border-spacing-y-8px rounded-xs font-semibold text-text-neutral-secondary">
       {/* Info: (20240708 - Julian) Header */}
       <div className="table-header-group bg-surface-brand-primary-soft shadow-3 drop-shadow-md">
         <div className="table-row">
-          <div className="table-cell rounded-l-xs py-5px pl-20px text-left">Chat Name</div>
-          <div className="table-cell text-center">Latest Questions</div>
-          <div className="table-cell text-center">Date</div>
-          <div className="table-cell rounded-r-xs py-5px pr-20px text-right">Action</div>
+          <div className="table-cell rounded-l-xs py-5px pl-20px text-left">
+            {t('FOLDER.CHAT_NAME')}
+          </div>
+          <div className="table-cell text-center">{t('FOLDER.LATEST_QUESTIONS')}</div>
+          <div className="table-cell text-center">{t('FOLDER.DATE')}</div>
+          <div className="table-cell rounded-r-xs py-5px pr-20px text-right">
+            {t('FOLDER.ACTION')}
+          </div>
         </div>
       </div>
       {/* Info: (20240708 - Julian) Body */}

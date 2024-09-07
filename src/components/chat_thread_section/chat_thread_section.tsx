@@ -13,8 +13,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import ChatMessage, { BotPendingMessage } from '@/components/chat_message/chat_message';
 import { useUserCtx } from '@/contexts/user_context';
 import { TopicIcons } from '@/constants/display';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 const ChatThreadSection = () => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const { isSignedIn } = useUserCtx();
   const { selectedChat, addUserMessage, resendUserMessage, isLatestBotMsgPending } = useChatCtx();
 
@@ -31,13 +34,13 @@ const ChatThreadSection = () => {
   };
 
   const displayedChatTopics = (
-    <div className="mt-9 flex w-full justify-center px-20">
+    <div className="mt-20 flex w-full justify-center px-20 lg:mt-9">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {topicOptions.map((topic: IChatTopic) => (
           <ChatTopicOption
             key={topic.title}
-            title={topic.title}
-            description={topic.description}
+            title={t(topic.title)}
+            description={t(topic.description)}
             onClick={() => topicClickHandler(topic.title)}
             icon={isSignedIn ? TopicIcons[topic.type] : undefined}
           />
@@ -64,7 +67,7 @@ const ChatThreadSection = () => {
           </div>
 
           <div className="self-center text-3xl font-bold text-stroke-neutral-secondary">
-            Hi, I am Faith, the AI Accountant.
+            {t('CHAT.I_AM_FAITH')}
           </div>
 
           {displayedChatTopics}
@@ -74,11 +77,11 @@ const ChatThreadSection = () => {
       <div
         ref={chatContainerRef}
         className={cn(
-          'hideScrollbar overflow-y-auto overflow-x-hidden pt-20',
+          'hideScrollbar overflow-y-auto overflow-x-hidden pt-200px lg:pt-20',
           selectedChat.messages.length > 1 ? 'h-screen pb-10' : 'pb-2'
         )}
       >
-        <div className="mx-20 flex flex-col gap-10">
+        <div className="mx-20px flex flex-col gap-10 lg:mx-20">
           {selectedChat.messages.map((message: IMessageWithRole, index: number) => (
             <ChatMessage
               resend={() => resendUserMessage(index)}

@@ -14,12 +14,15 @@ import { Button } from '@/components/button/button';
 import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
 import { ActionCausingFeedback } from '@/interfaces/chat';
 import Image from 'next/image';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface IChatPageBodyProps {
   isSidebarExpanded: boolean;
 }
 
 const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const { isSignedIn } = useUserCtx();
   const {
     addUserMessage,
@@ -155,7 +158,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
             type: ToastType.INFO,
             content: (
               <div>
-                Do you like Faith? Access smarter responses, upload files and images, and more.{' '}
+                Do you like Faith? Access smarter responses, upload files and images, and more.
                 <button
                   type="button"
                   className="font-semibold text-link-text-primary hover:underline"
@@ -263,7 +266,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
           ) : (
             <div className="flex w-full items-center gap-5">
               <div className="text-base font-normal text-text-neutral-tertiary">
-                Tell us your idea:
+                {t('CHAT.TELL_YOUR_IDEA')}
               </div>
               <div className="flex gap-2 whitespace-nowrap text-sm">
                 <Button
@@ -272,9 +275,8 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
                   }
                   variant={'secondaryOutline'}
                   size={'medium'}
-                  className=""
                 >
-                  I don&apos;t like this answer
+                  {t('CHAT.DONT_LIKE_ANSWER')}
                 </Button>
                 <Button
                   onClick={() =>
@@ -284,7 +286,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
                   size={'medium'}
                   className=""
                 >
-                  Error answer
+                  {t('CHAT.ERROR_ANSWER')}
                 </Button>
                 <Button
                   onClick={() =>
@@ -294,7 +296,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
                   size={'medium'}
                   className=""
                 >
-                  Incomplete information
+                  {t('CHAT.INCOMPLETE')}
                 </Button>
                 <Button
                   onClick={feedbackModalVisibilityHandler}
@@ -302,7 +304,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
                   size={'extraSmall'}
                   className=""
                 >
-                  ...{' '}
+                  ...
                 </Button>
               </div>
             </div>
@@ -342,32 +344,29 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
           ) : (
             <div className="flex w-full items-center gap-5">
               <div className="text-base font-normal text-text-neutral-tertiary">
-                Is this response better or worse?
+                {t('CHAT.CHAT_FEEDBACK')}
               </div>
               <div className="flex gap-2 whitespace-nowrap text-sm">
                 <Button
                   onClick={() => feedbackSubmitHandler('better', ActionCausingFeedback.RESEND)}
                   variant={'secondaryOutline'}
                   size={'medium'}
-                  className=""
                 >
-                  Better
+                  {t('CHAT.BETTER')}
                 </Button>
                 <Button
                   onClick={() => feedbackSubmitHandler('worse', ActionCausingFeedback.RESEND)}
                   variant={'secondaryOutline'}
                   size={'medium'}
-                  className=""
                 >
-                  Worse
+                  {t('CHAT.WORSE')}
                 </Button>
                 <Button
                   onClick={() => feedbackSubmitHandler('same', ActionCausingFeedback.RESEND)}
                   variant={'secondaryOutline'}
                   size={'medium'}
-                  className=""
                 >
-                  Same
+                  {t('CHAT.SAME')}
                 </Button>
               </div>
             </div>
@@ -420,8 +419,8 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
         onCompositionEnd={() => setIsComposing(false)}
         rows={rows}
         // TODO: i18n (20240626 - Shirley)
-        placeholder="Say something..."
-        className={`relative flex max-h-150px w-full resize-none items-center justify-between overflow-auto rounded-sm border border-lightGray3 bg-white ${isSignedIn ? `pl-12 pr-5` : `px-5`} py-3 outline-none transition-all duration-300`}
+        placeholder={t('CHAT.SAY_SOMETHING')}
+        className={`relative flex max-h-150px w-full resize-none items-center justify-between overflow-auto rounded-sm border border-input-stroke-input bg-input-surface-input-background ${isSignedIn ? `pl-12 pr-5` : `px-5`} py-3 outline-none transition-all duration-300`}
       />
       {isSignedIn && (
         // Info: upload file icon (20240628 - Shirley)
@@ -478,21 +477,16 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
         'ml-240px': isSidebarExpanded,
       })}
     >
-      {' '}
       <div className="relative mx-auto flex h-full w-50vw items-center justify-center">
         <div className="h-1/10 w-1/10">
-          {' '}
-          <Image src="/elements/dnd_bg.svg" alt="dnd_bg" layout="fill" objectFit="contain" />{' '}
+          <Image src="/elements/dnd_bg.svg" alt="dnd_bg" layout="fill" objectFit="contain" />
         </div>
 
         {/* Info: remarks of allowed file (20240704 - Shirley) */}
         <div className="absolute inset-x-0 bottom-0 z-100 mb-4 text-center">
-          <div className="flex flex-row items-end justify-around gap-5">
-            {' '}
-            <p className="mt-2 text-sm text-lightGray4">
-              Supported formats: PDF, TXT, PNG, JPEG, SVG, JSON
-            </p>
-            <p className="text-sm text-lightGray4">Maximum size: 50MB</p>
+          <div className="flex flex-row items-end justify-around gap-5 text-sm text-surface-brand-secondary">
+            <p className="mt-2">Supported formats: PDF, TXT, PNG, JPEG, SVG, JSON</p>
+            <p>Maximum size: 50MB</p>
           </div>
         </div>
       </div>
@@ -500,28 +494,23 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
   );
 
   return (
-    <div
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-      className="hidden lg:block"
-    >
+    <div onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
       {/* TODO: mobile version is not implemented yet (20240627 - Shirley) */}
       {displayedDragOverMask}
 
-      <div className="flex lg:h-screen lg:flex-col">
+      <div className="flex flex-col lg:h-screen">
         <div className="hideScrollbar grow overflow-auto">
           <ChatThreadSection />
         </div>
 
         {/* Info: Chat input (20240626 - Shirley) */}
-        <div className={`mb-2 mt-1 flex w-full flex-col px-20 max-md:max-w-full`}>
+        <div className={`mb-2 mt-1 flex w-full flex-col px-20px max-md:max-w-full lg:px-20`}>
           {feedbackSection}
 
           <div>{displayedPromptInput}</div>
 
           <div className="mt-2 text-sm leading-5 tracking-normal text-input-text-secondary max-md:max-w-full">
-            Faith may encounter errors. Please check important information.
+            {t('CHAT.CHECK_INFO_HINT')}
           </div>
         </div>
       </div>

@@ -59,21 +59,30 @@ const MessageModal = ({
 
   const borderColor =
     messageType === MessageType.WARNING
-      ? 'border-warningYellow'
+      ? 'border-alert-surface-surface-warning'
       : messageType === MessageType.SUCCESS
-        ? 'border-successGreen3'
+        ? 'border-alert-surface-surface-success'
         : messageType === MessageType.ERROR
-          ? 'border-errorRed3'
-          : 'border-navyBlue';
+          ? 'border-alert-surface-surface-error'
+          : 'border-alert-surface-surface-info';
 
   const titleColor =
     messageType === MessageType.WARNING
-      ? 'text-primaryYellow6'
+      ? 'text-alert-text-title-warning'
       : messageType === MessageType.SUCCESS
-        ? 'text-lightGreen'
+        ? 'text-alert-text-title-success'
         : messageType === MessageType.ERROR
-          ? 'text-lightRed'
-          : 'text-navyBlue2';
+          ? 'text-alert-text-title-error'
+          : 'text-alert-text-title-info';
+
+  const submitBtnColor =
+    (submitBtnClassName ?? messageType === MessageType.WARNING)
+      ? 'text-link-text-warning'
+      : messageType === MessageType.SUCCESS
+        ? 'text-link-text-success'
+        : messageType === MessageType.ERROR
+          ? 'text-link-text-error'
+          : 'text-link-text-primary';
 
   const isBackBtn = backBtnStr ? (
     <Button
@@ -105,11 +114,7 @@ const MessageModal = ({
   ));
 
   const isDisplayCross = !hideCloseBtn ? (
-    <button
-      type="button"
-      onClick={modalVisibilityHandler}
-      className="absolute right-12px top-12px text-lightGray5"
-    >
+    <button type="button" onClick={modalVisibilityHandler} className="absolute right-12px top-12px">
       <Image src="/icons/cross.svg" width={32} height={32} alt="cross_icon" />
     </button>
   ) : null;
@@ -117,7 +122,7 @@ const MessageModal = ({
   const isDisplayModal = isModalVisible ? (
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/50 font-barlow">
       <div
-        className={`relative flex h-fit w-90vw flex-col gap-16px rounded-xs border-t-5px md:w-376px ${borderColor} bg-white px-32px py-16px`}
+        className={`relative flex h-fit w-90vw flex-col gap-16px rounded-xs border-t-5px md:w-376px ${borderColor} bg-alert-surface-background px-32px py-16px`}
       >
         {isDisplayCross}
         <div className="mt-20px flex flex-col items-center gap-16px text-center">
@@ -125,14 +130,14 @@ const MessageModal = ({
           <h1 className={`text-base font-medium ${titleColor}`}>{displayedSubtitles}</h1>
           <Image src={imgStr} width={48} height={48} alt={imgAlt} />
           {/* Info: (20240507 - Julian) sub message (red color) */}
-          <p className="text-base text-lightRed">{redMsg}</p>
+          <p className="text-base text-text-state-error">{redMsg}</p>
           {/* Info: (20240425 - Julian) normal message (gray color) */}
-          <div className="text-sm text-lightGray5">{displayedNormalMsg}</div>
+          <div className="text-sm text-text-neutral-secondary">{displayedNormalMsg}</div>
         </div>
         <div className="flex items-center justify-center gap-24px">
           {isBackBtn}
           <Button
-            className={cn('px-16px py-8px', submitBtnClassName)}
+            className={cn('px-16px py-8px', submitBtnColor)}
             type="button"
             onClick={submitClickHandler}
             variant={submitBtnVariant ?? 'tertiary'}
