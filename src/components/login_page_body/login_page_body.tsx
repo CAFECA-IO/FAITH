@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Button } from '@/components/button/button';
 import { useGlobalCtx } from '@/contexts/global_context';
 import { useUserCtx } from '@/contexts/user_context';
@@ -7,8 +9,14 @@ import { ToastType } from '@/interfaces/toastify';
 import { ToastId } from '@/constants/toast_id';
 import { checkboxStyle } from '@/constants/display';
 import useOuterClick from '@/lib/hooks/use_outer_click';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
+import { INTERNATIONALIZATION_LIST } from '@/constants/i18n';
 
 const LoginPageBody = () => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { asPath } = useRouter();
+
   const { signIn, isSignedIn } = useUserCtx();
   const {
     registerModalVisibilityHandler,
@@ -46,12 +54,27 @@ const LoginPageBody = () => {
       toastHandler({
         id: ToastId.LOGIN,
         type: ToastType.SUCCESS,
-        content: 'You have successfully logged in!',
+        content: t('TOAST.LOGGED_SUCCESS'),
         closeable: true,
         autoClose: 3000,
       });
     }
   }, [isSignedIn]);
+
+  const languageMenu = INTERNATIONALIZATION_LIST.map((item) => {
+    return (
+      <Link
+        key={item.value}
+        href={asPath}
+        scroll={false}
+        locale={item.value}
+        onClick={languageClickHandler}
+        className="w-full whitespace-nowrap border-b border-stroke-neutral-solid-light px-24px py-10px hover:border-button-stroke-primary-hover hover:text-button-text-primary-hover"
+      >
+        {item.label}
+      </Link>
+    );
+  });
 
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-loginMobile bg-cover bg-center bg-no-repeat px-16 pb-20 pt-10 max-md:px-5 md:bg-login">
@@ -65,13 +88,13 @@ const LoginPageBody = () => {
             className="hidden md:block"
           />
           <div className="my-5 hidden text-5xl font-bold leading-8 text-text-neutral-primary md:block">
-            Welcome Back!
+            {t('LOGIN.WELCOME')}
           </div>
 
           {/* ToDo: (20240705 - Julian) mobile title */}
           <div className="flex items-center gap-x-16px text-2xl font-bold text-surface-brand-secondary md:hidden">
             <Image src="/logo/isunfa_logo_with_ring.svg" alt="isunfa logo" width={40} height={40} />
-            <p>Welcome Back!</p>
+            <p>{t('LOGIN.WELCOME')}</p>
           </div>
           <div className="mt-5 rounded-3xl bg-white/30 px-32px py-40px max-md:mt-10 max-md:max-w-full md:px-48px md:py-80px">
             <div className="mt-10 flex flex-col items-center">
@@ -107,7 +130,7 @@ const LoginPageBody = () => {
                     ></path>
                   </svg>
                   <div className="text-sm leading-7 tracking-normal lg:text-lg lg:font-medium">
-                    Log in with Device
+                    {t('LOGIN.LOGIN_BTN')}
                   </div>
                 </Button>
 
@@ -116,7 +139,7 @@ const LoginPageBody = () => {
                   type="button"
                   className="mt-0 flex max-w-full flex-col justify-center self-center text-sm font-semibold leading-6 tracking-normal text-link-text-primary hover:opacity-70 lg:mt-0 lg:text-base"
                 >
-                  <div className="justify-center rounded-sm">Register your Device</div>
+                  <div className="justify-center rounded-sm">{t('LOGIN.REGISTER')}</div>
                 </button>
 
                 <div className="flex gap-x-8px text-sm text-checkbox-text-primary">
@@ -129,15 +152,15 @@ const LoginPageBody = () => {
                     />
                   </div>
                   <p className="text-xs md:text-sm">
-                    I have read the{' '}
+                    {t('LOGIN.USER_GUIDE_HINT_1')}{' '}
                     <button
                       type="button"
                       className="font-semibold text-text-neutral-link hover:underline"
                       onClick={userCodeModalVisibilityHandler}
                     >
-                      User guide
+                      {t('LOGIN.USER_GUIDE_HINT_2')}
                     </button>{' '}
-                    and agree to comply with the platform&apos;s regulations.
+                    {t('LOGIN.USER_GUIDE_HINT_3')}
                   </p>
                 </div>
               </div>
@@ -181,25 +204,14 @@ const LoginPageBody = () => {
               />
             </svg>
           </button>
-          {/* ToDo: (20240705 - Julian) i18n */}
+          {/* Info: (20240705 - Julian) i18n */}
           <div
             ref={lanRef}
             className={`absolute bottom-12 right-0 flex flex-col gap-y-16px rounded-xs border border-stroke-neutral-solid-light ${
               lanVisible ? 'visible opacity-100' : 'invisible opacity-0'
             } overflow-hidden bg-white/40 px-20px py-16px text-base text-text-neutral-invert backdrop-blur-md transition-all duration-300 ease-in-out`}
           >
-            <button
-              type="button"
-              className="w-full whitespace-nowrap border-b border-stroke-neutral-solid-light px-24px py-10px hover:border-button-stroke-primary-hover hover:text-button-text-primary-hover"
-            >
-              EN
-            </button>
-            <button
-              type="button"
-              className="w-full whitespace-nowrap border-b border-stroke-neutral-solid-light px-24px py-10px hover:border-button-stroke-primary-hover hover:text-button-text-primary-hover"
-            >
-              繁體中文
-            </button>
+            {languageMenu}
           </div>
         </div>
         <div>

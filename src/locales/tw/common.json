@@ -64,6 +64,7 @@
     "LINK_DATE": "分享日期",
     "LINK_NAME_AND_DATE": "名稱 & 分享日期",
     "LINK_ACTION": "操作",
+    "NO_LINK_DATA": "沒有分享連結",
     "PRIVATE_CHAT": "私人聊天室",
     "DELETE_CHAT": "刪除所有聊天室",
     "DELETE_BTN": "全部刪除",
@@ -97,9 +98,11 @@
     "ALL_TYPE": "所有類型",
     "MOVE": "移動",
     "BACK": "返回",
-    "NTD": "新臺幣"
+    "NTD": "新臺幣",
+    "OF": "之"
   },
   "TOAST": {
-    "REGISTER_REMINDER": "您喜歡 Faith 嗎？註冊以訪問更智能的回應，上傳文件和圖像等功能。"
+    "REGISTER_REMINDER": "您喜歡 Faith 嗎？註冊以訪問更智能的回應，上傳文件和圖像等功能。",
+    "LOGGED_SUCCESS": "您已成功登入！"
   }
 }

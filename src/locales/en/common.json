@@ -13,6 +13,14 @@
     "ADD_FOLDER": "Drag Chat to Add Folder",
     "REMOVE_CHAT": "Remove Chat"
   },
+  "LOGIN": {
+    "WELCOME": "Welcome Back!",
+    "LOGIN_BTN": "Log in with Device",
+    "REGISTER": "Register your Device",
+    "USER_GUIDE_HINT_1": "I have read the ",
+    "USER_GUIDE_HINT_2": "User Guide",
+    "USER_GUIDE_HINT_3": " and agree to comply with the platform&apos;s regulations."
+  },
   "CHAT": {
     "I_AM_FAITH": "Hi, I am Faith, the AI Accountant.",
     "FINANCIAL_TITLE": "Explain financial statements",
@@ -64,6 +72,7 @@
     "LINK_DATE": "Date Shared",
     "LINK_NAME_AND_DATE": "Name & Date",
     "LINK_ACTION": "Action",
+    "NO_LINK_DATA": "No shared links",
     "PRIVATE_CHAT": "Private Chat",
     "DELETE_CHAT": "Delete All Chat",
     "DELETE_BTN": "Delete All",
@@ -97,9 +106,11 @@
     "ALL_TYPE": "All Type",
     "MOVE": "Move",
     "BACK": "Back",
-    "NTD": "NTD"
+    "NTD": "NTD",
+    "OF": "of"
   },
   "TOAST": {
-    "REGISTER_REMINDER": "Do you like Faith? Access smarter responses, upload files and images, and more."
+    "REGISTER_REMINDER": "Do you like Faith? Access smarter responses, upload files and images, and more.",
+    "LOGGED_SUCCESS": "You have successfully logged in!"
   }
 }
