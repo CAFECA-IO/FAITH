@@ -8,6 +8,8 @@ import { Button } from '@/components/button/button';
 /* eslint-disable-next-line import/no-cycle */
 import { useGlobalCtx } from '@/contexts/global_context';
 import { MessageType } from '@/interfaces/message_modal';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface IChatSettingModalProps {
   isModalVisible: boolean;
@@ -15,17 +17,18 @@ interface IChatSettingModalProps {
 }
 
 enum ChatSettingTab {
-  NORMAL_SETTING = 'normal_setting',
-  SUBSCRIPTION = 'subscription',
+  NORMAL_SETTING = 'SETTING.NORMAL_SETTING',
+  SUBSCRIPTION = 'SETTING.SUBSCRIPTION',
 }
 
 enum ChatTheme {
-  SYSTEM = 'System',
-  LIGHT = 'Light',
-  DARK = 'Dark',
+  SYSTEM = 'SETTING.SYSTEM',
+  LIGHT = 'SETTING.LIGHT',
+  DARK = 'SETTING.DARK',
 }
 
 const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSettingModalProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const {
     messageModalDataHandler,
     messageModalVisibilityHandler,
@@ -37,10 +40,18 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
   const [isPrivateChat, setIsPrivateChat] = useState(false);
   const [isAutoRenewal, setIsAutoRenewal] = useState(true);
 
+  // ToDo: (20240909 - Julian) get data from API
+  const planName = 'Beta';
+  const planMonthlyFee = 200;
+  const planYearlyFee = 1440;
+  const planUsers = 10;
+  const planUploadSpace = '100 G';
+  const planFinanceReport = 30;
+
   // ToDo: (20240625 - Julian) replace with actual data
   const hasSubscription = false;
-  const subscriptionPlan = 'Beta';
-  const monthlyFee = 'NTD 200';
+  const subscriptionPlan = planName;
+  const subscriptionMonthlyFee = `${t('COMMON.NTD')} ${planMonthlyFee}`;
   const nextPaymentTimestamp = 1719131200;
 
   const isNormalSettingSelected = currentTab === ChatSettingTab.NORMAL_SETTING;
@@ -106,8 +117,10 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
     messageModalVisibilityHandler();
   };
 
-  const subscriptionHint = `You have selected the ${subscriptionPlan} plan (monthly fee of ${monthlyFee}). Next payment date
-    is ${timestampToString(nextPaymentTimestamp).date}.`;
+  const subscriptionHint = t('SETTING.SUB_UPDATE_HINT')
+    .replace('$1', subscriptionPlan) // Info: (20240909 - Julian) 訂閱方案
+    .replace('$2', subscriptionMonthlyFee) // Info: (20240909 - Julian) 月費
+    .replace('$3', timestampToString(nextPaymentTimestamp).date); // Info: (20240909 - Julian) 下次付款日期
 
   const themeOptions = (
     <div
@@ -120,21 +133,21 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
           className="flex w-full items-center justify-between px-12px py-10px text-base hover:bg-dropdown-surface-item-hover"
           onClick={systemThemeClickHandler}
         >
-          <p>System</p>
+          <p>{t('SETTING.SYSTEM')}</p>
         </button>
         <button
           type="button"
           className="flex w-full items-center justify-between px-12px py-10px text-base hover:bg-dropdown-surface-item-hover"
           onClick={lightThemeClickHandler}
         >
-          <p>Light</p>
+          <p>{t('SETTING.LIGHT')}</p>
         </button>
         <button
           type="button"
           className="flex w-full items-center justify-between px-12px py-10px text-base hover:bg-dropdown-surface-item-hover"
           onClick={darkThemeClickHandler}
         >
-          <p>Dark</p>
+          <p>{t('SETTING.DARK')}</p>
         </button>
       </div>
     </div>
@@ -144,13 +157,13 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
     <div className="flex w-full flex-col gap-y-40px text-xl text-text-neutral-primary">
       {/* Info: (20240625 - Julian) Theme Setting */}
       <div className="flex flex-col items-start justify-between gap-y-12px md:flex-row md:items-center">
-        <p className="font-semibold md:font-bold">Theme</p>
+        <p className="font-semibold md:font-bold">{t('SETTING.THEME')}</p>
         <button
           type="button"
           className="relative flex w-full items-center justify-between rounded-xs border border-input-stroke-input bg-input-surface-input-background px-12px py-10px text-base md:w-256px"
           onClick={themeClickHandler}
         >
-          <p className="text-input-text-input-placeholder">{currentTheme}</p>
+          <p className="text-input-text-input-placeholder">{t(currentTheme)}</p>
           <Image src="/icons/chevron_down.svg" width={20} height={20} alt="chevron_down_icon" />
 
           {themeOptions}
@@ -158,7 +171,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       </div>
       {/* Info: (20240703 - Julian) Shared Links */}
       <div className="flex items-center justify-between">
-        <p className="font-semibold md:font-bold">Shared Links</p>
+        <p className="font-semibold md:font-bold">{t('SETTING.SHARED_LINKS')}</p>
         {/* Info: (20240904 - Julian) Desktop manage button */}
         <Button
           id="shared-links-manage-button-desktop"
@@ -167,7 +180,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
           className="hidden text-base md:block"
           onClick={sharedLinksModalVisibilityHandler}
         >
-          Manage
+          {t('SETTING.MANAGE')}
         </Button>
         {/* Info: (20240904 - Julian) Mobile manage button */}
         <Button
@@ -196,7 +209,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       {/* Info: (20240625 - Julian) Private Chat Toggle */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-x-18px">
-          <p className="font-semibold md:font-bold">Private Chat</p>
+          <p className="font-semibold md:font-bold">{t('SETTING.PRIVATE_CHAT')}</p>
           <div className="rounded bg-badge-surface-soft-primary px-4px text-xs text-badge-text-primary-solid">
             Beta
           </div>
@@ -205,7 +218,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       </div>
       {/* Info: (20240625 - Julian) Delete All Chat */}
       <div className="flex items-center justify-between">
-        <p className="font-semibold md:font-bold">Delete All Chat</p>
+        <p className="font-semibold md:font-bold">{t('SETTING.DELETE_CHAT')}</p>
         {/* Info: (20240904 - Julian) Desktop delete button */}
         <Button
           id="delete-all-chat-button-desktop"
@@ -214,7 +227,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
           className="hidden text-base md:block"
           onClick={deleteAllChatHandler}
         >
-          Delete All
+          {t('SETTING.DELETE_BTN')}
         </Button>
         {/* Info: (20240904 - Julian) Mobile delete button */}
         <Button
@@ -251,7 +264,9 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       onClick={modalVisibilityHandler}
     >
       <Button id="get-beta-button" type="button" variant="tertiaryOutline">
-        <p>Get Beta</p>
+        <p>
+          {t('SETTING.SUB_BUTTON')} {planName}
+        </p>
         <svg
           width="24"
           height="24"
@@ -280,7 +295,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
     </Link>
   );
 
-  const planIntroCardDesktop = (
+  const betaIntroCardDesktop = (
     <div className="relative hidden h-350px flex-none flex-col items-center justify-between overflow-y-auto rounded-sm p-20px shadow md:flex">
       {/* Info: (20240625 - Julian) Background (circle) */}
       <div className="absolute left-0 top-0">
@@ -291,7 +306,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
           height={120}
         />
         <p className="absolute left-20px top-32px text-32px font-bold text-text-brand-primary-lv2">
-          Beta
+          {planName}
         </p>
       </div>
       {/* Info: (20240625 - Julian) Background (medal) */}
@@ -301,29 +316,36 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       {/* Info: (20240625 - Julian) Content */}
       <div className="flex w-full items-end justify-center gap-x-50px pr-60px">
         <div className="flex flex-col items-center gap-y-10px font-bold">
+          <p className="z-20 text-4xl text-text-support-baby">{t('SETTING.SUB_MONTHLY_1')}</p>
           <p className="text-2xl text-text-brand-secondary-lv1">
-            NTD$ <span className="text-48px text-text-brand-primary-lv2">200</span>
+            {t('COMMON.NTD')}{' '}
+            <span className="text-48px text-text-brand-primary-lv2">{planMonthlyFee}</span>
           </p>
-          <p className="text-4xl text-text-brand-secondary-lv2">Monthly</p>
-          <p className="text-xl text-text-brand-secondary-lv1">(1,440/Year)</p>
+          <p className="text-4xl text-text-brand-secondary-lv2">{t('SETTING.SUB_MONTHLY_2')}</p>
+          <p className="text-xl text-text-brand-secondary-lv1">
+            ({planYearlyFee}/{t('SETTING.SUB_YEAR')})
+          </p>
         </div>
-        <ul className="list-disc text-lg font-semibold">
+        <ul className="z-20 list-disc text-lg font-semibold">
           <li>
-            Users : <span className="text-text-support-baby">10</span>
+            {t('SETTING.SUB_USERS')} : <span className="text-text-support-baby">{planUsers}</span>
           </li>
           <li>
-            Scan Maximum : <span className="text-text-support-baby">Unlimited</span>
+            {t('SETTING.SUB_SCAN_MAX')} :{' '}
+            <span className="text-text-support-baby">{t('SETTING.SUB_UNLIMITED')}</span>
           </li>
           <li>
-            Upload Space : <span className="text-text-support-baby">100 G</span>
+            {t('SETTING.SUB_UPLOAD_SPACE')} :{' '}
+            <span className="text-text-support-baby">{planUploadSpace}</span>
           </li>
           <li>
-            Live FinanceReports : <span className="text-text-support-baby">30</span>
+            {t('SETTING.SUB_FINANCE_REPORT')} :{' '}
+            <span className="text-text-support-baby">{planFinanceReport}</span>
           </li>
-          <li>Data Dashboard</li>
-          <li>Contract Management</li>
-          <li>Accounting Service</li>
-          <li className="text-text-support-baby">Employee Salary Management</li>
+          <li>{t('SETTING.SUB_DASHBOARD')}</li>
+          <li>{t('SETTING.SUB_CONTRACT')}</li>
+          <li>{t('SETTING.SUB_ACCOUNTING')}</li>
+          <li className="text-text-support-baby">{t('SETTING.SUB_EMPLOYEE')}</li>
         </ul>
       </div>
       {/* Info: (20240625 - Julian) Get Beta Button */}
@@ -331,13 +353,13 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
     </div>
   );
 
-  const planIntroCardMobile = (
+  const betaIntroCardMobile = (
     <div className="relative flex w-280px flex-col items-center rounded-sm p-20px shadow md:hidden">
       {/* Info: (20240904 - Julian) Background (Beta) */}
       <div className="absolute top-0">
         <Image src="/elements/half_circle.svg" alt="background" width={160} height={80} />
       </div>
-      <p className="z-10 text-32px font-bold text-text-brand-primary-lv2">Beta</p>
+      <p className="z-10 text-32px font-bold text-text-brand-primary-lv2">{planName}</p>
       {/* Info: (20240904 - Julian) Medal icon */}
       <div className="mt-40px">
         <Image src="/elements/medal.svg" alt="medal" width={80} height={80} />
@@ -347,28 +369,35 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
         {/* Info: (20240904 - Julian) Fee */}
         <div className="flex flex-col items-center text-text-brand-secondary-lv2">
           <p className="text-xl font-bold">
-            NTD$ <span className="text-text-brand-primary-lv2">200</span> Monthly
+            {t('SETTING.SUB_MONTHLY_1')} {t('COMMON.NTD')}{' '}
+            <span className="text-text-brand-primary-lv2">{planMonthlyFee}</span>{' '}
+            {t('SETTING.SUB_MONTHLY_2')}
           </p>
-          <p className="text-base font-semibold">(1,440/Year)</p>
+          <p className="text-base font-semibold">
+            ({planYearlyFee}/{t('SETTING.SUB_YEAR')})
+          </p>
         </div>
         {/* Info: (20240904 - Julian) Features */}
         <ul className="list-disc text-sm font-semibold text-text-neutral-primary">
           <li>
-            Users : <span className="text-text-support-baby">10</span>
+            {t('SETTING.SUB_USERS')} : <span className="text-text-support-baby">{planUsers}</span>
           </li>
           <li>
-            Scan Maximum : <span className="text-text-support-baby">Unlimited</span>
+            {t('SETTING.SUB_SCAN_MAX')} :{' '}
+            <span className="text-text-support-baby">{t('SETTING.SUB_UNLIMITED')}</span>
           </li>
           <li>
-            Upload Space : <span className="text-text-support-baby">100 G</span>
+            {t('SETTING.SUB_UPLOAD_SPACE')} :{' '}
+            <span className="text-text-support-baby">{planUploadSpace}</span>
           </li>
           <li>
-            Live FinanceReports : <span className="text-text-support-baby">30</span>
+            {t('SETTING.SUB_FINANCE_REPORT')} :{' '}
+            <span className="text-text-support-baby">{planFinanceReport}</span>
           </li>
-          <li>Data Dashboard</li>
-          <li>Contract Management</li>
-          <li>Accounting Service</li>
-          <li className="text-text-support-baby">Employee Salary Management</li>
+          <li>{t('SETTING.SUB_DASHBOARD')}</li>
+          <li>{t('SETTING.SUB_CONTRACT')}</li>
+          <li>{t('SETTING.SUB_ACCOUNTING')}</li>
+          <li className="text-text-support-baby">{t('SETTING.SUB_EMPLOYEE')}</li>
         </ul>
         {/* Info: (20240904 - Julian) Get Beta Button */}
         {getBetaBtn}
@@ -381,7 +410,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       {/* Info: (20240625 - Julian) Your Plan */}
       <div className="flex flex-col gap-y-8px">
         <div className="flex items-center justify-between">
-          <p className="font-bold">Your Plan</p>
+          <p className="font-bold">{t('SETTING.SUB_YOUR_PLAN')}</p>
           <div className="flex items-center gap-8px rounded-full bg-badge-surface-soft-secondary p-10px text-sm text-badge-text-secondary-solid">
             <div className="h-6px w-6px rounded bg-badge-text-secondary-solid"></div>
             <p>{subscriptionPlan}</p>
@@ -391,7 +420,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       </div>
       {/* Info: (20240625 - Julian) Auto-Renewal Toggle */}
       <div className="flex items-center justify-between">
-        <p className="font-bold">Auto-Renewal</p>
+        <p className="font-bold">{t('SETTING.SUB_AUTO_RENEWAL')}</p>
         <Toggle
           id="auto-renewal-toggle"
           toggleStateFromParent={isAutoRenewal}
@@ -402,7 +431,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       </div>
       {/* Info: (20240625 - Julian) Cancel Subscription */}
       <div className="flex items-center justify-between">
-        <p className="font-bold">Cancel Subscription</p>
+        <p className="font-bold">{t('SETTING.SUB_CANCEL_BTN')}</p>
 
         <Button
           id="cancel-subscription-button"
@@ -411,7 +440,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
           className="text-base"
           onClick={cancelSubscriptionHandler}
         >
-          Cancel
+          {t('SETTING.SUB_CANCEL_BTN_M')}
         </Button>
       </div>
     </div>
@@ -419,11 +448,11 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
     <div className="flex h-400px flex-col items-center gap-y-16px overflow-y-auto py-20px md:h-auto md:items-start md:p-0">
       <div className="flex items-center gap-x-10px">
         <div className="h-8px w-8px rounded-full bg-surface-support-strong-maple"></div>
-        <p className="text-base text-text-neutral-primary">Upgrade Your Faith</p>
+        <p className="text-base text-text-neutral-primary">{t('SETTING.UPGRADE')}</p>
       </div>
       {/* Info: (20240625 - Julian) Beta plan introduction card */}
-      {planIntroCardDesktop}
-      {planIntroCardMobile}
+      {betaIntroCardDesktop}
+      {betaIntroCardMobile}
     </div>
   );
 
@@ -452,11 +481,11 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
             d="M14.5858 3.25098C13.3892 3.25098 12.4191 4.22103 12.4191 5.41764C12.4191 6.61426 13.3892 7.58431 14.5858 7.58431C15.7824 7.58431 16.7524 6.61426 16.7524 5.41764C16.7524 4.22103 15.7824 3.25098 14.5858 3.25098ZM12.2582 2.58431C12.8913 2.06361 13.7021 1.75098 14.5858 1.75098C16.6108 1.75098 18.2524 3.3926 18.2524 5.41764C18.2524 7.44269 16.6108 9.08431 14.5858 9.08431C13.7021 9.08431 12.8914 8.77168 12.2582 8.25098H4.58578C3.02097 8.25098 1.75244 6.98245 1.75244 5.41764C1.75244 3.85284 3.02097 2.58431 4.58577 2.58431H12.2582ZM11.1691 4.08431H4.58577C3.8494 4.08431 3.25244 4.68126 3.25244 5.41764C3.25244 6.15402 3.8494 6.75098 4.58578 6.75098H11.1691C11.0077 6.33773 10.9191 5.88803 10.9191 5.41764C10.9191 4.94725 11.0077 4.49755 11.1691 4.08431ZM1.75244 14.5843C1.75244 12.5593 3.39406 10.9176 5.41911 10.9176C6.30283 10.9176 7.11353 11.2303 7.74665 11.751H15.4191C16.9839 11.751 18.2524 13.0195 18.2524 14.5843C18.2524 16.1491 16.9839 17.4176 15.4191 17.4176H7.74665C7.11353 17.9383 6.30283 18.251 5.41911 18.251C3.39406 18.251 1.75244 16.6094 1.75244 14.5843ZM8.83581 15.9176H15.4191C16.1555 15.9176 16.7524 15.3207 16.7524 14.5843C16.7524 13.8479 16.1555 13.251 15.4191 13.251H8.83581C8.9972 13.6642 9.08577 14.1139 9.08577 14.5843C9.08577 15.0547 8.9972 15.5044 8.83581 15.9176ZM5.41911 12.4176C4.22249 12.4176 3.25244 13.3877 3.25244 14.5843C3.25244 15.7809 4.22249 16.751 5.41911 16.751C6.61573 16.751 7.58577 15.7809 7.58577 14.5843C7.58577 13.3877 6.61573 12.4176 5.41911 12.4176Z"
           />
         </svg>
-        <p>Normal Setting</p>
+        <p>{t('SETTING.NORMAL_SETTING')}</p>
       </button>
       {/* Info: (20240625 - Julian) Subscription */}
       <button
-        id="normal-setting-tab"
+        id="subscription-tab"
         type="button"
         className={`flex w-full items-center gap-20px whitespace-nowrap rounded-xs px-20px py-10px ${isSubscriptionSelected ? 'bg-surface-brand-primary-10' : ''}`}
         onClick={subscriptionClickHandler}
@@ -475,7 +504,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
             className="fill-current"
           />
         </svg>
-        <p>Subscription</p>
+        <p>{t('SETTING.SUBSCRIPTION')}</p>
       </button>
     </div>
   );
@@ -504,11 +533,11 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
             fill="#314362"
           />
         </svg>
-        <p>Normal</p>
+        <p>{t('SETTING.NORMAL_SETTING_M')}</p>
       </button>
       {/* Info: (20240904 - Julian) Subscription */}
       <button
-        id="normal-setting-tab-tab-mobile"
+        id="subscription-tab-mobile"
         type="button"
         className={`flex w-full items-center justify-center gap-8px whitespace-nowrap border-b-2 px-12px py-8px ${isSubscriptionSelected ? 'border-tabs-stroke-active text-tabs-text-active' : 'border-tabs-stroke-default text-tabs-text-default'}`}
         onClick={subscriptionClickHandler}
@@ -527,7 +556,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
             className="fill-current"
           />
         </svg>
-        <p>Subscription</p>
+        <p>{t('SETTING.SUBSCRIPTION')}</p>
       </button>
     </div>
   );
@@ -540,7 +569,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       >
         {/* Info: (20240625 - Julian) Header */}
         <div className="flex items-center justify-center pl-40px pr-20px text-2xl font-bold text-text-neutral-primary md:justify-between md:text-32px">
-          <h1>Setting</h1>
+          <h1>{t('SETTING.TITLE')}</h1>
           <button type="button" onClick={modalVisibilityHandler} className="absolute right-20px">
             <Image src="/icons/cross.svg" width={32} height={32} alt="cross_icon" />
           </button>

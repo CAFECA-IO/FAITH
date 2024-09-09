@@ -32,7 +32,10 @@
     "TELL_YOUR_IDEA": "告诉我们您的想法：",
     "DONT_LIKE_ANSWER": "我不喜欢这个回答",
     "ERROR_ANSWER": "答非所问",
-    "INCOMPLETE": "资讯不完整"
+    "INCOMPLETE": "资讯不完整",
+    "FEEDBACK": "感谢您的回馈！",
+    "REMARK_ALLOWED_FILE": "支援格式：",
+    "REMARK_MAX_SIZE": "最大档案大小："
   },
   "FOLDER": {
     "SHARE": "分享资料夹",
@@ -46,6 +49,44 @@
     "ACTION": "操作",
     "NOT_FOUND": "找不到资料夹"
   },
+  "SETTING": {
+    "TITLE": "设定",
+    "NORMAL_SETTING": "一般设定",
+    "NORMAL_SETTING_M": "一般",
+    "SUBSCRIPTION": "订阅",
+    "THEME": "主题",
+    "SYSTEM": "系统",
+    "LIGHT": "浅色",
+    "DARK": "深色",
+    "SHARED_LINKS": "已分享的连结",
+    "MANAGE": "管理",
+    "LINK_NAME": "聊天室名称",
+    "LINK_DATE": "分享日期",
+    "LINK_NAME_AND_DATE": "名称 & 分享日期",
+    "LINK_ACTION": "操作",
+    "PRIVATE_CHAT": "私人聊天室",
+    "DELETE_CHAT": "删除所有聊天室",
+    "DELETE_BTN": "全部删除",
+    "UPGRADE": "升级您的 Faith",
+    "SUB_MONTHLY_1": "每月",
+    "SUB_MONTHLY_2": "",
+    "SUB_YEAR": "年",
+    "SUB_USERS": "使用者数",
+    "SUB_SCAN_MAX": "扫描上限",
+    "SUB_UNLIMITED": "无限制",
+    "SUB_UPLOAD_SPACE": "上传空间",
+    "SUB_FINANCE_REPORT": "即时财务报告",
+    "SUB_DASHBOARD": "数据仪表板",
+    "SUB_CONTRACT": "合约管理",
+    "SUB_ACCOUNTING": "会计服务",
+    "SUB_EMPLOYEE": "员工薪资管理",
+    "SUB_BUTTON": "获取",
+    "SUB_YOUR_PLAN": "您的方案",
+    "SUB_AUTO_RENEWAL": "自动续订",
+    "SUB_UPDATE_HINT": "您已选择 $1 方案（每月费用 $2）。下次付款日期为 $3。",
+    "SUB_CANCEL_BTN": "取消订阅",
+    "SUB_CANCEL_BTN_M": "取消"
+  },
   "COMMON": {
     "RENAME": "重新命名",
     "SHARE": "分享",
@@ -55,6 +96,10 @@
     "SEARCH": "搜寻",
     "ALL_TYPE": "所有类型",
     "MOVE": "移动",
-    "BACK": "返回"
+    "BACK": "返回",
+    "NTD": "新台币"
+  },
+  "TOAST": {
+    "REGISTER_REMINDER": "您喜欢 Faith 吗？注册以访问更智能的回应，上传文件和图像等功能。"
   }
 }
