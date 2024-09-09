@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { timestampToString } from '@/lib/utils/common';
 import { ISharedLink, dummySharedLinks } from '@/interfaces/shared_link';
 import Pagination from '@/components/pagination/pagination';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface ISharedLinksModalProps {
   isModalVisible: boolean;
@@ -13,6 +15,7 @@ const LINK_PER_PAGE_DESKTOP = 5;
 const LINK_PER_PAGE_MOBILE = 10;
 
 const SharedLinksModal = ({ isModalVisible, modalVisibilityHandler }: ISharedLinksModalProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   // ToDo: (20240904 - Julian) Fetch shared links from API
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [sharedLinkList, setSharedLinkList] = useState<ISharedLink[]>(dummySharedLinks);
@@ -91,7 +94,7 @@ const SharedLinksModal = ({ isModalVisible, modalVisibilityHandler }: ISharedLin
       // Info: (20240904 - Julian) No shared links
       <tr>
         <td colSpan={3} className="text-center">
-          No shared links
+          {t('SETTING.NO_LINK_DATA')}
         </td>
       </tr>
     );
@@ -169,7 +172,7 @@ const SharedLinksModal = ({ isModalVisible, modalVisibilityHandler }: ISharedLin
         className={`relative h-auto w-90vw flex-col rounded-sm bg-surface-neutral-main-background py-20px font-barlow md:bg-surface-neutral-surface-lv1`}
       >
         <div className="flex items-center justify-center pl-40px pr-20px text-2xl font-bold text-text-neutral-primary md:justify-between md:text-32px">
-          <h1>Shared Links</h1>
+          <h1>{t('SETTING.SHARED_LINKS')}</h1>
           <button type="button" onClick={modalVisibilityHandler} className="absolute right-20px">
             <Image src="/icons/cross.svg" width={32} height={32} alt="cross_icon" />
           </button>
@@ -184,14 +187,14 @@ const SharedLinksModal = ({ isModalVisible, modalVisibilityHandler }: ISharedLin
               <thead>
                 {/* Info: (20240904 - Julian) Desktop Table Header */}
                 <tr className="hidden border-b border-divider-stroke-lv-3 font-bold text-text-neutral-primary md:table-row">
-                  <th className="py-8px text-left">Name</th>
-                  <th>Date Shared</th>
-                  <th className="py-8px text-right">Action</th>
+                  <th className="py-8px text-left">{t('SETTING.LINK_NAME')}</th>
+                  <th>{t('SETTING.LINK_DATE')}</th>
+                  <th className="py-8px text-right">{t('SETTING.LINK_ACTION')}</th>
                 </tr>
                 {/* Info: (20240904 - Julian) Mobile Table Header */}
                 <tr className="table-row border-b border-divider-stroke-lv-3 font-bold text-text-neutral-primary md:hidden">
-                  <th className="w-4/5 py-8px text-left">Name & Date</th>
-                  <th className="py-8px text-right">Action</th>
+                  <th className="w-4/5 py-8px text-left">{t('SETTING.LINK_NAME_AND_DATE')}</th>
+                  <th className="py-8px text-right">{t('SETTING.LINK_ACTION')}</th>
                 </tr>
               </thead>
               {/* Info: (20240904 - Julian) Desktop Table Body */}

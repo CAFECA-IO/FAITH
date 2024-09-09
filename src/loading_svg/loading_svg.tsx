@@ -1,4 +1,8 @@
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
+
 export const LoadingSVG = () => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   return (
     <div role="status">
       <svg
@@ -17,7 +21,7 @@ export const LoadingSVG = () => {
           fill="currentFill"
         />
       </svg>
-      <span className="sr-only">Loading...</span>
+      <span className="sr-only">{t('COMMON.LOADING')}</span>
     </div>
   );
 };

@@ -9,6 +9,8 @@ import {
 } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@/components/button/button';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface IPaginationProps {
   currentPage: number;
@@ -23,6 +25,7 @@ const Pagination = ({
   totalPages,
   pagePrefix = 'page',
 }: IPaginationProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const [targetPage, setTargetPage] = useState<number>(currentPage);
   const router = useRouter();
 
@@ -230,7 +233,9 @@ const Pagination = ({
       <li className="flex flex-col items-center text-input-text-input-filled">
         {displayPageInput}
         {/* Info: (20240419 - Julian) 顯示總頁數 */}
-        <p>OF {totalPages}</p>
+        <p>
+          {t('COMMON.OF')} {totalPages}
+        </p>
       </li>
       {/* Info: (20240419 - Julian) 下一頁 */}
       <li>{displayNextButton}</li>

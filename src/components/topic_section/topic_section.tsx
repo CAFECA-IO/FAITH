@@ -3,6 +3,8 @@ import { ITopicBrief } from '@/interfaces/topic';
 import { TopicCategory } from '@/constants/topic';
 import TopicItem from '@/components/topic_item/topic_item';
 import { NATIVE_ROUTE } from '@/constants/url';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface ITopicBrowsePageBody {
   category: TopicCategory;
@@ -10,10 +12,12 @@ interface ITopicBrowsePageBody {
 }
 
 const TopicSection = ({ category, topics }: ITopicBrowsePageBody) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
+
   const topicEmptyHint =
     category === TopicCategory.MY_FAVORITES
-      ? "You don't have any favorite topics yet."
-      : 'No topics found.';
+      ? t('DISCOVER.NO_FAVORITE_YET')
+      : t('DISCOVER.NO_TOPIC_FOUND');
 
   const displayTopics =
     topics.length > 0 ? (
@@ -34,7 +38,7 @@ const TopicSection = ({ category, topics }: ITopicBrowsePageBody) => {
         href={`${NATIVE_ROUTE.DISCOVER}/see-more?category=${category}`}
         className="text-base font-semibold text-link-text-primary"
       >
-        See More
+        {t('DISCOVER.SEE_MORE')}
       </Link>
     ) : null;
 
@@ -44,7 +48,7 @@ const TopicSection = ({ category, topics }: ITopicBrowsePageBody) => {
       <div id={category} className="absolute -top-80px"></div>
       {/* Info: (20240626 - Julian) Topic title */}
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-text-neutral-secondary">{category}</h2>
+        <h2 className="text-2xl font-bold text-text-neutral-secondary">{t(category)}</h2>
         {isShowSeeMore}
       </div>
       <div className="grid flex-1 grid-cols-1 items-center gap-20px md:grid-cols-2 md:gap-40px">

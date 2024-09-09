@@ -2,6 +2,7 @@ import { Button } from '@/components/button/button';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { INTERNATIONALIZATION_LIST } from '@/constants/i18n';
 
 const I18n = () => {
   const { asPath } = useRouter();
@@ -12,15 +13,9 @@ const I18n = () => {
     setComponentVisible: setIsMenuVisible,
   } = useOuterClick<HTMLDivElement>(false);
 
-  const internationalizationList = [
-    { label: 'English', value: 'en' },
-    { label: '繁體中文', value: 'tw' },
-    { label: '简体中文', value: 'cn' },
-  ];
-
   const toggleMenu = () => setIsMenuVisible(!isMenuVisible);
 
-  const languageList = internationalizationList.map((item) => {
+  const languageList = INTERNATIONALIZATION_LIST.map((item) => {
     return (
       <Link key={item.value} href={asPath} scroll={false} locale={item.value} onClick={toggleMenu}>
         <Button type="button" variant="tertiaryBorderless">

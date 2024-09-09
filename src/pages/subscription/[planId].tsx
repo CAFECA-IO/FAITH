@@ -3,8 +3,11 @@ import NavBar from '@/components/nav_bar/nav_bar';
 import SubscriptionPageBody from '@/components/subscription_page_body/subscription_page_body';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetServerSideProps } from 'next';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 const SubscriptionPage = () => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   return (
     <>
       <Head>
@@ -12,7 +15,7 @@ const SubscriptionPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon/favicon.ico" />
         {/* TODO: (2024606 - Julian) i18n */}
-        <title>Discover - iSunFA</title>
+        <title>{t('SUBSCRIPTION.HEADER_TITLE')} - iSunFA</title>
       </Head>
 
       <div className="relative">

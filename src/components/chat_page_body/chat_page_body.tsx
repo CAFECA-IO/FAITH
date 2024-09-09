@@ -52,6 +52,10 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Info: (20240909 - Julian) constants
+  const allowedFileTypes = 'PDF, TXT, PNG, JPEG, SVG, JSON';
+  const maxFileSize = '50MB';
+
   // Info: 如果檔案正在上傳或者上傳失敗，就不能送出；有檔案並且檔案上傳成功，或者輸入框有文字，則可以送出 (20240701 - Shirley)
   const isSubmitAllowed =
     (file?.status === FileStatus.success || (!file && !!prompt)) && pendingMsg.length === 0;
@@ -158,13 +162,13 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
             type: ToastType.INFO,
             content: (
               <div>
-                Do you like Faith? Access smarter responses, upload files and images, and more.
+                {t('TOAST.REGISTER_REMINDER')}
                 <button
                   type="button"
                   className="font-semibold text-link-text-primary hover:underline"
                   onClick={() => router.push(NATIVE_ROUTE.LOGIN)}
                 >
-                  Register
+                  {t('NAV_BAR.REGISTER')}
                 </button>
               </div>
             ),
@@ -260,7 +264,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
           {isFeedbackSubmitted ? (
             <div className="flex w-full items-center justify-center">
               <div className="text-base font-normal text-text-neutral-tertiary">
-                Thank you for your feedback!
+                {t('CHAT.FEEDBACK')}
               </div>
             </div>
           ) : (
@@ -338,7 +342,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
           {isFeedbackSubmitted ? (
             <div className="flex w-full items-center justify-center">
               <div className="text-base font-normal text-text-neutral-tertiary">
-                Thank you for your feedback!
+                {t('CHAT.CHAT_FEEDBACK')}
               </div>
             </div>
           ) : (
@@ -418,7 +422,6 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
         onCompositionStart={() => setIsComposing(true)}
         onCompositionEnd={() => setIsComposing(false)}
         rows={rows}
-        // TODO: i18n (20240626 - Shirley)
         placeholder={t('CHAT.SAY_SOMETHING')}
         className={`relative flex max-h-150px w-full resize-none items-center justify-between overflow-auto rounded-sm border border-input-stroke-input bg-input-surface-input-background ${isSignedIn ? `pl-12 pr-5` : `px-5`} py-3 outline-none transition-all duration-300`}
       />
@@ -485,8 +488,12 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
         {/* Info: remarks of allowed file (20240704 - Shirley) */}
         <div className="absolute inset-x-0 bottom-0 z-100 mb-4 text-center">
           <div className="flex flex-row items-end justify-around gap-5 text-sm text-surface-brand-secondary">
-            <p className="mt-2">Supported formats: PDF, TXT, PNG, JPEG, SVG, JSON</p>
-            <p>Maximum size: 50MB</p>
+            <p className="mt-2">
+              {t('CHAT.REMARK_ALLOWED_FILE')} {allowedFileTypes}
+            </p>
+            <p>
+              {t('CHAT.REMARK_MAX_SIZE')} {maxFileSize}
+            </p>
           </div>
         </div>
       </div>
