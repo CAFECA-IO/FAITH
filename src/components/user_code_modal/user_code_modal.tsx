@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import { Button } from '@/components/button/button';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface IUserCodeModalProps {
   isModalVisible: boolean;
@@ -7,161 +9,112 @@ interface IUserCodeModalProps {
 }
 
 const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModalProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
+
   const firstItem = (
     <li className="mb-20px">
-      Purpose
+      {t('USER_CODE.1_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        This User Code of Conduct aims to ensure a safe, friendly, and efficient environment for all
-        users on this platform.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.1_CONTENT')}</span>
     </li>
   );
 
   const secondItem = (
     <li className="mb-20px">
-      User Responsibilities
+      {t('USER_CODE.2_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        2.1 Compliance with Laws and Regulations
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.2_1_TITLE')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        Users must comply with all applicable laws and regulations and must not engage in any
-        illegal activities using this platform.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.2_1_CONTENT')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">2.2 Honesty and Integrity</span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.2_2_TITLE')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        Users should provide accurate and truthful information and must not impersonate others or
-        make false statements.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.2_2_CONTENT')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">2.3 Respect for Others</span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.2_3_TITLE')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        Users should respect the rights and dignity of others and must not post content that is
-        insulting, discriminatory, or defamatory.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.2_3_CONTENT')}</span>
     </li>
   );
 
   const thirdItem = (
     <li className="mb-20px">
-      Platform Use
+      {t('USER_CODE.3_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">3.1 Account Security</span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.3_1_TITLE')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        Users are responsible for the security of their accounts and should keep their passwords
-        confidential and not share their accounts with others.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.3_1_CONTENT')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">3.2 Content Posting</span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.3_2_TITLE')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        All content posted by users should comply with platform regulations and must not contain
-        obscene, violent, inciting, or other prohibited content.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.3_2_CONTENT')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">3.3 Privacy Protection </span>
-      <span className="text-base text-text-neutral-secondary">
-        Users must not illegally collect, use, or disclose personal information of others and should
-        respect the privacy of others.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.3_3_TITLE')}</span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.3_3_CONTENT')}</span>
     </li>
   );
 
   const fourthItem = (
     <li className="mb-20px">
-      Platform Rules
+      {t('USER_CODE.4_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">4.1 Content Review</span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.4_1_TITLE')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        The platform reserves the right to review and delete any content that does not comply with
-        this User Code of Conduct and to suspend or terminate the accounts of violators.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.4_1_CONTENT')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">4.2 Reporting Mechanism</span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.4_2_TITLE')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        If users discover any violations, they can report them using the platform&apos;s reporting
-        function, and the platform will handle them accordingly.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.4_2_CONTENT')}</span>
     </li>
   );
 
   const fifthItem = (
     <li className="mb-20px">
-      Limitation of Liability
+      {t('USER_CODE.5_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">5.1 Service Interruptions</span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.5_1_TITLE')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        The platform is not responsible for any service interruptions caused by technical failures
-        or other reasons but will strive to restore services as quickly as possible.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.5_1_CONTENT')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">5.2 Content Responsibility</span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.5_2_TITLE')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        Users are responsible for the content they post, and the platform is not legally responsible
-        for user-posted content.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.5_2_CONTENT')}</span>
     </li>
   );
 
   const sixthItem = (
     <li className="mb-20px">
-      User Plans
+      {t('USER_CODE.6_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">6.1 Free Plan</span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.6_1_TITLE')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        Users not on a paid plan should note that their conversation content may be made public in
-        discussion forums. The platform is not responsible for the use and management of public
-        content, and users assume the risk of their content being made public.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.6_1_CONTENT')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">6.2 Paid Plan</span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.6_2_TITLE')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        Users who choose a paid plan will have their conversation content kept private and will
-        enjoy additional exclusive features and services provided by the platform.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.6_2_CONTENT')}</span>
     </li>
   );
 
   const seventhItem = (
     <li className="mb-20px">
-      Modification and Termination
+      {t('USER_CODE.7_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">7.1 Code Modification</span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.7_1_TITLE')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        The platform reserves the right to modify this User Code of Conduct at any time, and the
-        modified code will be published on the platform and take effect immediately.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.7_1_CONTENT')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">7.2 Service Termination</span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.7_2_TITLE')}</span>
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        The platform reserves the right to immediately terminate the services of users who violate
-        this User Code of Conduct.
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.7_2_CONTENT')}</span>
     </li>
   );
 
   const eighthItem = (
     <li className="mb-20px">
-      Contact Information
+      {t('USER_CODE.8_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">
-        If users have any questions or suggestions regarding this User Code of Conduct, please
-        contact us through the following methods:
-      </span>
+      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.8_CONTENT')}</span>
       <br />
     </li>
   );
@@ -174,7 +127,7 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
       >
         {/* Info: (20240625 - Julian) Header */}
         <div className="flex items-center justify-between pl-40px pr-20px text-2xl font-bold text-text-neutral-primary">
-          <h1>User Code of Conduct</h1>
+          <h1>{t('USER_CODE.TITLE')}</h1>
           <button type="button" onClick={modalVisibilityHandler}>
             <Image src="/icons/cross.svg" width={32} height={32} alt="cross_icon" />
           </button>
@@ -212,7 +165,7 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
               variant="secondaryOutline"
               onClick={modalVisibilityHandler}
             >
-              Cancel
+              {t('COMMON.CANCEL')}
             </Button>
             <Button
               id="user-code-agree-button"
@@ -220,8 +173,8 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
               variant="tertiary"
               onClick={modalVisibilityHandler}
             >
-              Agreed
-              <span className="hidden md:block">, I confirm acceptance of the above terms.</span>
+              {t('USER_CODE.AGREE_BTN_1')}
+              <span className="hidden md:block">{t('USER_CODE.AGREE_BTN_2')}</span>
             </Button>
           </div>
         </div>

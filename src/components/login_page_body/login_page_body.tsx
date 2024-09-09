@@ -152,14 +152,14 @@ const LoginPageBody = () => {
                     />
                   </div>
                   <p className="text-xs md:text-sm">
-                    {t('LOGIN.USER_GUIDE_HINT_1')}{' '}
+                    {t('LOGIN.USER_GUIDE_HINT_1')}
                     <button
                       type="button"
                       className="font-semibold text-text-neutral-link hover:underline"
                       onClick={userCodeModalVisibilityHandler}
                     >
                       {t('LOGIN.USER_GUIDE_HINT_2')}
-                    </button>{' '}
+                    </button>
                     {t('LOGIN.USER_GUIDE_HINT_3')}
                   </p>
                 </div>
