@@ -5,11 +5,14 @@ import { TopicCategory } from '@/constants/topic';
 import TopicItem from '@/components/topic_item/topic_item';
 import SortToggle from '@/components/sort_toggle/sort_toggle';
 import { SortOptions } from '@/constants/display';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 const TopicSeeMorePageBody = () => {
-  const topicCategories = Object.values(TopicCategory);
-
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const { query } = useRouter();
+
+  const topicCategories = Object.values(TopicCategory);
   const defaultCategory = query.category ? (query.category as TopicCategory) : topicCategories[0];
 
   const [search, setSearch] = useState('');
@@ -38,7 +41,7 @@ const TopicSeeMorePageBody = () => {
         className={`flex flex-col items-center border-b-2 px-12px py-8px hover:border-tabs-stroke-hover hover:text-tabs-text-hover ${currentCategory === category ? 'border-tabs-stroke-active text-tabs-text-active' : 'border-tabs-stroke-default text-tabs-text-default'}`}
         onClick={clickHandler}
       >
-        <p>{category}</p>
+        <p>{t(category)}</p>
       </button>
     );
   });
@@ -51,16 +54,15 @@ const TopicSeeMorePageBody = () => {
       currentTopics.map((topic) => <TopicItem key={topic.id} topic={topic} />)
     ) : (
       <div className="col-span-2 mx-auto flex-1 py-40px text-text-neutral-tertiary">
-        <p>No topics yet.</p>
+        <p>{t('DISCOVER.NO_TOPIC_FOUND')}</p>
       </div>
     );
 
   return (
     <div className="mx-100px my-180px flex w-screen flex-col items-center">
-      <h1 className="text-48px font-bold text-text-neutral-primary">Welcome to Discover</h1>
+      <h1 className="text-48px font-bold text-text-neutral-primary">{t('DISCOVER.TITLE')}</h1>
       <p className="mt-20px text-base font-semibold text-text-neutral-tertiary">
-        Discover records publicly asked questions by users, allowing you to find answers from
-        others&apos; inquiries.
+        {t('DISCOVER.SUB_TITLE')}
       </p>
       <div className="mt-40px flex w-full flex-col items-center">
         {/* Info: (20240626 - Julian) Chat box */}
@@ -68,7 +70,7 @@ const TopicSeeMorePageBody = () => {
           <input
             type="text"
             className="flex-1 bg-transparent text-text-neutral-primary outline-none placeholder:text-input-text-input-placeholder"
-            placeholder="Search topics..."
+            placeholder={t('DISCOVER.SEARCH_PLACEHOLDER')}
             value={search}
             onChange={searchChangeHandler}
           />
@@ -96,7 +98,7 @@ const TopicSeeMorePageBody = () => {
         <div className="mt-40px flex w-full flex-col items-stretch">
           {/* Info: (20240626 - Julian) Category title */}
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-text-neutral-secondary">{currentCategory}</h2>
+            <h2 className="text-2xl font-bold text-text-neutral-secondary">{t(currentCategory)}</h2>
             {/* Info: (20240626 - Julian) Sort */}
             <SortToggle currentSort={sort} clickHandler={sortSwitchHandler} />
           </div>

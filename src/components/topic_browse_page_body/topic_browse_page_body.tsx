@@ -5,8 +5,11 @@ import { dummyTopicList } from '@/interfaces/topic';
 import { TopicCategory } from '@/constants/topic';
 import TopicSection from '@/components/topic_section/topic_section';
 import { NATIVE_ROUTE } from '@/constants/url';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 const TopicBrowsePageBody = () => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const topicCategories = Object.values(TopicCategory);
 
   const [search, setSearch] = useState('');
@@ -22,7 +25,7 @@ const TopicBrowsePageBody = () => {
         key={`${category}_tab`}
         className="flex flex-col items-center whitespace-nowrap border-b-2 px-12px py-8px hover:border-tabs-stroke-hover hover:text-tabs-text-hover"
       >
-        <p>{category}</p>
+        <p>{t(category)}</p>
       </Link>
     );
   });
@@ -37,15 +40,16 @@ const TopicBrowsePageBody = () => {
     <div className="mx-100px my-100px flex w-screen flex-col items-center px-20px md:my-180px">
       {/* Info: (20240905 - Julian) Desktop Title */}
       <h1 className="hidden text-48px font-bold text-text-neutral-primary md:block">
-        Welcome to Discover
+        {t('DISCOVER.TITLE')}
       </h1>
       <p className="mt-20px hidden text-base font-semibold text-text-neutral-tertiary md:block">
-        Discover records publicly asked questions by users, allowing you to find answers from
-        others&apos; inquiries.
+        {t('DISCOVER.SUB_TITLE')}
       </p>
 
       {/* Info: (20240905 - Julian) Mobile Title */}
-      <h1 className="block text-2xl font-bold text-text-neutral-primary md:hidden">Discover</h1>
+      <h1 className="block text-2xl font-bold text-text-neutral-primary md:hidden">
+        {t('DISCOVER.HEADER_TITLE')}
+      </h1>
 
       {/* Info: (20240905 - Julian) Body */}
       <div className="mt-40px flex w-full flex-col items-center">
@@ -54,7 +58,7 @@ const TopicBrowsePageBody = () => {
           <input
             type="text"
             className="flex-1 bg-transparent text-text-neutral-primary outline-none placeholder:text-input-text-input-placeholder"
-            placeholder="Search topics..."
+            placeholder={t('DISCOVER.SEARCH_PLACEHOLDER')}
             value={search}
             onChange={searchChangeHandler}
           />

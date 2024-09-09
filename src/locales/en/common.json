@@ -88,6 +88,20 @@
     "REMARK_ALLOWED_FILE": "Supported formats:",
     "REMARK_MAX_SIZE": "Maximum size:"
   },
+  "DISCOVER": {
+    "HEADER_TITLE": "Discover",
+    "TITLE": "Welcome to Discover",
+    "SUB_TITLE": "Discover records publicly asked questions by users, allowing you to find answers from others' inquiries.",
+    "SEARCH_PLACEHOLDER": "Search topics...",
+    "NO_FAVORITE_YET": "You don't have any favorite topics yet.",
+    "NO_TOPIC_FOUND": "No topics found.",
+    "TRENDING_TAB": "Trending topics",
+    "AI_FINANCE_TAB": "AI Finance",
+    "FINANCIAL_INSIGHTS_TAB": "Financial Insights",
+    "OTHER_TAB": "Other",
+    "FAVORITES_TAB": "My Favorites",
+    "SEE_MORE": "See More"
+  },
   "FOLDER": {
     "SHARE": "Share Folder",
     "CHAT_IN_FOLDER": "Chat in the folder",
@@ -139,6 +153,9 @@
     "SUB_CANCEL_BTN": "Cancel Subscription",
     "SUB_CANCEL_BTN_M": "Cancel"
   },
+  "SUBSCRIPTION": {
+    "HEADER_TITLE": "Subscription"
+  },
   "COMMON": {
     "RENAME": "Rename",
     "SHARE": "Share",
@@ -151,7 +168,8 @@
     "BACK": "Back",
     "NTD": "NTD",
     "OF": "of",
-    "CANCEL": "Cancel"
+    "CANCEL": "Cancel",
+    "LOADING": "Loading..."
   },
   "TOAST": {
     "REGISTER_REMINDER": "Do you like Faith? Access smarter responses, upload files and images, and more.",

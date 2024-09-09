@@ -88,6 +88,20 @@
     "REMARK_ALLOWED_FILE": "支援格式：",
     "REMARK_MAX_SIZE": "最大档案大小："
   },
+  "DISCOVER": {
+    "HEADER_TITLE": "发现",
+    "TITLE": "欢迎来到发现",
+    "SUB_TITLE": "发现其他使用者公开提问的记录，让您从其他人的询问中找到答案。",
+    "SEARCH_PLACEHOLDER": "搜寻主题...",
+    "NO_FAVORITE_YET": "您尚未有任何最爱的主题。",
+    "NO_TOPIC_FOUND": "找不到主题。",
+    "TRENDING_TAB": "热门话题",
+    "AI_FINANCE_TAB": "AI 金融",
+    "FINANCIAL_INSIGHTS_TAB": "财务洞察",
+    "OTHER_TAB": "其他",
+    "FAVORITES_TAB": "我的最爱",
+    "SEE_MORE": "查看更多"
+  },
   "FOLDER": {
     "SHARE": "分享资料夹",
     "CHAT_IN_FOLDER": "资料夹中的聊天室",
@@ -139,6 +153,9 @@
     "SUB_CANCEL_BTN": "取消订阅",
     "SUB_CANCEL_BTN_M": "取消"
   },
+  "SUBSCRIPTION": {
+    "HEADER_TITLE": "订阅"
+  },
   "COMMON": {
     "RENAME": "重新命名",
     "SHARE": "分享",
@@ -151,7 +168,8 @@
     "BACK": "返回",
     "NTD": "新台币",
     "OF": "之",
-    "CANCEL": "取消"
+    "CANCEL": "取消",
+    "LOADING": "载入中..."
   },
   "TOAST": {
     "REGISTER_REMINDER": "您喜欢 Faith 吗？注册以访问更智能的回应，上传文件和图像等功能。",
