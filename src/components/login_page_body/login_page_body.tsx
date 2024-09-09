@@ -69,7 +69,7 @@ const LoginPageBody = () => {
         scroll={false}
         locale={item.value}
         onClick={languageClickHandler}
-        className="w-full whitespace-nowrap border-b border-stroke-neutral-solid-light px-24px py-10px hover:border-button-stroke-primary-hover hover:text-button-text-primary-hover"
+        className="w-full whitespace-nowrap border-b border-stroke-neutral-solid-light px-24px py-10px text-center hover:border-button-stroke-primary-hover hover:text-button-text-primary-hover"
       >
         {item.label}
       </Link>
@@ -87,7 +87,7 @@ const LoginPageBody = () => {
             height={60}
             className="hidden md:block"
           />
-          <div className="my-5 hidden text-5xl font-bold leading-8 text-text-neutral-primary md:block">
+          <div className="my-5 hidden w-full text-center text-5xl font-bold leading-8 text-text-neutral-primary md:block">
             {t('LOGIN.WELCOME')}
           </div>
 
@@ -96,7 +96,7 @@ const LoginPageBody = () => {
             <Image src="/logo/isunfa_logo_with_ring.svg" alt="isunfa logo" width={40} height={40} />
             <p>{t('LOGIN.WELCOME')}</p>
           </div>
-          <div className="mt-5 rounded-3xl bg-white/30 px-32px py-40px max-md:mt-10 max-md:max-w-full md:px-48px md:py-80px">
+          <div className="mt-5 rounded-3xl bg-white/30 px-32px py-40px max-md:mt-10 md:px-48px md:py-80px lg:w-600px">
             <div className="mt-10 flex flex-col items-center">
               <div className="relative h-100px w-100px md:h-180px md:w-180px">
                 <Image

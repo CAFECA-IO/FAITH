@@ -13,6 +13,14 @@
     "ADD_FOLDER": "拖曳聊天室至此新增资料夹",
     "REMOVE_CHAT": "删除聊天室"
   },
+  "LOGIN": {
+    "WELCOME": "欢迎回来！",
+    "LOGIN_BTN": "使用装置登入",
+    "REGISTER": "注册您的装置",
+    "USER_GUIDE_HINT_1": "我已阅读",
+    "USER_GUIDE_HINT_2": "使用者条款",
+    "USER_GUIDE_HINT_3": "并同意遵守平台的规定。"
+  },
   "CHAT": {
     "I_AM_FAITH": "嗨，我是人工智慧会计师 Faith。",
     "FINANCIAL_TITLE": "解释财务报表",
