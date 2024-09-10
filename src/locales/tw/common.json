@@ -11,7 +11,10 @@
   "SIDE_BAR": {
     "MY_CHAT_LIST": "我的聊天室列表",
     "ADD_FOLDER": "拖曳聊天室至此新增資料夾",
-    "REMOVE_CHAT": "刪除聊天室"
+    "REMOVE_CHAT": "刪除聊天室",
+    "RENAME_FOLDER": "重新命名資料夾",
+    "SHARE_FOLDER": "分享資料夾",
+    "REMOVE_FOLDER": "刪除資料夾"
   },
   "LOGIN": {
     "WELCOME": "歡迎回來！",
@@ -19,7 +22,10 @@
     "REGISTER": "註冊您的裝置",
     "USER_GUIDE_HINT_1": "我已閱讀",
     "USER_GUIDE_HINT_2": "使用者條款",
-    "USER_GUIDE_HINT_3": "並同意遵守平台的規定。"
+    "USER_GUIDE_HINT_3": "並同意遵守平台的規定。",
+    "REGISTER_TITLE": "設定使用者名稱",
+    "REGISTER_CONTENT": "此使用者名稱將套用至您的裝置。",
+    "REGISTER_PLACEHOLDER": "輸入您的使用者名稱"
   },
   "USER_CODE": {
     "TITLE": "使用者服務條款",
@@ -86,7 +92,15 @@
     "INCOMPLETE": "資訊不完整",
     "FEEDBACK": "感謝您的回饋！",
     "REMARK_ALLOWED_FILE": "支援格式：",
-    "REMARK_MAX_SIZE": "檔案上限："
+    "REMARK_MAX_SIZE": "檔案上限：",
+    "UPLOAD_TITLE": "上傳檔案",
+    "UPLOAD_SUBTITLE": "請上傳您的檔案",
+    "UPLOAD_CONTENT_1": "拖曳檔案至此或",
+    "UPLOAD_CONTENT_2": "瀏覽檔案",
+    "FEEDBACK_TITLE": "提供回饋",
+    "FEEDBACK_PLACEHOLDER": "輸入您的回饋",
+    "MOVE_CHAT_TITLE": "移動聊天室",
+    "MOVE_CHAT_CONTENT": "移動到..."
   },
   "DISCOVER": {
     "HEADER_TITLE": "發現",
@@ -100,7 +114,14 @@
     "FINANCIAL_INSIGHTS_TAB": "財務洞察",
     "OTHER_TAB": "其他",
     "FAVORITES_TAB": "我的最愛",
-    "SEE_MORE": "查看更多"
+    "SEE_MORE": "查看更多",
+    "REPORT_COMMENT_TITLE": "檢舉評論",
+    "REPORT_COMMENT_CONTENT": "檢舉原因",
+    "REPORT_COMMENT_PLACEHOLDER": "輸入您檢舉的原因",
+    "NO_COMMENT_YET": "尚無評論。",
+    "COMMENT": "評論",
+    "ADD_COMMENT": "新增評論",
+    "COMMENT_WARNING": "注意！Faith 禁止發表傷害他人的評論。"
   },
   "FOLDER": {
     "SHARE": "分享資料夾",
@@ -154,7 +175,29 @@
     "SUB_CANCEL_BTN_M": "取消"
   },
   "SUBSCRIPTION": {
-    "HEADER_TITLE": "訂閱"
+    "HEADER_TITLE": "訂閱",
+    "SUBSCRIBE": "訂閱 Faith Plus 方案",
+    "PER_MONTH_1": "每月",
+    "PER_MONTH_2": "",
+    "PLUS_SUBSCRIPTION": "Faith Plus 方案",
+    "BILLED_MONTHLY": "每月計費",
+    "SUBTOTAL": "小計",
+    "TAX": "稅",
+    "TOTAL_DUE_TODAY": "今日總額",
+    "PAYMENT_METHOD": "付款方式",
+    "CARD_INFO": "信用卡資訊",
+    "CARD_NO": "信用卡號碼",
+    "CARD_NO_PLACEHOLDER": "輸入信用卡號碼",
+    "EXPIRATION": "到期日",
+    "CVC": "信用卡驗證碼",
+    "CARDHOLDER_NAME": "持卡人姓名",
+    "CARDHOLDER_NAME_PLACEHOLDER": "輸入持卡人姓名",
+    "BILLING_ADDRESS": "帳單地址",
+    "COUNTRY": "國家",
+    "POSTAL_CODE": "郵遞區號",
+    "ADDRESS_LINE": "地址",
+    "CHECK_BOX_HINT": "您將按照上述金額和頻率收費，直到您取消訂閱。我們可能會變更我們的價格，詳情請參閱我們的使用者服務條款。您可以隨時取消。訂閱即表示您同意 Faith 的使用條款和隱私政策。",
+    "SUBSCRIBE_BTN": "訂閱"
   },
   "COMMON": {
     "RENAME": "重新命名",
@@ -166,13 +209,31 @@
     "ALL_TYPE": "所有類型",
     "MOVE": "移動",
     "BACK": "返回",
+    "REMOVE": "刪除",
     "NTD": "新臺幣",
     "OF": "之",
     "CANCEL": "取消",
-    "LOADING": "載入中..."
+    "CONFIRM": "確認",
+    "LOADING": "載入中...",
+    "SEND": "發送",
+    "REGISTER": "註冊"
   },
   "TOAST": {
     "REGISTER_REMINDER": "您喜歡 Faith 嗎？註冊以訪問更智能的回應，上傳文件和圖像等功能。",
-    "LOGGED_SUCCESS": "您已成功登入！"
+    "LOGGED_SUCCESS": "您已成功登入！",
+    "LOGGED_OUT": "您已成功登出！"
+  },
+  "MESSAGE_MODAL": {
+    "DELETE_CHAT_TITLE": "刪除所有聊天室",
+    "DELETE_CHAT_MESSAGE": "您確定要刪除所有聊天室嗎？此操作無法撤銷！",
+    "CANCEL_SUBSCRIPTION_TITLE": "取消訂閱",
+    "CANCEL_SUBSCRIPTION_MESSAGE_1": "您確定要取消訂閱嗎？",
+    "CANCEL_SUBSCRIPTION_MESSAGE_2": "一旦確認，取消將在下次計費日期生效。",
+    "AUTO_RENEWAL_TITLE": "自動續訂",
+    "AUTO_RENEWAL_MESSAGE": "您確定要關閉自動續訂嗎？",
+    "REMOVE_FOLDER_TITLE": "刪除資料夾",
+    "REMOVE_FOLDER_MESSAGE": "您確定要刪除此資料夾嗎？\n此操作無法撤銷！",
+    "REMOVE_CHAT_TITLE": "刪除聊天室",
+    "REMOVE_CHAT_MESSAGE": "您確定要刪除此聊天室嗎？\n此操作無法撤銷！"
   }
 }

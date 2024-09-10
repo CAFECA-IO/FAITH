@@ -97,11 +97,11 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
   const removeClickHandler = () => {
     setEditMenuVisible(false);
     messageModalDataHandler({
-      title: 'Remove Chat',
+      title: t('MESSAGE_MODAL.REMOVE_CHAT_TITLE'),
       messageType: MessageType.WARNING,
-      redMsg: 'Are you sure you want to delete this chat?\nThis action cannot be undone!',
-      backBtnStr: 'Cancel',
-      submitBtnStr: 'Remove',
+      redMsg: t('MESSAGE_MODAL.REMOVE_CHAT_MESSAGE'),
+      backBtnStr: t('COMMON.CANCEL'),
+      submitBtnStr: t('COMMON.REMOVE'),
       submitBtnFunction: () => {
         deleteChat(chatBrief.id);
       },
@@ -209,6 +209,8 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
 };
 
 const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
+
   const { deleteFolder, renameFolder } = useChatCtx();
   const { messageModalDataHandler, messageModalVisibilityHandler } = useGlobalCtx();
   const [isFolderExpanded, setIsFolderExpanded] = useState(true);
@@ -264,11 +266,11 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
     setEditMenuVisible(false);
 
     messageModalDataHandler({
-      title: 'Remove Folder',
+      title: t('MESSAGE_MODAL.REMOVE_FOLDER_TITLE'),
       messageType: MessageType.WARNING,
-      redMsg: 'Are you sure you want to delete this folder?\nThis action cannot be undone!',
-      backBtnStr: 'Cancel',
-      submitBtnStr: 'Remove',
+      redMsg: t('MESSAGE_MODAL.REMOVE_FOLDER_MESSAGE'),
+      backBtnStr: t('COMMON.CANCEL'),
+      submitBtnStr: t('COMMON.REMOVE'),
       submitBtnFunction: () => {
         // ToDo: (20240702 - Julian) 這邊要寫刪除資料夾的 function ---> done (20240705 - Shirley)
         deleteFolder(chatFolder.id);
@@ -282,13 +284,13 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
       <div key={chatFolder.id} ref={editMenuRef} className="absolute right-4 top-6 z-50">
         <div className="flex flex-col gap-1 rounded-sm bg-surface-neutral-surface-lv2 py-2 text-base font-normal leading-6 tracking-normal shadow-userMenu">
           <Button variant={'secondaryBorderless'} onClick={renameClickHandler}>
-            Rename Folder
+            {t('SIDE_BAR.RENAME_FOLDER')}
           </Button>
           <Button disabled variant={'secondaryBorderless'} onClick={shareClickHandler}>
-            Share Folder
+            {t('SIDE_BAR.SHARE_FOLDER')}
           </Button>
           <Button variant={'secondaryBorderless'} onClick={removeClickHandler}>
-            Remove Folder
+            {t('SIDE_BAR.REMOVE_FOLDER')}
           </Button>
         </div>
       </div>

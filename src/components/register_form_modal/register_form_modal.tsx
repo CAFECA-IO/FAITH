@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useUserCtx } from '@/contexts/user_context';
 import { Button } from '@/components/button/button';
 import { DEFAULT_USER_NAME } from '@/constants/display';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface IRegisterFormModal {
   isModalVisible: boolean;
@@ -9,6 +11,8 @@ interface IRegisterFormModal {
 }
 
 const RegisterFormModal = ({ isModalVisible, modalVisibilityHandler }: IRegisterFormModal) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
+
   const { signUp } = useUserCtx();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -45,10 +49,10 @@ const RegisterFormModal = ({ isModalVisible, modalVisibilityHandler }: IRegister
       <div className="relative mx-auto flex flex-col items-center rounded-md bg-surface-neutral-surface-lv2 p-6 shadow-lg shadow-black/80 sm:w-400px sm:px-3">
         <div className="flex gap-2.5 px-5 py-4">
           <div className="flex flex-1 flex-col justify-center space-y-2 text-center">
-            <div className="text-xl font-bold text-card-text-primary">Set User Name</div>
-            <div className="text-xs text-card-text-secondary">
-              This username will be applied to your device.
+            <div className="text-xl font-bold text-card-text-primary">
+              {t('LOGIN.REGISTER_TITLE')}
             </div>
+            <div className="text-xs text-card-text-secondary">{t('LOGIN.REGISTER_CONTENT')}</div>
           </div>
           <div className="absolute right-3 top-3">
             <button
@@ -98,7 +102,7 @@ const RegisterFormModal = ({ isModalVisible, modalVisibilityHandler }: IRegister
                 ref={inputRef}
                 type="text"
                 className="mx-2 w-full bg-transparent px-1 py-2.5 text-base text-input-text-input-filled placeholder:text-input-text-input-placeholder focus:outline-none"
-                placeholder="Username"
+                placeholder={t('LOGIN.REGISTER_PLACEHOLDER')}
                 onKeyDown={onEnterPress}
                 onCompositionStart={handleCompositionStart}
                 onCompositionEnd={handleCompositionEnd}
@@ -110,10 +114,10 @@ const RegisterFormModal = ({ isModalVisible, modalVisibilityHandler }: IRegister
           <div className="flex gap-3">
             {/* TODO: button component (20240409 - Shirley) */}
             <Button type="button" variant="tertiaryBorderless" onClick={modalVisibilityHandler}>
-              Cancel
+              {t('COMMON.CANCEL')}
             </Button>
             <Button type="button" variant={'tertiary'} onClick={registerClickHandler}>
-              Register
+              {t('COMMON.REGISTER')}
             </Button>
           </div>
         </div>

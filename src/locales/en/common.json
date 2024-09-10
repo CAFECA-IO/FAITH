@@ -11,7 +11,10 @@
   "SIDE_BAR": {
     "MY_CHAT_LIST": "My Chat List",
     "ADD_FOLDER": "Drag Chat to Add Folder",
-    "REMOVE_CHAT": "Remove Chat"
+    "REMOVE_CHAT": "Remove Chat",
+    "RENAME_FOLDER": "Rename Folder",
+    "SHARE_FOLDER": "Share Folder",
+    "REMOVE_FOLDER": "Remove Folder"
   },
   "LOGIN": {
     "WELCOME": "Welcome Back!",
@@ -19,7 +22,10 @@
     "REGISTER": "Register your Device",
     "USER_GUIDE_HINT_1": "I have read the ",
     "USER_GUIDE_HINT_2": "User Guide",
-    "USER_GUIDE_HINT_3": " and agree to comply with the platform's regulations."
+    "USER_GUIDE_HINT_3": " and agree to comply with the platform's regulations.",
+    "REGISTER_TITLE": "Set User Name",
+    "REGISTER_CONTENT": "This username will be applied to your device.",
+    "REGISTER_PLACEHOLDER": "Enter your username"
   },
   "USER_CODE": {
     "TITLE": "User Code of Conduct",
@@ -81,12 +87,28 @@
     "WORSE": "Worse",
     "SAME": "Same",
     "TELL_YOUR_IDEA": "Tell us your idea:",
-    "DONT_LIKE_ANSWER": "I don&apos;t like this answer",
+    "DONT_LIKE_ANSWER": "I don’t like this answer",
     "ERROR_ANSWER": "Error answer",
     "INCOMPLETE": "Incomplete information",
     "FEEDBACK": "Thank you for your feedback!",
     "REMARK_ALLOWED_FILE": "Supported formats:",
-    "REMARK_MAX_SIZE": "Maximum size:"
+    "REMARK_MAX_SIZE": "Maximum size:",
+    "UPLOAD_TITLE": "Upload File",
+    "UPLOAD_SUBTITLE": "Please upload your file",
+    "UPLOAD_CONTENT_1": "Drag and drop files here or ",
+    "UPLOAD_CONTENT_2": "Browse",
+    "FEEDBACK_TITLE": "Provide Additional Feedback",
+    "FEEDBACK_PLACEHOLDER": "Enter your feedback",
+    "MOVE_CHAT_TITLE": "Move Chat",
+    "MOVE_CHAT_CONTENT": "Move to...",
+    "SHARE_LINK_TITLE": "Share public link to chat",
+    "SHARE_LINK_DESCRIPTION": "Your name and any messages you add after sharing stay private.",
+    "UPDATE_LINK_TITLE": "Update public link to chat",
+    "UPDATE_LINK_DESCRIPTION": "A past version of this chat has already been shared. Manage previously shared chats via Settings.",
+    "CREATE_LINK_BTN": "Create Link",
+    "UPDATE_LINK_BTN": "Update Link",
+    "COPY_LINK_BTN": "Copy Link",
+    "UPDATE_LINK_HINT": "The public link to your chat has been created. Manage previously shared chats via Settings."
   },
   "DISCOVER": {
     "HEADER_TITLE": "Discover",
@@ -100,7 +122,14 @@
     "FINANCIAL_INSIGHTS_TAB": "Financial Insights",
     "OTHER_TAB": "Other",
     "FAVORITES_TAB": "My Favorites",
-    "SEE_MORE": "See More"
+    "SEE_MORE": "See More",
+    "REPORT_COMMENT_TITLE": "Report Comment",
+    "REPORT_COMMENT_CONTENT": "Reason for report",
+    "REPORT_COMMENT_PLACEHOLDER": "Enter the reason for your report",
+    "NO_COMMENT_YET": "No comments yet.",
+    "COMMENT": "Comment",
+    "ADD_COMMENT": "Add Comment",
+    "COMMENT_WARNING": "Attention! Faith prohibits posting comments that harm others."
   },
   "FOLDER": {
     "SHARE": "Share Folder",
@@ -154,7 +183,29 @@
     "SUB_CANCEL_BTN_M": "Cancel"
   },
   "SUBSCRIPTION": {
-    "HEADER_TITLE": "Subscription"
+    "HEADER_TITLE": "Subscription",
+    "SUBSCRIBE": "Subscribe to Faith Plus Subscription",
+    "PER_MONTH_1": "",
+    "PER_MONTH_2": "per/month",
+    "PLUS_SUBSCRIPTION": "Faith Plus Subscription",
+    "BILLED_MONTHLY": "Billed Monthly",
+    "SUBTOTAL": "Subtotal",
+    "TAX": "Tax",
+    "TOTAL_DUE_TODAY": "Total due today",
+    "PAYMENT_METHOD": "Payment Method",
+    "CARD_INFO": "Card Information",
+    "CARD_NO": "Card No.",
+    "CARD_NO_PLACEHOLDER": "Enter Card No.",
+    "EXPIRATION": "Expiration",
+    "CVC": "CVC",
+    "CARDHOLDER_NAME": "Cardholder Name",
+    "CARDHOLDER_NAME_PLACEHOLDER": "Full name on card",
+    "BILLING_ADDRESS": "Billing Address",
+    "COUNTRY": "Country",
+    "POSTAL_CODE": "Postal Code",
+    "ADDRESS_LINE": "Address Line",
+    "CHECK_BOX_HINT": "You’ll be charged the amount and at the frequency listed above until you cancel. We may change our prices as described in our Terms of Use. You can cancel any time.By Subscribing, you agree to Faith’s Terms of Use and Privacy Policy.",
+    "SUBSCRIBE_BTN": "Subscribe"
   },
   "COMMON": {
     "RENAME": "Rename",
@@ -165,14 +216,32 @@
     "SEARCH": "Search",
     "ALL_TYPE": "All Type",
     "MOVE": "Move",
+    "REMOVE": "Remove",
     "BACK": "Back",
-    "NTD": "NTD",
+    "NTD": "NTD $",
     "OF": "of",
     "CANCEL": "Cancel",
-    "LOADING": "Loading..."
+    "CONFIRM": "Confirm",
+    "LOADING": "Loading...",
+    "SEND": "Send",
+    "REGISTER": "Register"
   },
   "TOAST": {
     "REGISTER_REMINDER": "Do you like Faith? Access smarter responses, upload files and images, and more.",
-    "LOGGED_SUCCESS": "You have successfully logged in!"
+    "LOGGED_SUCCESS": "You have successfully logged in!",
+    "LOGGED_OUT": "You have successfully logged out!"
+  },
+  "MESSAGE_MODAL": {
+    "DELETE_CHAT_TITLE": "Delete All Chat",
+    "DELETE_CHAT_MESSAGE": "Are you sure you want to delete all Chat?\nThis action cannot be undone!",
+    "CANCEL_SUBSCRIPTION_TITLE": "Cancel Subscription",
+    "CANCEL_SUBSCRIPTION_MESSAGE_1": "Are you sure you want to cancel your subscription?",
+    "CANCEL_SUBSCRIPTION_MESSAGE_2": "Once confirmed, the cancellation will take effect on the next billing date.",
+    "AUTO_RENEWAL_TITLE": "Auto-Renewal",
+    "AUTO_RENEWAL_MESSAGE": "Are you sure you want to turn off auto-renewal?",
+    "REMOVE_FOLDER_TITLE": "Remove Folder",
+    "REMOVE_FOLDER_MESSAGE": "Are you sure you want to delete this folder?\nThis action cannot be undone!",
+    "REMOVE_CHAT_TITLE": "Remove Chat",
+    "REMOVE_CHAT_MESSAGE": "Are you sure you want to delete this chat?\nThis action cannot be undone!"
   }
 }

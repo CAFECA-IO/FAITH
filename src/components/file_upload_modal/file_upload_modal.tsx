@@ -2,6 +2,8 @@ import Image from 'next/image';
 import React from 'react';
 import { useChatCtx } from '@/contexts/chat_context';
 import { ALLOWED_FILE_TYPES_STRING } from '@/interfaces/file';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface IFileUploadModalProps {
   isModalVisible: boolean;
@@ -9,6 +11,7 @@ interface IFileUploadModalProps {
 }
 
 const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUploadModalProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const { handleFile } = useChatCtx();
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -59,12 +62,15 @@ const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUpload
         <Image src="/icons/files.svg" width={55} height={60} alt="upload_file" />
         <div className="mt-10 flex flex-col items-center gap-2">
           <p className="font-semibold text-drag-n-drop-text-primary">
-            Drag and drop files here or <span className="text-link-text-primary">Browse</span>
+            {t('CHAT.UPLOAD_CONTENT_1')}
+            <span className="text-link-text-primary">{t('CHAT.UPLOAD_CONTENT_2')}</span>
           </p>
           <p className="mt-2 text-center text-sm text-drag-n-drop-text-note">
-            Supported formats: PDF, TXT, PNG, JPEG, SVG, JSON
+            {t('CHAT.REMARK_ALLOWED_FILE')} PDF, TXT, PNG, JPEG, SVG, JSON
           </p>
-          <p className="text-center text-sm text-drag-n-drop-text-note">Maximum size: 50MB</p>
+          <p className="text-center text-sm text-drag-n-drop-text-note">
+            {t('CHAT.REMARK_MAX_SIZE')} 50MB
+          </p>
         </div>
       </label>
     </div>
@@ -84,8 +90,8 @@ const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUpload
         </button>
         {/* Info: (20240628 - Shirley) Header */}
         <div className="flex flex-col items-center gap-2 p-16px">
-          <h1 className="text-xl font-bold text-card-text-primary">Upload File</h1>
-          <p className="text-xs text-card-text-secondary">Please upload your file</p>
+          <h1 className="text-xl font-bold text-card-text-primary">{t('CHAT.UPLOAD_TITLE')}</h1>
+          <p className="text-xs text-card-text-secondary">{t('CHAT.UPLOAD_SUBTITLE')}</p>
         </div>
         {/* Info: (20240628 - Shirley) Body */}
         <div className="flex items-center justify-center">{uploadArea}</div>

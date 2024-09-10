@@ -83,10 +83,10 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
   const deleteAllChatHandler = () => {
     messageModalDataHandler({
       messageType: MessageType.WARNING,
-      title: 'Delete All Chat',
-      redMsg: 'Are you sure you want to delete all Chat? This action cannot be undone!',
-      backBtnStr: 'Cancel',
-      submitBtnStr: 'Confirm',
+      title: t('MESSAGE_MODAL.DELETE_CHAT_TITLE'),
+      redMsg: t('MESSAGE_MODAL.DELETE_CHAT_MESSAGE'),
+      backBtnStr: t('COMMON.CANCEL'),
+      submitBtnStr: t('COMMON.CONFIRM'),
       submitBtnFunction: () => {}, // ToDo: (20240625 - Julian) add delete all chat function
     });
     messageModalVisibilityHandler();
@@ -95,11 +95,11 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
   const cancelSubscriptionHandler = () => {
     messageModalDataHandler({
       messageType: MessageType.WARNING,
-      title: 'Cancel Subscription',
-      redMsg: 'Are you sure you want to cancel your subscription?',
-      normalMsg: 'Once confirmed, the cancellation will take effect on the next billing date.',
-      backBtnStr: 'Cancel',
-      submitBtnStr: 'Confirm',
+      title: t('MESSAGE_MODAL.CANCEL_SUBSCRIPTION_TITLE'),
+      redMsg: t('MESSAGE_MODAL.CANCEL_SUBSCRIPTION_MESSAGE_1'),
+      normalMsg: t('MESSAGE_MODAL.CANCEL_SUBSCRIPTION_MESSAGE_2'),
+      backBtnStr: t('COMMON.CANCEL'),
+      submitBtnStr: t('COMMON.CONFIRM'),
       submitBtnFunction: () => {}, // ToDo: (20240625 - Julian) add cancel subscription function
     });
     messageModalVisibilityHandler();
@@ -108,10 +108,10 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
   const autoRenewalConfirmHandler = () => {
     messageModalDataHandler({
       messageType: MessageType.WARNING,
-      title: 'Auto-Renewal',
-      normalMsg: 'Are you sure you want to Turn off Auto-Renewal ?',
-      backBtnStr: 'Cancel',
-      submitBtnStr: 'Confirm',
+      title: t('MESSAGE_MODAL.AUTO_RENEWAL_TITLE'),
+      normalMsg: t('MESSAGE_MODAL.AUTO_RENEWAL_MESSAGE'),
+      backBtnStr: t('COMMON.CANCEL'),
+      submitBtnStr: t('COMMON.CONFIRM'),
       submitBtnFunction: autoRenewalToggleHandler,
     });
     messageModalVisibilityHandler();
@@ -405,7 +405,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
     </div>
   );
 
-  const subscriptionTab = hasSubscription ? (
+  const subscriptionTab = !hasSubscription ? (
     <div className="flex w-full flex-col gap-y-40px text-xl text-text-neutral-primary">
       {/* Info: (20240625 - Julian) Your Plan */}
       <div className="flex flex-col gap-y-8px">

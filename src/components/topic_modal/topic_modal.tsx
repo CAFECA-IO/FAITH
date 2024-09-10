@@ -48,7 +48,7 @@ const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopi
         .map((comment) => <CommentItem key={comment.id} commentData={comment} />)
     ) : (
       <div className="mx-auto p-20px text-text-neutral-primary">
-        <p>No comments yet.</p>
+        <p>{t('DISCOVER.NO_COMMENT_YET')}</p>
       </div>
     );
 
@@ -59,7 +59,7 @@ const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopi
         className="ml-auto text-sm font-semibold text-link-text-primary"
         onClick={seeMoreClickHandler}
       >
-        See More....
+        {t('DISCOVER.SEE_MORE')}...
       </button>
     ) : null;
 
@@ -232,7 +232,9 @@ const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopi
           {/* Info: (20240627 - Julian) Comments */}
           <div className="flex flex-col gap-20px px-20px">
             <div className="flex items-center justify-between">
-              <h3 className="text-xl font-bold text-text-neutral-secondary">Comment</h3>
+              <h3 className="text-xl font-bold text-text-neutral-secondary">
+                {t('DISCOVER.COMMENT')}
+              </h3>
               <SortToggle currentSort={commentSort} clickHandler={commentSortSwitchHandler} />
             </div>
             <div className="flex flex-col gap-20px">
@@ -243,7 +245,7 @@ const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopi
         </div>
         {/* Info: (20240627 - Julian) Add Comment Input */}
         <div className="flex flex-col gap-8px px-20px text-sm text-input-text-primary">
-          <p className="font-semibold">Add Comment</p>
+          <p className="font-semibold">{t('DISCOVER.ADD_COMMENT')}</p>
           <div className="flex items-center rounded-sm border border-input-stroke-input px-12px py-10px font-medium">
             <input
               id="add-comment-input"
@@ -275,9 +277,7 @@ const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopi
               </svg>
             </button>
           </div>
-          <p className="text-sm text-text-state-error">
-            Attention! Faith prohibits posting comments that harm others.
-          </p>
+          <p className="text-sm text-text-state-error">{t('DISCOVER.COMMENT_WARNING')}</p>
         </div>
       </div>
     </div>

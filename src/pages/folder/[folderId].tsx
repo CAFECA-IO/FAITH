@@ -277,7 +277,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
   ) : (
     // ToDo: (20240708 - Julian) Not found page
     <div className="mx-100px my-140px flex w-screen flex-col items-center">
-      <h1 className="text-48px font-bold text-text-neutral-primary">Folder not found</h1>
+      <h1 className="text-48px font-bold text-text-neutral-primary">{t('FOLDER.NOT_FOUND')}</h1>
     </div>
   );
 

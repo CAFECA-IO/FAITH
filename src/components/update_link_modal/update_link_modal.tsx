@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/button/button';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface IUpdateLinkModalProps {
   isModalVisible: boolean;
@@ -8,6 +10,7 @@ interface IUpdateLinkModalProps {
 }
 
 const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLinkModalProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   // ToDo: (20240703 - Julian) Replace this with actual data
   const sharedDomain = 'http://faith.com/share';
   const oldShareId: string | null = '1234567890';
@@ -40,16 +43,14 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
     }
   }, [isModalVisible]);
 
-  const mainTitle = isFirstShare ? 'Share public link to chat' : 'Update public link to chat';
-  const buttonText = isFirstShare ? 'Create Link' : 'Update Link';
+  const mainTitle = isFirstShare ? t('CHAT.SHARE_LINK_TITLE') : t('CHAT.UPDATE_LINK_TITLE');
+  const buttonText = isFirstShare ? t('CHAT.CREATE_LINK_BTN') : t('CHAT.UPDATE_LINK_BTN');
   const descriptionText = isFirstShare
-    ? 'Your name and any messages you add after sharing stay private.'
-    : 'A past version of this chat has already been shared. Manage previously shared chats via Settings.';
+    ? t('CHAT.SHARE_LINK_DESCRIPTION')
+    : t('CHAT.UPDATE_LINK_DESCRIPTION');
 
   const displayedUpdatedHint = isUpdated ? (
-    <p className="text-xs font-semibold text-text-state-success">
-      The public link to your chat has been created. Manage previously shared chats via Settings.
-    </p>
+    <p className="text-xs font-semibold text-text-state-success">{t('CHAT.UPDATE_LINK_HINT')}</p>
   ) : null;
 
   const displayedButton = isLoading ? (
@@ -71,7 +72,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
         />
       </svg>
 
-      <p>Loading</p>
+      <p>{t('COMMON.LOADING')}</p>
     </div>
   ) : isUpdated ? (
     <Button
@@ -96,7 +97,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
         />
       </svg>
 
-      <p>Copy Link</p>
+      <p>{t('CHAT.COPY_LINK_BTN')}</p>
     </Button>
   ) : (
     // Info: (20240703 - Julian) Create / Update Link

@@ -25,7 +25,6 @@ const MessageModal = ({
     backBtnStr,
     backBtnFunction,
     messageType,
-    submitBtnClassName,
     submitBtnVariant,
     submitBtnIcon,
   } = messageModalData;
@@ -75,15 +74,6 @@ const MessageModal = ({
           ? 'text-alert-text-title-error'
           : 'text-alert-text-title-info';
 
-  const submitBtnColor =
-    (submitBtnClassName ?? messageType === MessageType.WARNING)
-      ? 'text-link-text-warning'
-      : messageType === MessageType.SUCCESS
-        ? 'text-link-text-success'
-        : messageType === MessageType.ERROR
-          ? 'text-link-text-error'
-          : 'text-link-text-primary';
-
   const isBackBtn = backBtnStr ? (
     <Button
       className="px-16px py-8px"
@@ -122,7 +112,7 @@ const MessageModal = ({
   const isDisplayModal = isModalVisible ? (
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/50 font-barlow">
       <div
-        className={`relative flex h-fit w-90vw flex-col gap-16px rounded-xs border-t-5px md:w-376px ${borderColor} bg-alert-surface-background px-32px py-16px`}
+        className={`relative flex h-fit w-90vw flex-col gap-16px rounded-xs border-t-5px bg-surface-neutral-surface-lv1 md:w-376px ${borderColor} bg-alert-surface-background px-32px py-16px`}
       >
         {isDisplayCross}
         <div className="mt-20px flex flex-col items-center gap-16px text-center">
@@ -137,7 +127,7 @@ const MessageModal = ({
         <div className="flex items-center justify-center gap-24px">
           {isBackBtn}
           <Button
-            className={cn('px-16px py-8px', submitBtnColor)}
+            className={cn('px-16px py-8px')}
             type="button"
             onClick={submitClickHandler}
             variant={submitBtnVariant ?? 'tertiary'}

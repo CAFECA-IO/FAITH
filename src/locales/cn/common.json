@@ -11,7 +11,10 @@
   "SIDE_BAR": {
     "MY_CHAT_LIST": "我的聊天室列表",
     "ADD_FOLDER": "拖曳聊天室至此新增资料夹",
-    "REMOVE_CHAT": "删除聊天室"
+    "REMOVE_CHAT": "删除聊天室",
+    "RENAME_FOLDER": "重新命名资料夹",
+    "SHARE_FOLDER": "分享资料夹",
+    "REMOVE_FOLDER": "删除资料夹"
   },
   "LOGIN": {
     "WELCOME": "欢迎回来！",
@@ -19,7 +22,10 @@
     "REGISTER": "注册您的装置",
     "USER_GUIDE_HINT_1": "我已阅读",
     "USER_GUIDE_HINT_2": "使用者条款",
-    "USER_GUIDE_HINT_3": "并同意遵守平台的规定。"
+    "USER_GUIDE_HINT_3": "并同意遵守平台的规定。",
+    "REGISTER_TITLE": "设定使用者名称",
+    "REGISTER_CONTENT": "此使用者名称将套用至您的装置。",
+    "REGISTER_PLACEHOLDER": "输入您的使用者名称"
   },
   "USER_CODE": {
     "TITLE": "使用者服务条款",
@@ -86,7 +92,15 @@
     "INCOMPLETE": "资讯不完整",
     "FEEDBACK": "感谢您的回馈！",
     "REMARK_ALLOWED_FILE": "支援格式：",
-    "REMARK_MAX_SIZE": "最大档案大小："
+    "REMARK_MAX_SIZE": "最大档案大小：",
+    "UPLOAD_TITLE": "上传档案",
+    "UPLOAD_SUBTITLE": "请上传您的档案",
+    "UPLOAD_CONTENT_1": "拖曳档案至此或",
+    "UPLOAD_CONTENT_2": "浏览档案",
+    "FEEDBACK_TITLE": "提供回馈",
+    "FEEDBACK_PLACEHOLDER": "输入您的回馈",
+    "MOVE_CHAT_TITLE": "移动聊天室",
+    "MOVE_CHAT_CONTENT": "移动到..."
   },
   "DISCOVER": {
     "HEADER_TITLE": "发现",
@@ -100,7 +114,14 @@
     "FINANCIAL_INSIGHTS_TAB": "财务洞察",
     "OTHER_TAB": "其他",
     "FAVORITES_TAB": "我的最爱",
-    "SEE_MORE": "查看更多"
+    "SEE_MORE": "查看更多",
+    "REPORT_COMMENT_TITLE": "检举评论",
+    "REPORT_COMMENT_CONTENT": "检举原因",
+    "REPORT_COMMENT_PLACEHOLDER": "输入您检举的原因",
+    "NO_COMMENT_YET": "尚无评论。",
+    "COMMENT": "评论",
+    "ADD_COMMENT": "新增评论",
+    "COMMENT_WARNING": "注意！Faith 禁止发表伤害他人的评论。"
   },
   "FOLDER": {
     "SHARE": "分享资料夹",
@@ -154,7 +175,29 @@
     "SUB_CANCEL_BTN_M": "取消"
   },
   "SUBSCRIPTION": {
-    "HEADER_TITLE": "订阅"
+    "HEADER_TITLE": "订阅",
+    "SUBSCRIBE": "订阅 Faith Plus 方案",
+    "PER_MONTH_1": "每月",
+    "PER_MONTH_2": "",
+    "PLUS_SUBSCRIPTION": "Faith Plus 方案",
+    "BILLED_MONTHLY": "每月计费",
+    "SUBTOTAL": "小计",
+    "TAX": "税",
+    "TOTAL_DUE_TODAY": "今日总额",
+    "PAYMENT_METHOD": "付款方式",
+    "CARD_INFO": "信用卡资讯",
+    "CARD_NO": "信用卡号码",
+    "CARD_NO_PLACEHOLDER": "输入信用卡号码",
+    "EXPIRATION": "到期日",
+    "CVC": "信用卡验证码",
+    "CARDHOLDER_NAME": "持卡人姓名",
+    "CARDHOLDER_NAME_PLACEHOLDER": "输入持卡人姓名",
+    "BILLING_ADDRESS": "帐单地址",
+    "COUNTRY": "国家",
+    "POSTAL_CODE": "邮递区号",
+    "ADDRESS_LINE": "地址",
+    "CHECK_BOX_HINT": "您将按照上述金额和频率收费，直到您取消订阅。我们可能会变更我们的价格，详情请参阅我们的使用者服务条款。您可以随时取消。订阅即表示您同意 Faith 的使用条款和隐私政策。",
+    "SUBSCRIBE_BTN": "订阅"
   },
   "COMMON": {
     "RENAME": "重新命名",
@@ -166,13 +209,31 @@
     "ALL_TYPE": "所有类型",
     "MOVE": "移动",
     "BACK": "返回",
+    "REMOVE": "删除",
     "NTD": "新台币",
     "OF": "之",
     "CANCEL": "取消",
-    "LOADING": "载入中..."
+    "CONFIRM": "确认",
+    "LOADING": "载入中...",
+    "SEND": "发送",
+    "REGISTER": "注册"
   },
   "TOAST": {
     "REGISTER_REMINDER": "您喜欢 Faith 吗？注册以访问更智能的回应，上传文件和图像等功能。",
-    "LOGGED_SUCCESS": "您已成功登入！"
+    "LOGGED_SUCCESS": "您已成功登入！",
+    "LOGGED_OUT": "您已成功登出！"
+  },
+  "MESSAGE_MODAL": {
+    "DELETE_CHAT_TITLE": "删除所有聊天室",
+    "DELETE_CHAT_MESSAGE": "您确定要删除所有聊天室吗？此操作无法撤销！",
+    "CANCEL_SUBSCRIPTION_TITLE": "取消订阅",
+    "CANCEL_SUBSCRIPTION_MESSAGE_1": "您确定要取消订阅吗？",
+    "CANCEL_SUBSCRIPTION_MESSAGE_2": "一旦确认，取消将在下次计费日期生效。",
+    "AUTO_RENEWAL_TITLE": "自动续订",
+    "AUTO_RENEWAL_MESSAGE": "您确定要关闭自动续订吗？",
+    "REMOVE_FOLDER_TITLE": "删除资料夹",
+    "REMOVE_FOLDER_MESSAGE": "您确定要删除此资料夹吗？\n此操作无法撤销！",
+    "REMOVE_CHAT_TITLE": "删除聊天室",
+    "REMOVE_CHAT_MESSAGE": "您确定要删除此聊天室吗？\n此操作无法撤销！"
   }
 }

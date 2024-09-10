@@ -2,23 +2,18 @@ import Image from 'next/image';
 import { useState } from 'react';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 import { Button } from '@/components/button/button';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface IMoveChatModalProps {
   isModalVisible: boolean;
   modalVisibilityHandler: () => void;
 }
 
-const dummyFolders = [
-  'Folder 1',
-  'Folder 2',
-  'Folder 3',
-  'Folder 4',
-  'Folder 5',
-  'Folder 6',
-  'Folder 7',
-];
+const dummyFolders = ['Folder 1', 'Folder 2', 'Folder 3'];
 
 const MoveChatModal = ({ isModalVisible, modalVisibilityHandler }: IMoveChatModalProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   // ToDo: (20240703 - Julian) Replace dummyFolders with actual data
   const currentFolder = dummyFolders[0];
   const [targetFolder, setTargetFolder] = useState<string>(currentFolder);
@@ -72,7 +67,7 @@ const MoveChatModal = ({ isModalVisible, modalVisibilityHandler }: IMoveChatModa
       >
         {/* Info: (20240625 - Julian) Header */}
         <div className="flex items-center justify-between pl-40px pr-20px text-32px font-bold text-text-neutral-primary">
-          <h1>Move Chat</h1>
+          <h1>{t('CHAT.MOVE_CHAT_TITLE')}</h1>
           <button type="button" onClick={modalVisibilityHandler}>
             <Image src="/icons/cross.svg" width={32} height={32} alt="cross_icon" />
           </button>
@@ -83,7 +78,7 @@ const MoveChatModal = ({ isModalVisible, modalVisibilityHandler }: IMoveChatModa
         {/* Info: (20240625 - Julian) Content */}
         <div className="flex w-full flex-col gap-y-20px px-40px pt-20px">
           <div className="flex flex-col gap-y-8px text-button-text-secondary">
-            <p className="font-semibold text-input-text-primary">Move to...</p>
+            <p className="font-semibold text-input-text-primary">{t('CHAT.MOVE_CHAT_CONTENT')}</p>
             <button
               type="button"
               className="relative flex w-full items-center justify-between rounded-xs border border-input-stroke-input px-12px py-10px text-base"
@@ -103,7 +98,7 @@ const MoveChatModal = ({ isModalVisible, modalVisibilityHandler }: IMoveChatModa
             disabled={isDisableSubmit}
             onClick={moveClickHandler}
           >
-            Move
+            {t('COMMON.MOVE')}
           </Button>
         </div>
       </div>
