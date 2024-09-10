@@ -43,7 +43,7 @@ const NavBar = () => {
     toastHandler({
       id: ToastId.LOGOUT,
       type: ToastType.SUCCESS,
-      content: 'You have successfully logged out!',
+      content: t('TOAST.LOGGED_OUT'),
       closeable: true,
       autoClose: 3000,
     });

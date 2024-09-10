@@ -90,11 +90,16 @@ const SubscriptionPageBody = () => {
   const displayedTitle = (
     <div className="flex flex-col items-center gap-y-8px">
       <p className="text-sm font-semibold text-text-neutral-secondary md:text-lg">
-        Subscribe to Faith Plus Subscription
+        {t('SUBSCRIPTION.SUBSCRIBE')}
       </p>
       <p className="text-2xl font-semibold text-text-neutral-primary md:text-4xl md:font-bold">
-        NTD ${feeOfPerMonth}
-        <span className="ml-16px text-lg font-semibold text-text-neutral-secondary">per/month</span>
+        <span className="mr-16px text-lg font-semibold text-text-neutral-secondary">
+          {t('SUBSCRIPTION.PER_MONTH_1')}
+        </span>
+        {t('COMMON.NTD')} {feeOfPerMonth}
+        <span className="ml-16px text-lg font-semibold text-text-neutral-secondary">
+          {t('SUBSCRIPTION.PER_MONTH_2')}
+        </span>
       </p>
     </div>
   );
@@ -103,8 +108,8 @@ const SubscriptionPageBody = () => {
     <div className="flex w-4/5 flex-col gap-y-20px rounded-sm bg-surface-neutral-surface-lv1 p-20px shadow-custom1 md:w-500px md:px-32px md:py-40px">
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-8px text-sm font-semibold md:text-lg">
-          <p className="text-text-neutral-tertiary">Faith Plus Subscription</p>
-          <p className="text-text-brand-secondary-lv3">Billed monthly</p>
+          <p className="text-text-neutral-tertiary">{t('SUBSCRIPTION.PLUS_SUBSCRIPTION')}</p>
+          <p className="text-text-brand-secondary-lv3">{t('SUBSCRIPTION.BILLED_MONTHLY')}</p>
         </div>
         <p className="text-lg font-bold text-text-neutral-secondary lg:text-xl">
           $ {feeOfPerMonth}
@@ -113,17 +118,17 @@ const SubscriptionPageBody = () => {
       <hr className="border-divider-stroke-lv-4" />
       <div className="flex flex-col items-center gap-8px">
         <div className="flex w-full justify-between text-sm font-semibold md:text-lg">
-          <p className="text-text-neutral-tertiary">Subtotal</p>
+          <p className="text-text-neutral-tertiary">{t('SUBSCRIPTION.SUBTOTAL')}</p>
           <p className="text-lg font-bold text-text-neutral-secondary lg:text-xl">$ {subtotal}</p>
         </div>
         <div className="flex w-full justify-between text-sm font-semibold md:text-lg">
-          <p className="text-text-brand-secondary-lv3">Tax</p>
+          <p className="text-text-brand-secondary-lv3">{t('SUBSCRIPTION.TAX')}</p>
           <p className="text-lg font-bold text-text-neutral-tertiary lg:text-xl">$ {tax}</p>
         </div>
       </div>
       <hr className="border-divider-stroke-lv-4" />
       <div className="flex w-full justify-between text-sm font-semibold md:text-lg">
-        <p className="text-text-neutral-tertiary">Total due today</p>
+        <p className="text-text-neutral-tertiary">{t('SUBSCRIPTION.TOTAL_DUE_TODAY')}</p>
         <p className="text-lg font-bold text-text-neutral-secondary lg:text-xl">
           $ {totalDueToday}
         </p>
@@ -183,27 +188,28 @@ const SubscriptionPageBody = () => {
 
   const displayedCardInformation = (
     <div className="row-span-4 flex flex-col gap-y-20px">
-      <p className="text-lg font-semibold text-text-neutral-secondary">Card information</p>
+      <p className="text-lg font-semibold text-text-neutral-secondary">
+        {t('SUBSCRIPTION.CARD_INFO')}
+      </p>
       <div className="grid grid-cols-1 gap-x-40px gap-y-16px text-input-text-primary md:grid-cols-2">
         {/* Info: (20240628 - Julian) Card No. */}
         <div className="flex flex-col gap-y-8px md:col-span-2">
-          <p className="text-sm font-semibold">Card No.</p>
+          <p className="text-sm font-semibold">{t('SUBSCRIPTION.CARD_NO')}</p>
           <div className="flex items-center divide-x divide-input-stroke-input rounded-sm border border-input-stroke-input bg-input-surface-input-background">
-            <p className="px-12px py-10px text-input-text-input-placeholder">Type</p>
             <input
               id="subscription-card-no"
               type="text"
               value={cardNo}
               onChange={cardNoHandler}
               required
-              placeholder="Enter Card No."
+              placeholder={t('SUBSCRIPTION.CARD_NO_PLACEHOLDER')}
               className="flex-1 bg-transparent px-12px py-10px outline-none placeholder:text-input-text-input-placeholder"
             />
           </div>
         </div>
         {/* Info: (20240628 - Julian) Expiration */}
         <div className="flex flex-col gap-y-8px">
-          <p className="text-sm font-semibold">Expiration</p>
+          <p className="text-sm font-semibold">{t('SUBSCRIPTION.EXPIRATION')}</p>
           <div className="flex items-center gap-x-20px">
             {/* Info: (20240628 - Julian) Expiration Month */}
             <div
@@ -229,7 +235,7 @@ const SubscriptionPageBody = () => {
         </div>
         {/* Info: (20240628 - Julian) CVC */}
         <div className="flex flex-col gap-y-8px">
-          <p className="text-sm font-semibold">CVC</p>
+          <p className="text-sm font-semibold">{t('SUBSCRIPTION.CVC')}</p>
           <div className="">
             <input
               id="subscription-card-cvc"
@@ -237,7 +243,7 @@ const SubscriptionPageBody = () => {
               value={cvc}
               onChange={cvcHandler}
               required
-              placeholder="CVC"
+              placeholder={t('SUBSCRIPTION.CVC')}
               className="rounded-sm border border-input-stroke-input bg-input-surface-input-background px-12px py-10px outline-none placeholder:text-input-text-input-placeholder"
             />
           </div>
@@ -248,14 +254,16 @@ const SubscriptionPageBody = () => {
 
   const displayedCardholderName = (
     <div className="row-span-2 mt-auto flex flex-col gap-y-20px">
-      <p className="text-lg font-semibold text-text-neutral-secondary">Cardholder name</p>
+      <p className="text-lg font-semibold text-text-neutral-secondary">
+        {t('SUBSCRIPTION.CARDHOLDER_NAME')}
+      </p>
       <input
         id="subscription-cardholder-name"
         type="text"
         value={cardholderName}
         onChange={cardholderNameHandler}
         required
-        placeholder="Full name on card"
+        placeholder={t('SUBSCRIPTION.CARDHOLDER_NAME_PLACEHOLDER')}
         className="rounded-sm border border-input-stroke-input bg-input-surface-input-background px-12px py-10px outline-none placeholder:text-input-text-input-placeholder"
       />
     </div>
@@ -263,7 +271,9 @@ const SubscriptionPageBody = () => {
 
   const displayedBillingAddress = (
     <div className="row-span-3 flex flex-col gap-y-20px">
-      <p className="text-lg font-semibold text-text-neutral-secondary">Billing address</p>
+      <p className="text-lg font-semibold text-text-neutral-secondary">
+        {t('SUBSCRIPTION.BILLING_ADDRESS')}
+      </p>
       <div className="grid grid-flow-row grid-cols-2 gap-x-8px gap-y-16px">
         {/* Info: (20240628 - Julian) Country */}
         <input
@@ -272,7 +282,7 @@ const SubscriptionPageBody = () => {
           value={billingCountry}
           onChange={billingCountryHandler}
           required
-          placeholder="Country"
+          placeholder={t('SUBSCRIPTION.COUNTRY')}
           className="rounded-sm border border-input-stroke-input bg-input-surface-input-background px-12px py-10px outline-none placeholder:text-input-text-input-placeholder"
         />
         {/* Info: (20240628 - Julian) Postal code */}
@@ -282,7 +292,7 @@ const SubscriptionPageBody = () => {
           value={billingPostalCode}
           onChange={billingPostalCodeHandler}
           required
-          placeholder="Postal code"
+          placeholder={t('SUBSCRIPTION.POSTAL_CODE')}
           className="rounded-sm border border-input-stroke-input bg-input-surface-input-background px-12px py-10px outline-none placeholder:text-input-text-input-placeholder"
         />
         {/* Info: (20240628 - Julian) Address line */}
@@ -292,7 +302,7 @@ const SubscriptionPageBody = () => {
           value={billingAddressLine}
           onChange={billingAddressLineHandler}
           required
-          placeholder="Address line"
+          placeholder={t('SUBSCRIPTION.ADDRESS_LINE')}
           className="col-span-2 rounded-sm border border-input-stroke-input bg-input-surface-input-background px-12px py-10px outline-none placeholder:text-input-text-input-placeholder"
         />
       </div>
@@ -313,11 +323,7 @@ const SubscriptionPageBody = () => {
             className={checkboxStyle}
           />
         </div>
-        <p>
-          You’ll be charged the amount and at the frequency listed above until you cancel. We may
-          change our prices as described in our Terms of Use. You can cancel any time.By
-          Subscribing, you agree to Faith’s Terms of Use and Privacy Policy
-        </p>
+        <p>{t('SUBSCRIPTION.CHECK_BOX_HINT')}</p>
       </label>
       <Button
         id="subscribe-submit-button"
@@ -325,7 +331,7 @@ const SubscriptionPageBody = () => {
         variant="default"
         disabled={isSubmitDisabled}
       >
-        Subscribe
+        {t('SUBSCRIPTION.SUBSCRIBE_BTN')}
       </Button>
     </div>
   );
@@ -360,7 +366,7 @@ const SubscriptionPageBody = () => {
         <button type="button" onClick={backHandler} className="absolute left-10 p-10px">
           <Image src="/icons/back.svg" alt="back_icon" width={24} height={24} />
         </button>
-        <h1>Subscribe</h1>
+        <h1>{t('SUBSCRIPTION.HEADER_TITLE')}</h1>
       </div>
       {/* Info: (20240628 - Julian) Main Body */}
       <div className="flex flex-1 flex-col gap-y-40px px-20px py-40px md:px-80px">
@@ -372,7 +378,7 @@ const SubscriptionPageBody = () => {
         {/* Info: (20240628 - Julian) Payment method */}
         <div className="flex flex-col items-center gap-y-40px md:items-start">
           <h2 className="text-xl font-bold text-text-neutral-primary md:text-2xl">
-            Payment method
+            {t('SUBSCRIPTION.PAYMENT_METHOD')}
           </h2>
           <form
             id="subscription-form"
