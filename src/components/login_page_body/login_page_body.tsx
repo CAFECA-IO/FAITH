@@ -12,6 +12,7 @@ import useOuterClick from '@/lib/hooks/use_outer_click';
 import { useTranslation } from 'next-i18next';
 import { ITranslateFunction } from '@/interfaces/locale';
 import { INTERNATIONALIZATION_LIST } from '@/constants/i18n';
+import { I_SUN_FA_URL } from '@/constants/url';
 
 const LoginPageBody = () => {
   const { t }: { t: ITranslateFunction } = useTranslation('common');
@@ -215,11 +216,11 @@ const LoginPageBody = () => {
           </div>
         </div>
         <div>
-          <button
-            id="contact-us-button"
-            type="button"
+          <Link
+            id="contact-us-link"
+            href={I_SUN_FA_URL.CONTACT_US}
+            target="_blank"
             className="p-12px text-surface-neutral-surface-lv1 hover:text-button-text-secondary"
-            // ToDo: (20240705 - Julian) link to contact us
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -246,7 +247,7 @@ const LoginPageBody = () => {
                 clipRule="evenodd"
               ></path>
             </svg>
-          </button>
+          </Link>
         </div>
       </div>
     </div>
