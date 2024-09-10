@@ -22,7 +22,10 @@
     "REGISTER": "註冊您的裝置",
     "USER_GUIDE_HINT_1": "我已閱讀",
     "USER_GUIDE_HINT_2": "使用者條款",
-    "USER_GUIDE_HINT_3": "並同意遵守平台的規定。"
+    "USER_GUIDE_HINT_3": "並同意遵守平台的規定。",
+    "REGISTER_TITLE": "設定使用者名稱",
+    "REGISTER_CONTENT": "此使用者名稱將套用至您的裝置。",
+    "REGISTER_PLACEHOLDER": "輸入您的使用者名稱"
   },
   "USER_CODE": {
     "TITLE": "使用者服務條款",
@@ -89,7 +92,15 @@
     "INCOMPLETE": "資訊不完整",
     "FEEDBACK": "感謝您的回饋！",
     "REMARK_ALLOWED_FILE": "支援格式：",
-    "REMARK_MAX_SIZE": "檔案上限："
+    "REMARK_MAX_SIZE": "檔案上限：",
+    "UPLOAD_TITLE": "上傳檔案",
+    "UPLOAD_SUBTITLE": "請上傳您的檔案",
+    "UPLOAD_CONTENT_1": "拖曳檔案至此或",
+    "UPLOAD_CONTENT_2": "瀏覽檔案",
+    "FEEDBACK_TITLE": "提供回饋",
+    "FEEDBACK_PLACEHOLDER": "輸入您的回饋",
+    "MOVE_CHAT_TITLE": "移動聊天室",
+    "MOVE_CHAT_CONTENT": "移動到..."
   },
   "DISCOVER": {
     "HEADER_TITLE": "發現",
@@ -103,7 +114,14 @@
     "FINANCIAL_INSIGHTS_TAB": "財務洞察",
     "OTHER_TAB": "其他",
     "FAVORITES_TAB": "我的最愛",
-    "SEE_MORE": "查看更多"
+    "SEE_MORE": "查看更多",
+    "REPORT_COMMENT_TITLE": "檢舉評論",
+    "REPORT_COMMENT_CONTENT": "檢舉原因",
+    "REPORT_COMMENT_PLACEHOLDER": "輸入您檢舉的原因",
+    "NO_COMMENT_YET": "尚無評論。",
+    "COMMENT": "評論",
+    "ADD_COMMENT": "新增評論",
+    "COMMENT_WARNING": "注意！Faith 禁止發表傷害他人的評論。"
   },
   "FOLDER": {
     "SHARE": "分享資料夾",
@@ -196,7 +214,9 @@
     "OF": "之",
     "CANCEL": "取消",
     "CONFIRM": "確認",
-    "LOADING": "載入中..."
+    "LOADING": "載入中...",
+    "SEND": "發送",
+    "REGISTER": "註冊"
   },
   "TOAST": {
     "REGISTER_REMINDER": "您喜歡 Faith 嗎？註冊以訪問更智能的回應，上傳文件和圖像等功能。",

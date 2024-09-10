@@ -22,7 +22,10 @@
     "REGISTER": "注册您的装置",
     "USER_GUIDE_HINT_1": "我已阅读",
     "USER_GUIDE_HINT_2": "使用者条款",
-    "USER_GUIDE_HINT_3": "并同意遵守平台的规定。"
+    "USER_GUIDE_HINT_3": "并同意遵守平台的规定。",
+    "REGISTER_TITLE": "设定使用者名称",
+    "REGISTER_CONTENT": "此使用者名称将套用至您的装置。",
+    "REGISTER_PLACEHOLDER": "输入您的使用者名称"
   },
   "USER_CODE": {
     "TITLE": "使用者服务条款",
@@ -89,7 +92,15 @@
     "INCOMPLETE": "资讯不完整",
     "FEEDBACK": "感谢您的回馈！",
     "REMARK_ALLOWED_FILE": "支援格式：",
-    "REMARK_MAX_SIZE": "最大档案大小："
+    "REMARK_MAX_SIZE": "最大档案大小：",
+    "UPLOAD_TITLE": "上传档案",
+    "UPLOAD_SUBTITLE": "请上传您的档案",
+    "UPLOAD_CONTENT_1": "拖曳档案至此或",
+    "UPLOAD_CONTENT_2": "浏览档案",
+    "FEEDBACK_TITLE": "提供回馈",
+    "FEEDBACK_PLACEHOLDER": "输入您的回馈",
+    "MOVE_CHAT_TITLE": "移动聊天室",
+    "MOVE_CHAT_CONTENT": "移动到..."
   },
   "DISCOVER": {
     "HEADER_TITLE": "发现",
@@ -103,7 +114,14 @@
     "FINANCIAL_INSIGHTS_TAB": "财务洞察",
     "OTHER_TAB": "其他",
     "FAVORITES_TAB": "我的最爱",
-    "SEE_MORE": "查看更多"
+    "SEE_MORE": "查看更多",
+    "REPORT_COMMENT_TITLE": "检举评论",
+    "REPORT_COMMENT_CONTENT": "检举原因",
+    "REPORT_COMMENT_PLACEHOLDER": "输入您检举的原因",
+    "NO_COMMENT_YET": "尚无评论。",
+    "COMMENT": "评论",
+    "ADD_COMMENT": "新增评论",
+    "COMMENT_WARNING": "注意！Faith 禁止发表伤害他人的评论。"
   },
   "FOLDER": {
     "SHARE": "分享资料夹",
@@ -196,7 +214,9 @@
     "OF": "之",
     "CANCEL": "取消",
     "CONFIRM": "确认",
-    "LOADING": "载入中..."
+    "LOADING": "载入中...",
+    "SEND": "发送",
+    "REGISTER": "注册"
   },
   "TOAST": {
     "REGISTER_REMINDER": "您喜欢 Faith 吗？注册以访问更智能的回应，上传文件和图像等功能。",

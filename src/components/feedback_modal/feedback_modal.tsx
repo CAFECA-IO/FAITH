@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { Button } from '@/components/button/button';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface IFeedbackModalProps {
   isModalVisible: boolean;
@@ -8,6 +10,7 @@ interface IFeedbackModalProps {
 }
 
 const FeedbackModal = ({ isModalVisible, modalVisibilityHandler }: IFeedbackModalProps) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const [feedbackValue, setFeedbackValue] = useState('');
 
   const feedbackChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +27,7 @@ const FeedbackModal = ({ isModalVisible, modalVisibilityHandler }: IFeedbackModa
       >
         {/* Info: (20240625 - Julian) Header */}
         <div className="flex items-center justify-between pl-40px pr-20px text-2xl font-bold text-text-neutral-primary">
-          <h1>Provide Additional Feedback</h1>
+          <h1>{t('CHAT.FEEDBACK_TITLE')}</h1>
           <button type="button" onClick={modalVisibilityHandler}>
             <Image src="/icons/cross.svg" width={32} height={32} alt="cross_icon" />
           </button>
@@ -37,7 +40,7 @@ const FeedbackModal = ({ isModalVisible, modalVisibilityHandler }: IFeedbackModa
           <div className="w-full rounded-sm border border-input-stroke-input px-12px py-10px">
             <input
               type="text"
-              placeholder="Enter your feedback"
+              placeholder={t('CHAT.FEEDBACK_PLACEHOLDER')}
               value={feedbackValue}
               onChange={feedbackChangeHandler}
               className="w-full bg-transparent outline-none placeholder:text-input-text-input-placeholder"
@@ -51,7 +54,7 @@ const FeedbackModal = ({ isModalVisible, modalVisibilityHandler }: IFeedbackModa
             // ToDo: (20240704 - Julian) Add feedback submit handler
             onClick={modalVisibilityHandler}
           >
-            Send
+            {t('COMMON.SEND')}
           </Button>
         </div>
       </div>

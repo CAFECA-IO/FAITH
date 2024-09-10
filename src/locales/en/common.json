@@ -22,7 +22,10 @@
     "REGISTER": "Register your Device",
     "USER_GUIDE_HINT_1": "I have read the ",
     "USER_GUIDE_HINT_2": "User Guide",
-    "USER_GUIDE_HINT_3": " and agree to comply with the platform's regulations."
+    "USER_GUIDE_HINT_3": " and agree to comply with the platform's regulations.",
+    "REGISTER_TITLE": "Set User Name",
+    "REGISTER_CONTENT": "This username will be applied to your device.",
+    "REGISTER_PLACEHOLDER": "Enter your username"
   },
   "USER_CODE": {
     "TITLE": "User Code of Conduct",
@@ -84,12 +87,28 @@
     "WORSE": "Worse",
     "SAME": "Same",
     "TELL_YOUR_IDEA": "Tell us your idea:",
-    "DONT_LIKE_ANSWER": "I don&apos;t like this answer",
+    "DONT_LIKE_ANSWER": "I don’t like this answer",
     "ERROR_ANSWER": "Error answer",
     "INCOMPLETE": "Incomplete information",
     "FEEDBACK": "Thank you for your feedback!",
     "REMARK_ALLOWED_FILE": "Supported formats:",
-    "REMARK_MAX_SIZE": "Maximum size:"
+    "REMARK_MAX_SIZE": "Maximum size:",
+    "UPLOAD_TITLE": "Upload File",
+    "UPLOAD_SUBTITLE": "Please upload your file",
+    "UPLOAD_CONTENT_1": "Drag and drop files here or ",
+    "UPLOAD_CONTENT_2": "Browse",
+    "FEEDBACK_TITLE": "Provide Additional Feedback",
+    "FEEDBACK_PLACEHOLDER": "Enter your feedback",
+    "MOVE_CHAT_TITLE": "Move Chat",
+    "MOVE_CHAT_CONTENT": "Move to...",
+    "SHARE_LINK_TITLE": "Share public link to chat",
+    "SHARE_LINK_DESCRIPTION": "Your name and any messages you add after sharing stay private.",
+    "UPDATE_LINK_TITLE": "Update public link to chat",
+    "UPDATE_LINK_DESCRIPTION": "A past version of this chat has already been shared. Manage previously shared chats via Settings.",
+    "CREATE_LINK_BTN": "Create Link",
+    "UPDATE_LINK_BTN": "Update Link",
+    "COPY_LINK_BTN": "Copy Link",
+    "UPDATE_LINK_HINT": "The public link to your chat has been created. Manage previously shared chats via Settings."
   },
   "DISCOVER": {
     "HEADER_TITLE": "Discover",
@@ -103,7 +122,14 @@
     "FINANCIAL_INSIGHTS_TAB": "Financial Insights",
     "OTHER_TAB": "Other",
     "FAVORITES_TAB": "My Favorites",
-    "SEE_MORE": "See More"
+    "SEE_MORE": "See More",
+    "REPORT_COMMENT_TITLE": "Report Comment",
+    "REPORT_COMMENT_CONTENT": "Reason for report",
+    "REPORT_COMMENT_PLACEHOLDER": "Enter the reason for your report",
+    "NO_COMMENT_YET": "No comments yet.",
+    "COMMENT": "Comment",
+    "ADD_COMMENT": "Add Comment",
+    "COMMENT_WARNING": "Attention! Faith prohibits posting comments that harm others."
   },
   "FOLDER": {
     "SHARE": "Share Folder",
@@ -196,7 +222,9 @@
     "OF": "of",
     "CANCEL": "Cancel",
     "CONFIRM": "Confirm",
-    "LOADING": "Loading..."
+    "LOADING": "Loading...",
+    "SEND": "Send",
+    "REGISTER": "Register"
   },
   "TOAST": {
     "REGISTER_REMINDER": "Do you like Faith? Access smarter responses, upload files and images, and more.",
