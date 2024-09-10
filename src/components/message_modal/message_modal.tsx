@@ -25,7 +25,6 @@ const MessageModal = ({
     backBtnStr,
     backBtnFunction,
     messageType,
-    submitBtnClassName,
     submitBtnVariant,
     submitBtnIcon,
   } = messageModalData;
