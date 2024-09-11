@@ -100,7 +100,16 @@
     "FEEDBACK_TITLE": "提供回馈",
     "FEEDBACK_PLACEHOLDER": "输入您的回馈",
     "MOVE_CHAT_TITLE": "移动聊天室",
-    "MOVE_CHAT_CONTENT": "移动到..."
+    "MOVE_CHAT_CONTENT": "移动到...",
+    "SHARE_LINK_TITLE": "分享聊天室连结",
+    "SHARE_LINK_DESCRIPTION": "您的姓名和分享后新增的讯息都会保持隐私。",
+    "UPDATE_LINK_TITLE": "更新聊天室连结",
+    "UPDATE_LINK_DESCRIPTION": "此聊天室的过去版本已经被分享。请透过「设定」管理之前分享的聊天室。",
+    "CREATE_LINK_BTN": "建立连结",
+    "UPDATE_LINK_BTN": "更新连结",
+    "COPY_LINK_BTN": "复制连结",
+    "UPDATE_LINK_HINT": "聊天室的公开连结已建立。透过「设定」管理之前分享的聊天室。",
+    "COPIED": "已复制！"
   },
   "DISCOVER": {
     "HEADER_TITLE": "发现",

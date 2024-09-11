@@ -100,7 +100,16 @@
     "FEEDBACK_TITLE": "提供回饋",
     "FEEDBACK_PLACEHOLDER": "輸入您的回饋",
     "MOVE_CHAT_TITLE": "移動聊天室",
-    "MOVE_CHAT_CONTENT": "移動到..."
+    "MOVE_CHAT_CONTENT": "移動到...",
+    "SHARE_LINK_TITLE": "分享聊天室連結",
+    "SHARE_LINK_DESCRIPTION": "您的姓名和分享後新增的訊息都會保持隱私。",
+    "UPDATE_LINK_TITLE": "更新聊天室連結",
+    "UPDATE_LINK_DESCRIPTION": "此聊天室的過去版本已經被分享。請透過「設定」管理之前分享的聊天室。",
+    "CREATE_LINK_BTN": "建立連結",
+    "UPDATE_LINK_BTN": "更新連結",
+    "COPY_LINK_BTN": "複製連結",
+    "UPDATE_LINK_HINT": "聊天室的公開連結已建立。透過「設定」管理之前分享的聊天室。",
+    "COPIED": "已複製！"
   },
   "DISCOVER": {
     "HEADER_TITLE": "發現",

@@ -15,7 +15,9 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
     <li className="mb-20px">
       {t('USER_CODE.1_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.1_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.1_CONTENT')}
+      </span>
     </li>
   );
 
@@ -23,17 +25,29 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
     <li className="mb-20px">
       {t('USER_CODE.2_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.2_1_TITLE')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.2_1_TITLE')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.2_1_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.2_1_CONTENT')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.2_2_TITLE')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.2_2_TITLE')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.2_2_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.2_2_CONTENT')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.2_3_TITLE')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.2_3_TITLE')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.2_3_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.2_3_CONTENT')}
+      </span>
     </li>
   );
 
@@ -41,16 +55,28 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
     <li className="mb-20px">
       {t('USER_CODE.3_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.3_1_TITLE')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.3_1_TITLE')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.3_1_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.3_1_CONTENT')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.3_2_TITLE')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.3_2_TITLE')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.3_2_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.3_2_CONTENT')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.3_3_TITLE')}</span>
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.3_3_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.3_3_TITLE')}
+      </span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.3_3_CONTENT')}
+      </span>
     </li>
   );
 
@@ -58,13 +84,21 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
     <li className="mb-20px">
       {t('USER_CODE.4_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.4_1_TITLE')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.4_1_TITLE')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.4_1_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.4_1_CONTENT')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.4_2_TITLE')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.4_2_TITLE')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.4_2_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.4_2_CONTENT')}
+      </span>
     </li>
   );
 
@@ -72,13 +106,21 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
     <li className="mb-20px">
       {t('USER_CODE.5_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.5_1_TITLE')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.5_1_TITLE')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.5_1_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.5_1_CONTENT')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.5_2_TITLE')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.5_2_TITLE')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.5_2_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.5_2_CONTENT')}
+      </span>
     </li>
   );
 
@@ -86,13 +128,21 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
     <li className="mb-20px">
       {t('USER_CODE.6_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.6_1_TITLE')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.6_1_TITLE')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.6_1_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.6_1_CONTENT')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.6_2_TITLE')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.6_2_TITLE')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.6_2_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.6_2_CONTENT')}
+      </span>
     </li>
   );
 
@@ -100,13 +150,21 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
     <li className="mb-20px">
       {t('USER_CODE.7_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.7_1_TITLE')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.7_1_TITLE')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.7_1_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.7_1_CONTENT')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.7_2_TITLE')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.7_2_TITLE')}
+      </span>
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.7_2_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.7_2_CONTENT')}
+      </span>
     </li>
   );
 
@@ -114,7 +172,9 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
     <li className="mb-20px">
       {t('USER_CODE.8_TITLE')}
       <br />
-      <span className="text-base text-text-neutral-secondary">{t('USER_CODE.8_CONTENT')}</span>
+      <span className="text-sm text-text-neutral-secondary lg:text-base">
+        {t('USER_CODE.8_CONTENT')}
+      </span>
       <br />
     </li>
   );
@@ -126,7 +186,7 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
         className="relative flex h-auto w-90vw flex-col rounded-sm bg-surface-neutral-surface-lv1 py-20px font-barlow md:w-700px"
       >
         {/* Info: (20240625 - Julian) Header */}
-        <div className="flex items-center justify-between pl-40px pr-20px text-2xl font-bold text-text-neutral-primary">
+        <div className="flex items-center justify-between pl-40px pr-20px text-xl font-bold text-text-neutral-primary lg:text-2xl">
           <h1>{t('USER_CODE.TITLE')}</h1>
           <button type="button" onClick={modalVisibilityHandler}>
             <Image src="/icons/cross.svg" width={32} height={32} alt="cross_icon" />
@@ -138,7 +198,7 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
         {/* Info: (20240625 - Julian) Content */}
         <div className="flex w-full flex-col items-center gap-y-20px px-20px pt-20px md:px-40px">
           <div className="h-400px overflow-y-auto rounded-sm border border-surface-brand-secondary bg-surface-neutral-main-background p-20px md:h-500px">
-            <ol className="list-inside list-decimal text-lg font-semibold text-text-neutral-primary">
+            <ol className="list-inside list-decimal text-base font-semibold text-text-neutral-primary lg:text-lg">
               {/* Info: (20240704 - Julian) 1. Purpose */}
               {firstItem}
               {/* Info: (20240704 - Julian) 2. User Responsibilities */}

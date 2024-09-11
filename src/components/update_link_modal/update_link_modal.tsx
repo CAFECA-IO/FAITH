@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/button/button';
 import { useTranslation } from 'next-i18next';
 import { ITranslateFunction } from '@/interfaces/locale';
+import { cn } from '@/lib/utils/common';
 
 interface IUpdateLinkModalProps {
   isModalVisible: boolean;
@@ -21,6 +22,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
   const [currentLink, setCurrentLink] = useState<string>(oldLink);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isUpdated, setIsUpdated] = useState<boolean>(false);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const updateLinkHandler = () => {
     setIsLoading(true);
@@ -34,12 +36,14 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
 
   const copyLinkHandler = () => {
     navigator.clipboard.writeText(currentLink);
+    setIsCopied(true);
   };
 
   useEffect(() => {
     if (isModalVisible) {
       setIsUpdated(false);
       setIsLoading(false);
+      setIsCopied(false);
     }
   }, [isModalVisible]);
 
@@ -74,12 +78,35 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
 
       <p>{t('COMMON.LOADING')}</p>
     </div>
+  ) : isCopied ? (
+    <Button
+      type="button"
+      variant="tertiary"
+      className={cn('py-8px text-sm hover:cursor-default hover:bg-button-surface-strong-secondary')}
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          className="fill-current"
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M11.4259 2.78482C11.0189 2.75156 10.4946 2.75098 9.73553 2.75098H5.0022C4.58799 2.75098 4.2522 2.41519 4.2522 2.00098C4.2522 1.58676 4.58799 1.25098 5.0022 1.25098H9.73553L9.76721 1.25098C10.4871 1.25097 11.0727 1.25096 11.5481 1.2898C12.0391 1.32992 12.4781 1.4152 12.8867 1.62337C13.5296 1.95094 14.0522 2.47362 14.3798 3.11651C14.588 3.52508 14.6733 3.96406 14.7134 4.45511C14.7522 4.93045 14.7522 5.51612 14.7522 6.23595V6.26764V11.001C14.7522 11.4152 14.4164 11.751 14.0022 11.751C13.588 11.751 13.2522 11.4152 13.2522 11.001V6.26764C13.2522 5.50853 13.2516 4.9843 13.2184 4.57726C13.1858 4.17896 13.1258 3.95936 13.0433 3.7975C12.8595 3.43685 12.5663 3.14364 12.2057 2.95988C12.0438 2.87741 11.8242 2.81736 11.4259 2.78482ZM4.10734 3.58431L4.13553 3.58431H9.53553L9.56373 3.58431C9.91299 3.58429 10.2192 3.58428 10.4723 3.60497C10.7411 3.62692 11.0154 3.67587 11.2813 3.81138C11.6734 4.01112 11.9921 4.32983 12.1918 4.72183C12.3273 4.98779 12.3763 5.26212 12.3982 5.53084C12.4189 5.78401 12.4189 6.09018 12.4189 6.43944V6.46764V11.8676V11.8959C12.4189 12.2451 12.4189 12.5513 12.3982 12.8044C12.3763 13.0732 12.3273 13.3475 12.1918 13.6135C11.9921 14.0055 11.6733 14.3242 11.2813 14.5239C11.0154 14.6594 10.7411 14.7084 10.4723 14.7303C10.2192 14.751 9.913 14.751 9.56374 14.751H9.53553H4.13553H4.10732C3.75807 14.751 3.45189 14.751 3.19873 14.7303C2.93001 14.7084 2.65568 14.6594 2.38972 14.5239C1.99772 14.3242 1.67901 14.0055 1.47927 13.6135C1.34376 13.3475 1.29481 13.0732 1.27286 12.8044C1.25217 12.5513 1.25218 12.2451 1.2522 11.8958L1.2522 11.8676V6.46764L1.2522 6.43945C1.25218 6.09019 1.25217 5.78401 1.27286 5.53084C1.29481 5.26212 1.34376 4.98779 1.47927 4.72183C1.679 4.32983 1.99771 4.01112 2.38972 3.81138C2.65568 3.67587 2.93001 3.62692 3.19873 3.60497C3.4519 3.58428 3.75808 3.58429 4.10734 3.58431ZM3.32088 5.09999C3.14492 5.11436 3.08996 5.13808 3.0707 5.14789C2.96094 5.20382 2.8717 5.29306 2.81578 5.40282C2.80597 5.42207 2.78225 5.47703 2.76787 5.65299C2.75278 5.8377 2.7522 6.0819 2.7522 6.46764V11.8676C2.7522 12.2534 2.75278 12.4976 2.76787 12.6823C2.78225 12.8583 2.80597 12.9132 2.81578 12.9325C2.8717 13.0422 2.96094 13.1315 3.0707 13.1874C3.08996 13.1972 3.14492 13.2209 3.32088 13.2353C3.50559 13.2504 3.74979 13.251 4.13553 13.251H9.53553C9.92128 13.251 10.1655 13.2504 10.3502 13.2353C10.5261 13.2209 10.5811 13.1972 10.6004 13.1874C10.7101 13.1315 10.7994 13.0422 10.8553 12.9325C10.8651 12.9132 10.8888 12.8583 10.9032 12.6823C10.9183 12.4976 10.9189 12.2534 10.9189 11.8676V6.46764C10.9189 6.0819 10.9183 5.8377 10.9032 5.65299C10.8888 5.47703 10.8651 5.42207 10.8553 5.40282C10.7994 5.29306 10.7101 5.20382 10.6004 5.14789C10.5811 5.13808 10.5261 5.11436 10.3502 5.09999C10.1655 5.08489 9.92128 5.08431 9.53553 5.08431H4.13553C3.74979 5.08431 3.50559 5.08489 3.32088 5.09999Z"
+        />
+      </svg>
+
+      <p>{t('CHAT.COPIED')}</p>
+    </Button>
   ) : isUpdated ? (
     <Button
       id="update-chat-link-button"
       type="button"
       variant="tertiary"
-      className="py-8px text-sm"
+      className={cn('py-8px text-sm')}
       onClick={copyLinkHandler}
     >
       <svg
@@ -105,7 +132,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
       id={isFirstShare ? 'create-chat-link-button' : 'update-chat-link-button'}
       type="button"
       variant="tertiary"
-      className="py-8px text-sm"
+      className={cn('py-8px text-sm')}
       onClick={updateLinkHandler}
     >
       <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
