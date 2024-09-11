@@ -1,7 +1,7 @@
 import Lottie from 'lottie-react';
 import { Button } from '@/components/button/button';
 import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item';
-import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
+import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS, checkboxStyle } from '@/constants/display';
 import { useChatCtx } from '@/contexts/chat_context';
 import { useUserCtx } from '@/contexts/user_context';
 import { MessageRole, DisplayedSender, IMessageWithRole } from '@/interfaces/chat';
@@ -85,18 +85,55 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
   const getMarkdownStyle = (content: string) => {
     const markedContent = marked(content) as string;
     const result = markedContent
+      // Info: (20240911 - Julian) h1, h2, h3 標題：字體大小、粗體、行高
+      .replace(/<h1>/g, `<h1 class="text-2xl font-bold leading-10 tracking-normal">`)
+      .replace(/<h2>/g, `<h2 class="text-xl font-bold leading-8 tracking-normal">`)
+      .replace(/<h3>/g, `<h3 class="text-lg font-bold leading-6 tracking-normal">`)
+      // Info: (20240906 - Julian) p 段落：字體大小、行高
+      .replace(/<p>/g, `<p class="text-base tracking-normal">`)
+      // Info: (20240911 - Julian) blockquote 引用：邊框、縮排
+      .replace(
+        /<blockquote>/g,
+        `<blockquote class="px-20px border-input-stroke-input border-dashed border rounded-sm">`
+      )
+      // Info: (20240911 - Julian) checkbox：樣式、對齊
+      .replace(
+        /<li><input ([\w]+=""\s)*disabled="" type="checkbox"/g,
+        `<li class="flex items-center"><input $1disabled class="${checkboxStyle}" type="checkbox"`
+      )
+      // Info: (20240911 - Julian) a 連結：字顏色、底線
+      .replace(/<a /g, `<a class="text-text-neutral-link" `)
+      // Info: (20240906 - Julian) img 圖片：最大寬度、外距
+      .replace(/<img /g, `<img class="w-250px my-20px md:w-500px" `)
       // Info: (20240906 - Julian) ul, ol, li ：縮排及列表樣式
-      .replace(/<ul/g, `<ul class="list-disc flex flex-col gap-4px marker:font-bold"`)
-      .replace(/<ol/g, `<ol class="list-decimal flex flex-col gap-4px marker:font-bold"`)
-      .replace(/<li/g, `<li class="ml-5"`)
+      .replace(/<ul>/g, `<ul class="list-disc flex flex-col gap-4px marker:font-bold">`)
+      .replace(/<ol>/g, `<ol class="list-decimal flex flex-col gap-4px marker:font-bold">`)
+      .replace(/<li>/g, `<li class="ml-5">`)
+      // Info: (20240911 - Julian) code 區塊：背景色
+      .replace(/<code>/g, `<code class="bg-surface-brand-secondary-10">`)
       // Info: (20240906 - Julian) 程式碼區塊：背景色、字體大小、捲軸
       .replace(
         /<pre><code class="([^"]+)">([^<]+)<\/code><\/pre>/g,
-        `<pre class="bg-surface-neutral-main-background p-4 overflow-x-scroll"><code class="text-xs lg:text-sm $1">$2</code></pre>`
-      );
+        `<pre class="bg-surface-brand-secondary-10 p-4 overflow-x-scroll"><code class="text-xs lg:text-sm $1">$2</code></pre>`
+      )
+      // Info: (20240911 - Julian) table 表格：捲軸、邊框、背景色、對齊
+      .replace(
+        /<table/g,
+        `<div class="my-4 overflow-x-scroll"><table class="w-250px md:table-fixed md:w-500px"`
+      )
+      .replace(/<\/table>/g, `</table></div>`)
+      .replace(
+        /<th>(<\/th>)?/g,
+        `<th class="border-x border-t border-surface-brand-secondary bg-surface-brand-secondary-10 py-2">$1`
+      )
+      .replace(/<td/g, `<td class="border border-surface-brand-secondary bg-white p-2 text-left"`);
+
     return (
       // eslint-disable-next-line react/no-danger
-      <article className="my-auto align-baseline" dangerouslySetInnerHTML={{ __html: result }} />
+      <article
+        className="my-auto align-baseline text-text-neutral-secondary"
+        dangerouslySetInnerHTML={{ __html: result }}
+      />
     );
   };
 

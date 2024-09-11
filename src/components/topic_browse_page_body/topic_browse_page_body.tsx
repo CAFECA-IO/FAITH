@@ -37,7 +37,7 @@ const TopicBrowsePageBody = () => {
   });
 
   return (
-    <div className="mx-100px my-100px flex w-screen flex-col items-center px-20px md:my-180px">
+    <div className="mx-100px mb-60px mt-100px flex w-screen flex-col items-center px-20px md:my-180px">
       {/* Info: (20240905 - Julian) Desktop Title */}
       <h1 className="hidden text-48px font-bold text-text-neutral-primary md:block">
         {t('DISCOVER.TITLE')}

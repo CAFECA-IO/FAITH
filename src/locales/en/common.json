@@ -108,7 +108,8 @@
     "CREATE_LINK_BTN": "Create Link",
     "UPDATE_LINK_BTN": "Update Link",
     "COPY_LINK_BTN": "Copy Link",
-    "UPDATE_LINK_HINT": "The public link to your chat has been created. Manage previously shared chats via Settings."
+    "UPDATE_LINK_HINT": "The public link to your chat has been created. Manage previously shared chats via Settings.",
+    "COPIED": "Copied!"
   },
   "DISCOVER": {
     "HEADER_TITLE": "Discover",
