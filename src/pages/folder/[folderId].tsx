@@ -99,6 +99,56 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
   const sharedChatCount = 46;
   const privateChatCount = 11;
 
+  const folderInfo = [
+    {
+      title: 'FOLDER.CHAT_IN_FOLDER',
+      imgSrc: '/icons/chat_box.svg',
+      count: totalChatCount,
+    },
+    {
+      title: 'FOLDER.SHARED_CHATS',
+      imgSrc: '/icons/share.svg',
+      count: sharedChatCount,
+    },
+    {
+      title: 'FOLDER.PRIVATE_CHATS',
+      imgSrc: '/icons/lock.svg',
+      count: privateChatCount,
+    },
+  ];
+
+  const displayedFolderInfoDesktop = (
+    <div className="hidden grid-cols-3 items-center gap-x-40px lg:grid">
+      {folderInfo.map((info) => (
+        <div
+          key={info.title}
+          className="flex items-end justify-between rounded-sm border border-stroke-brand-secondary p-12px"
+        >
+          <div className="flex flex-col gap-y-12px">
+            <p className="text-lg font-semibold text-text-neutral-secondary">{t(info.title)}</p>
+            <Image src={info.imgSrc} width={32} height={32} alt={`${info.title}_icon`} />
+          </div>
+          <p className="text-4xl font-bold text-text-neutral-primary">{info.count}</p>
+        </div>
+      ))}
+    </div>
+  );
+
+  const displayedFolderInfoMobile = (
+    <div className="grid w-full grid-cols-1 items-center gap-y-10px lg:hidden">
+      {folderInfo.map((info) => (
+        <div
+          key={info.title}
+          className="flex items-center justify-between rounded-xs border border-stroke-brand-secondary px-16px py-10px"
+        >
+          <Image src={info.imgSrc} width={20} height={20} alt={`${info.title}_icon`} />
+          <p className="text-sm font-semibold text-text-neutral-secondary">{t(info.title)}</p>
+          <p className="text-2xl font-bold text-text-neutral-primary">{info.count}</p>
+        </div>
+      ))}
+    </div>
+  );
+
   const displayedTypeOptions = (
     <div
       ref={typeRef}
@@ -144,17 +194,17 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
       onKeyDown={handleKeyDown}
       onCompositionStart={handleCompositionStart}
       onCompositionEnd={handleCompositionEnd}
-      className="w-150px rounded border bg-input-surface-input-background px-2 py-1 text-48px font-normal"
+      className="w-150px rounded border bg-input-surface-input-background px-2 py-1 font-normal"
     />
   ) : (
-    <h1 className="text-48px font-bold text-text-neutral-primary">{folderName}</h1>
+    <h1 className="font-bold text-text-neutral-primary">{folderName}</h1>
   );
 
   const displayedPageBody = folderData ? (
-    <div className="mx-80px my-140px flex w-screen flex-col items-center gap-y-40px">
+    <div className="flex w-screen flex-col items-center gap-y-40px px-20px pb-60px pt-100px lg:px-80px lg:py-140px">
       {/* Info: (20240709 - Julian) Title */}
       <div className="relative flex w-full flex-col items-center gap-y-20px">
-        <div className="flex items-center gap-x-16px">
+        <div className="flex items-center gap-x-8px text-2xl lg:gap-x-16px lg:text-48px">
           {displayTitle}
 
           <Button
@@ -180,70 +230,40 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
           </Button>
         </div>
         {/* ToDo: (20240709 - Julian) Description */}
-        <p className="text-base font-semibold text-text-neutral-tertiary">{description}</p>
+        <p className="text-xs font-semibold text-text-neutral-tertiary lg:text-base">
+          {description}
+        </p>
         {/* Info: (20240709 - Julian) Share button */}
-        <Button
-          type="button"
-          variant="tertiary"
-          className="absolute right-0 top-0 flex items-center gap-x-8px"
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              className="fill-current"
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M15.0024 2.41797C14.0359 2.41797 13.2524 3.20147 13.2524 4.16797C13.2524 4.47311 13.3305 4.76001 13.4678 5.00978C13.4762 5.02229 13.4842 5.03512 13.4919 5.04828C13.4995 5.06134 13.5067 5.07453 13.5134 5.08783C13.8219 5.58607 14.3734 5.91797 15.0024 5.91797C15.9689 5.91797 16.7524 5.13447 16.7524 4.16797C16.7524 3.20147 15.9689 2.41797 15.0024 2.41797ZM12.6485 6.40883C13.2405 7.03051 14.0762 7.41797 15.0024 7.41797C16.7974 7.41797 18.2524 5.96289 18.2524 4.16797C18.2524 2.37304 16.7974 0.917969 15.0024 0.917969C13.2075 0.917969 11.7524 2.37304 11.7524 4.16797C11.7524 4.49684 11.8013 4.8143 11.8921 5.11349L7.35639 7.76044C6.7644 7.13876 5.92867 6.7513 5.00244 6.7513C3.20752 6.7513 1.75244 8.20638 1.75244 10.0013C1.75244 11.7962 3.20752 13.2513 5.00244 13.2513C5.92882 13.2513 6.76468 12.8637 7.35669 12.2418L11.8933 14.8854C11.8017 15.1857 11.7524 15.5044 11.7524 15.8346C11.7524 17.6296 13.2075 19.0846 15.0024 19.0846C16.7974 19.0846 18.2524 17.6296 18.2524 15.8346C18.2524 14.0397 16.7974 12.5846 15.0024 12.5846C14.0776 12.5846 13.243 12.9709 12.6512 13.591L8.11289 10.9464C8.20364 10.6473 8.25244 10.33 8.25244 10.0013C8.25244 9.67243 8.20359 9.35497 8.11276 9.05578L12.6485 6.40883ZM6.49146 9.08143C6.49821 9.09474 6.50539 9.10793 6.51301 9.12099C6.52069 9.13415 6.52871 9.14699 6.53705 9.1595C6.67434 9.40926 6.75244 9.69616 6.75244 10.0013C6.75244 10.3064 6.67435 10.5933 6.53705 10.8431C6.52862 10.8557 6.52052 10.8687 6.51277 10.882C6.50524 10.8949 6.49814 10.908 6.49147 10.9212C6.18302 11.4194 5.63149 11.7513 5.00244 11.7513C4.03594 11.7513 3.25244 10.9678 3.25244 10.0013C3.25244 9.0348 4.03594 8.2513 5.00244 8.2513C5.63149 8.2513 6.18302 8.5832 6.49146 9.08143ZM13.4444 15.037C13.4646 15.0109 13.4834 14.9832 13.5004 14.9539C13.5169 14.9257 13.5312 14.897 13.5436 14.8677C13.8571 14.3957 14.3934 14.0846 15.0024 14.0846C15.9689 14.0846 16.7524 14.8681 16.7524 15.8346C16.7524 16.8011 15.9689 17.5846 15.0024 17.5846C14.0359 17.5846 13.2524 16.8011 13.2524 15.8346C13.2524 15.5473 13.3217 15.2762 13.4444 15.037Z"
-            />
-          </svg>
+        <div className="absolute right-0 top-0 hidden lg:block">
+          <Button type="button" variant="tertiary" className="flex items-center gap-x-8px">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                className="fill-current"
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M15.0024 2.41797C14.0359 2.41797 13.2524 3.20147 13.2524 4.16797C13.2524 4.47311 13.3305 4.76001 13.4678 5.00978C13.4762 5.02229 13.4842 5.03512 13.4919 5.04828C13.4995 5.06134 13.5067 5.07453 13.5134 5.08783C13.8219 5.58607 14.3734 5.91797 15.0024 5.91797C15.9689 5.91797 16.7524 5.13447 16.7524 4.16797C16.7524 3.20147 15.9689 2.41797 15.0024 2.41797ZM12.6485 6.40883C13.2405 7.03051 14.0762 7.41797 15.0024 7.41797C16.7974 7.41797 18.2524 5.96289 18.2524 4.16797C18.2524 2.37304 16.7974 0.917969 15.0024 0.917969C13.2075 0.917969 11.7524 2.37304 11.7524 4.16797C11.7524 4.49684 11.8013 4.8143 11.8921 5.11349L7.35639 7.76044C6.7644 7.13876 5.92867 6.7513 5.00244 6.7513C3.20752 6.7513 1.75244 8.20638 1.75244 10.0013C1.75244 11.7962 3.20752 13.2513 5.00244 13.2513C5.92882 13.2513 6.76468 12.8637 7.35669 12.2418L11.8933 14.8854C11.8017 15.1857 11.7524 15.5044 11.7524 15.8346C11.7524 17.6296 13.2075 19.0846 15.0024 19.0846C16.7974 19.0846 18.2524 17.6296 18.2524 15.8346C18.2524 14.0397 16.7974 12.5846 15.0024 12.5846C14.0776 12.5846 13.243 12.9709 12.6512 13.591L8.11289 10.9464C8.20364 10.6473 8.25244 10.33 8.25244 10.0013C8.25244 9.67243 8.20359 9.35497 8.11276 9.05578L12.6485 6.40883ZM6.49146 9.08143C6.49821 9.09474 6.50539 9.10793 6.51301 9.12099C6.52069 9.13415 6.52871 9.14699 6.53705 9.1595C6.67434 9.40926 6.75244 9.69616 6.75244 10.0013C6.75244 10.3064 6.67435 10.5933 6.53705 10.8431C6.52862 10.8557 6.52052 10.8687 6.51277 10.882C6.50524 10.8949 6.49814 10.908 6.49147 10.9212C6.18302 11.4194 5.63149 11.7513 5.00244 11.7513C4.03594 11.7513 3.25244 10.9678 3.25244 10.0013C3.25244 9.0348 4.03594 8.2513 5.00244 8.2513C5.63149 8.2513 6.18302 8.5832 6.49146 9.08143ZM13.4444 15.037C13.4646 15.0109 13.4834 14.9832 13.5004 14.9539C13.5169 14.9257 13.5312 14.897 13.5436 14.8677C13.8571 14.3957 14.3934 14.0846 15.0024 14.0846C15.9689 14.0846 16.7524 14.8681 16.7524 15.8346C16.7524 16.8011 15.9689 17.5846 15.0024 17.5846C14.0359 17.5846 13.2524 16.8011 13.2524 15.8346C13.2524 15.5473 13.3217 15.2762 13.4444 15.037Z"
+              />
+            </svg>
 
-          <p>{t('FOLDER.SHARE')}</p>
-        </Button>
+            <p>{t('FOLDER.SHARE')}</p>
+          </Button>
+        </div>
       </div>
       {/* Info: (20240708 - Julian) Info blocks */}
-      <div className="grid grid-cols-3 items-center gap-x-40px">
-        {/* Info: (20240708 - Julian) Chat in the folder */}
-        <div className="flex items-end justify-between rounded-sm border border-stroke-brand-secondary p-12px">
-          <div className="flex flex-col gap-y-12px">
-            <p className="text-lg font-semibold text-text-neutral-secondary">
-              {t('FOLDER.CHAT_IN_FOLDER')}
-            </p>
-            <Image src="/icons/chat_box.svg" width={32} height={32} alt="chat_box_icon" />
-          </div>
-          <p className="text-4xl font-bold text-text-neutral-primary">{totalChatCount}</p>
-        </div>
-        {/* Info: (20240708 - Julian) Shared Chats */}
-        <div className="flex items-end justify-between rounded-sm border border-stroke-brand-secondary p-12px">
-          <div className="flex flex-col gap-y-12px">
-            <p className="text-lg font-semibold text-text-neutral-secondary">
-              {t('FOLDER.SHARED_CHATS')}
-            </p>
-            <Image src="/icons/share.svg" width={32} height={32} alt="share_icon" />
-          </div>
-          <p className="text-4xl font-bold text-text-neutral-primary">{sharedChatCount}</p>
-        </div>
-        {/* Info: (20240708 - Julian) Private Chats */}
-        <div className="flex items-end justify-between rounded-sm border border-stroke-brand-secondary p-12px">
-          <div className="flex flex-col gap-y-12px">
-            <p className="text-lg font-semibold text-text-neutral-secondary">
-              {t('FOLDER.PRIVATE_CHATS')}
-            </p>
-            <Image src="/icons/lock.svg" width={32} height={32} alt="lock_icon" />
-          </div>
-          <p className="text-4xl font-bold text-text-neutral-primary">{privateChatCount}</p>
-        </div>
-      </div>
+      {displayedFolderInfoDesktop}
+      {displayedFolderInfoMobile}
       {/* Info: (20240708 - Julian) Filter */}
-      <div className="flex w-full items-center gap-x-40px">
+      <div className="flex w-full items-center gap-x-16px lg:gap-x-40px">
         {/* Info: (20240708 - Julian) Type */}
         <div
           onClick={typeToggleHandler}
-          className={`relative flex w-200px items-center gap-x-12px rounded-sm border bg-input-surface-input-background ${typeVisible ? 'border-input-stroke-selected' : 'border-input-stroke-input'} px-12px py-10px font-medium text-input-text-input-placeholder hover:cursor-pointer`}
+          className={`relative hidden w-200px items-center gap-x-12px rounded-sm border bg-input-surface-input-background lg:flex ${typeVisible ? 'border-input-stroke-selected' : 'border-input-stroke-input'} px-12px py-10px font-medium text-input-text-input-placeholder hover:cursor-pointer`}
         >
           <Image src="/icons/funnel.svg" width={16} height={16} alt="funnel_icon" />
 
@@ -263,7 +283,28 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
           <Image src="/icons/search.svg" width={20} height={20} alt="search_icon" />
         </div>
         {/* Info: (20240708 - Julian) Sort */}
-        <SortToggle currentSort={sort} clickHandler={sortClickHandler} />
+        <div className="hidden lg:block">
+          <SortToggle currentSort={sort} clickHandler={sortClickHandler} />
+        </div>
+        {/* Info: (20240911 - Julian) Share button */}
+        <div className="block lg:hidden">
+          <Button type="button" variant="tertiary" className={cn('h-44px w-44px p-0')}>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M15.0024 2.41772C14.0359 2.41772 13.2524 3.20123 13.2524 4.16772C13.2524 4.47287 13.3305 4.75977 13.4678 5.00953C13.4762 5.02204 13.4842 5.03488 13.4919 5.04804C13.4995 5.06109 13.5067 5.07428 13.5134 5.08759C13.8219 5.58582 14.3734 5.91772 15.0024 5.91772C15.9689 5.91772 16.7524 5.13422 16.7524 4.16772C16.7524 3.20123 15.9689 2.41772 15.0024 2.41772ZM12.6485 6.40859C13.2405 7.03026 14.0762 7.41772 15.0024 7.41772C16.7974 7.41772 18.2524 5.96265 18.2524 4.16772C18.2524 2.3728 16.7974 0.917725 15.0024 0.917725C13.2075 0.917725 11.7524 2.3728 11.7524 4.16772C11.7524 4.49659 11.8013 4.81405 11.8921 5.11325L7.35639 7.7602C6.7644 7.13852 5.92867 6.75106 5.00244 6.75106C3.20752 6.75106 1.75244 8.20613 1.75244 10.0011C1.75244 11.796 3.20752 13.2511 5.00244 13.2511C5.92882 13.2511 6.76468 12.8635 7.35669 12.2416L11.8933 14.8852C11.8017 15.1854 11.7524 15.5042 11.7524 15.8344C11.7524 17.6293 13.2075 19.0844 15.0024 19.0844C16.7974 19.0844 18.2524 17.6293 18.2524 15.8344C18.2524 14.0395 16.7974 12.5844 15.0024 12.5844C14.0776 12.5844 13.243 12.9707 12.6512 13.5907L8.11289 10.9462C8.20364 10.6471 8.25244 10.3298 8.25244 10.0011C8.25244 9.67219 8.20359 9.35473 8.11276 9.05554L12.6485 6.40859ZM6.49146 9.08119C6.49821 9.0945 6.50539 9.10769 6.51301 9.12075C6.52069 9.13391 6.52871 9.14674 6.53705 9.15926C6.67434 9.40902 6.75244 9.69592 6.75244 10.0011C6.75244 10.3062 6.67435 10.5931 6.53705 10.8429C6.52862 10.8555 6.52052 10.8685 6.51277 10.8818C6.50524 10.8947 6.49814 10.9078 6.49147 10.9209C6.18302 11.4192 5.63149 11.7511 5.00244 11.7511C4.03594 11.7511 3.25244 10.9676 3.25244 10.0011C3.25244 9.03456 4.03594 8.25106 5.00244 8.25106C5.63149 8.25106 6.18302 8.58296 6.49146 9.08119ZM13.4444 15.0368C13.4646 15.0107 13.4834 14.983 13.5004 14.9537C13.5169 14.9255 13.5312 14.8967 13.5436 14.8675C13.8571 14.3955 14.3934 14.0844 15.0024 14.0844C15.9689 14.0844 16.7524 14.8679 16.7524 15.8344C16.7524 16.8009 15.9689 17.5844 15.0024 17.5844C14.0359 17.5844 13.2524 16.8009 13.2524 15.8344C13.2524 15.5471 13.3217 15.276 13.4444 15.0368Z"
+                className="fill-current"
+              />
+            </svg>
+          </Button>
+        </div>
       </div>
       {/* Info: (20240708 - Julian) Chat list */}
       <div className="min-h-200px w-full">{displayedChatList}</div>

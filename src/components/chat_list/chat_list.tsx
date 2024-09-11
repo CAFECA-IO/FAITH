@@ -115,7 +115,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
           {isShowPrivateIcon}
         </div>
       </div>
-      <div className="table-cell text-center">{latestQuestion}</div>
+      <div className="hidden text-center lg:table-cell">{latestQuestion}</div>
       <div className="table-cell text-center text-text-neutral-tertiary">
         {timestampToString(createdAt).date}
       </div>
@@ -193,7 +193,7 @@ const ChatList = ({ chats }: IChatListProps) => {
           <div className="table-cell rounded-l-xs py-5px pl-20px text-left">
             {t('FOLDER.CHAT_NAME')}
           </div>
-          <div className="table-cell text-center">{t('FOLDER.LATEST_QUESTIONS')}</div>
+          <div className="hidden text-center lg:table-cell">{t('FOLDER.LATEST_QUESTIONS')}</div>
           <div className="table-cell text-center">{t('FOLDER.DATE')}</div>
           <div className="table-cell rounded-r-xs py-5px pr-20px text-right">
             {t('FOLDER.ACTION')}

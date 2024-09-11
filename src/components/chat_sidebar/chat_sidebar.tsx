@@ -557,7 +557,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="hidden font-barlow lg:flex">
           <div
-            className={`relative ${isExpanded ? 'w-200px' : 'w-0'} transition-all duration-300 ease-in-out`}
+            className={`relative ${isExpanded ? 'w-280px' : 'w-0'} transition-all duration-300 ease-in-out`}
           ></div>
 
           <Button
