@@ -197,6 +197,7 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
                   {messages.length > 1 && (
                     <div className="flex flex-row items-center justify-center">
                       <Button
+                        type="button"
                         onClick={() => setSelectedMsgIndex(Math.max(0, selectedMsgIndex - 1))}
                         size={'extraSmall'}
                         variant={'secondaryBorderless'}
@@ -221,6 +222,7 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
                       {/* Info: nowPage / totalPage (20240701 - Shirley) */}
                       <div className="flex w-40px flex-row items-center justify-center text-base">{`${selectedMsgIndex + 1} / ${messages.length}`}</div>
                       <Button
+                        type="button"
                         onClick={() =>
                           setSelectedMsgIndex(Math.min(messages.length - 1, selectedMsgIndex + 1))
                         }

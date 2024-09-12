@@ -113,16 +113,26 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
     <div className="relative">
       <div key={chatBrief.id} ref={editMenuRef} className="absolute right-0 top-0 z-50">
         <div className="flex flex-col gap-1 rounded-sm bg-surface-neutral-surface-lv2 py-2 text-base font-normal leading-6 tracking-normal shadow-userMenu">
-          <Button variant={'secondaryBorderless'} onClick={renameClickHandler}>
+          <Button type="button" variant={'secondaryBorderless'} onClick={renameClickHandler}>
             {t('COMMON.RENAME')}
           </Button>
-          <Button disabled variant={'secondaryBorderless'} onClick={shareClickHandler}>
+          <Button
+            type="button"
+            disabled
+            variant={'secondaryBorderless'}
+            onClick={shareClickHandler}
+          >
             {t('COMMON.SHARE')}
           </Button>
-          <Button disabled variant={'secondaryBorderless'} onClick={privateClickHandler}>
+          <Button
+            type="button"
+            disabled
+            variant={'secondaryBorderless'}
+            onClick={privateClickHandler}
+          >
             {t('COMMON.SET_TO_PRIVATE')}
           </Button>
-          <Button variant={'secondaryBorderless'} onClick={removeClickHandler}>
+          <Button type="button" variant={'secondaryBorderless'} onClick={removeClickHandler}>
             {t('SIDE_BAR.REMOVE_CHAT')}
           </Button>
         </div>
@@ -154,6 +164,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
           />
         ) : (
           <Button
+            type="button"
             variant={'secondaryBorderless'}
             className={cn(
               'justify-start px-2 py-2 text-start',
@@ -167,6 +178,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
         )}
         {chatBrief.id === selectedChat?.id && !isRenaming && (
           <Button
+            type="button"
             onClick={editIconClickHandler}
             variant={'secondaryBorderless'}
             size={'extraSmall'}
@@ -283,13 +295,18 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
     <div className="relative">
       <div key={chatFolder.id} ref={editMenuRef} className="absolute right-4 top-6 z-50">
         <div className="flex flex-col gap-1 rounded-sm bg-surface-neutral-surface-lv2 py-2 text-base font-normal leading-6 tracking-normal shadow-userMenu">
-          <Button variant={'secondaryBorderless'} onClick={renameClickHandler}>
+          <Button type="button" variant={'secondaryBorderless'} onClick={renameClickHandler}>
             {t('SIDE_BAR.RENAME_FOLDER')}
           </Button>
-          <Button disabled variant={'secondaryBorderless'} onClick={shareClickHandler}>
+          <Button
+            type="button"
+            disabled
+            variant={'secondaryBorderless'}
+            onClick={shareClickHandler}
+          >
             {t('SIDE_BAR.SHARE_FOLDER')}
           </Button>
-          <Button variant={'secondaryBorderless'} onClick={removeClickHandler}>
+          <Button type="button" variant={'secondaryBorderless'} onClick={removeClickHandler}>
             {t('SIDE_BAR.REMOVE_FOLDER')}
           </Button>
         </div>
@@ -349,6 +366,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
             <div className="pointer-events-auto">
               <div className="flex gap-0">
                 <Button
+                  type="button"
                   onClick={editIconClickHandler}
                   variant={'secondaryBorderless'}
                   className={cn('px-2 py-1', isEditMenuVisible ? 'text-surface-brand-primary' : '')}
@@ -371,7 +389,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
 
                 {/* TODO: link to chat list page (20240705 - Shirley) */}
                 <Link href={`/folder/${chatFolder.id}`}>
-                  <Button variant={'secondaryBorderless'} className={cn('px-2 py-1')}>
+                  <Button type="button" variant={'secondaryBorderless'} className={cn('px-2 py-1')}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"

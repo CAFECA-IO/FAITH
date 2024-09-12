@@ -274,6 +274,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
         {/* Info: (20240708 - Julian) Search */}
         <div className="flex flex-1 rounded-sm border border-input-stroke-input bg-input-surface-input-background px-12px py-10px">
           <input
+            id="chat-search-input"
             type="text"
             value={search}
             onChange={searchChangeHandler}
