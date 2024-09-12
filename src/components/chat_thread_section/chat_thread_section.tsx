@@ -34,14 +34,14 @@ const ChatThreadSection = () => {
   };
 
   const displayedChatTopics = (
-    <div className="mt-20 flex w-full justify-center px-20 lg:mt-9">
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+    <div className="mt-9 flex w-full justify-center lg:px-20">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {topicOptions.map((topic: IChatTopic) => (
           <ChatTopicOption
             key={topic.title}
             title={t(topic.title)}
             description={t(topic.description)}
-            onClick={() => topicClickHandler(topic.title)}
+            onClick={() => topicClickHandler(t(topic.title))}
             icon={isSignedIn ? TopicIcons[topic.type] : undefined}
           />
         ))}
@@ -56,17 +56,17 @@ const ChatThreadSection = () => {
         {/* Info: logo, greetings, random chat topics (20240626 - Shirley) */}
         <div className="flex flex-col px-5">
           <div className="flex w-full justify-center">
-            <div className="relative flex items-center justify-center">
+            <div className="relative flex h-70px w-70px items-center justify-center lg:h-100px lg:w-100px">
               <Image
                 src={'/logo/isunfa_logo_with_ring.svg'}
-                width={100}
-                height={100}
+                fill
+                objectFit="contain"
                 alt="isunfa logo with ring border"
               />
             </div>
           </div>
 
-          <div className="self-center text-3xl font-bold text-stroke-neutral-secondary">
+          <div className="hidden self-center text-3xl font-bold text-stroke-neutral-secondary lg:block">
             {t('CHAT.I_AM_FAITH')}
           </div>
 

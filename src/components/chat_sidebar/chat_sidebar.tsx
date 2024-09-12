@@ -499,7 +499,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
   };
 
   const displayedFolderOverviewNavigator = isSignedIn && (
-    <Link href={NATIVE_ROUTE.HOME} className="hover:text-button-text-primary">
+    <Link href={NATIVE_ROUTE.OVERVIEW} className="hover:text-button-text-primary">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -739,7 +739,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
               {/* Info: (20240705 - Julian) Discover Button */}
               {isDiscoverBtn}
               <hr className="my-16px bg-divider-stroke-lv-4" />
-              <div className="mx-3 flex items-center gap-3">
+              <div className="flex items-center gap-3">
                 <div className="relative flex h-10 w-10 items-center justify-center">
                   <Image
                     src={'/logo/isunfa_pure_logo.svg'}
@@ -764,6 +764,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
                 >
                   {t('SIDE_BAR.MY_CHAT_LIST')}
                 </p>
+                {displayedFolderOverviewNavigator}
               </div>
               {/* Info: (20240904 - Julian) Folders & Chats */}
               <div className="hideScrollbar mb-10 mt-5 grow overflow-y-auto overflow-x-hidden">

@@ -147,6 +147,13 @@
     "ACTION": "Action",
     "NOT_FOUND": "Folder not found"
   },
+  "OVERVIEW": {
+    "PAGE_TITLE": "Folder Overview",
+    "DESCRIPTION": "This page displays all the user's folders and unclassified chats, allowing the user to manage their data here.",
+    "COUNT_OF_FOLDER": "Total number of folders",
+    "SHARED_FOLDER": "Shared folders",
+    "UNCATEGORIZED_CHATS": "Uncategorized chats"
+  },
   "SETTING": {
     "TITLE": "Setting",
     "NORMAL_SETTING": "Normal Setting",

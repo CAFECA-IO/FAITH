@@ -147,6 +147,13 @@
     "ACTION": "操作",
     "NOT_FOUND": "找不到資料夾"
   },
+  "OVERVIEW": {
+    "PAGE_TITLE": "資料夾總覽",
+    "DESCRIPTION": "此頁面顯示使用者的所有資料夾和未分類聊天室，讓使用者可以在此管理資料。",
+    "COUNT_OF_FOLDER": "總資料夾數",
+    "SHARED_FOLDER": "已分享的資料夾",
+    "UNCATEGORIZED_CHATS": "未分類聊天室"
+  },
   "SETTING": {
     "TITLE": "設定",
     "NORMAL_SETTING": "一般設定",
