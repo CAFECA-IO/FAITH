@@ -100,7 +100,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
       onKeyDown={handleKeyDown}
       onCompositionStart={handleCompositionStart}
       onCompositionEnd={handleCompositionEnd}
-      className="rounded border bg-input-surface-input-background px-2 py-1 text-sm font-normal"
+      className="rounded border bg-input-surface-input-background px-2 py-1 text-sm font-normal outline-none"
       onClick={(e) => e.stopPropagation()}
     />
   ) : (

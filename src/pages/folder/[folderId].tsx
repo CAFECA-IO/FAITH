@@ -194,7 +194,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
       onKeyDown={handleKeyDown}
       onCompositionStart={handleCompositionStart}
       onCompositionEnd={handleCompositionEnd}
-      className="w-150px rounded border bg-input-surface-input-background px-2 py-1 font-normal"
+      className="w-150px rounded border bg-input-surface-input-background px-2 py-1 font-normal outline-none"
     />
   ) : (
     <h1 className="font-bold text-text-neutral-primary">{folderName}</h1>

@@ -260,7 +260,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
   const feedbackSection = isFeedbackVisible ? (
     isMsgDisliked ? (
       <div className="w-full py-5">
-        <div className="relative flex w-full items-start rounded-sm border border-dashed border-stroke-neutral-mute px-5 py-5">
+        <div className="relative flex w-full items-start rounded-sm border border-dashed border-stroke-neutral-mute px-10px py-16px lg:p-5">
           {isFeedbackSubmitted ? (
             <div className="flex w-full items-center justify-center">
               <div className="text-base font-normal text-text-neutral-tertiary">
@@ -268,12 +268,14 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
               </div>
             </div>
           ) : (
-            <div className="flex w-full items-center gap-5">
-              <div className="text-base font-normal text-text-neutral-tertiary">
+            <div className="flex w-full flex-col items-center gap-x-5 gap-y-10px lg:flex-row">
+              <div className="text-sm font-normal text-text-neutral-tertiary lg:text-base">
                 {t('CHAT.TELL_YOUR_IDEA')}
               </div>
-              <div className="flex gap-2 whitespace-nowrap text-sm">
+              <div className="flex flex-1 flex-wrap justify-center gap-2 whitespace-nowrap text-xs lg:justify-end lg:text-sm">
                 <Button
+                  id="feedback-dont-like-button"
+                  type="button"
                   onClick={() =>
                     feedbackSubmitHandler(`I don’t like this answer`, ActionCausingFeedback.DISLIKE)
                   }
@@ -283,30 +285,33 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
                   {t('CHAT.DONT_LIKE_ANSWER')}
                 </Button>
                 <Button
+                  id="feedback-error-button"
+                  type="button"
                   onClick={() =>
                     feedbackSubmitHandler('Error answer', ActionCausingFeedback.DISLIKE)
                   }
                   variant={'secondaryOutline'}
                   size={'medium'}
-                  className=""
                 >
                   {t('CHAT.ERROR_ANSWER')}
                 </Button>
                 <Button
+                  id="feedback-incomplete-button"
+                  type="button"
                   onClick={() =>
                     feedbackSubmitHandler('Incomplete information', ActionCausingFeedback.DISLIKE)
                   }
                   variant={'secondaryOutline'}
                   size={'medium'}
-                  className=""
                 >
                   {t('CHAT.INCOMPLETE')}
                 </Button>
                 <Button
+                  id="feedback-other-button"
+                  type="button"
                   onClick={feedbackModalVisibilityHandler}
                   variant={'secondaryOutline'}
                   size={'extraSmall'}
-                  className=""
                 >
                   ...
                 </Button>
@@ -314,6 +319,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
             </div>
           )}
           <Button
+            type="button"
             onClick={feedbackClickHandler}
             className="absolute right-0 top-0"
             variant={'secondaryBorderless'}
@@ -346,12 +352,14 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
               </div>
             </div>
           ) : (
-            <div className="flex w-full items-center gap-5">
-              <div className="text-base font-normal text-text-neutral-tertiary">
+            <div className="flex w-full flex-wrap items-center gap-x-5 gap-y-10px">
+              <div className="text-sm font-normal text-text-neutral-tertiary lg:text-base">
                 {t('CHAT.CHAT_FEEDBACK')}
               </div>
-              <div className="flex gap-2 whitespace-nowrap text-sm">
+              <div className="flex gap-2 whitespace-nowrap text-xs lg:text-sm">
                 <Button
+                  id="feedback-better-button"
+                  type="button"
                   onClick={() => feedbackSubmitHandler('better', ActionCausingFeedback.RESEND)}
                   variant={'secondaryOutline'}
                   size={'medium'}
@@ -359,6 +367,8 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
                   {t('CHAT.BETTER')}
                 </Button>
                 <Button
+                  id="feedback-worse-button"
+                  type="button"
                   onClick={() => feedbackSubmitHandler('worse', ActionCausingFeedback.RESEND)}
                   variant={'secondaryOutline'}
                   size={'medium'}
@@ -366,6 +376,8 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
                   {t('CHAT.WORSE')}
                 </Button>
                 <Button
+                  id="feedback-same-button"
+                  type="button"
                   onClick={() => feedbackSubmitHandler('same', ActionCausingFeedback.RESEND)}
                   variant={'secondaryOutline'}
                   size={'medium'}
@@ -376,6 +388,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
             </div>
           )}
           <Button
+            type="button"
             onClick={feedbackClickHandler}
             className="absolute right-0 top-0"
             variant={'secondaryBorderless'}

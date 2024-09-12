@@ -318,7 +318,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
                 onKeyDown={handleKeyDown}
                 onCompositionStart={handleCompositionStart}
                 onCompositionEnd={handleCompositionEnd}
-                className="w-full rounded border bg-input-surface-input-selected px-2 py-1 text-sm font-normal"
+                className="w-full rounded border bg-input-surface-input-selected px-2 py-1 text-sm font-normal outline-none"
                 onClick={(e) => e.stopPropagation()}
               />
             ) : (
