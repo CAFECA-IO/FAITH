@@ -8,6 +8,7 @@ import { useChatCtx } from '@/contexts/chat_context';
 import { useGlobalCtx } from '@/contexts/global_context';
 import { useTranslation } from 'next-i18next';
 import { ITranslateFunction } from '@/interfaces/locale';
+import { UpdateLinkType } from '@/interfaces/update_link';
 
 interface IChatItemProps {
   chat: IChat;
@@ -16,7 +17,11 @@ interface IChatItemProps {
 const ChatItem = ({ chat }: IChatItemProps) => {
   const { t }: { t: ITranslateFunction } = useTranslation('common');
   const { renameChat, deleteChat } = useChatCtx();
-  const { moveChatModalVisibilityHandler, updateLinkModalVisibilityHandler } = useGlobalCtx();
+  const {
+    moveChatModalVisibilityHandler,
+    updateLinkTypeHandler,
+    updateLinkModalVisibilityHandler,
+  } = useGlobalCtx();
   const { id, name, createdAt, messages } = chat;
 
   // Info: (20240708 - Julian) Renaming state
@@ -65,6 +70,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
   };
 
   const shareChatHandler = () => {
+    updateLinkTypeHandler(UpdateLinkType.chat);
     updateLinkModalVisibilityHandler();
     // ToDo: (20240708 - Julian) Share chat handler
     setActionVisible(false);

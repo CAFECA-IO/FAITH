@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import { useChatCtx } from '@/contexts/chat_context';
+import { useGlobalCtx } from '@/contexts/global_context';
 import ChatSidebar from '@/components/chat_sidebar/chat_sidebar';
 import NavBar from '@/components/nav_bar/nav_bar';
 import { Button } from '@/components/button/button';
@@ -16,6 +17,7 @@ import Pagination from '@/components/pagination/pagination';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { ITranslateFunction } from '@/interfaces/locale';
+import { UpdateLinkType } from '@/interfaces/update_link';
 
 enum FolderType {
   ALL = 'COMMON.ALL_TYPE',
@@ -30,6 +32,7 @@ interface IFolderOverviewPageProps {
 const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
   const { t }: { t: ITranslateFunction } = useTranslation('common');
   const { folders, renameFolder } = useChatCtx();
+  const { updateLinkModalVisibilityHandler, updateLinkTypeHandler } = useGlobalCtx();
 
   const folderData = folders ? folders.find((f) => f.id === folderId) : null;
 
@@ -62,6 +65,11 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
     componentVisible: typeVisible,
     setComponentVisible: setTypeVisible,
   } = useOuterClick<HTMLDivElement>(false);
+
+  const updateLinkModalOpenHandler = () => {
+    updateLinkTypeHandler(UpdateLinkType.folder);
+    updateLinkModalVisibilityHandler();
+  };
 
   // Info: (20240709 - Julian) Renaming handler
   const renamingHandler = () => {
@@ -235,7 +243,12 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
         </p>
         {/* Info: (20240709 - Julian) Share button */}
         <div className="absolute right-0 top-0 hidden lg:block">
-          <Button type="button" variant="tertiary" className="flex items-center gap-x-8px">
+          <Button
+            type="button"
+            variant="tertiary"
+            className="flex items-center gap-x-8px"
+            onClick={updateLinkModalOpenHandler}
+          >
             <svg
               width="20"
               height="20"
@@ -289,7 +302,12 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
         </div>
         {/* Info: (20240911 - Julian) Share button */}
         <div className="block lg:hidden">
-          <Button type="button" variant="tertiary" className={cn('h-44px w-44px p-0')}>
+          <Button
+            type="button"
+            variant="tertiary"
+            className={cn('h-44px w-44px p-0')}
+            onClick={updateLinkModalOpenHandler}
+          >
             <svg
               width="20"
               height="20"

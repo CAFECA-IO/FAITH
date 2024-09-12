@@ -5,20 +5,24 @@ import { useTranslation } from 'next-i18next';
 import { ITranslateFunction } from '@/interfaces/locale';
 import { cn } from '@/lib/utils/common';
 import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
+import { UpdateLinkTypeUnion, UpdateLinkType, dummyUpdateLink } from '@/interfaces/update_link';
 
 interface IUpdateLinkModalProps {
   isModalVisible: boolean;
   modalVisibilityHandler: () => void;
+  linkType: UpdateLinkTypeUnion;
 }
 
-const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLinkModalProps) => {
+const UpdateLinkModal = ({
+  isModalVisible,
+  modalVisibilityHandler,
+  linkType,
+}: IUpdateLinkModalProps) => {
   const { t }: { t: ITranslateFunction } = useTranslation('common');
+
   // ToDo: (20240703 - Julian) Replace this with actual data
-  const sharedDomain = 'http://faith.com/share';
-  const oldShareId: string | null = '1234567890';
-  const isFirstShare = !oldShareId;
-  const oldLink = isFirstShare ? '' : `${sharedDomain}/${oldShareId}`;
-  const newSharedId = '0987654321';
+  const { sharedDomain, oldShareId, isFirstCreate, newSharedId } = dummyUpdateLink;
+  const oldLink = isFirstCreate ? '' : `${sharedDomain}/${oldShareId}`;
 
   const [currentLink, setCurrentLink] = useState<string>(oldLink);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -53,11 +57,23 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
     }
   }, [isModalVisible]);
 
-  const mainTitle = isFirstShare ? t('CHAT.SHARE_LINK_TITLE') : t('CHAT.UPDATE_LINK_TITLE');
-  const buttonText = isFirstShare ? t('CHAT.CREATE_LINK_BTN') : t('CHAT.UPDATE_LINK_BTN');
-  const descriptionText = isFirstShare
-    ? t('CHAT.SHARE_LINK_DESCRIPTION')
-    : t('CHAT.UPDATE_LINK_DESCRIPTION');
+  const shareTitleText =
+    linkType === UpdateLinkType.chat
+      ? t('CHAT.SHARE_CHAT_LINK_TITLE')
+      : t('CHAT.SHARE_FOLDER_LINK_TITLE');
+  const updateTitleText =
+    linkType === UpdateLinkType.chat
+      ? t('CHAT.UPDATE_CHAT_LINK_TITLE')
+      : t('CHAT.UPDATE_FOLDER_LINK_TITLE');
+
+  const updateDescriptionText =
+    linkType === UpdateLinkType.chat
+      ? t('CHAT.UPDATE_CHAT_LINK_DESCRIPTION')
+      : t('CHAT.UPDATE_FOLDER_LINK_DESCRIPTION');
+
+  const mainTitle = isFirstCreate ? shareTitleText : updateTitleText;
+  const buttonText = isFirstCreate ? t('CHAT.CREATE_LINK_BTN') : t('CHAT.UPDATE_LINK_BTN');
+  const descriptionText = isFirstCreate ? t('CHAT.SHARE_LINK_DESCRIPTION') : updateDescriptionText;
 
   const displayedUpdatedHint = isUpdated ? (
     <p className="text-xs font-semibold text-text-state-success">{t('CHAT.UPDATE_LINK_HINT')}</p>
@@ -183,7 +199,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
       {/* Info: (20240911 - Julian) Desktop */}
       <div className="hidden lg:block">
         <Button
-          id="copy-chat-link-button"
+          id="copy-link-button"
           type="button"
           variant="tertiary"
           className={cn('py-8px text-sm')}
@@ -210,7 +226,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
       {/* Info: (20240911 - Julian) Mobile */}
       <div className="block lg:hidden">
         <Button
-          id="copy-chat-link-button-mobile"
+          id="copy-link-button-mobile"
           type="button"
           variant="tertiary"
           className={cn('h-44px w-44px p-0')}
@@ -239,7 +255,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
       {/* Info: (20240911 - Julian) Desktop */}
       <div className="hidden lg:block">
         <Button
-          id={isFirstShare ? 'create-chat-link-button' : 'update-chat-link-button'}
+          id={isFirstCreate ? 'create-link-button' : 'update-link-button'}
           type="button"
           variant="tertiary"
           className={cn('py-8px text-sm')}
@@ -260,7 +276,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
       {/* Info: (20240911 - Julian) Mobile */}
       <div className="block lg:hidden">
         <Button
-          id={isFirstShare ? 'create-chat-link-button-mobile' : 'update-chat-link-button-mobile'}
+          id={isFirstCreate ? 'create-link-button-mobile' : 'update-link-button-mobile'}
           type="button"
           variant="tertiary"
           className={cn('h-44px w-44px p-0')}
@@ -288,7 +304,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
   const isDisplayModal = isModalVisible ? (
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/50 font-barlow">
       <div
-        id="move-chat-modal"
+        id="update-link-modal"
         className="relative flex h-auto w-90vw flex-col rounded-sm bg-surface-neutral-surface-lv1 py-20px font-barlow lg:w-520px"
       >
         {/* Info: (20240625 - Julian) Header */}
@@ -308,7 +324,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
             className={`flex items-center justify-between gap-x-10px rounded-sm border p-20px ${isUpdated ? 'border-input-stroke-success' : 'border-input-stroke-input'}`}
           >
             <input
-              id="update-chat-link-input"
+              id="update-link-input"
               value={currentLink}
               className={`flex-1 bg-transparent text-base outline-none ${isUpdated ? 'text-text-state-success' : 'text-input-text-input-placeholder'}`}
               readOnly

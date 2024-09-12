@@ -7,6 +7,7 @@ import SortToggle from '@/components/sort_toggle/sort_toggle';
 import { SortOptions } from '@/constants/display';
 import { useTranslation } from 'next-i18next';
 import { ITranslateFunction } from '@/interfaces/locale';
+import Link from 'next/link';
 
 const TopicSeeMorePageBody = () => {
   const { t }: { t: ITranslateFunction } = useTranslation('common');
@@ -35,14 +36,16 @@ const TopicSeeMorePageBody = () => {
       setCurrentCategory(category);
     };
     return (
-      <button
+      <Link
+        href={`?category=${category}`}
+        scroll={false}
         key={`${category}_tab`}
         type="button"
-        className={`flex flex-col items-center border-b-2 px-12px py-8px hover:border-tabs-stroke-hover hover:text-tabs-text-hover ${currentCategory === category ? 'border-tabs-stroke-active text-tabs-text-active' : 'border-tabs-stroke-default text-tabs-text-default'}`}
+        className={`flex flex-col items-center whitespace-nowrap border-b-2 px-12px py-8px hover:border-tabs-stroke-hover hover:text-tabs-text-hover ${currentCategory === category ? 'border-tabs-stroke-active text-tabs-text-active' : 'border-tabs-stroke-default text-tabs-text-default'}`}
         onClick={clickHandler}
       >
         <p>{t(category)}</p>
-      </button>
+      </Link>
     );
   });
 
@@ -59,11 +62,20 @@ const TopicSeeMorePageBody = () => {
     );
 
   return (
-    <div className="mx-100px my-180px flex w-screen flex-col items-center">
-      <h1 className="text-48px font-bold text-text-neutral-primary">{t('DISCOVER.TITLE')}</h1>
-      <p className="mt-20px text-base font-semibold text-text-neutral-tertiary">
+    <div className="mb-60px mt-100px flex w-screen flex-col items-center px-20px lg:mx-100px lg:my-180px">
+      {/* Info: (20240905 - Julian) Desktop Title */}
+      <h1 className="hidden text-48px font-bold text-text-neutral-primary lg:block">
+        {t('DISCOVER.TITLE')}
+      </h1>
+      <p className="mt-20px hidden text-base font-semibold text-text-neutral-tertiary lg:block">
         {t('DISCOVER.SUB_TITLE')}
       </p>
+
+      {/* Info: (20240905 - Julian) Mobile Title */}
+      <h1 className="block text-2xl font-bold text-text-neutral-primary lg:hidden">
+        {t('DISCOVER.HEADER_TITLE')}
+      </h1>
+
       <div className="mt-40px flex w-full flex-col items-center">
         {/* Info: (20240626 - Julian) Chat box */}
         <div className="flex w-full items-center gap-16px rounded-sm border border-input-stroke-input bg-input-surface-input-background px-16px py-14px">
@@ -91,8 +103,10 @@ const TopicSeeMorePageBody = () => {
           </svg>
         </div>
         {/* Info: (20240626 - Julian) Topic tabs */}
-        <div className="mt-28px flex items-end gap-40px text-center text-base font-medium text-tabs-text-default">
-          {displayTopicCategories}
+        <div className="mt-28px flex w-full items-center text-center text-base font-medium text-tabs-text-default">
+          <div className="flex items-end gap-20px overflow-x-auto lg:gap-40px">
+            {displayTopicCategories}
+          </div>
         </div>
         {/* Info: (20240626 - Julian) Topic list */}
         <div className="mt-40px flex w-full flex-col items-stretch">
@@ -102,7 +116,7 @@ const TopicSeeMorePageBody = () => {
             {/* Info: (20240626 - Julian) Sort */}
             <SortToggle currentSort={sort} clickHandler={sortSwitchHandler} />
           </div>
-          <div className="mt-20px grid w-full grid-flow-row grid-cols-2 gap-40px">
+          <div className="mt-20px grid flex-1 grid-cols-1 items-center gap-20px md:grid-cols-2 md:gap-40px">
             {displayTopics}
           </div>
         </div>

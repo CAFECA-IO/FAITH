@@ -19,6 +19,7 @@ import UserCodeModal from '@/components/user_code_modal/user_code_modal';
 import FeedbackModal from '@/components/feedback_modal/feedback_modal';
 import SharedLinksModal from '@/components/shared_links_modal/shared_links_modal';
 import Toast from '@/components/toast/toast';
+import { UpdateLinkType, UpdateLinkTypeUnion } from '@/interfaces/update_link';
 
 interface IGlobalContext {
   isMessageModalVisible: boolean;
@@ -50,6 +51,7 @@ interface IGlobalContext {
 
   isUpdateLinkModalVisible: boolean;
   updateLinkModalVisibilityHandler: () => void;
+  updateLinkTypeHandler: (type: UpdateLinkTypeUnion) => void;
 
   isUserCodeModalVisible: boolean;
   userCodeModalVisibilityHandler: () => void;
@@ -90,6 +92,7 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
   const [isMoveChatModalVisible, setIsMoveChatModalVisible] = useState(false);
 
   const [isUpdateLinkModalVisible, setIsUpdateLinkModalVisible] = useState(false);
+  const [updateLinkType, setUpdateLinkType] = useState<UpdateLinkTypeUnion>(UpdateLinkType.chat);
 
   const [isUserCodeModalVisible, setIsUserCodeModalVisible] = useState(false);
 
@@ -138,6 +141,9 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
 
   const updateLinkModalVisibilityHandler = () => {
     setIsUpdateLinkModalVisible(!isUpdateLinkModalVisible);
+  };
+  const updateLinkTypeHandler = (type: UpdateLinkTypeUnion) => {
+    setUpdateLinkType(type);
   };
 
   const userCodeModalVisibilityHandler = () => {
@@ -284,6 +290,7 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
     moveChatModalVisibilityHandler,
     isUpdateLinkModalVisible,
     updateLinkModalVisibilityHandler,
+    updateLinkTypeHandler,
     isUserCodeModalVisible,
     userCodeModalVisibilityHandler,
     isFeedbackModalVisible,
@@ -336,6 +343,7 @@ export const GlobalProvider = ({ children }: IGlobalProvider) => {
       <UpdateLinkModal
         isModalVisible={isUpdateLinkModalVisible}
         modalVisibilityHandler={updateLinkModalVisibilityHandler}
+        linkType={updateLinkType}
       />
 
       <UserCodeModal
