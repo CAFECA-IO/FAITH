@@ -69,6 +69,18 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
     }
   }, [isModalVisible]);
 
+  useEffect(() => {
+    // ToDo: (20240912 - Julian) System theme
+    if (
+      currentTheme === ChatTheme.DARK ||
+      (!currentTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [currentTheme]);
+
   const normalSettingClickHandler = () => setCurrentTab(ChatSettingTab.NORMAL_SETTING);
   const subscriptionClickHandler = () => setCurrentTab(ChatSettingTab.SUBSCRIPTION);
 
