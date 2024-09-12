@@ -28,7 +28,7 @@ const I18n = () => {
   return (
     <div className="relative flex flex-col items-center font-barlow">
       {/* Info: (20240906 - Julian) Global icon button */}
-      <Button size={'small'} variant={'secondaryBorderless'} onClick={toggleMenu}>
+      <Button type="button" size={'small'} variant={'secondaryBorderless'} onClick={toggleMenu}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

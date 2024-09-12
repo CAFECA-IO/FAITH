@@ -4,20 +4,25 @@ import { Button } from '@/components/button/button';
 import { useTranslation } from 'next-i18next';
 import { ITranslateFunction } from '@/interfaces/locale';
 import { cn } from '@/lib/utils/common';
+import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
+import { UpdateLinkTypeUnion, UpdateLinkType, dummyUpdateLink } from '@/interfaces/update_link';
 
 interface IUpdateLinkModalProps {
   isModalVisible: boolean;
   modalVisibilityHandler: () => void;
+  linkType: UpdateLinkTypeUnion;
 }
 
-const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLinkModalProps) => {
+const UpdateLinkModal = ({
+  isModalVisible,
+  modalVisibilityHandler,
+  linkType,
+}: IUpdateLinkModalProps) => {
   const { t }: { t: ITranslateFunction } = useTranslation('common');
+
   // ToDo: (20240703 - Julian) Replace this with actual data
-  const sharedDomain = 'http://faith.com/share';
-  const oldShareId: string | null = '1234567890';
-  const isFirstShare = !oldShareId;
-  const oldLink = isFirstShare ? '' : `${sharedDomain}/${oldShareId}`;
-  const newSharedId = '0987654321';
+  const { sharedDomain, oldShareId, isFirstCreate, newSharedId } = dummyUpdateLink;
+  const oldLink = isFirstCreate ? '' : `${sharedDomain}/${oldShareId}`;
 
   const [currentLink, setCurrentLink] = useState<string>(oldLink);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -37,6 +42,11 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
   const copyLinkHandler = () => {
     navigator.clipboard.writeText(currentLink);
     setIsCopied(true);
+
+    // Info: (20240912 - Julian) 1 秒後將 isCopied 設回 false
+    setTimeout(() => {
+      setIsCopied(false);
+    }, DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS);
   };
 
   useEffect(() => {
@@ -47,11 +57,23 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
     }
   }, [isModalVisible]);
 
-  const mainTitle = isFirstShare ? t('CHAT.SHARE_LINK_TITLE') : t('CHAT.UPDATE_LINK_TITLE');
-  const buttonText = isFirstShare ? t('CHAT.CREATE_LINK_BTN') : t('CHAT.UPDATE_LINK_BTN');
-  const descriptionText = isFirstShare
-    ? t('CHAT.SHARE_LINK_DESCRIPTION')
-    : t('CHAT.UPDATE_LINK_DESCRIPTION');
+  const shareTitleText =
+    linkType === UpdateLinkType.chat
+      ? t('CHAT.SHARE_CHAT_LINK_TITLE')
+      : t('CHAT.SHARE_FOLDER_LINK_TITLE');
+  const updateTitleText =
+    linkType === UpdateLinkType.chat
+      ? t('CHAT.UPDATE_CHAT_LINK_TITLE')
+      : t('CHAT.UPDATE_FOLDER_LINK_TITLE');
+
+  const updateDescriptionText =
+    linkType === UpdateLinkType.chat
+      ? t('CHAT.UPDATE_CHAT_LINK_DESCRIPTION')
+      : t('CHAT.UPDATE_FOLDER_LINK_DESCRIPTION');
+
+  const mainTitle = isFirstCreate ? shareTitleText : updateTitleText;
+  const buttonText = isFirstCreate ? t('CHAT.CREATE_LINK_BTN') : t('CHAT.UPDATE_LINK_BTN');
+  const descriptionText = isFirstCreate ? t('CHAT.SHARE_LINK_DESCRIPTION') : updateDescriptionText;
 
   const displayedUpdatedHint = isUpdated ? (
     <p className="text-xs font-semibold text-text-state-success">{t('CHAT.UPDATE_LINK_HINT')}</p>
@@ -135,10 +157,10 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              className="fill-current"
               fillRule="evenodd"
               clipRule="evenodd"
-              d="M11.4259 2.78482C11.0189 2.75156 10.4946 2.75098 9.73553 2.75098H5.0022C4.58799 2.75098 4.2522 2.41519 4.2522 2.00098C4.2522 1.58676 4.58799 1.25098 5.0022 1.25098H9.73553L9.76721 1.25098C10.4871 1.25097 11.0727 1.25096 11.5481 1.2898C12.0391 1.32992 12.4781 1.4152 12.8867 1.62337C13.5296 1.95094 14.0522 2.47362 14.3798 3.11651C14.588 3.52508 14.6733 3.96406 14.7134 4.45511C14.7522 4.93045 14.7522 5.51612 14.7522 6.23595V6.26764V11.001C14.7522 11.4152 14.4164 11.751 14.0022 11.751C13.588 11.751 13.2522 11.4152 13.2522 11.001V6.26764C13.2522 5.50853 13.2516 4.9843 13.2184 4.57726C13.1858 4.17896 13.1258 3.95936 13.0433 3.7975C12.8595 3.43685 12.5663 3.14364 12.2057 2.95988C12.0438 2.87741 11.8242 2.81736 11.4259 2.78482ZM4.10734 3.58431L4.13553 3.58431H9.53553L9.56373 3.58431C9.91299 3.58429 10.2192 3.58428 10.4723 3.60497C10.7411 3.62692 11.0154 3.67587 11.2813 3.81138C11.6734 4.01112 11.9921 4.32983 12.1918 4.72183C12.3273 4.98779 12.3763 5.26212 12.3982 5.53084C12.4189 5.78401 12.4189 6.09018 12.4189 6.43944V6.46764V11.8676V11.8959C12.4189 12.2451 12.4189 12.5513 12.3982 12.8044C12.3763 13.0732 12.3273 13.3475 12.1918 13.6135C11.9921 14.0055 11.6733 14.3242 11.2813 14.5239C11.0154 14.6594 10.7411 14.7084 10.4723 14.7303C10.2192 14.751 9.913 14.751 9.56374 14.751H9.53553H4.13553H4.10732C3.75807 14.751 3.45189 14.751 3.19873 14.7303C2.93001 14.7084 2.65568 14.6594 2.38972 14.5239C1.99772 14.3242 1.67901 14.0055 1.47927 13.6135C1.34376 13.3475 1.29481 13.0732 1.27286 12.8044C1.25217 12.5513 1.25218 12.2451 1.2522 11.8958L1.2522 11.8676V6.46764L1.2522 6.43945C1.25218 6.09019 1.25217 5.78401 1.27286 5.53084C1.29481 5.26212 1.34376 4.98779 1.47927 4.72183C1.679 4.32983 1.99771 4.01112 2.38972 3.81138C2.65568 3.67587 2.93001 3.62692 3.19873 3.60497C3.4519 3.58428 3.75808 3.58429 4.10734 3.58431ZM3.32088 5.09999C3.14492 5.11436 3.08996 5.13808 3.0707 5.14789C2.96094 5.20382 2.8717 5.29306 2.81578 5.40282C2.80597 5.42207 2.78225 5.47703 2.76787 5.65299C2.75278 5.8377 2.7522 6.0819 2.7522 6.46764V11.8676C2.7522 12.2534 2.75278 12.4976 2.76787 12.6823C2.78225 12.8583 2.80597 12.9132 2.81578 12.9325C2.8717 13.0422 2.96094 13.1315 3.0707 13.1874C3.08996 13.1972 3.14492 13.2209 3.32088 13.2353C3.50559 13.2504 3.74979 13.251 4.13553 13.251H9.53553C9.92128 13.251 10.1655 13.2504 10.3502 13.2353C10.5261 13.2209 10.5811 13.1972 10.6004 13.1874C10.7101 13.1315 10.7994 13.0422 10.8553 12.9325C10.8651 12.9132 10.8888 12.8583 10.9032 12.6823C10.9183 12.4976 10.9189 12.2534 10.9189 11.8676V6.46764C10.9189 6.0819 10.9183 5.8377 10.9032 5.65299C10.8888 5.47703 10.8651 5.42207 10.8553 5.40282C10.7994 5.29306 10.7101 5.20382 10.6004 5.14789C10.5811 5.13808 10.5261 5.11436 10.3502 5.09999C10.1655 5.08489 9.92128 5.08431 9.53553 5.08431H4.13553C3.74979 5.08431 3.50559 5.08489 3.32088 5.09999Z"
+              d="M13.639 1.19853C14.0647 1.55035 14.1247 2.18067 13.7729 2.6064L5.73282 12.3356L5.7304 12.3385C5.54752 12.5581 5.318 12.7342 5.05853 12.854C4.79906 12.9737 4.51616 13.0341 4.2304 13.0308C3.93997 13.0272 3.65324 12.9578 3.39345 12.828C3.13453 12.6985 2.90819 12.5123 2.73129 12.2831C2.7307 12.2824 2.7301 12.2816 2.72951 12.2808L0.212616 9.04486C-0.126454 8.60892 -0.0479193 7.98064 0.388028 7.64157C0.823975 7.3025 1.45225 7.38104 1.79132 7.81698L4.25489 10.9844L12.2311 1.33237C12.583 0.906645 13.2133 0.846723 13.639 1.19853Z"
+              className="fill-current"
             />
           </svg>
 
@@ -177,7 +199,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
       {/* Info: (20240911 - Julian) Desktop */}
       <div className="hidden lg:block">
         <Button
-          id="copy-chat-link-button"
+          id="copy-link-button"
           type="button"
           variant="tertiary"
           className={cn('py-8px text-sm')}
@@ -204,7 +226,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
       {/* Info: (20240911 - Julian) Mobile */}
       <div className="block lg:hidden">
         <Button
-          id="copy-chat-link-button-mobile"
+          id="copy-link-button-mobile"
           type="button"
           variant="tertiary"
           className={cn('h-44px w-44px p-0')}
@@ -233,7 +255,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
       {/* Info: (20240911 - Julian) Desktop */}
       <div className="hidden lg:block">
         <Button
-          id={isFirstShare ? 'create-chat-link-button' : 'update-chat-link-button'}
+          id={isFirstCreate ? 'create-link-button' : 'update-link-button'}
           type="button"
           variant="tertiary"
           className={cn('py-8px text-sm')}
@@ -254,7 +276,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
       {/* Info: (20240911 - Julian) Mobile */}
       <div className="block lg:hidden">
         <Button
-          id={isFirstShare ? 'create-chat-link-button-mobile' : 'update-chat-link-button-mobile'}
+          id={isFirstCreate ? 'create-link-button-mobile' : 'update-link-button-mobile'}
           type="button"
           variant="tertiary"
           className={cn('h-44px w-44px p-0')}
@@ -282,7 +304,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
   const isDisplayModal = isModalVisible ? (
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/50 font-barlow">
       <div
-        id="move-chat-modal"
+        id="update-link-modal"
         className="relative flex h-auto w-90vw flex-col rounded-sm bg-surface-neutral-surface-lv1 py-20px font-barlow lg:w-520px"
       >
         {/* Info: (20240625 - Julian) Header */}
@@ -302,7 +324,7 @@ const UpdateLinkModal = ({ isModalVisible, modalVisibilityHandler }: IUpdateLink
             className={`flex items-center justify-between gap-x-10px rounded-sm border p-20px ${isUpdated ? 'border-input-stroke-success' : 'border-input-stroke-input'}`}
           >
             <input
-              id="update-chat-link-input"
+              id="update-link-input"
               value={currentLink}
               className={`flex-1 bg-transparent text-base outline-none ${isUpdated ? 'text-text-state-success' : 'text-input-text-input-placeholder'}`}
               readOnly

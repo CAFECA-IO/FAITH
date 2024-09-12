@@ -37,17 +37,17 @@ const TopicBrowsePageBody = () => {
   });
 
   return (
-    <div className="mx-100px mb-60px mt-100px flex w-screen flex-col items-center px-20px md:my-180px">
+    <div className="mb-60px mt-100px flex w-screen flex-col items-center px-20px lg:mx-100px lg:my-180px">
       {/* Info: (20240905 - Julian) Desktop Title */}
-      <h1 className="hidden text-48px font-bold text-text-neutral-primary md:block">
+      <h1 className="hidden text-48px font-bold text-text-neutral-primary lg:block">
         {t('DISCOVER.TITLE')}
       </h1>
-      <p className="mt-20px hidden text-base font-semibold text-text-neutral-tertiary md:block">
+      <p className="mt-20px hidden text-base font-semibold text-text-neutral-tertiary lg:block">
         {t('DISCOVER.SUB_TITLE')}
       </p>
 
       {/* Info: (20240905 - Julian) Mobile Title */}
-      <h1 className="block text-2xl font-bold text-text-neutral-primary md:hidden">
+      <h1 className="block text-2xl font-bold text-text-neutral-primary lg:hidden">
         {t('DISCOVER.HEADER_TITLE')}
       </h1>
 
@@ -67,7 +67,7 @@ const TopicBrowsePageBody = () => {
         </div>
         {/* Info: (20240626 - Julian) Topic tabs */}
         <div className="mt-28px flex w-full justify-center text-center text-base font-medium text-tabs-text-default">
-          <div className="flex items-end gap-20px overflow-x-auto md:gap-40px">
+          <div className="flex items-end gap-20px overflow-x-auto lg:gap-40px">
             {displayTopicCategories}
           </div>
         </div>

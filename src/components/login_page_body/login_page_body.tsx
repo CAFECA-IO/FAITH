@@ -110,6 +110,7 @@ const LoginPageBody = () => {
 
               <div className="mt-8 flex w-full flex-col justify-center gap-8">
                 <Button
+                  type="button"
                   variant={'default'}
                   onClick={logInClickHandler}
                   disabled={!isUserGuideChecked}

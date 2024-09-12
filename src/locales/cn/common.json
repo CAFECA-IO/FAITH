@@ -101,10 +101,13 @@
     "FEEDBACK_PLACEHOLDER": "输入您的回馈",
     "MOVE_CHAT_TITLE": "移动聊天室",
     "MOVE_CHAT_CONTENT": "移动到...",
-    "SHARE_LINK_TITLE": "分享聊天室连结",
+    "SHARE_CHAT_LINK_TITLE": "分享聊天室连结",
+    "SHARE_FOLDER_LINK_TITLE": "分享资料夹连结",
     "SHARE_LINK_DESCRIPTION": "您的姓名和分享后新增的讯息都会保持隐私。",
-    "UPDATE_LINK_TITLE": "更新聊天室连结",
-    "UPDATE_LINK_DESCRIPTION": "此聊天室的过去版本已经被分享。请透过「设定」管理之前分享的聊天室。",
+    "UPDATE_CHAT_LINK_TITLE": "更新聊天室连结",
+    "UPDATE_FOLDER_LINK_TITLE": "更新资料夹连结",
+    "UPDATE_CHAT_LINK_DESCRIPTION": "此聊天室的过去版本已经被分享。请透过「设定」管理之前分享的聊天室。",
+    "UPDATE_FOLDER_LINK_DESCRIPTION": "此资料夹的过去版本已经被分享。请透过「设定」管理之前分享的资料夹。",
     "CREATE_LINK_BTN": "建立连结",
     "UPDATE_LINK_BTN": "更新连结",
     "COPY_LINK_BTN": "复制连结",
@@ -143,6 +146,13 @@
     "DATE": "日期",
     "ACTION": "操作",
     "NOT_FOUND": "找不到资料夹"
+  },
+  "OVERVIEW": {
+    "PAGE_TITLE": "资料夹总览",
+    "DESCRIPTION": "此页面显示使用者的所有资料夹和未分类聊天室，让使用者可以在此管理资料。",
+    "COUNT_OF_FOLDER": "总资料夹数",
+    "SHARED_FOLDER": "已分享的资料夹",
+    "UNCATEGORIZED_CHATS": "未分类聊天室"
   },
   "SETTING": {
     "TITLE": "设定",

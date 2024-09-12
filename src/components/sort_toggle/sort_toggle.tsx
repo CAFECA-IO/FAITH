@@ -10,7 +10,11 @@ const SortToggle = ({ currentSort, clickHandler }: ISortToggleProps) => {
   const { t }: { t: ITranslateFunction } = useTranslation('common');
 
   return (
-    <div className="flex items-center gap-x-16px text-chat-bubbles-text-note">
+    <button
+      type="button"
+      onClick={clickHandler}
+      className="flex items-center gap-x-16px text-chat-bubbles-text-note"
+    >
       <div className="flex items-center gap-x-8px">
         <svg
           width="20"
@@ -28,23 +32,21 @@ const SortToggle = ({ currentSort, clickHandler }: ISortToggleProps) => {
         </svg>
         <p className="w-55px">{t(currentSort)}</p>
       </div>
-      <button type="button" onClick={clickHandler}>
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M7.63112 2.42182C7.92402 2.12893 8.39889 2.12893 8.69178 2.42182L11.947 5.67702C12.2399 5.96992 12.2399 6.44479 11.947 6.73768C11.6541 7.03058 11.1792 7.03058 10.8863 6.73768L8.16145 4.01281L5.43658 6.73768C5.14369 7.03058 4.66881 7.03058 4.37592 6.73768C4.08303 6.44479 4.08303 5.96992 4.37592 5.67702L7.63112 2.42182ZM4.37592 9.58327C4.66881 9.29038 5.14369 9.29038 5.43658 9.58327L8.16145 12.3081L10.8863 9.58327C11.1792 9.29038 11.6541 9.29038 11.947 9.58327C12.2399 9.87616 12.2399 10.351 11.947 10.6439L8.69178 13.8991C8.39889 14.192 7.92402 14.192 7.63112 13.8991L4.37592 10.6439C4.08303 10.351 4.08303 9.87616 4.37592 9.58327Z"
-            fill="#314362"
-          />
-        </svg>
-      </button>
-    </div>
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M7.63112 2.42182C7.92402 2.12893 8.39889 2.12893 8.69178 2.42182L11.947 5.67702C12.2399 5.96992 12.2399 6.44479 11.947 6.73768C11.6541 7.03058 11.1792 7.03058 10.8863 6.73768L8.16145 4.01281L5.43658 6.73768C5.14369 7.03058 4.66881 7.03058 4.37592 6.73768C4.08303 6.44479 4.08303 5.96992 4.37592 5.67702L7.63112 2.42182ZM4.37592 9.58327C4.66881 9.29038 5.14369 9.29038 5.43658 9.58327L8.16145 12.3081L10.8863 9.58327C11.1792 9.29038 11.6541 9.29038 11.947 9.58327C12.2399 9.87616 12.2399 10.351 11.947 10.6439L8.69178 13.8991C8.39889 14.192 7.92402 14.192 7.63112 13.8991L4.37592 10.6439C4.08303 10.351 4.08303 9.87616 4.37592 9.58327Z"
+          fill="#314362"
+        />
+      </svg>
+    </button>
   );
 };
 

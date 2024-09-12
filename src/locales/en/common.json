@@ -101,10 +101,13 @@
     "FEEDBACK_PLACEHOLDER": "Enter your feedback",
     "MOVE_CHAT_TITLE": "Move Chat",
     "MOVE_CHAT_CONTENT": "Move to...",
-    "SHARE_LINK_TITLE": "Share public link to chat",
+    "SHARE_CHAT_LINK_TITLE": "Share public link to chat",
+    "SHARE_FOLDER_LINK_TITLE": "Share public link to folder",
     "SHARE_LINK_DESCRIPTION": "Your name and any messages you add after sharing stay private.",
-    "UPDATE_LINK_TITLE": "Update public link to chat",
-    "UPDATE_LINK_DESCRIPTION": "A past version of this chat has already been shared. Manage previously shared chats via Settings.",
+    "UPDATE_CHAT_LINK_TITLE": "Update public link to chat",
+    "UPDATE_FOLDER_LINK_TITLE": "Update public link to folder",
+    "UPDATE_CHAT_LINK_DESCRIPTION": "A past version of this chat has already been shared. Manage previously shared chats via Settings.",
+    "UPDATE_FOLDER_LINK_DESCRIPTION": "A past version of this folder has already been shared. Manage previously shared folders via Settings.",
     "CREATE_LINK_BTN": "Create Link",
     "UPDATE_LINK_BTN": "Update Link",
     "COPY_LINK_BTN": "Copy Link",
@@ -143,6 +146,13 @@
     "DATE": "Date",
     "ACTION": "Action",
     "NOT_FOUND": "Folder not found"
+  },
+  "OVERVIEW": {
+    "PAGE_TITLE": "Folder Overview",
+    "DESCRIPTION": "This page displays all the user's folders and unclassified chats, allowing the user to manage their data here.",
+    "COUNT_OF_FOLDER": "Total number of folders",
+    "SHARED_FOLDER": "Shared folders",
+    "UNCATEGORIZED_CHATS": "Uncategorized chats"
   },
   "SETTING": {
     "TITLE": "Setting",

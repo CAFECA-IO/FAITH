@@ -3,6 +3,7 @@ export const NATIVE_ROUTE = {
   CONTACT_US: '/#contact-us',
   LOGIN: '/users/login',
   DISCOVER: '/discover',
+  OVERVIEW: '/overview',
 };
 
 export const NATIVE_API = {

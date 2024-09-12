@@ -197,6 +197,7 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
                   {messages.length > 1 && (
                     <div className="flex flex-row items-center justify-center">
                       <Button
+                        type="button"
                         onClick={() => setSelectedMsgIndex(Math.max(0, selectedMsgIndex - 1))}
                         size={'extraSmall'}
                         variant={'secondaryBorderless'}
@@ -221,6 +222,7 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
                       {/* Info: nowPage / totalPage (20240701 - Shirley) */}
                       <div className="flex w-40px flex-row items-center justify-center text-base">{`${selectedMsgIndex + 1} / ${messages.length}`}</div>
                       <Button
+                        type="button"
                         onClick={() =>
                           setSelectedMsgIndex(Math.min(messages.length - 1, selectedMsgIndex + 1))
                         }
@@ -248,15 +250,14 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
                   )}
                   {!isPending && (
                     <div className="flex gap-2">
-                      {' '}
                       <Button
+                        type="button"
                         disabled={isPending}
                         onClick={readAloadClickHandler}
                         size={'extraSmall'}
                         variant={'secondaryBorderless'}
                         className="px-1 py-0"
                       >
-                        {' '}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"
@@ -273,13 +274,13 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
                         </svg>
                       </Button>
                       <Button
+                        type="button"
                         disabled={isPending}
                         onClick={copyClickHandler}
                         size={'extraSmall'}
                         variant={'secondaryBorderless'}
                         className="px-1 py-0"
                       >
-                        {' '}
                         {isCopySuccess ? (
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -313,6 +314,7 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
                         )}
                       </Button>
                       <Button
+                        type="button"
                         disabled={isPending}
                         onClick={() => {
                           setSelectedMsgIndex(selectedMsgIndex + 1);
@@ -322,7 +324,6 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
                         variant={'secondaryBorderless'}
                         className="px-1 py-0"
                       >
-                        {' '}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"
@@ -339,13 +340,13 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
                         </svg>
                       </Button>
                       <Button
+                        type="button"
                         disabled={isPending}
                         onClick={likeClickHandler}
                         size={'extraSmall'}
                         variant={'secondaryBorderless'}
                         className={`px-1 py-0 ${isDislikeSuccess ? 'hidden' : isLikeSuccess ? 'text-surface-brand-primary' : ''}`}
                       >
-                        {' '}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"
@@ -362,13 +363,13 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
                         </svg>
                       </Button>
                       <Button
+                        type="button"
                         disabled={isPending}
                         onClick={dislikeClickHandler}
                         size={'extraSmall'}
                         variant={'secondaryBorderless'}
                         className={`px-1 py-0 ${isDislikeSuccess ? 'text-surface-brand-primary' : isLikeSuccess ? 'hidden' : ''}`}
                       >
-                        {' '}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"
