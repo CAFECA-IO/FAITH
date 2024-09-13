@@ -28,22 +28,25 @@ const FolderOverviewPageBody = () => {
 
   // ToDo: (20240912 - Julian) replace dummy data with real data
   const totalPages = 10;
+  const totalNumberOfFolders = 78;
+  const sharedFolders = 122;
+  const uncatagorizedChats = 435;
 
   const overviewInfo = [
     {
       title: 'OVERVIEW.COUNT_OF_FOLDER',
       imgSrc: '/icons/folder.svg',
-      count: 0,
+      count: totalNumberOfFolders,
     },
     {
       title: 'OVERVIEW.SHARED_FOLDER',
       imgSrc: '/icons/share.svg',
-      count: 0,
+      count: sharedFolders,
     },
     {
       title: 'OVERVIEW.UNCATEGORIZED_CHATS',
       imgSrc: '/icons/unknown_chat.svg',
-      count: 0,
+      count: uncatagorizedChats,
     },
   ];
 

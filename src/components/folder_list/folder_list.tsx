@@ -44,6 +44,7 @@ const FolderItem = ({ folder }: IFolderItemProps) => {
     setComponentVisible: setActionVisible,
   } = useOuterClick<HTMLDivElement>(false);
 
+  // ToDO: (202409 - Julian) Get the most recent chat room
   const recentlyChat = chats[chats.length - 1]; // Info: (20240913 - Julian) 取得最新的聊天室資料
 
   const actionToggleHandler = () => {
