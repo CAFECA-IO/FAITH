@@ -152,7 +152,14 @@
     "DESCRIPTION": "This page displays all the user's folders and unclassified chats, allowing the user to manage their data here.",
     "COUNT_OF_FOLDER": "Total number of folders",
     "SHARED_FOLDER": "Shared folders",
-    "UNCATEGORIZED_CHATS": "Uncategorized chats"
+    "UNCATEGORIZED_CHATS": "Uncategorized chats",
+    "FOLDER": "Folder",
+    "FOLDER_NAME": "Folder Name",
+    "RECENTLY_USED_CHAT_NAME": "Recently Used Chat Name",
+    "DATE": "Date",
+    "ACTION": "Action",
+    "NO_FOLDER_FOUND": "No folders found",
+    "NO_CHAT_FOUND": "No chats found"
   },
   "SETTING": {
     "TITLE": "Setting",

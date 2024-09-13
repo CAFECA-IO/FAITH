@@ -152,7 +152,14 @@
     "DESCRIPTION": "此頁面顯示使用者的所有資料夾和未分類聊天室，讓使用者可以在此管理資料。",
     "COUNT_OF_FOLDER": "總資料夾數",
     "SHARED_FOLDER": "已分享的資料夾",
-    "UNCATEGORIZED_CHATS": "未分類聊天室"
+    "UNCATEGORIZED_CHATS": "未分類聊天室",
+    "FOLDER": "資料夾",
+    "FOLDER_NAME": "資料夾名稱",
+    "RECENTLY_USED_CHAT_NAME": "最近使用的聊天室名稱",
+    "DATE": "日期",
+    "ACTION": "操作",
+    "NO_FOLDER_FOUND": "找不到資料夾",
+    "NO_CHAT_FOUND": "找不到聊天室"
   },
   "SETTING": {
     "TITLE": "設定",

@@ -202,7 +202,7 @@ const UpdateLinkModal = ({
           id="copy-link-button"
           type="button"
           variant="tertiary"
-          className={cn('py-8px text-sm')}
+          className={cn('px-16px py-8px text-sm')}
           onClick={copyLinkHandler}
         >
           <svg
@@ -258,7 +258,7 @@ const UpdateLinkModal = ({
           id={isFirstCreate ? 'create-link-button' : 'update-link-button'}
           type="button"
           variant="tertiary"
-          className={cn('py-8px text-sm')}
+          className={cn('px-16px py-8px text-sm')}
           onClick={updateLinkHandler}
         >
           <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">

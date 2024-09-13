@@ -31,18 +31,26 @@ interface IFolderOverviewPageProps {
 
 const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
   const { t }: { t: ITranslateFunction } = useTranslation('common');
-  const { folders, renameFolder } = useChatCtx();
+  const { folders, renameFolder, updateFolderDescription } = useChatCtx();
   const { updateLinkModalVisibilityHandler, updateLinkTypeHandler } = useGlobalCtx();
 
   const folderData = folders ? folders.find((f) => f.id === folderId) : null;
 
   const id = folderData?.id ?? '';
   const folderName = folderData?.name ?? '';
+  const description = folderData?.description ?? '';
 
-  const [isRenaming, setIsRenaming] = useState(false);
-  const [isComposing, setIsComposing] = useState(false);
-  const [newName, setNewName] = useState(folderName);
-  const inputRef = useRef<HTMLInputElement>(null);
+  // Info: (20240913 - Julian) Title Renaming state
+  const [isTitleRenaming, setIsTitleRenaming] = useState(false);
+  const [isTitleComposing, setIsTitleComposing] = useState(false);
+  const [newTitleName, setNewTitleName] = useState(folderName);
+  const inputTitleRef = useRef<HTMLInputElement>(null);
+
+  // Info: (20240913 - Julian) Description Editing state
+  const [isDescriptionEditing, setIsDescriptionEditing] = useState(false);
+  const [isDescriptionComposing, setIsDescriptionComposing] = useState(false);
+  const [newDescription, setNewDescription] = useState(description);
+  const inputDescriptionRef = useRef<HTMLInputElement>(null);
 
   const [selectedType, setSelectedType] = useState<FolderType>(FolderType.ALL);
   const [search, setSearch] = useState<string>('');
@@ -55,10 +63,16 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
   const totalPages = 5;
 
   useEffect(() => {
-    if (isRenaming && inputRef.current) {
-      inputRef.current.focus();
+    if (isTitleRenaming && inputTitleRef.current) {
+      inputTitleRef.current.focus();
     }
-  }, [isRenaming]);
+  }, [isTitleRenaming]);
+
+  useEffect(() => {
+    if (isDescriptionEditing && inputDescriptionRef.current) {
+      inputDescriptionRef.current.focus();
+    }
+  }, [isDescriptionEditing]);
 
   const {
     targetRef: typeRef,
@@ -71,22 +85,41 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
     updateLinkModalVisibilityHandler();
   };
 
-  // Info: (20240709 - Julian) Renaming handler
-  const renamingHandler = () => {
-    setIsRenaming(true);
+  // Info: (20240709 - Julian) Title Renaming handler
+  const renamingTitleHandler = () => {
+    setIsTitleRenaming(true);
   };
   const handleRenameSubmit = () => {
-    if (newName.trim() !== '' && !isComposing) {
-      renameFolder(id, newName);
-      setNewName(newName.trim());
-      setIsRenaming(false);
+    if (newTitleName.trim() !== '' && !isTitleComposing) {
+      renameFolder(id, newTitleName);
+      setNewTitleName(newTitleName.trim());
+      setIsTitleRenaming(false);
     }
   };
-  const handleCompositionStart = () => setIsComposing(true);
-  const handleCompositionEnd = () => setIsComposing(false);
+  const handleCompositionStart = () => setIsTitleComposing(true);
+  const handleCompositionEnd = () => setIsTitleComposing(false);
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !isComposing) {
+    if (e.key === 'Enter' && !isTitleComposing) {
       handleRenameSubmit();
+    }
+  };
+
+  // Info: (20240913 - Julian) Description Editing handler
+  const editingDescriptionHandler = () => {
+    setIsDescriptionEditing(true);
+  };
+  const handleDescriptionSubmit = () => {
+    if (newDescription.trim() !== '' && !isDescriptionComposing) {
+      updateFolderDescription(id, newDescription);
+      setNewDescription(newDescription.trim());
+      setIsDescriptionEditing(false);
+    }
+  };
+  const handleDescriptionCompositionStart = () => setIsDescriptionComposing(true);
+  const handleDescriptionCompositionEnd = () => setIsDescriptionComposing(false);
+  const handleDescriptionKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !isDescriptionComposing) {
+      handleDescriptionSubmit();
     }
   };
 
@@ -100,9 +133,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
     setTypeVisible(!typeVisible);
   };
 
-  // ToDo: (20240708 - Julian) Description needed
-  const description =
-    'The UI/UX folder collects related questions and information about UI and UX.';
+  // ToDo: (20240708 - Julian) get data from API
   const totalChatCount = 99;
   const sharedChatCount = 46;
   const privateChatCount = 11;
@@ -126,17 +157,17 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
   ];
 
   const displayedFolderInfoDesktop = (
-    <div className="hidden grid-cols-3 items-center gap-x-40px lg:grid">
+    <div className="hidden w-full grid-cols-3 items-center gap-x-40px lg:grid">
       {folderInfo.map((info) => (
         <div
           key={info.title}
-          className="flex items-end justify-between rounded-sm border border-stroke-brand-secondary p-12px"
+          className="flex h-full w-full flex-col justify-between gap-y-12px rounded-sm border border-stroke-brand-secondary py-16px pl-12px pr-20px"
         >
-          <div className="flex flex-col gap-y-12px">
-            <p className="text-lg font-semibold text-text-neutral-secondary">{t(info.title)}</p>
+          <p className="text-lg font-semibold text-text-neutral-secondary">{t(info.title)}</p>
+          <div className="flex justify-between gap-y-12px">
             <Image src={info.imgSrc} width={32} height={32} alt={`${info.title}_icon`} />
+            <p className="text-4xl font-bold text-text-neutral-primary">{info.count}</p>
           </div>
-          <p className="text-4xl font-bold text-text-neutral-primary">{info.count}</p>
         </div>
       ))}
     </div>
@@ -191,35 +222,53 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
       </div>
     );
 
-  const displayTitle = isRenaming ? (
+  const displayTitle = isTitleRenaming ? (
     <input
       id="folder-rename-input"
-      ref={inputRef}
+      ref={inputTitleRef}
       type="text"
-      value={newName}
-      onChange={(e) => setNewName(e.target.value)}
+      value={newTitleName}
+      onChange={(e) => setNewTitleName(e.target.value)}
       onBlur={handleRenameSubmit}
       onKeyDown={handleKeyDown}
       onCompositionStart={handleCompositionStart}
       onCompositionEnd={handleCompositionEnd}
-      className="w-150px rounded border bg-input-surface-input-background px-2 py-1 font-normal outline-none"
+      className="w-250px rounded border bg-input-surface-input-background px-2 py-1 font-normal outline-none"
     />
   ) : (
     <h1 className="font-bold text-text-neutral-primary">{folderName}</h1>
   );
 
+  const displayDescription = isDescriptionEditing ? (
+    <input
+      id="description-edit-input"
+      ref={inputDescriptionRef}
+      type="text"
+      value={newDescription}
+      onChange={(e) => setNewDescription(e.target.value)}
+      onBlur={handleDescriptionSubmit}
+      onKeyDown={handleDescriptionKeyDown}
+      onCompositionStart={handleDescriptionCompositionStart}
+      onCompositionEnd={handleDescriptionCompositionEnd}
+      className="w-full rounded border bg-input-surface-input-background px-2 py-1 font-normal outline-none"
+    />
+  ) : (
+    <p className="font-semibold text-text-neutral-tertiary">{description}</p>
+  );
+
   const displayedPageBody = folderData ? (
-    <div className="flex w-screen flex-col items-center gap-y-40px px-20px pb-60px pt-100px lg:px-80px lg:py-140px">
+    <div className="flex w-screen flex-col items-center gap-y-20px px-20px pb-60px pt-100px lg:gap-y-40px lg:px-80px lg:py-140px">
       {/* Info: (20240709 - Julian) Title */}
       <div className="relative flex w-full flex-col items-center gap-y-20px">
         <div className="flex items-center gap-x-8px text-2xl lg:gap-x-16px lg:text-48px">
           {displayTitle}
 
           <Button
+            id="folder-rename-button"
             type="button"
             variant={'secondaryBorderless'}
             className={cn('px-2 py-1')}
-            onClick={renamingHandler}
+            onClick={renamingTitleHandler}
           >
             <svg
               width="20"
@@ -238,9 +287,33 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
           </Button>
         </div>
         {/* ToDo: (20240709 - Julian) Description */}
-        <p className="text-xs font-semibold text-text-neutral-tertiary lg:text-base">
-          {description}
-        </p>
+        <div className="flex w-full items-center justify-center gap-x-8px text-xs lg:gap-x-16px lg:text-base">
+          {displayDescription}
+
+          <Button
+            id="description-edit-button"
+            type="button"
+            variant={'secondaryBorderless'}
+            className={cn('px-2 py-1')}
+            onClick={editingDescriptionHandler}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                className="fill-current"
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M14.8888 1.55433C15.872 0.571082 17.4662 0.571083 18.4494 1.55433C19.4327 2.53758 19.4327 4.13174 18.4494 5.11499L10.4805 13.0839C10.4647 13.0997 10.4491 13.1153 10.4337 13.1308C10.1916 13.3733 9.98728 13.5779 9.74146 13.7285C9.52524 13.861 9.28951 13.9587 9.04292 14.0179C8.76258 14.0852 8.4734 14.085 8.13073 14.0847C8.10889 14.0847 8.08683 14.0847 8.06454 14.0847H6.66909C6.25488 14.0847 5.91909 13.7489 5.91909 13.3347V11.9392C5.91909 11.9169 5.91907 11.8949 5.91906 11.873C5.91879 11.5304 5.91856 11.2412 5.98586 10.9609C6.04506 10.7143 6.14271 10.4785 6.27521 10.2623C6.42585 10.0165 6.63049 9.81217 6.87299 9.57006C6.88844 9.55463 6.90405 9.53904 6.91981 9.52328L14.8888 1.55433ZM17.3888 2.61499C16.9913 2.21753 16.3469 2.21753 15.9494 2.61499L7.98047 10.5839C7.66698 10.8974 7.60007 10.9712 7.55417 11.0461C7.50391 11.1281 7.46687 11.2175 7.44442 11.311C7.42391 11.3964 7.41909 11.4959 7.41909 11.9392V12.5847H8.06454C8.50789 12.5847 8.60733 12.5798 8.69275 12.5593C8.78628 12.5369 8.8757 12.4998 8.95772 12.4496C9.03262 12.4037 9.10633 12.3368 9.41983 12.0233L17.3888 4.05433C17.7862 3.65687 17.7862 3.01245 17.3888 2.61499ZM5.6377 2.58466L5.66911 2.58466H9.16911C9.58333 2.58466 9.91911 2.92045 9.91911 3.33466C9.91911 3.74888 9.58333 4.08466 9.16911 4.08466H5.66911C4.95667 4.08466 4.46745 4.08525 4.08819 4.11623C3.71769 4.1465 3.51867 4.20201 3.37463 4.2754C3.04535 4.44318 2.77763 4.7109 2.60985 5.04018C2.53646 5.18422 2.48095 5.38324 2.45068 5.75374C2.4197 6.133 2.41911 6.62222 2.41911 7.33466V14.3347C2.41911 15.0471 2.4197 15.5363 2.45068 15.9156C2.48095 16.2861 2.53646 16.4851 2.60985 16.6291C2.77763 16.9584 3.04535 17.2261 3.37463 17.3939C3.51867 17.4673 3.71769 17.5228 4.08819 17.5531C4.46745 17.5841 4.95667 17.5847 5.66911 17.5847H12.6691C13.3816 17.5847 13.8708 17.5841 14.25 17.5531C14.6205 17.5228 14.8196 17.4673 14.9636 17.3939C15.2929 17.2261 15.5606 16.9584 15.7284 16.6291C15.8018 16.4851 15.8573 16.2861 15.8875 15.9156C15.9185 15.5363 15.9191 15.0471 15.9191 14.3347V10.8347C15.9191 10.4204 16.2549 10.0847 16.6691 10.0847C17.0833 10.0847 17.4191 10.4204 17.4191 10.8347V14.3347V14.3661C17.4191 15.0394 17.4191 15.5902 17.3826 16.0377C17.3447 16.501 17.264 16.9194 17.0649 17.3101C16.7533 17.9217 16.2561 18.4188 15.6446 18.7304C15.2538 18.9295 14.8354 19.0103 14.3722 19.0481C13.9246 19.0847 13.3739 19.0847 12.7006 19.0847H12.6691H5.66911H5.63768C4.96431 19.0847 4.4136 19.0847 3.96604 19.0481C3.50278 19.0103 3.08438 18.9295 2.69364 18.7304C2.08212 18.4188 1.58493 17.9217 1.27334 17.3101C1.07425 16.9194 0.993515 16.501 0.955665 16.0377C0.919098 15.5902 0.919105 15.0395 0.919113 14.3661L0.919114 14.3347V7.33466L0.919113 7.30324C0.919105 6.62987 0.919098 6.07916 0.955665 5.63159C0.993515 5.16833 1.07425 4.74993 1.27334 4.35919C1.58493 3.74767 2.08212 3.25048 2.69364 2.93889C3.08439 2.7398 3.50278 2.65906 3.96604 2.62121C4.41361 2.58465 4.96432 2.58465 5.6377 2.58466Z"
+              />
+            </svg>
+          </Button>
+        </div>
+
         {/* Info: (20240709 - Julian) Share button */}
         <div className="absolute right-0 top-0 hidden lg:block">
           <Button

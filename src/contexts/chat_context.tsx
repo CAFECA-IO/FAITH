@@ -62,6 +62,7 @@ interface ChatContextType {
   handleFolders: (folders: IFolder[]) => void;
   addFolder: (folder: IFolder, chat?: IChatBrief) => void;
   renameFolder: (id: string, newName: string) => void;
+  updateFolderDescription: (id: string, newDescription: string) => void;
   deleteFolder: (id: string) => void;
   moveChatToFolder: (chatId: string, folderId: string) => void;
 
@@ -113,6 +114,7 @@ const ChatContext = createContext<ChatContextType>({
   handleFolders: () => {},
   addFolder: () => {},
   renameFolder: () => {},
+  updateFolderDescription: () => {},
   deleteFolder: () => {},
   moveChatToFolder: () => {},
 
@@ -555,6 +557,16 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const updateFolderDescription = (id: string, newDescription: string) => {
+    if (foldersRef.current) {
+      setFolders(
+        foldersRef.current.map((folder: IFolder) =>
+          folder.id === id ? { ...folder, description: newDescription } : folder
+        )
+      );
+    }
+  };
+
   const deleteFolder = (id: string) => {
     if (foldersRef.current) {
       // Info: 找到要刪除的資料夾 (20240705 - Shirley)
@@ -885,6 +897,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     folders: foldersRef.current,
     addFolder,
     renameFolder,
+    updateFolderDescription,
     deleteFolder,
     moveChatToFolder,
 
