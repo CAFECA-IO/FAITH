@@ -126,17 +126,17 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
   ];
 
   const displayedFolderInfoDesktop = (
-    <div className="hidden grid-cols-3 items-center gap-x-40px lg:grid">
+    <div className="hidden w-full grid-cols-3 items-center gap-x-40px lg:grid">
       {folderInfo.map((info) => (
         <div
           key={info.title}
-          className="flex items-end justify-between rounded-sm border border-stroke-brand-secondary p-12px"
+          className="flex h-full w-full flex-col justify-between gap-y-12px rounded-sm border border-stroke-brand-secondary py-16px pl-12px pr-20px"
         >
-          <div className="flex flex-col gap-y-12px">
-            <p className="text-lg font-semibold text-text-neutral-secondary">{t(info.title)}</p>
+          <p className="text-lg font-semibold text-text-neutral-secondary">{t(info.title)}</p>
+          <div className="flex justify-between gap-y-12px">
             <Image src={info.imgSrc} width={32} height={32} alt={`${info.title}_icon`} />
+            <p className="text-4xl font-bold text-text-neutral-primary">{info.count}</p>
           </div>
-          <p className="text-4xl font-bold text-text-neutral-primary">{info.count}</p>
         </div>
       ))}
     </div>
@@ -209,7 +209,7 @@ const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
   );
 
   const displayedPageBody = folderData ? (
-    <div className="flex w-screen flex-col items-center gap-y-40px px-20px pb-60px pt-100px lg:px-80px lg:py-140px">
+    <div className="flex w-screen flex-col items-center gap-y-20px px-20px pb-60px pt-100px lg:gap-y-40px lg:px-80px lg:py-140px">
       {/* Info: (20240709 - Julian) Title */}
       <div className="relative flex w-full flex-col items-center gap-y-20px">
         <div className="flex items-center gap-x-8px text-2xl lg:gap-x-16px lg:text-48px">
