@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, useContext, useEffect } from 'react';
 import { client } from '@passwordless-id/webauthn';
 import useStateRef from 'react-usestateref';
