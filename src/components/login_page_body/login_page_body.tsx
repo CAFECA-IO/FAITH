@@ -13,11 +13,11 @@ import useOuterClick from '@/lib/hooks/use_outer_click';
 import { useTranslation } from 'react-i18next';
 import { INTERNATIONALIZATION_LIST } from '@/constants/i18n';
 import { I_SUN_FA_URL } from '@/constants/url';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 const LoginPageBody = () => {
   const { t } = useTranslation();
-  const { asPath } = useRouter();
+  const asPath = usePathname() || '';
 
   const { signIn, isSignedIn } = useUserCtx();
   const {

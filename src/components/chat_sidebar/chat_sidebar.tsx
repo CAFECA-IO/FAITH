@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils/common';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 import { IChatBrief, IFolder } from '@/interfaces/chat';
 import { useUserCtx } from '@/contexts/user_context';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 import { NATIVE_ROUTE } from '@/constants/url';
 import { MessageType } from '@/interfaces/message_modal';
 import Link from 'next/link';
@@ -30,6 +30,7 @@ interface IChatSidebarProps {
 const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const pathname = usePathname() || '';
   const { selectChat, selectedChat, deleteChat, renameChat } = useChatCtx();
   const { messageModalVisibilityHandler, messageModalDataHandler } = useGlobalCtx();
 
@@ -53,7 +54,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
   const chatBriefClickHandler = () => {
     selectChat(chatBrief.id);
     // TODO: 現在用 SPA 來寫，之後應該改成用 next/link 的 href 去跳轉、拿 URL 的資料來顯示對應畫面 (20240628 - Shirley)
-    if (router.pathname !== NATIVE_ROUTE.HOME) {
+    if (pathname !== NATIVE_ROUTE.HOME) {
       router.push(NATIVE_ROUTE.HOME);
     }
   };
@@ -221,6 +222,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
 
 const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
   const { t } = useTranslation();
+
   const { deleteFolder, renameFolder } = useChatCtx();
   const { messageModalDataHandler, messageModalVisibilityHandler } = useGlobalCtx();
   const [isFolderExpanded, setIsFolderExpanded] = useState(true);
@@ -436,6 +438,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
 const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const pathname = usePathname() || '';
   const { isSignedIn } = useUserCtx();
   const { chatBriefs, folders, addFolder, moveChatToFolder, addEmptyChat } = useChatCtx();
 
@@ -456,7 +459,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
 
   const newChatClickHandler = () => {
     // Info: redirect to / if now is not on / (20240627 - Shirley)
-    if (router.pathname !== NATIVE_ROUTE.HOME) {
+    if (pathname !== NATIVE_ROUTE.HOME) {
       router.push(NATIVE_ROUTE.HOME);
     } else {
       addEmptyChat();
@@ -567,6 +570,10 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
     </Button>
   ) : null;
 
+  /* eslint-disable no-console */
+  console.log('I am t', t);
+  console.log('hello hello hello', JSON.stringify(t('NAV_BAR.NEW_CHAT')));
+  /* eslint-enable no-console */
   return (
     <>
       {/* Info: ----- (20240904 - Julian) Desktop sidebar ----- */}

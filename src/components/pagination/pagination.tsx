@@ -7,7 +7,7 @@ import {
   ChangeEvent,
   KeyboardEvent,
 } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 import { Button } from '@/components/button/button';
 import { useTranslation } from 'react-i18next';
 
@@ -27,6 +27,7 @@ const Pagination = ({
   const { t } = useTranslation();
   const [targetPage, setTargetPage] = useState<number>(currentPage);
   const router = useRouter();
+  const pathname = usePathname() || '';
 
   useEffect(() => {
     // Info: (20240419 - Julian) 更新當前頁數到 URL
@@ -44,13 +45,17 @@ const Pagination = ({
   }, [currentPage, setCurrentPage, pagePrefix]);
 
   const updateUrl = useCallback(
-    (newPage: number) => {
-      const queryKey = pagePrefix;
-      const newQuery = { ...router.query, [queryKey]: newPage.toString() };
-      router.replace({
-        pathname: router.pathname,
-        query: newQuery,
-      });
+    // Info: (20240916 - Murky) To Shirley I don't know how to refactor this
+    // (newPage: number) => {
+    //   const queryKey = pagePrefix;
+    //   const newQuery = { ...router.query, [queryKey]: newPage.toString() };
+    //   router.replace({
+    //     pathname: router.pathname,
+    //     query: newQuery,
+    //   });
+    // },
+    () => {
+      router.replace(pathname);
     },
     [pagePrefix]
   );
@@ -58,7 +63,9 @@ const Pagination = ({
   // Info: (20240419 - Julian) 當 currentPage 改變時，更新目標頁碼和 URL
   useEffect(() => {
     setTargetPage(currentPage);
-    updateUrl(currentPage);
+    // Info: (20240916 - Murky) To Shirley I don't know how to refactor this
+    // updateUrl(currentPage);
+    updateUrl();
   }, [currentPage, setTargetPage, updateUrl]);
 
   // Info: (20240419 - Julian) 如果位於第一頁，則將第一頁和上一頁的按鈕設為 disabled

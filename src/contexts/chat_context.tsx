@@ -18,7 +18,7 @@ import { getTimestamp, isValidFileType, timestampToString } from '@/lib/utils/co
 import { DELAYED_FILE_UPLOAD_MILLISECONDS } from '@/constants/display';
 import { createContext, useContext, useEffect } from 'react';
 import useStateRef from 'react-usestateref';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { CHAT_WITH_HISTORY_URL, NATIVE_ROUTE } from '@/constants/url';
 import { FileStatus, FileStatusUnion, IFile } from '@/interfaces/file';
 import { LIMIT_FOR_FILE_SIZE } from '@/constants/config';
@@ -78,58 +78,58 @@ interface ChatContextType {
 
 const ChatContext = createContext<ChatContextType>({
   selectedChat: null,
-  selectChat: () => {},
+  selectChat: () => { },
 
-  addMessage: () => {},
-  addUserMessage: () => {},
-  updateMessage: () => {},
-  deleteMessage: () => {},
+  addMessage: () => { },
+  addUserMessage: () => { },
+  updateMessage: () => { },
+  deleteMessage: () => { },
   resendUserMessage: () => Promise.resolve(),
-  dislikeBotMessage: () => {},
+  dislikeBotMessage: () => { },
   dislikedMsg: [],
   resentMsg: [],
-  addDislikedMsg: () => {},
-  addResentMsg: () => {},
+  addDislikedMsg: () => { },
+  addResentMsg: () => { },
   displayedFeedback: ActionCausingFeedback.RESEND,
   isLatestBotMsgPending: false,
   pendingMsg: [],
-  addPendingMsg: () => {},
-  removePendingMsg: () => {},
+  addPendingMsg: () => { },
+  removePendingMsg: () => { },
   addBotMessage: () => Promise.resolve(),
-  removeDislikedMsg: () => {},
-  removeResentMsg: () => {},
+  removeDislikedMsg: () => { },
+  removeResentMsg: () => { },
 
   chatBriefs: null as IChatBrief[] | null,
-  handleChatBriefs: () => {},
-  addChatBrief: () => {},
-  renameChatBrief: () => {},
-  deleteChatBrief: () => {},
+  handleChatBriefs: () => { },
+  addChatBrief: () => { },
+  renameChatBrief: () => { },
+  deleteChatBrief: () => { },
 
   chats: null as IChat[] | null,
-  handleChats: () => {},
-  addChat: () => {},
-  addEmptyChat: () => {},
-  renameChat: () => {},
-  deleteChat: () => {},
+  handleChats: () => { },
+  addChat: () => { },
+  addEmptyChat: () => { },
+  renameChat: () => { },
+  deleteChat: () => { },
 
   folders: null as IFolder[] | null,
-  handleFolders: () => {},
-  addFolder: () => {},
-  renameFolder: () => {},
-  updateFolderDescription: () => {},
-  deleteFolder: () => {},
-  moveChatToFolder: () => {},
+  handleFolders: () => { },
+  addFolder: () => { },
+  renameFolder: () => { },
+  updateFolderDescription: () => { },
+  deleteFolder: () => { },
+  moveChatToFolder: () => { },
 
   file: null,
-  handleFile: () => {},
+  handleFile: () => { },
   createIFile: () => ({ id: '', data: new File([], ''), status: FileStatus.success }),
-  clearFile: () => {},
-  saveFile: () => {},
-  retryFileUpload: () => {},
+  clearFile: () => { },
+  saveFile: () => { },
+  retryFileUpload: () => { },
 });
 
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
+  const pathname = usePathname();
   const { isSignedIn } = useUserCtx();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [chatBriefs, setChatBriefs, chatBriefsRef] = useStateRef<IChatBrief[] | null>(null);
@@ -281,11 +281,11 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         prevChats?.map((chat) =>
           chat.id === chatId
             ? {
-                ...chat,
-                messages: chat.messages.map((msg, index) =>
-                  index === messageIndex ? updatedMessage : msg
-                ),
-              }
+              ...chat,
+              messages: chat.messages.map((msg, index) =>
+                index === messageIndex ? updatedMessage : msg
+              ),
+            }
             : chat
         ) || []
     );
@@ -294,11 +294,11 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       setSelectedChat((prevChat) =>
         prevChat
           ? {
-              ...prevChat,
-              messages: prevChat.messages.map((msg, index) =>
-                index === messageIndex ? updatedMessage : msg
-              ),
-            }
+            ...prevChat,
+            messages: prevChat.messages.map((msg, index) =>
+              index === messageIndex ? updatedMessage : msg
+            ),
+          }
           : null
       );
     }
@@ -851,10 +851,10 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   }, [isSignedIn]);
 
   useEffect(() => {
-    if (router.pathname === NATIVE_ROUTE.HOME && !isSignedIn) {
+    if (pathname === NATIVE_ROUTE.HOME && !isSignedIn) {
       addEmptyChat();
     }
-  }, [router.pathname]);
+  }, [pathname]);
 
   /* eslint-disable react/jsx-no-constructed-context-values */
   const value = {

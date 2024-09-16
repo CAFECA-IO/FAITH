@@ -16,12 +16,12 @@ import { ToastId } from '@/constants/toast_id';
 import I18n from '@/components/i18n/i18n';
 import { useTranslation } from 'react-i18next';
 
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 
 const NavBar = () => {
   const { t } = useTranslation();
   const router = useRouter();
-
+  const pathname = usePathname();
   const { isSignedIn, signOut } = useUserCtx();
   const { addEmptyChat } = useChatCtx();
   const { chatSettingModalVisibilityHandler, toastHandler, eliminateToast } = useGlobalCtx();
@@ -57,7 +57,7 @@ const NavBar = () => {
 
   const newChatClickHandler = () => {
     // Info: redirect to / if now is not on / (20240627 - Shirley)
-    if (router.pathname !== NATIVE_ROUTE.HOME) {
+    if (pathname !== NATIVE_ROUTE.HOME) {
       router.push(NATIVE_ROUTE.HOME);
     } else {
       addEmptyChat();

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import { dummyTopicList } from '@/interfaces/topic';
 import { TopicCategory } from '@/constants/topic';
 import TopicItem from '@/components/topic_item/topic_item';
@@ -11,10 +11,11 @@ import Link from 'next/link';
 
 const TopicSeeMorePageBody = () => {
   const { t } = useTranslation();
-  const { query } = useRouter();
-
+  const searchParams = useSearchParams();
   const topicCategories = Object.values(TopicCategory);
-  const defaultCategory = query.category ? (query.category as TopicCategory) : topicCategories[0];
+
+  const searchCategory = searchParams?.get('category');
+  const defaultCategory = searchCategory ? (searchCategory as TopicCategory) : topicCategories[0];
 
   const [search, setSearch] = useState('');
   const [currentCategory, setCurrentCategory] = useState(defaultCategory);

@@ -1,12 +1,11 @@
 import { Button } from '@/components/button/button';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { INTERNATIONALIZATION_LIST } from '@/constants/i18n';
 
 const I18n = () => {
-  const { asPath } = useRouter();
-
+  const asPath = usePathname() || '';
   const {
     targetRef: lanRef,
     componentVisible: isMenuVisible,

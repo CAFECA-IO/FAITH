@@ -8,7 +8,7 @@ import { NATIVE_API, NATIVE_ROUTE } from '@/constants/url';
 import { checkFIDO2Cookie, createChallenge } from '@/lib/utils/authorization';
 import { DEFAULT_USER_NAME } from '@/constants/display';
 import { ICredential, IUserAuth } from '@/interfaces/webauthn';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 interface UserContextType {
   user: ICredential | null;
@@ -22,10 +22,10 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType>({
   user: null,
-  setUser: () => {},
-  signUp: async () => {},
-  signIn: async () => {},
-  signOut: async () => {},
+  setUser: () => { },
+  signUp: async () => { },
+  signIn: async () => { },
+  signOut: async () => { },
   userAuth: null,
   isSignedIn: false,
 });
