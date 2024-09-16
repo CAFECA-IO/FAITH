@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { Button } from '@/components/button/button';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface IUserCodeModalProps {
   isModalVisible: boolean;
@@ -9,7 +8,7 @@ interface IUserCodeModalProps {
 }
 
 const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModalProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
 
   const firstItem = (
     <li className="mb-20px">

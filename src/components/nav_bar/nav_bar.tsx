@@ -14,12 +14,12 @@ import useOuterClick from '@/lib/hooks/use_outer_click';
 import { ToastType } from '@/interfaces/toastify';
 import { ToastId } from '@/constants/toast_id';
 import I18n from '@/components/i18n/i18n';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
+
 import { useRouter } from 'next/router';
 
 const NavBar = () => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const router = useRouter();
 
   const { isSignedIn, signOut } = useUserCtx();

@@ -15,8 +15,8 @@ import { IChat, dummyChats } from '@/interfaces/chat';
 import ChatList from '@/components/chat_list/chat_list';
 import Pagination from '@/components/pagination/pagination';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
+
 import { UpdateLinkType } from '@/interfaces/update_link';
 
 enum FolderType {
@@ -30,7 +30,7 @@ interface IFolderOverviewPageProps {
 }
 
 const FolderOverviewPage = ({ folderId }: IFolderOverviewPageProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const { folders, renameFolder, updateFolderDescription } = useChatCtx();
   const { updateLinkModalVisibilityHandler, updateLinkTypeHandler } = useGlobalCtx();
 

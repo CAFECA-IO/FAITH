@@ -2,8 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 import { useChatCtx } from '@/contexts/chat_context';
 import { ALLOWED_FILE_TYPES_STRING } from '@/interfaces/file';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface IFileUploadModalProps {
   isModalVisible: boolean;
@@ -11,7 +10,7 @@ interface IFileUploadModalProps {
 }
 
 const FileUploadModal = ({ isModalVisible, modalVisibilityHandler }: IFileUploadModalProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const { handleFile } = useChatCtx();
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {

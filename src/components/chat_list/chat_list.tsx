@@ -6,8 +6,7 @@ import { cn, timestampToString } from '@/lib/utils/common';
 import { IChat } from '@/interfaces/chat';
 import { useChatCtx } from '@/contexts/chat_context';
 import { useGlobalCtx } from '@/contexts/global_context';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 import { UpdateLinkType } from '@/interfaces/update_link';
 
 interface IChatItemProps {
@@ -15,7 +14,7 @@ interface IChatItemProps {
 }
 
 const ChatItem = ({ chat }: IChatItemProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const { renameChat, deleteChat } = useChatCtx();
   const {
     moveChatModalVisibilityHandler,
@@ -190,7 +189,7 @@ interface IChatListProps {
 }
 
 const ChatList = ({ chats }: IChatListProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   return (
     <div className="table w-full border-separate border-spacing-y-8px rounded-xs font-semibold text-text-neutral-secondary">
       {/* Info: (20240708 - Julian) Header */}

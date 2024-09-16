@@ -13,8 +13,7 @@ import { useRouter } from 'next/router';
 import { NATIVE_ROUTE } from '@/constants/url';
 import { MessageType } from '@/interfaces/message_modal';
 import Link from 'next/link';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface IChatBriefItemProps {
   chatBrief: IChatBrief;
@@ -29,7 +28,7 @@ interface IChatSidebarProps {
 }
 
 const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const router = useRouter();
   const { selectChat, selectedChat, deleteChat, renameChat } = useChatCtx();
   const { messageModalVisibilityHandler, messageModalDataHandler } = useGlobalCtx();
@@ -221,8 +220,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
 };
 
 const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
-
+  const { t } = useTranslation();
   const { deleteFolder, renameFolder } = useChatCtx();
   const { messageModalDataHandler, messageModalVisibilityHandler } = useGlobalCtx();
   const [isFolderExpanded, setIsFolderExpanded] = useState(true);
@@ -436,7 +434,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
 };
 
 const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const router = useRouter();
   const { isSignedIn } = useUserCtx();
   const { chatBriefs, folders, addFolder, moveChatToFolder, addEmptyChat } = useChatCtx();

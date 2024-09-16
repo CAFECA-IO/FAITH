@@ -9,8 +9,7 @@ import {
 } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@/components/button/button';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface IPaginationProps {
   currentPage: number;
@@ -25,7 +24,7 @@ const Pagination = ({
   totalPages,
   pagePrefix = 'page',
 }: IPaginationProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const [targetPage, setTargetPage] = useState<number>(currentPage);
   const router = useRouter();
 

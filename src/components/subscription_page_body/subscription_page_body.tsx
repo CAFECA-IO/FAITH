@@ -3,11 +3,10 @@ import { useState } from 'react';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 import { Button } from '@/components/button/button';
 import { checkboxStyle } from '@/constants/display';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 const SubscriptionPageBody = () => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   // ToDo: (20240628 - Julian) replace with real data
   const feeOfPerMonth = 200;
   const subtotal = 200;

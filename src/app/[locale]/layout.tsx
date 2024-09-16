@@ -5,7 +5,10 @@ import { Barlow, Inter } from 'next/font/google';
 import { ChatProvider } from '@/contexts/chat_context';
 import { UserProvider } from '@/contexts/user_context';
 import { GlobalProvider } from '@/contexts/global_context';
+import TranslationProvider from '@/app/[locale]/TranslationProvider';
+import initTranslations from "@/i18n";
 
+const i18nNamespaces = ['translation'];
 // Info: (20240916 - Murky) Google Font
 const inter = Inter({
   subsets: ['latin'],
@@ -45,31 +48,38 @@ export const metadata: Metadata = {
 
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   // Info: (20240916 - Murky)
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
   children,
+  params: { locale },
 }: {
   children: React.ReactNode
+  params: {
+    locale: string;
+  }
 }) {
+  const { resources } = await initTranslations(locale, i18nNamespaces);
   return (
     <html lang="en" className={`${inter.className} ${barlow.className}`}>
       <body>
-        <UserProvider>
-          <ChatProvider>
-            <GlobalProvider>
-              {/*
+        <TranslationProvider locale={locale} resources={resources} namespaces={i18nNamespaces}>
+          <UserProvider>
+            <ChatProvider>
+              <GlobalProvider>
+                {/*
                 *Info: (20240916 - Murky)
                 * Home page use "h-screen", but other page use relevant, I'm not sure which one is correct.
               */}
-              <div className="h-screen">
-                <NavBar />
-                {children}
-              </div>
-            </GlobalProvider>
-          </ChatProvider>
-        </UserProvider>
+                <div className="h-screen">
+                  <NavBar />
+                  {children}
+                </div>
+              </GlobalProvider>
+            </ChatProvider>
+          </UserProvider>
+        </TranslationProvider>
       </body>
     </html>
   );

@@ -43,7 +43,7 @@
     "tailwind.config.ts",
     "src/lib/utils/email.js",
     "next.config.js",
-    "src/i18n.js",
+    "src/i18n.ts",
     ".next/types/**/*.ts"
   ],
   "exclude": [

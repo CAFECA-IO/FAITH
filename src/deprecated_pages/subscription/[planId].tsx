@@ -3,11 +3,10 @@ import NavBar from '@/components/nav_bar/nav_bar';
 import SubscriptionPageBody from '@/components/subscription_page_body/subscription_page_body';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetServerSideProps } from 'next';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 const SubscriptionPage = () => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   return (
     <>
       <Head>

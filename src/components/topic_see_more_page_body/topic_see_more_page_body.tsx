@@ -5,12 +5,12 @@ import { TopicCategory } from '@/constants/topic';
 import TopicItem from '@/components/topic_item/topic_item';
 import SortToggle from '@/components/sort_toggle/sort_toggle';
 import { SortOptions } from '@/constants/display';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
+
 import Link from 'next/link';
 
 const TopicSeeMorePageBody = () => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const { query } = useRouter();
 
   const topicCategories = Object.values(TopicCategory);

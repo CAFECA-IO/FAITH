@@ -3,11 +3,11 @@ import ChatSidebar from '@/components/chat_sidebar/chat_sidebar';
 import NavBar from '@/components/nav_bar/nav_bar';
 import FolderOverviewPageBody from '@/components/folder_overview_page_body/folder_overview_page_body';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { ITranslateFunction, ILocale } from '@/interfaces/locale';
-import { useTranslation } from 'next-i18next';
+import { ILocale } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 const FolderOverviewPage = () => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   return (
     <>
       <Head>

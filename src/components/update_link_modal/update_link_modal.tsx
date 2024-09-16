@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/button/button';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
+
 import { cn } from '@/lib/utils/common';
 import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
 import { UpdateLinkTypeUnion, UpdateLinkType, dummyUpdateLink } from '@/interfaces/update_link';
@@ -18,7 +18,7 @@ const UpdateLinkModal = ({
   modalVisibilityHandler,
   linkType,
 }: IUpdateLinkModalProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
 
   // ToDo: (20240703 - Julian) Replace this with actual data
   const { sharedDomain, oldShareId, isFirstCreate, newSharedId } = dummyUpdateLink;

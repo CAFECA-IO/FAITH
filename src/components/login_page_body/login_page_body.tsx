@@ -10,14 +10,13 @@ import { ToastType } from '@/interfaces/toastify';
 import { ToastId } from '@/constants/toast_id';
 import { checkboxStyle } from '@/constants/display';
 import useOuterClick from '@/lib/hooks/use_outer_click';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 import { INTERNATIONALIZATION_LIST } from '@/constants/i18n';
 import { I_SUN_FA_URL } from '@/constants/url';
 import { useRouter } from 'next/router';
 
 const LoginPageBody = () => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const { asPath } = useRouter();
 
   const { signIn, isSignedIn } = useUserCtx();

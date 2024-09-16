@@ -1,11 +1,11 @@
 import Head from 'next/head';
 import LoginPageBody from '@/components/login_page_body/login_page_body';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { ILocale, ITranslateFunction } from '@/interfaces/locale';
-import { useTranslation } from 'next-i18next';
+import { ILocale } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 export default function Login() {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   return (
     <>
       <Head>

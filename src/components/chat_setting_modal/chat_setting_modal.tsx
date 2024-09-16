@@ -8,8 +8,7 @@ import { Button } from '@/components/button/button';
 /* eslint-disable-next-line import/no-cycle */
 import { useGlobalCtx } from '@/contexts/global_context';
 import { MessageType } from '@/interfaces/message_modal';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface IChatSettingModalProps {
   isModalVisible: boolean;
@@ -28,7 +27,7 @@ enum ChatTheme {
 }
 
 const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSettingModalProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const {
     messageModalDataHandler,
     messageModalVisibilityHandler,
@@ -99,7 +98,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       redMsg: t('MESSAGE_MODAL.DELETE_CHAT_MESSAGE'),
       backBtnStr: t('COMMON.CANCEL'),
       submitBtnStr: t('COMMON.CONFIRM'),
-      submitBtnFunction: () => {}, // ToDo: (20240625 - Julian) add delete all chat function
+      submitBtnFunction: () => { }, // ToDo: (20240625 - Julian) add delete all chat function
     });
     messageModalVisibilityHandler();
   };
@@ -112,7 +111,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       normalMsg: t('MESSAGE_MODAL.CANCEL_SUBSCRIPTION_MESSAGE_2'),
       backBtnStr: t('COMMON.CANCEL'),
       submitBtnStr: t('COMMON.CONFIRM'),
-      submitBtnFunction: () => {}, // ToDo: (20240625 - Julian) add cancel subscription function
+      submitBtnFunction: () => { }, // ToDo: (20240625 - Julian) add cancel subscription function
     });
     messageModalVisibilityHandler();
   };
