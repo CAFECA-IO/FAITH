@@ -1,4 +1,5 @@
-const { i18n } = require('./next-i18next.config');
+// Info: (20240916 - Murky) use react-i18next instead of next-i18next
+// const { i18n } = require('./next-i18next.config');
 
 function getEnvVariables(keys) {
   const missingKeys = [];
@@ -25,7 +26,8 @@ if (process.env.VERCEL !== '1') {
 const nextConfig = {
   // Your Next.js config options
   reactStrictMode: true,
-  i18n,
+  // Info: (20240916 - Murky) use react-i18next instead of next-i18next
+  // i18n,
 };
 
 module.exports = nextConfig;

@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { Button } from '@/components/button/button';
 import { useGlobalCtx } from '@/contexts/global_context';
 import { useUserCtx } from '@/contexts/user_context';
@@ -15,6 +14,7 @@ import { useTranslation } from 'next-i18next';
 import { ITranslateFunction } from '@/interfaces/locale';
 import { INTERNATIONALIZATION_LIST } from '@/constants/i18n';
 import { I_SUN_FA_URL } from '@/constants/url';
+import { useRouter } from 'next/router';
 
 const LoginPageBody = () => {
   const { t }: { t: ITranslateFunction } = useTranslation('common');
@@ -211,9 +211,8 @@ const LoginPageBody = () => {
           {/* Info: (20240705 - Julian) i18n */}
           <div
             ref={lanRef}
-            className={`absolute bottom-12 right-0 flex flex-col gap-y-16px rounded-xs border border-stroke-neutral-solid-light ${
-              lanVisible ? 'visible opacity-100' : 'invisible opacity-0'
-            } overflow-hidden bg-white/40 px-20px py-16px text-base text-text-neutral-invert backdrop-blur-md transition-all duration-300 ease-in-out`}
+            className={`absolute bottom-12 right-0 flex flex-col gap-y-16px rounded-xs border border-stroke-neutral-solid-light ${lanVisible ? 'visible opacity-100' : 'invisible opacity-0'
+              } overflow-hidden bg-white/40 px-20px py-16px text-base text-text-neutral-invert backdrop-blur-md transition-all duration-300 ease-in-out`}
           >
             {languageMenu}
           </div>

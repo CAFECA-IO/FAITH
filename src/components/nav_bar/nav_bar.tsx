@@ -1,4 +1,5 @@
 'use client';
+
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
@@ -15,6 +16,7 @@ import { ToastId } from '@/constants/toast_id';
 import I18n from '@/components/i18n/i18n';
 import { useTranslation } from 'next-i18next';
 import { ITranslateFunction } from '@/interfaces/locale';
+import { useRouter } from 'next/router';
 
 const NavBar = () => {
   const { t }: { t: ITranslateFunction } = useTranslation('common');

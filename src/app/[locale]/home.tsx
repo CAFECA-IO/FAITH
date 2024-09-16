@@ -21,6 +21,7 @@ export default function HomePage() {
     return (
 
         <div className="bg-white">
+            <h1>Hi I am page!</h1>
             <ChatSidebar getIsExpanded={getIsExpanded} />
             <div
                 className={`flex h-screen flex-col justify-end transition-all duration-300 ease-in-out ${isSidebarExpanded ? 'lg:ml-240px' : ''}`}
