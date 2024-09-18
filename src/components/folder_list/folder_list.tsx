@@ -93,6 +93,7 @@ const FolderItem = ({ folder }: IFolderItemProps) => {
 
   const displayedChatName = isRenaming ? (
     <input
+      id="folder-rename-input"
       ref={inputRef}
       type="text"
       value={newName}
@@ -119,6 +120,7 @@ const FolderItem = ({ folder }: IFolderItemProps) => {
       </div>
       <div className="relative table-cell rounded-r-sm px-20px py-12px text-right">
         <Button
+          id="folder-action-button"
           type="button"
           variant="secondaryBorderless"
           className={cn('p-0')}
@@ -132,6 +134,7 @@ const FolderItem = ({ folder }: IFolderItemProps) => {
           className={`absolute right-0 top-52px flex flex-col gap-y-8px rounded-sm ${actionVisible ? 'visible opacity-100' : 'invisible opacity-0'} bg-surface-neutral-surface-lv2 py-8px text-base shadow-dropmenu transition-all duration-150 ease-in-out`}
         >
           <Button
+            id="folder-rename-button"
             type="button"
             variant="tertiaryBorderless"
             className="w-full py-8px"
@@ -140,6 +143,7 @@ const FolderItem = ({ folder }: IFolderItemProps) => {
             {t('COMMON.RENAME')}
           </Button>
           <Button
+            id="folder-share-button"
             type="button"
             variant="tertiaryBorderless"
             className="w-full py-8px"
@@ -148,6 +152,7 @@ const FolderItem = ({ folder }: IFolderItemProps) => {
             {t('COMMON.SHARE')}
           </Button>
           <Button
+            id="folder-remove-button"
             type="button"
             variant="tertiaryBorderless"
             className="w-full py-8px"

@@ -17,7 +17,14 @@ const I18n = () => {
 
   const languageList = INTERNATIONALIZATION_LIST.map((item) => {
     return (
-      <Link key={item.value} href={asPath} scroll={false} locale={item.value} onClick={toggleMenu}>
+      <Link
+        id={`language-${item.value}`}
+        key={item.value}
+        href={asPath}
+        scroll={false}
+        locale={item.value}
+        onClick={toggleMenu}
+      >
         <Button type="button" variant="tertiaryBorderless">
           {item.label}
         </Button>
@@ -28,7 +35,13 @@ const I18n = () => {
   return (
     <div className="relative flex flex-col items-center font-barlow">
       {/* Info: (20240906 - Julian) Global icon button */}
-      <Button type="button" size={'small'} variant={'secondaryBorderless'} onClick={toggleMenu}>
+      <Button
+        id="language-button"
+        type="button"
+        size={'small'}
+        variant={'secondaryBorderless'}
+        onClick={toggleMenu}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

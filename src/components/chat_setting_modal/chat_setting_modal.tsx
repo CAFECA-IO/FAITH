@@ -141,6 +141,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
     >
       <div className="flex flex-col">
         <button
+          id="theme-system-button"
           type="button"
           className="flex w-full items-center justify-between px-12px py-10px text-base hover:bg-dropdown-surface-item-hover"
           onClick={systemThemeClickHandler}
@@ -148,6 +149,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
           <p>{t('SETTING.SYSTEM')}</p>
         </button>
         <button
+          id="theme-light-button"
           type="button"
           className="flex w-full items-center justify-between px-12px py-10px text-base hover:bg-dropdown-surface-item-hover"
           onClick={lightThemeClickHandler}
@@ -155,6 +157,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
           <p>{t('SETTING.LIGHT')}</p>
         </button>
         <button
+          id="theme-dark-button"
           type="button"
           className="flex w-full items-center justify-between px-12px py-10px text-base hover:bg-dropdown-surface-item-hover"
           onClick={darkThemeClickHandler}
@@ -171,6 +174,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       <div className="flex flex-col items-start justify-between gap-y-12px md:flex-row md:items-center">
         <p className="font-semibold md:font-bold">{t('SETTING.THEME')}</p>
         <button
+          id="theme-button"
           type="button"
           className="relative flex w-full items-center justify-between rounded-xs border border-input-stroke-input bg-input-surface-input-background px-12px py-10px text-base md:w-256px"
           onClick={themeClickHandler}

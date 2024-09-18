@@ -134,6 +134,7 @@ const FolderOverviewPageBody = () => {
       {/* Info: (20240913 - Julian) Tabs */}
       <div className="grid w-full grid-cols-2 gap-10px lg:gap-40px">
         <button
+          id="folder-list-tab"
           type="button"
           onClick={folderTabClickHandler}
           className={`border-b-2 px-4px py-8px hover:border-tabs-stroke-hover hover:text-tabs-text-hover lg:px-12px ${currentTab === TabOptions.FOLDER ? 'border-tabs-stroke-active text-tabs-text-active' : 'border-tabs-stroke-default text-tabs-text-default'}`}
@@ -141,6 +142,7 @@ const FolderOverviewPageBody = () => {
           {t('OVERVIEW.FOLDER')}
         </button>
         <button
+          id="uncategorized-chat-tab"
           type="button"
           onClick={uncategorizedTabClickHandler}
           className={`border-b-2 px-4px py-8px hover:border-tabs-stroke-hover hover:text-tabs-text-hover lg:px-12px ${currentTab === TabOptions.UNCATEGORIZED ? 'border-tabs-stroke-active text-tabs-text-active' : 'border-tabs-stroke-default text-tabs-text-default'}`}

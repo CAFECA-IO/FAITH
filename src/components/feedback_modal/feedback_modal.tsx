@@ -39,6 +39,7 @@ const FeedbackModal = ({ isModalVisible, modalVisibilityHandler }: IFeedbackModa
         <div className="flex w-full flex-col gap-y-20px px-40px pt-20px">
           <div className="w-full rounded-sm border border-input-stroke-input px-12px py-10px">
             <input
+              id="feedback-input"
               type="text"
               placeholder={t('CHAT.FEEDBACK_PLACEHOLDER')}
               value={feedbackValue}
@@ -47,6 +48,7 @@ const FeedbackModal = ({ isModalVisible, modalVisibilityHandler }: IFeedbackModa
             />
           </div>
           <Button
+            id="feedback-submit-button"
             type="button"
             variant="tertiary"
             className="ml-auto w-fit"

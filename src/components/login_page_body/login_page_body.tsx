@@ -65,6 +65,7 @@ const LoginPageBody = () => {
   const languageMenu = INTERNATIONALIZATION_LIST.map((item) => {
     return (
       <Link
+        id={`language-${item.value}`}
         key={item.value}
         href={asPath}
         scroll={false}
@@ -110,6 +111,7 @@ const LoginPageBody = () => {
 
               <div className="mt-8 flex w-full flex-col justify-center gap-8">
                 <Button
+                  id="login-button"
                   type="button"
                   variant={'default'}
                   onClick={logInClickHandler}
@@ -137,6 +139,7 @@ const LoginPageBody = () => {
                 </Button>
 
                 <button
+                  id="register-button"
                   onClick={registerClickHandler}
                   type="button"
                   className="mt-0 flex max-w-full flex-col justify-center self-center text-sm font-semibold leading-6 tracking-normal text-link-text-primary hover:opacity-70 lg:mt-0 lg:text-base"
@@ -156,6 +159,7 @@ const LoginPageBody = () => {
                   <p className="text-xs md:text-sm">
                     {t('LOGIN.USER_GUIDE_HINT_1')}
                     <button
+                      id="user-guide-button"
                       type="button"
                       className="font-semibold text-text-neutral-link hover:underline"
                       onClick={userCodeModalVisibilityHandler}

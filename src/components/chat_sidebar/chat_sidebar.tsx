@@ -113,10 +113,16 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
     <div className="relative">
       <div key={chatBrief.id} ref={editMenuRef} className="absolute right-0 top-0 z-50">
         <div className="flex flex-col gap-1 rounded-sm bg-surface-neutral-surface-lv2 py-2 text-base font-normal leading-6 tracking-normal shadow-userMenu">
-          <Button type="button" variant={'secondaryBorderless'} onClick={renameClickHandler}>
+          <Button
+            id="rename-chat-button"
+            type="button"
+            variant={'secondaryBorderless'}
+            onClick={renameClickHandler}
+          >
             {t('COMMON.RENAME')}
           </Button>
           <Button
+            id="share-chat-button"
             type="button"
             disabled
             variant={'secondaryBorderless'}
@@ -125,6 +131,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
             {t('COMMON.SHARE')}
           </Button>
           <Button
+            id="private-chat-button"
             type="button"
             disabled
             variant={'secondaryBorderless'}
@@ -132,7 +139,12 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
           >
             {t('COMMON.SET_TO_PRIVATE')}
           </Button>
-          <Button type="button" variant={'secondaryBorderless'} onClick={removeClickHandler}>
+          <Button
+            id="remove-chat-button"
+            type="button"
+            variant={'secondaryBorderless'}
+            onClick={removeClickHandler}
+          >
             {t('SIDE_BAR.REMOVE_CHAT')}
           </Button>
         </div>
@@ -152,6 +164,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
       >
         {isRenaming ? (
           <input
+            id="rename-chat-input"
             ref={inputRef}
             type="text"
             value={newName}
@@ -164,6 +177,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
           />
         ) : (
           <Button
+            id="chat-button"
             type="button"
             variant={'secondaryBorderless'}
             className={cn(
@@ -178,6 +192,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
         )}
         {chatBrief.id === selectedChat?.id && !isRenaming && (
           <Button
+            id="edit-chat-button"
             type="button"
             onClick={editIconClickHandler}
             variant={'secondaryBorderless'}
@@ -295,10 +310,16 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
     <div className="relative">
       <div key={chatFolder.id} ref={editMenuRef} className="absolute right-4 top-6 z-50">
         <div className="flex flex-col gap-1 rounded-sm bg-surface-neutral-surface-lv2 py-2 text-base font-normal leading-6 tracking-normal shadow-userMenu">
-          <Button type="button" variant={'secondaryBorderless'} onClick={renameClickHandler}>
+          <Button
+            id="rename-folder-button"
+            type="button"
+            variant={'secondaryBorderless'}
+            onClick={renameClickHandler}
+          >
             {t('SIDE_BAR.RENAME_FOLDER')}
           </Button>
           <Button
+            id="share-folder-button"
             type="button"
             disabled
             variant={'secondaryBorderless'}
@@ -306,7 +327,12 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
           >
             {t('SIDE_BAR.SHARE_FOLDER')}
           </Button>
-          <Button type="button" variant={'secondaryBorderless'} onClick={removeClickHandler}>
+          <Button
+            id="remove-folder-button"
+            type="button"
+            variant={'secondaryBorderless'}
+            onClick={removeClickHandler}
+          >
             {t('SIDE_BAR.REMOVE_FOLDER')}
           </Button>
         </div>
@@ -327,6 +353,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
           <div className={cn(isFolderExpanded ? 'w-100px' : 'w-160px')}>
             {isRenaming ? (
               <input
+                id="rename-folder-input"
                 ref={inputRef}
                 type="text"
                 value={newName}
@@ -366,6 +393,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
             <div className="pointer-events-auto">
               <div className="flex gap-0">
                 <Button
+                  id="edit-folder-button"
                   type="button"
                   onClick={editIconClickHandler}
                   variant={'secondaryBorderless'}
@@ -387,8 +415,7 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
                   </svg>
                 </Button>
 
-                {/* TODO: link to chat list page (20240705 - Shirley) */}
-                <Link href={`/folder/${chatFolder.id}`}>
+                <Link id="folder-detail-button" href={`/folder/${chatFolder.id}`}>
                   <Button type="button" variant={'secondaryBorderless'} className={cn('px-2 py-1')}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -579,6 +606,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
           ></div>
 
           <Button
+            id="desktop-toggle-sidebar-button"
             variant={'secondaryBorderless'}
             size={'extraSmall'}
             type="button"
@@ -665,6 +693,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
               {(provided, snapshot) => (
                 <div ref={provided.innerRef} {...provided.droppableProps} className="-mt-8 h-50px">
                   <Button
+                    id="desktop-add-folder-button"
                     size={'medium'}
                     variant={'secondaryOutline'}
                     className={cn(
@@ -783,6 +812,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
                 {(provided, snapshot) => (
                   <div ref={provided.innerRef} {...provided.droppableProps}>
                     <Button
+                      id="mobile-add-folder-button"
                       size={'medium'}
                       variant={'secondaryOutline'}
                       className={cn(
