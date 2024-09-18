@@ -2,8 +2,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/button/button';
 import { IReportCommentModal } from '@/interfaces/report_modal';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface IReportCommentModalProps {
   isModalVisible: boolean;
@@ -18,7 +17,7 @@ const ReportCommentModal = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   reportCommentData,
 }: IReportCommentModalProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const [reportReason, setReportReason] = useState('');
 
   const reportReasonChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +73,7 @@ const ReportCommentModal = ({
             className="ml-auto w-fit"
             disabled={isSubmitDisabled}
           >
-            {t('COMMON.SEND')}
+            {t('SEND')}
           </Button>
         </div>
       </div>

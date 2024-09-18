@@ -1,8 +1,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { Button } from '@/components/button/button';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface IFeedbackModalProps {
   isModalVisible: boolean;
@@ -10,7 +9,7 @@ interface IFeedbackModalProps {
 }
 
 const FeedbackModal = ({ isModalVisible, modalVisibilityHandler }: IFeedbackModalProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const [feedbackValue, setFeedbackValue] = useState('');
 
   const feedbackChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +55,7 @@ const FeedbackModal = ({ isModalVisible, modalVisibilityHandler }: IFeedbackModa
             // ToDo: (20240704 - Julian) Add feedback submit handler
             onClick={modalVisibilityHandler}
           >
-            {t('COMMON.SEND')}
+            {t('SEND')}
           </Button>
         </div>
       </div>

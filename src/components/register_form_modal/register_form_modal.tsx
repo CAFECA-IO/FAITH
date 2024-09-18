@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useUserCtx } from '@/contexts/user_context';
 import { Button } from '@/components/button/button';
 import { DEFAULT_USER_NAME } from '@/constants/display';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface IRegisterFormModal {
   isModalVisible: boolean;
@@ -11,7 +10,7 @@ interface IRegisterFormModal {
 }
 
 const RegisterFormModal = ({ isModalVisible, modalVisibilityHandler }: IRegisterFormModal) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
 
   const { signUp } = useUserCtx();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -119,7 +118,7 @@ const RegisterFormModal = ({ isModalVisible, modalVisibilityHandler }: IRegister
               variant="tertiaryBorderless"
               onClick={modalVisibilityHandler}
             >
-              {t('COMMON.CANCEL')}
+              {t('CANCEL')}
             </Button>
             <Button
               id="register-submit-button"
@@ -127,7 +126,7 @@ const RegisterFormModal = ({ isModalVisible, modalVisibilityHandler }: IRegister
               variant={'tertiary'}
               onClick={registerClickHandler}
             >
-              {t('COMMON.REGISTER')}
+              {t('REGISTER')}
             </Button>
           </div>
         </div>

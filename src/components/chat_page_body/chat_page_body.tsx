@@ -2,7 +2,7 @@ import { useUserCtx } from '@/contexts/user_context';
 import { useChatCtx } from '@/contexts/chat_context';
 import { cn } from '@/lib/utils/common';
 import React, { useEffect, useRef, useState } from 'react';
-import router from 'next/router';
+import { useRouter } from 'next/navigation';
 import ChatThreadSection from '@/components/chat_thread_section/chat_thread_section';
 import { useGlobalCtx } from '@/contexts/global_context';
 import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item';
@@ -14,15 +14,15 @@ import { Button } from '@/components/button/button';
 import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
 import { ActionCausingFeedback } from '@/interfaces/chat';
 import Image from 'next/image';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface IChatPageBodyProps {
   isSidebarExpanded: boolean;
 }
 
 const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const router = useRouter();
+  const { t } = useTranslation();
   const { isSignedIn } = useUserCtx();
   const {
     addUserMessage,

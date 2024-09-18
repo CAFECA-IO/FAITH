@@ -6,8 +6,7 @@ import { cn, timestampToString } from '@/lib/utils/common';
 import { IChat } from '@/interfaces/chat';
 import { useChatCtx } from '@/contexts/chat_context';
 import { useGlobalCtx } from '@/contexts/global_context';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 import { UpdateLinkType } from '@/interfaces/update_link';
 
 interface IChatItemProps {
@@ -15,7 +14,7 @@ interface IChatItemProps {
 }
 
 const ChatItem = ({ chat }: IChatItemProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const { renameChat, deleteChat } = useChatCtx();
   const {
     moveChatModalVisibilityHandler,
@@ -148,7 +147,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             className="w-full py-8px"
             onClick={renamingHandler}
           >
-            {t('COMMON.RENAME')}
+            {t('RENAME')}
           </Button>
           <Button
             id="chat-share-button"
@@ -157,7 +156,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             className="w-full py-8px"
             onClick={shareChatHandler}
           >
-            {t('COMMON.SHARE')}
+            {t('SHARE')}
           </Button>
           <Button
             id="chat-move-button"
@@ -166,7 +165,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             className="w-full py-8px"
             onClick={moveChatHandler}
           >
-            {t('COMMON.MOVE')}
+            {t('MOVE')}
           </Button>
           <Button
             id="chat-private-button"
@@ -175,7 +174,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             className="w-full py-8px"
             onClick={setPrivateChatHandler}
           >
-            {t('COMMON.SET_TO_PRIVATE')}
+            {t('SET_TO_PRIVATE')}
           </Button>
           <Button
             id="chat-remove-button"
@@ -197,7 +196,7 @@ interface IChatListProps {
 }
 
 const ChatList = ({ chats }: IChatListProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   return (
     <div className="table w-full border-separate border-spacing-y-8px rounded-xs font-semibold text-text-neutral-secondary">
       {/* Info: (20240708 - Julian) Header */}

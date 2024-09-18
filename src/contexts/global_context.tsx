@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useContext, createContext, useCallback } from 'react';
 import Image from 'next/image';
 import { toast as toastify } from 'react-toastify';

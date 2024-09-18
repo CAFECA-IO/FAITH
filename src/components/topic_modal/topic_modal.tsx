@@ -5,8 +5,7 @@ import SortToggle from '@/components/sort_toggle/sort_toggle';
 // eslint-disable-next-line import/no-cycle
 import CommentItem from '@/components/comment_item/comment_item';
 import { SortOptions } from '@/constants/display';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface ITopicModalProps {
   isModalVisible: boolean;
@@ -15,7 +14,7 @@ interface ITopicModalProps {
 }
 
 const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopicModalProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const { title, summary, mainQuestion, bestAnswers, comments, isFavorite } = topicData;
 
   const [commentSort, setCommentSort] = useState(SortOptions.NEWEST);
@@ -138,7 +137,7 @@ const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopi
                   id="answer-audio-button"
                   type="button"
                   className="text-icon-surface-single-color-primary hover:text-icon-surface-accent"
-                  // ToDo: (20240627 - Julian) Add onClick event
+                // ToDo: (20240627 - Julian) Add onClick event
                 >
                   <svg
                     width="20"
@@ -160,7 +159,7 @@ const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopi
                   id="answer-copy-button"
                   type="button"
                   className="text-icon-surface-single-color-primary hover:text-icon-surface-accent"
-                  // ToDo: (20240627 - Julian) Add onClick event
+                // ToDo: (20240627 - Julian) Add onClick event
                 >
                   <svg
                     width="20"
@@ -182,7 +181,7 @@ const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopi
                   id="answer-like-button"
                   type="button"
                   className="flex items-center rounded-full border border-badge-stroke-primary p-6px text-xs text-icon-surface-single-color-primary hover:text-icon-surface-accent md:gap-4px md:text-base"
-                  // ToDo: (20240627 - Julian) Add onClick event
+                // ToDo: (20240627 - Julian) Add onClick event
                 >
                   <svg
                     width="20"
@@ -207,7 +206,7 @@ const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopi
                   id="answer-dislike-button"
                   type="button"
                   className="flex items-center rounded-full border border-badge-stroke-primary p-6px text-xs text-icon-surface-single-color-primary hover:text-icon-surface-accent md:gap-4px md:text-base"
-                  // ToDo: (20240627 - Julian) Add onClick event
+                // ToDo: (20240627 - Julian) Add onClick event
                 >
                   <svg
                     width="20"
@@ -260,7 +259,7 @@ const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopi
               id="add-comment-button"
               type="button"
               className="text-icon-surface-single-color-primary hover:text-icon-surface-accent"
-              // ToDo: (20240627 - Julian) Add onClick event
+            // ToDo: (20240627 - Julian) Add onClick event
             >
               <svg
                 width="24"

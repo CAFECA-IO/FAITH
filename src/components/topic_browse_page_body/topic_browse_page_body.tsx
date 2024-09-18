@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import React, { useState } from 'react';
@@ -5,11 +7,10 @@ import { dummyTopicList } from '@/interfaces/topic';
 import { TopicCategory } from '@/constants/topic';
 import TopicSection from '@/components/topic_section/topic_section';
 import { NATIVE_ROUTE } from '@/constants/url';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 const TopicBrowsePageBody = () => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const topicCategories = Object.values(TopicCategory);
 
   const [search, setSearch] = useState('');

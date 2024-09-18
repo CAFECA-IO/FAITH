@@ -1,7 +1,8 @@
+'use client';
+
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 import Pagination from '@/components/pagination/pagination';
 import SortToggle from '@/components/sort_toggle/sort_toggle';
 import { SortOptions } from '@/constants/display';
@@ -15,8 +16,7 @@ enum TabOptions {
 }
 
 const FolderOverviewPageBody = () => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
-
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState(SortOptions.NEWEST);
   const [currentTab, setCurrentTab] = useState<TabOptions>(TabOptions.FOLDER);
@@ -159,7 +159,7 @@ const FolderOverviewPageBody = () => {
             type="text"
             value={search}
             onChange={searchChangeHandler}
-            placeholder={t('COMMON.SEARCH')}
+            placeholder={t('SEARCH')}
             className="w-full bg-transparent outline-none placeholder:text-input-text-input-placeholder"
           />
           <Image src="/icons/search.svg" width={20} height={20} alt="search_icon" />

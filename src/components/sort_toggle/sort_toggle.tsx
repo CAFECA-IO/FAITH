@@ -1,5 +1,4 @@
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface ISortToggleProps {
   currentSort: string;
@@ -7,7 +6,7 @@ interface ISortToggleProps {
 }
 
 const SortToggle = ({ currentSort, clickHandler }: ISortToggleProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
 
   return (
     <button

@@ -1,13 +1,14 @@
+'use client';
+
 import Image from 'next/image';
 import { useState } from 'react';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 import { Button } from '@/components/button/button';
 import { checkboxStyle } from '@/constants/display';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 const SubscriptionPageBody = () => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   // ToDo: (20240628 - Julian) replace with real data
   const feeOfPerMonth = 200;
   const subtotal = 200;
@@ -96,7 +97,7 @@ const SubscriptionPageBody = () => {
         <span className="mr-16px text-lg font-semibold text-text-neutral-secondary">
           {t('SUBSCRIPTION.PER_MONTH_1')}
         </span>
-        {t('COMMON.NTD')} {feeOfPerMonth}
+        {t('NTD')} {feeOfPerMonth}
         <span className="ml-16px text-lg font-semibold text-text-neutral-secondary">
           {t('SUBSCRIPTION.PER_MONTH_2')}
         </span>
@@ -360,7 +361,7 @@ const SubscriptionPageBody = () => {
             d="M8.86627 4.47065C9.15916 4.76354 9.15916 5.23841 8.86627 5.53131L5.1466 9.25098H16.6693C17.0835 9.25098 17.4193 9.58676 17.4193 10.001C17.4193 10.4152 17.0835 10.751 16.6693 10.751H5.1466L8.86627 14.4706C9.15916 14.7635 9.15916 15.2384 8.86627 15.5313C8.57337 15.8242 8.0985 15.8242 7.80561 15.5313L2.80561 10.5313C2.51271 10.2384 2.51271 9.76354 2.80561 9.47065L7.80561 4.47065C8.0985 4.17775 8.57337 4.17775 8.86627 4.47065Z"
           />
         </svg>
-        <p>{t('COMMON.BACK')}</p>
+        <p>{t('BACK')}</p>
       </Button>
       {/* Info: (20240628 - Julian) Mobile Back button & Title */}
       <div className="relative flex items-center justify-center px-20px text-2xl font-bold text-text-neutral-primary md:hidden">

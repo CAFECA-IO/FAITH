@@ -3,8 +3,7 @@ import Image from 'next/image';
 import { timestampToString } from '@/lib/utils/common';
 import { ISharedLink, dummySharedLinks } from '@/interfaces/shared_link';
 import Pagination from '@/components/pagination/pagination';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface ISharedLinksModalProps {
   isModalVisible: boolean;
@@ -15,7 +14,7 @@ const LINK_PER_PAGE_DESKTOP = 5;
 const LINK_PER_PAGE_MOBILE = 10;
 
 const SharedLinksModal = ({ isModalVisible, modalVisibilityHandler }: ISharedLinksModalProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   // ToDo: (20240904 - Julian) Fetch shared links from API
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [sharedLinkList, setSharedLinkList] = useState<ISharedLink[]>(dummySharedLinks);
@@ -51,7 +50,7 @@ const SharedLinksModal = ({ isModalVisible, modalVisibilityHandler }: ISharedLin
                   id={`${sharedLink.id}-watch-button`}
                   type="button"
                   className="flex items-center gap-x-16px text-icon-surface-single-color-primary hover:text-icon-surface-accent"
-                  // ToDo: (20240703 - Julian) watch shared link function
+                // ToDo: (20240703 - Julian) watch shared link function
                 >
                   <svg
                     width="16"
@@ -71,7 +70,7 @@ const SharedLinksModal = ({ isModalVisible, modalVisibilityHandler }: ISharedLin
                   id={`${sharedLink.id}-delete-button`}
                   type="button"
                   className="flex items-center gap-x-16px text-icon-surface-single-color-primary hover:text-icon-surface-accent"
-                  // ToDo: (20240703 - Julian) delete shared link function
+                // ToDo: (20240703 - Julian) delete shared link function
                 >
                   <svg
                     width="16"
@@ -117,7 +116,7 @@ const SharedLinksModal = ({ isModalVisible, modalVisibilityHandler }: ISharedLin
                   id={`${sharedLink.id}-watch-button-mobile`}
                   type="button"
                   className="flex items-center gap-x-16px text-icon-surface-single-color-primary hover:text-icon-surface-accent"
-                  // ToDo: (20240703 - Julian) watch shared link function
+                // ToDo: (20240703 - Julian) watch shared link function
                 >
                   <svg
                     width="16"
@@ -137,7 +136,7 @@ const SharedLinksModal = ({ isModalVisible, modalVisibilityHandler }: ISharedLin
                   id={`${sharedLink.id}-delete-button`}
                   type="button"
                   className="flex items-center gap-x-16px text-icon-surface-single-color-primary hover:text-icon-surface-accent"
-                  // ToDo: (20240703 - Julian) delete shared link function
+                // ToDo: (20240703 - Julian) delete shared link function
                 >
                   <svg
                     width="16"

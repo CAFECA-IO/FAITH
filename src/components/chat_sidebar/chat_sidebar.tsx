@@ -1,3 +1,5 @@
+'use client';
+
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { v4 as uuidv4 } from 'uuid';
 import Image from 'next/image';
@@ -9,12 +11,11 @@ import { cn } from '@/lib/utils/common';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 import { IChatBrief, IFolder } from '@/interfaces/chat';
 import { useUserCtx } from '@/contexts/user_context';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 import { NATIVE_ROUTE } from '@/constants/url';
 import { MessageType } from '@/interfaces/message_modal';
 import Link from 'next/link';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface IChatBriefItemProps {
   chatBrief: IChatBrief;
@@ -29,8 +30,9 @@ interface IChatSidebarProps {
 }
 
 const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const router = useRouter();
+  const pathname = usePathname() || '';
   const { selectChat, selectedChat, deleteChat, renameChat } = useChatCtx();
   const { messageModalVisibilityHandler, messageModalDataHandler } = useGlobalCtx();
 
@@ -54,7 +56,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
   const chatBriefClickHandler = () => {
     selectChat(chatBrief.id);
     // TODO: 現在用 SPA 來寫，之後應該改成用 next/link 的 href 去跳轉、拿 URL 的資料來顯示對應畫面 (20240628 - Shirley)
-    if (router.pathname !== NATIVE_ROUTE.HOME) {
+    if (pathname !== NATIVE_ROUTE.HOME) {
       router.push(NATIVE_ROUTE.HOME);
     }
   };
@@ -100,8 +102,8 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
       title: t('MESSAGE_MODAL.REMOVE_CHAT_TITLE'),
       messageType: MessageType.WARNING,
       redMsg: t('MESSAGE_MODAL.REMOVE_CHAT_MESSAGE'),
-      backBtnStr: t('COMMON.CANCEL'),
-      submitBtnStr: t('COMMON.REMOVE'),
+      backBtnStr: t('CANCEL'),
+      submitBtnStr: t('REMOVE'),
       submitBtnFunction: () => {
         deleteChat(chatBrief.id);
       },
@@ -116,10 +118,10 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
           <Button
             id="rename-chat-button"
             type="button"
-            variant={'secondaryBorderless'}
             onClick={renameClickHandler}
+            variant={'secondaryBorderless'}
           >
-            {t('COMMON.RENAME')}
+            {t('RENAME')}
           </Button>
           <Button
             id="share-chat-button"
@@ -128,7 +130,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
             variant={'secondaryBorderless'}
             onClick={shareClickHandler}
           >
-            {t('COMMON.SHARE')}
+            {t('SHARE')}
           </Button>
           <Button
             id="private-chat-button"
@@ -137,7 +139,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
             variant={'secondaryBorderless'}
             onClick={privateClickHandler}
           >
-            {t('COMMON.SET_TO_PRIVATE')}
+            {t('SET_TO_PRIVATE')}
           </Button>
           <Button
             id="remove-chat-button"
@@ -236,7 +238,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
 };
 
 const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
 
   const { deleteFolder, renameFolder } = useChatCtx();
   const { messageModalDataHandler, messageModalVisibilityHandler } = useGlobalCtx();
@@ -296,8 +298,8 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
       title: t('MESSAGE_MODAL.REMOVE_FOLDER_TITLE'),
       messageType: MessageType.WARNING,
       redMsg: t('MESSAGE_MODAL.REMOVE_FOLDER_MESSAGE'),
-      backBtnStr: t('COMMON.CANCEL'),
-      submitBtnStr: t('COMMON.REMOVE'),
+      backBtnStr: t('CANCEL'),
+      submitBtnStr: t('REMOVE'),
       submitBtnFunction: () => {
         // ToDo: (20240702 - Julian) 這邊要寫刪除資料夾的 function ---> done (20240705 - Shirley)
         deleteFolder(chatFolder.id);
@@ -463,8 +465,9 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
 };
 
 const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const router = useRouter();
+  const pathname = usePathname() || '';
   const { isSignedIn } = useUserCtx();
   const { chatBriefs, folders, addFolder, moveChatToFolder, addEmptyChat } = useChatCtx();
 
@@ -485,7 +488,7 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
 
   const newChatClickHandler = () => {
     // Info: redirect to / if now is not on / (20240627 - Shirley)
-    if (router.pathname !== NATIVE_ROUTE.HOME) {
+    if (pathname !== NATIVE_ROUTE.HOME) {
       router.push(NATIVE_ROUTE.HOME);
     } else {
       addEmptyChat();

@@ -3,8 +3,7 @@ import { ITopicBrief } from '@/interfaces/topic';
 import { TopicCategory } from '@/constants/topic';
 import TopicItem from '@/components/topic_item/topic_item';
 import { NATIVE_ROUTE } from '@/constants/url';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface ITopicBrowsePageBody {
   category: TopicCategory;
@@ -12,7 +11,7 @@ interface ITopicBrowsePageBody {
 }
 
 const TopicSection = ({ category, topics }: ITopicBrowsePageBody) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
 
   const topicEmptyHint =
     category === TopicCategory.MY_FAVORITES

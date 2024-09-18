@@ -1,6 +1,11 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ['./src/**/**/*.{js,ts,jsx,tsx}'],
+const config = {
+  content: [
+    // './src/**/**.{js,ts,jsx,tsx}'
+    './src/app/**/*.{js,ts,jsx,tsx}', // 包含 app 目錄下所有文件
+    './src/components/**/*.{js,ts,jsx,tsx}', // 如果有 components 資料夾，包含它
+    './src/contexts/**/*.{js,ts,jsx,tsx}', // 如果有 components 資料夾，包含它
+  ],
   theme: {
     extend: {
       aspectRatio: {
@@ -1378,3 +1383,5 @@ module.exports = {
   },
   plugins: [],
 };
+
+export default config;

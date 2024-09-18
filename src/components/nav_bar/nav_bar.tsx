@@ -1,4 +1,5 @@
-import { useRouter } from 'next/router';
+'use client';
+
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
@@ -13,13 +14,14 @@ import useOuterClick from '@/lib/hooks/use_outer_click';
 import { ToastType } from '@/interfaces/toastify';
 import { ToastId } from '@/constants/toast_id';
 import I18n from '@/components/i18n/i18n';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
+
+import { useRouter, usePathname } from 'next/navigation';
 
 const NavBar = () => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const router = useRouter();
-
+  const pathname = usePathname();
   const { isSignedIn, signOut } = useUserCtx();
   const { addEmptyChat } = useChatCtx();
   const { chatSettingModalVisibilityHandler, toastHandler, eliminateToast } = useGlobalCtx();
@@ -55,7 +57,7 @@ const NavBar = () => {
 
   const newChatClickHandler = () => {
     // Info: redirect to / if now is not on / (20240627 - Shirley)
-    if (router.pathname !== NATIVE_ROUTE.HOME) {
+    if (pathname !== NATIVE_ROUTE.HOME) {
       router.push(NATIVE_ROUTE.HOME);
     } else {
       addEmptyChat();

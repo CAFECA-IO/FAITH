@@ -13,11 +13,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import ChatMessage, { BotPendingMessage } from '@/components/chat_message/chat_message';
 import { useUserCtx } from '@/contexts/user_context';
 import { TopicIcons } from '@/constants/display';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 const ChatThreadSection = () => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   const { isSignedIn } = useUserCtx();
   const { selectedChat, addUserMessage, resendUserMessage, isLatestBotMsgPending } = useChatCtx();
 

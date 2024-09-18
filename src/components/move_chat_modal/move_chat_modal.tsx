@@ -2,8 +2,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 import { Button } from '@/components/button/button';
-import { useTranslation } from 'next-i18next';
-import { ITranslateFunction } from '@/interfaces/locale';
+import { useTranslation } from 'react-i18next';
 
 interface IMoveChatModalProps {
   isModalVisible: boolean;
@@ -13,7 +12,7 @@ interface IMoveChatModalProps {
 const dummyFolders = ['Folder 1', 'Folder 2', 'Folder 3'];
 
 const MoveChatModal = ({ isModalVisible, modalVisibilityHandler }: IMoveChatModalProps) => {
-  const { t }: { t: ITranslateFunction } = useTranslation('common');
+  const { t } = useTranslation();
   // ToDo: (20240703 - Julian) Replace dummyFolders with actual data
   const currentFolder = dummyFolders[0];
   const [targetFolder, setTargetFolder] = useState<string>(currentFolder);
@@ -100,7 +99,7 @@ const MoveChatModal = ({ isModalVisible, modalVisibilityHandler }: IMoveChatModa
             disabled={isDisableSubmit}
             onClick={moveClickHandler}
           >
-            {t('COMMON.MOVE')}
+            {t('MOVE')}
           </Button>
         </div>
       </div>
