@@ -31,6 +31,8 @@ type Props = {
  *         "HELLO": "Hello"
  *     }
  * <h1>{`${t('GREETING.HELLO', { ns: 'test' })}`}</h1>
+ * then Add 'test' to i18nNamespaces
+ * const i18nNamespaces = ['common', test];
  */
 const i18nNamespaces = ['common'];
 
