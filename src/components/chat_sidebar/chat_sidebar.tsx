@@ -1,3 +1,5 @@
+'use client';
+
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { v4 as uuidv4 } from 'uuid';
 import Image from 'next/image';

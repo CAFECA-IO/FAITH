@@ -1,6 +1,7 @@
 /**
  * Info: (20240918 - Murky)
  * Context/Provider please add in this layout, not RootLayout.
+ * New context need to  be inside TranslationProvider if i18n is used.
  */
 import React from 'react';
 import initTranslations from '@/i18n';
@@ -20,6 +21,7 @@ type Props = {
     };
 };
 
+// Info: (20240918 - Murky) Change "common" for different i18n namespaces
 const i18nNamespaces = ['common'];
 
 export default async function Layout({ children, params: { locale } }: Props) {

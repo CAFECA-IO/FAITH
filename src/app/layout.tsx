@@ -5,7 +5,7 @@
 import { Metadata, Viewport } from "next";
 import { Barlow, Inter } from 'next/font/google';
 
-import '@/app/[locale]/globals.css';
+import '@/app/globals.css';
 import { i18nConfig } from "@/i18nConfig";
 
 // Info: (20240916 - Murky) Google Font
