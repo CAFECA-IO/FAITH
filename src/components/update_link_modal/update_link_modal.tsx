@@ -85,6 +85,7 @@ const UpdateLinkModal = ({
       {/* Info: (20240911 - Julian) Desktop */}
       <div className="hidden lg:block">
         <Button
+          id="loading-button"
           type="button"
           variant="tertiary"
           className={cn(
@@ -113,6 +114,7 @@ const UpdateLinkModal = ({
       {/* Info: (20240911 - Julian) Mobile */}
       <div className="block lg:hidden">
         <Button
+          id="loading-button-mobile"
           type="button"
           variant="tertiary"
           className={cn(
@@ -143,6 +145,7 @@ const UpdateLinkModal = ({
       {/* Info: (20240911 - Julian) Desktop */}
       <div className="hidden lg:block">
         <Button
+          id="copy-success-button"
           type="button"
           variant="tertiary"
           className={cn(
@@ -170,6 +173,7 @@ const UpdateLinkModal = ({
       {/* Info: (20240911 - Julian) Mobile */}
       <div className="block lg:hidden">
         <Button
+          id="copy-success-button-mobile"
           type="button"
           variant="tertiary"
           className={cn(
@@ -199,7 +203,7 @@ const UpdateLinkModal = ({
       {/* Info: (20240911 - Julian) Desktop */}
       <div className="hidden lg:block">
         <Button
-          id="copy-link-button"
+          id="copy-button"
           type="button"
           variant="tertiary"
           className={cn('px-16px py-8px text-sm')}
@@ -226,7 +230,7 @@ const UpdateLinkModal = ({
       {/* Info: (20240911 - Julian) Mobile */}
       <div className="block lg:hidden">
         <Button
-          id="copy-link-button-mobile"
+          id="copy-button-mobile"
           type="button"
           variant="tertiary"
           className={cn('h-44px w-44px p-0')}
