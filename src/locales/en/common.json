@@ -135,7 +135,9 @@
     "ADD_COMMENT": "Add Comment",
     "COMMENT_WARNING": "Attention! Faith prohibits posting comments that harm others.",
     "MADE_BY_1": "Made by",
-    "MADE_BY_2": ""
+    "MADE_BY_2": "",
+    "MAIN_QUESTION": "Main Question",
+    "BEST_ANSWERS": "Best Answers"
   },
   "FOLDER": {
     "SHARE": "Share Folder",
