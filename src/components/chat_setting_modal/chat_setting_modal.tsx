@@ -190,7 +190,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
         <p className="font-semibold md:font-bold">{t('SETTING.SHARED_LINKS')}</p>
         {/* Info: (20240904 - Julian) Desktop manage button */}
         <Button
-          id="shared-links-manage-button-desktop"
+          id="shared-links-manage-button"
           type="button"
           variant="secondaryOutline"
           className="hidden text-base md:block"
@@ -237,7 +237,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
         <p className="font-semibold md:font-bold">{t('SETTING.DELETE_CHAT')}</p>
         {/* Info: (20240904 - Julian) Desktop delete button */}
         <Button
-          id="delete-all-chat-button-desktop"
+          id="delete-all-chat-button"
           type="button"
           variant="secondaryOutline"
           className="hidden text-base md:block"

@@ -194,7 +194,7 @@ const NavBar = () => {
       {/* Info: (20240704 - Julian) Desktop login button */}
       <div className="hidden space-x-5 lg:flex">
         <Button
-          id="register-button-desktop"
+          id="register-button"
           onClick={buttonClickHandler}
           variant={'tertiary'}
           size={'medium'}
@@ -216,7 +216,7 @@ const NavBar = () => {
           </svg>
         </Button>
         <Button
-          id="login-button-desktop"
+          id="login-button"
           onClick={buttonClickHandler}
           className=""
           variant={'tertiaryOutline'}

@@ -340,7 +340,7 @@ const SubscriptionPageBody = () => {
     <div className="mb-40px mt-120px flex w-screen flex-col items-stretch md:ml-100px md:flex-row">
       {/* Info: (20240628 - Julian) Desktop Back button */}
       <Button
-        id="back-button-desktop"
+        id="back-button"
         type="button"
         variant="secondaryOutline"
         className="hidden h-fit w-fit md:flex"
