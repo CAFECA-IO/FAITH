@@ -2,10 +2,12 @@
  * Info: (20240918 - Murky)
  * Please add context in /src/app/[locale]/layout.tsx, not in RootLayout.
  */
+
+import '@/styles/globals.css';
+import 'react-toastify/dist/ReactToastify.css';
 import { Metadata, Viewport } from "next";
 import { Barlow, Inter } from 'next/font/google';
 
-import '@/app/globals.css';
 import { i18nConfig } from "@/i18nConfig";
 
 // Info: (20240916 - Murky) Google Font
@@ -66,9 +68,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={`${inter.className} ${barlow.className}`}>
       <body>
-
         {children}
-
       </body>
     </html>
   );

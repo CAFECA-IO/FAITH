@@ -1,16 +1,20 @@
-// Info: (20240916 - Murky) Middleware for app router
-// use "next-i18n-router" for i 18n routing
-// App router need to use react-i18next
-// please check https://i18nexus.com/tutorials/nextjs/react-i18next
+/**
+ * Info: (20240918 - Murky)
+ * Chain Middleware please check:
+ * https://medium.com/@tanzimhossain2/implementing-multiple-middleware-in-next-js-combining-nextauth-and-internationalization-28d5435d3187
+ */
 
-import { i18nRouter } from 'next-i18n-router';
-import { NextRequest } from 'next/server';
-import { i18nConfig } from '@/i18nConfig';
+import { chain } from "@/middlewares/chain";
+import { i18nMiddleware } from "@/middlewares/i18n_middleware";
+import { corsMiddleware } from "@/middlewares/cors_middleware";
 
-export function middleware(request: NextRequest) {
-  return i18nRouter(request, i18nConfig);
-}
+/**
+ * Info: (20240918 - Murky)
+ * corsMiddleware must be first one
+ * i18nMiddleware must be last one
+ */
 
+export default chain([corsMiddleware, i18nMiddleware]);
 // only applies this middleware to files in the app directory
 export const config = {
   matcher: '/((?!api|static|.*\\..*|_next).*)'

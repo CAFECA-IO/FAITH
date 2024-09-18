@@ -3,6 +3,7 @@
  * Context/Provider please add in this layout, not RootLayout.
  * New context need to  be inside TranslationProvider if i18n is used.
  */
+
 import React from 'react';
 import initTranslations from '@/i18n';
 
@@ -36,7 +37,7 @@ export default async function Layout({ children, params: { locale } }: Props) {
                             *Info: (20240916 - Murky)
                             * Home page use "h-screen", but other page use relevant, I'm not sure which one is correct.
                         */}
-                        <div className="h-screen">
+                        <div className="relative">
                             <NavBar />
                             {children}
                         </div>
