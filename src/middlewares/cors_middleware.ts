@@ -13,7 +13,6 @@ export function corsMiddleware(middleware: CustomMiddleware): CustomMiddleware {
     return async (
         request: NextRequest,
         event: NextFetchEvent,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         response: NextResponse
     ) => {
         // Info: (20240918 - Murky)  Check the origin from the request
@@ -32,7 +31,11 @@ export function corsMiddleware(middleware: CustomMiddleware): CustomMiddleware {
         }
         // Info: (20240918 - Murky) Handle simple requests
 
-        const responseNext = NextResponse.next();
+        const responseNext = NextResponse.next({
+            // Info: (20240918 - Murky) Chain status from last response
+            status: response?.status || 200,
+        });
+
         if (isAllowedOrigin) {
             responseNext.headers.set('Access-Control-Allow-Origin', origin);
         }
@@ -40,6 +43,14 @@ export function corsMiddleware(middleware: CustomMiddleware): CustomMiddleware {
         Object.entries(corsOptions).forEach(([key, value]) => {
             responseNext.headers.set(key, value);
         });
+
+        // Info: (20240918 - Murky) Copy headers from i18nResponse to newResponse
+        if (response?.headers) {
+                Object.entries(response.headers).forEach(([key, value]) => {
+                responseNext.headers.set(key, value);
+            });
+        }
+
         return middleware(request, event, responseNext);
     };
 }

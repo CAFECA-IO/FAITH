@@ -3,6 +3,7 @@
  * This Factory is used to chain multiple middlewares together.
  * Chain Middleware Reference please check:
  * https://medium.com/@tanzimhossain2/implementing-multiple-middleware-in-next-js-combining-nextauth-and-internationalization-28d5435d3187
+ * Please make sure to chain header and status if new response is created
  */
 
 import { NextMiddlewareResult } from 'next/dist/server/web/types';
