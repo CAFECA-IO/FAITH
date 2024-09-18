@@ -305,10 +305,10 @@ const UpdateLinkModal = ({
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/50 font-barlow">
       <div
         id="update-link-modal"
-        className="relative flex h-auto w-90vw flex-col rounded-sm bg-surface-neutral-surface-lv1 py-20px font-barlow lg:w-520px"
+        className="relative flex h-auto w-90vw flex-col rounded-sm bg-surface-neutral-surface-lv1 py-20px font-barlow md:w-520px"
       >
         {/* Info: (20240625 - Julian) Header */}
-        <div className="flex items-center justify-between pl-40px pr-20px text-2xl font-bold text-text-neutral-primary">
+        <div className="flex items-center justify-between pl-40px pr-20px text-2xl font-bold text-text-neutral-primary md:text-32px">
           <h1>{mainTitle}</h1>
           <button type="button" onClick={modalVisibilityHandler}>
             <Image src="/icons/cross.svg" width={32} height={32} alt="cross_icon" />

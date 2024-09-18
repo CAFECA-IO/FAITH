@@ -66,7 +66,7 @@ const MoveChatModal = ({ isModalVisible, modalVisibilityHandler }: IMoveChatModa
         className="relative flex h-auto w-90vw flex-col rounded-sm bg-surface-neutral-surface-lv1 py-20px font-barlow md:w-500px"
       >
         {/* Info: (20240625 - Julian) Header */}
-        <div className="flex items-center justify-between pl-40px pr-20px text-32px font-bold text-text-neutral-primary">
+        <div className="flex items-center justify-between pl-40px pr-20px text-2xl font-bold text-text-neutral-primary md:text-32px">
           <h1>{t('CHAT.MOVE_CHAT_TITLE')}</h1>
           <button type="button" onClick={modalVisibilityHandler}>
             <Image src="/icons/cross.svg" width={32} height={32} alt="cross_icon" />
