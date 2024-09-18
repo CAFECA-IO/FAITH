@@ -22,7 +22,16 @@ type Props = {
     };
 };
 
-// Info: (20240918 - Murky) Change "common" for different i18n namespaces
+/*
+ * Info: (20240918 - Murky) Add more file to i18nNamespaces if file other than common is used
+ * ex test is from src/locales/en/test.json
+ * shape be like:
+ * {
+ *     "GREETING": {
+ *         "HELLO": "Hello"
+ *     }
+ * <h1>{`${t('GREETING.HELLO', { ns: 'test' })}`}</h1>
+ */
 const i18nNamespaces = ['common'];
 
 export default async function Layout({ children, params: { locale } }: Props) {

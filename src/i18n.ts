@@ -34,7 +34,7 @@ export default async function initTranslations(
     fallbackLng: i18nConfig.defaultLocale,
     supportedLngs: i18nConfig.locales,
     defaultNS: namespaces[0],
-    fallbackNS: namespaces[0],
+    fallbackNS: namespaces.slice(1, namespaces.length),
     ns: namespaces,
     preload: resources ? [] : i18nConfig.locales
   });
