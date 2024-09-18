@@ -63,7 +63,7 @@ const NavBar = () => {
   };
 
   const contactUsButton = (
-    <Link href={I_SUN_FA_URL.CONTACT_US} target="_blank">
+    <Link id="contact-us-button" href={I_SUN_FA_URL.CONTACT_US} target="_blank">
       <Button
         size={'small'}
         variant={'secondaryBorderless'}
@@ -101,6 +101,7 @@ const NavBar = () => {
         </div>
 
         <Button
+          id="chat-setting-button"
           size={'small'}
           variant={'secondaryBorderless'}
           className="flex w-full justify-start"
@@ -127,6 +128,7 @@ const NavBar = () => {
         </Button>
 
         <Button
+          id="logout-button"
           size={'small'}
           variant={'secondaryBorderless'}
           className="flex w-full justify-start"
@@ -154,7 +156,7 @@ const NavBar = () => {
 
   const isDisplayedDiscoverButton = isSignedIn ? (
     <Link href={NATIVE_ROUTE.DISCOVER} className="my-auto hidden lg:flex">
-      <Button size={'small'} variant={'secondaryBorderless'}>
+      <Button id="discover-button" size={'small'} variant={'secondaryBorderless'}>
         <svg
           width="24"
           height="24"
@@ -177,6 +179,7 @@ const NavBar = () => {
   const displayedLogInBtn = isSignedIn ? (
     <div ref={userMenuRef}>
       <button
+        id="avatar-button"
         type="button"
         onClick={avatarClickHandler}
         className="flex h-full w-full justify-center"
@@ -190,7 +193,12 @@ const NavBar = () => {
     <>
       {/* Info: (20240704 - Julian) Desktop login button */}
       <div className="hidden space-x-5 lg:flex">
-        <Button onClick={buttonClickHandler} variant={'tertiary'} size={'medium'}>
+        <Button
+          id="register-button"
+          onClick={buttonClickHandler}
+          variant={'tertiary'}
+          size={'medium'}
+        >
           <p>{t('NAV_BAR.REGISTER')}</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -208,6 +216,7 @@ const NavBar = () => {
           </svg>
         </Button>
         <Button
+          id="login-button"
           onClick={buttonClickHandler}
           className=""
           variant={'tertiaryOutline'}
@@ -232,7 +241,12 @@ const NavBar = () => {
       </div>
       {/* Info: (20240704 - Julian) Mobile login button */}
       <div className="block lg:hidden">
-        <Button type="button" className="h-44px w-44px p-0" onClick={buttonClickHandler}>
+        <Button
+          id="login-button-mobile"
+          type="button"
+          className="h-44px w-44px p-0"
+          onClick={buttonClickHandler}
+        >
           <svg
             width="20"
             height="20"
@@ -257,7 +271,7 @@ const NavBar = () => {
       <div className="z-60 flex h-80px w-full items-center justify-end gap-5 bg-surface-neutral-surface-lv1 px-80px py-8px shadow-navbar max-md:flex-wrap max-md:px-5 lg:h-60px">
         <div className="my-auto hidden flex-1 items-center lg:flex">
           <div className="flex flex-col items-center justify-center gap-2 lg:flex-row lg:items-end lg:justify-end">
-            <Link href={NATIVE_ROUTE.HOME} className="shrink-0">
+            <Link id="home-button" href={NATIVE_ROUTE.HOME} className="shrink-0">
               {/* Info: (20240417 - Julian) Desktop logo */}
               <Image
                 src="/logo/isunfa_logo_light.svg"
@@ -285,6 +299,7 @@ const NavBar = () => {
           {/* TODO: links on mobile (20240408 - Shirley) */}
           <div className="my-auto flex flex-1 gap-5 max-md:flex-wrap">
             <Button
+              id="new-chat-button"
               type="button"
               onClick={newChatClickHandler}
               size={'small'}

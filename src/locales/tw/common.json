@@ -133,7 +133,11 @@
     "NO_COMMENT_YET": "尚無評論。",
     "COMMENT": "評論",
     "ADD_COMMENT": "新增評論",
-    "COMMENT_WARNING": "注意！Faith 禁止發表傷害他人的評論。"
+    "COMMENT_WARNING": "注意！Faith 禁止發表傷害他人的評論。",
+    "MADE_BY_1": "由",
+    "MADE_BY_2": "建立",
+    "MAIN_QUESTION": "主要問題",
+    "BEST_ANSWERS": "最佳解答"
   },
   "FOLDER": {
     "SHARE": "分享資料夾",

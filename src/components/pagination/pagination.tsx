@@ -89,6 +89,7 @@ const Pagination = ({
 
   const displayFirstButton = (
     <Button
+      id="first-page-button"
       type="button"
       onClick={firstPageHandler}
       disabled={isFirstPage}
@@ -124,6 +125,7 @@ const Pagination = ({
 
   const displayPreviousButton = (
     <Button
+      id="previous-page-button"
       type="button"
       onClick={previousPageHandler}
       disabled={isFirstPage}
@@ -150,6 +152,7 @@ const Pagination = ({
 
   const displayLastButton = (
     <Button
+      id="last-page-button"
       type="button"
       onClick={lastPageHandler}
       disabled={isLastPage}
@@ -185,6 +188,7 @@ const Pagination = ({
 
   const displayNextButton = (
     <Button
+      id="next-page-button"
       type="button"
       onClick={nextPageHandler}
       disabled={isLastPage}
@@ -211,6 +215,7 @@ const Pagination = ({
 
   const displayPageInput = (
     <input
+      id="page-input"
       name="page"
       type="number"
       placeholder={`${currentPage}`}

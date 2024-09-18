@@ -34,7 +34,7 @@ const CommentItem = ({ commentData }: ICommentItemProps) => {
         <div className="flex items-center justify-end gap-16px">
           {/* Info: (20240627 - Julian) Like Button */}
           <button
-            id="answer-like-button"
+            id={`answer-like-button-${commentData.id}`}
             type="button"
             className="flex items-center rounded-full border border-badge-stroke-primary p-6px text-xs text-icon-surface-single-color-primary hover:text-icon-surface-accent md:gap-4px md:text-base"
             // ToDo: (20240627 - Julian) Add onClick event
@@ -59,7 +59,7 @@ const CommentItem = ({ commentData }: ICommentItemProps) => {
           </button>
           {/* Info: (20240627 - Julian) Dislike Button */}
           <button
-            id="answer-dislike-button"
+            id={`answer-dislike-button-${commentData.id}`}
             type="button"
             className="flex items-center rounded-full border border-badge-stroke-primary p-6px text-xs text-icon-surface-single-color-primary hover:text-icon-surface-accent md:gap-4px md:text-base"
             // ToDo: (20240627 - Julian) Add onClick event
@@ -84,6 +84,7 @@ const CommentItem = ({ commentData }: ICommentItemProps) => {
           </button>
           {/* Info: (20240627 - Julian) Report Button */}
           <button
+            id={`answer-report-button-${commentData.id}`}
             type="button"
             className="text-icon-surface-single-color-primary hover:text-icon-surface-accent"
             onClick={reportCommentModalVisibilityHandler}
