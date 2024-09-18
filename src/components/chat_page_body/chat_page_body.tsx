@@ -164,6 +164,7 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
               <div>
                 {t('TOAST.REGISTER_REMINDER')}
                 <button
+                  id="register-button"
                   type="button"
                   className="font-semibold text-link-text-primary hover:underline"
                   onClick={() => router.push(NATIVE_ROUTE.LOGIN)}

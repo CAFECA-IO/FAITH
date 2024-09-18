@@ -159,7 +159,7 @@ const SharedLinksModal = ({ isModalVisible, modalVisibilityHandler }: ISharedLin
       // Info: (20240904 - Julian) No shared links
       <tr>
         <td colSpan={3} className="text-center">
-          No shared links
+          {t('SETTING.NO_LINK_DATA')}
         </td>
       </tr>
     );

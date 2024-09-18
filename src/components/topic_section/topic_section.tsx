@@ -34,6 +34,7 @@ const TopicSection = ({ category, topics }: ITopicBrowsePageBody) => {
     topics.length > 3 ? (
       // ToDo: (20240626 - Julian) link
       <Link
+        id="see-more-link"
         href={`${NATIVE_ROUTE.DISCOVER}/see-more?category=${category}`}
         className="text-base font-semibold text-link-text-primary"
       >

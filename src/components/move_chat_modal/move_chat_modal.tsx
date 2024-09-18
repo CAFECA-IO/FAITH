@@ -45,6 +45,7 @@ const MoveChatModal = ({ isModalVisible, modalVisibilityHandler }: IMoveChatModa
           };
           return (
             <button
+              id={`folder-${folder}-button`}
               key={folder}
               type="button"
               className="flex w-full items-center justify-between px-12px py-10px text-base hover:bg-dropdown-surface-item-hover"
@@ -65,7 +66,7 @@ const MoveChatModal = ({ isModalVisible, modalVisibilityHandler }: IMoveChatModa
         className="relative flex h-auto w-90vw flex-col rounded-sm bg-surface-neutral-surface-lv1 py-20px font-barlow md:w-500px"
       >
         {/* Info: (20240625 - Julian) Header */}
-        <div className="flex items-center justify-between pl-40px pr-20px text-32px font-bold text-text-neutral-primary">
+        <div className="flex items-center justify-between pl-40px pr-20px text-2xl font-bold text-text-neutral-primary md:text-32px">
           <h1>{t('CHAT.MOVE_CHAT_TITLE')}</h1>
           <button type="button" onClick={modalVisibilityHandler}>
             <Image src="/icons/cross.svg" width={32} height={32} alt="cross_icon" />
@@ -79,6 +80,7 @@ const MoveChatModal = ({ isModalVisible, modalVisibilityHandler }: IMoveChatModa
           <div className="flex flex-col gap-y-8px text-button-text-secondary">
             <p className="font-semibold text-input-text-primary">{t('CHAT.MOVE_CHAT_CONTENT')}</p>
             <button
+              id="folder-menu-button"
               type="button"
               className="relative flex w-full items-center justify-between rounded-xs border border-input-stroke-input px-12px py-10px text-base"
               onClick={folderMenuToggleHandler}

@@ -76,6 +76,7 @@ const MessageModal = ({
 
   const isBackBtn = backBtnStr ? (
     <Button
+      id="message-modal-back-button"
       className="px-16px py-8px"
       type="button"
       onClick={backBtnClickHandler}
@@ -127,6 +128,7 @@ const MessageModal = ({
         <div className="flex items-center justify-center gap-24px">
           {isBackBtn}
           <Button
+            id="message-modal-submit-button"
             className={cn('px-16px py-8px')}
             type="button"
             onClick={submitClickHandler}

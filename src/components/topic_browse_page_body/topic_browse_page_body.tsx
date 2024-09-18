@@ -22,6 +22,7 @@ const TopicBrowsePageBody = () => {
   const displayTopicCategories = topicCategories.map((category) => {
     return (
       <Link
+        id={`${category}_tab`}
         href={`${NATIVE_ROUTE.DISCOVER}#${category}`}
         key={`${category}_tab`}
         className="flex flex-col items-center whitespace-nowrap border-b-2 px-12px py-8px hover:border-tabs-stroke-hover hover:text-tabs-text-hover"
@@ -57,6 +58,7 @@ const TopicBrowsePageBody = () => {
         {/* Info: (20240626 - Julian) Chat box */}
         <div className="flex w-full items-center gap-16px rounded-sm border border-input-stroke-input bg-input-surface-input-background px-16px py-14px">
           <input
+            id="topic-search-input"
             type="text"
             className="flex-1 bg-transparent text-text-neutral-primary outline-none placeholder:text-input-text-input-placeholder"
             placeholder={t('DISCOVER.SEARCH_PLACEHOLDER')}

@@ -54,6 +54,7 @@ const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopi
   const isDisplaySeeMoreButton =
     comments.length > countOfShowComments ? (
       <button
+        id="see-more-button"
         type="button"
         className="ml-auto text-sm font-semibold text-link-text-primary"
         onClick={seeMoreClickHandler}
@@ -115,7 +116,7 @@ const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopi
             {/* Info: (20240627 - Julian) Main Question */}
             <div className="flex flex-col gap-20px">
               <h3 className="text-base font-bold text-text-neutral-secondary md:text-xl">
-                Main Question
+                {t('DISCOVER.MAIN_QUESTION')}
               </h3>
               <div className="rounded-xl bg-surface-brand-secondary-soft px-20px py-12px text-sm font-semibold text-text-neutral-primary md:text-base">
                 {mainQuestion}
@@ -124,7 +125,7 @@ const TopicModal = ({ isModalVisible, modalVisibilityHandler, topicData }: ITopi
             {/* Info: (20240627 - Julian) Best Answers */}
             <div className="flex flex-col">
               <h3 className="text-base font-bold text-text-neutral-secondary md:text-xl">
-                Best Answers
+                {t('DISCOVER.BEST_ANSWERS')}
               </h3>
               <div className="mt-20px rounded-xl bg-surface-brand-primary-soft px-20px py-12px text-sm font-semibold text-text-neutral-primary md:text-base">
                 {bestAnswers.answer}

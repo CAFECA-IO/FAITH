@@ -341,6 +341,7 @@ const SubscriptionPageBody = () => {
     <div className="mb-40px mt-120px flex w-screen flex-col items-stretch md:ml-100px md:flex-row">
       {/* Info: (20240628 - Julian) Desktop Back button */}
       <Button
+        id="back-button"
         type="button"
         variant="secondaryOutline"
         className="hidden h-fit w-fit md:flex"
@@ -364,7 +365,12 @@ const SubscriptionPageBody = () => {
       </Button>
       {/* Info: (20240628 - Julian) Mobile Back button & Title */}
       <div className="relative flex items-center justify-center px-20px text-2xl font-bold text-text-neutral-primary md:hidden">
-        <button type="button" onClick={backHandler} className="absolute left-10 p-10px">
+        <button
+          id="back-button-mobile"
+          type="button"
+          onClick={backHandler}
+          className="absolute left-10 p-10px"
+        >
           <Image src="/icons/back.svg" alt="back_icon" width={24} height={24} />
         </button>
         <h1>{t('SUBSCRIPTION.HEADER_TITLE')}</h1>

@@ -43,12 +43,12 @@ const UploadedFileItem = ({
 
   const displayedDeleteButton = deleteCallback && (
     <Button
+      id="delete-button"
       className="absolute right-1 top-1"
       size={'extraSmall'}
       variant={'secondaryBorderless'}
       onClick={deleteClickHandler}
     >
-      {' '}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
@@ -67,7 +67,12 @@ const UploadedFileItem = ({
   );
 
   const displayedRetryButton = retryCallback && (
-    <Button variant={'secondaryBorderless'} size={'extraSmall'} onClick={retryClickHandler}>
+    <Button
+      id="retry-button"
+      variant={'secondaryBorderless'}
+      size={'extraSmall'}
+      onClick={retryClickHandler}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="20"
@@ -100,7 +105,6 @@ const UploadedFileItem = ({
       displayedSuccessOrError
     ) : (
       <div>
-        {' '}
         <LoadingSVG />
       </div>
     )

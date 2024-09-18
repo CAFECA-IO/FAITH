@@ -97,6 +97,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
 
   const displayedChatName = isRenaming ? (
     <input
+      id="chat-rename-input"
       ref={inputRef}
       type="text"
       value={newName}
@@ -126,6 +127,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
       </div>
       <div className="relative table-cell rounded-r-sm px-20px py-12px text-right">
         <Button
+          id="chat-action-button"
           type="button"
           variant="secondaryBorderless"
           className={cn('p-0')}
@@ -139,6 +141,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
           className={`absolute right-0 top-52px flex flex-col gap-y-8px rounded-sm ${actionVisible ? 'visible opacity-100' : 'invisible opacity-0'} bg-surface-neutral-surface-lv2 py-8px text-base shadow-dropmenu transition-all duration-150 ease-in-out`}
         >
           <Button
+            id="chat-rename-button"
             type="button"
             variant="tertiaryBorderless"
             className="w-full py-8px"
@@ -147,6 +150,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             {t('RENAME')}
           </Button>
           <Button
+            id="chat-share-button"
             type="button"
             variant="tertiaryBorderless"
             className="w-full py-8px"
@@ -155,6 +159,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             {t('SHARE')}
           </Button>
           <Button
+            id="chat-move-button"
             type="button"
             variant="tertiaryBorderless"
             className="w-full py-8px"
@@ -163,6 +168,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             {t('MOVE')}
           </Button>
           <Button
+            id="chat-private-button"
             type="button"
             variant="tertiaryBorderless"
             className="w-full py-8px"
@@ -171,6 +177,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             {t('SET_TO_PRIVATE')}
           </Button>
           <Button
+            id="chat-remove-button"
             type="button"
             variant="tertiaryBorderless"
             className="w-full py-8px"

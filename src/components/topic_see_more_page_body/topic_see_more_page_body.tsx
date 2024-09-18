@@ -40,6 +40,7 @@ const TopicSeeMorePageBody = () => {
     };
     return (
       <Link
+        id={`${category}_tab`}
         href={`?category=${category}`}
         scroll={false}
         key={`${category}_tab`}
@@ -83,6 +84,7 @@ const TopicSeeMorePageBody = () => {
         {/* Info: (20240626 - Julian) Chat box */}
         <div className="flex w-full items-center gap-16px rounded-sm border border-input-stroke-input bg-input-surface-input-background px-16px py-14px">
           <input
+            id="topic-search-input"
             type="text"
             className="flex-1 bg-transparent text-text-neutral-primary outline-none placeholder:text-input-text-input-placeholder"
             placeholder={t('DISCOVER.SEARCH_PLACEHOLDER')}

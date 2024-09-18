@@ -98,6 +98,7 @@ const RegisterFormModal = ({ isModalVisible, modalVisibilityHandler }: IRegister
             </div>
             <div className="flex flex-1">
               <input
+                id="username-input"
                 ref={inputRef}
                 type="text"
                 className="mx-2 w-full bg-transparent px-1 py-2.5 text-base text-input-text-input-filled placeholder:text-input-text-input-placeholder focus:outline-none"
@@ -111,11 +112,20 @@ const RegisterFormModal = ({ isModalVisible, modalVisibilityHandler }: IRegister
         </div>
         <div className="flex w-full items-end justify-end px-5 py-4 text-sm font-medium">
           <div className="flex gap-3">
-            {/* TODO: button component (20240409 - Shirley) */}
-            <Button type="button" variant="tertiaryBorderless" onClick={modalVisibilityHandler}>
+            <Button
+              id="register-cancel-button"
+              type="button"
+              variant="tertiaryBorderless"
+              onClick={modalVisibilityHandler}
+            >
               {t('CANCEL')}
             </Button>
-            <Button type="button" variant={'tertiary'} onClick={registerClickHandler}>
+            <Button
+              id="register-submit-button"
+              type="button"
+              variant={'tertiary'}
+              onClick={registerClickHandler}
+            >
               {t('REGISTER')}
             </Button>
           </div>
