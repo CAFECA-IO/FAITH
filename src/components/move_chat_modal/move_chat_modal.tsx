@@ -46,6 +46,7 @@ const MoveChatModal = ({ isModalVisible, modalVisibilityHandler }: IMoveChatModa
           };
           return (
             <button
+              id={`folder-${folder}-button`}
               key={folder}
               type="button"
               className="flex w-full items-center justify-between px-12px py-10px text-base hover:bg-dropdown-surface-item-hover"
@@ -80,6 +81,7 @@ const MoveChatModal = ({ isModalVisible, modalVisibilityHandler }: IMoveChatModa
           <div className="flex flex-col gap-y-8px text-button-text-secondary">
             <p className="font-semibold text-input-text-primary">{t('CHAT.MOVE_CHAT_CONTENT')}</p>
             <button
+              id="folder-menu-button"
               type="button"
               className="relative flex w-full items-center justify-between rounded-xs border border-input-stroke-input px-12px py-10px text-base"
               onClick={folderMenuToggleHandler}

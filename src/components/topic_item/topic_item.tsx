@@ -22,6 +22,7 @@ const TopicItem = ({ topic }: ITopicItem) => {
 
   return (
     <button
+      id={`topic-${topic.id}-button`}
       type="button"
       onClick={clickHandler}
       className="flex h-180px items-center gap-x-16px rounded-sm border border-transparent bg-surface-neutral-surface-lv2 px-20px py-16px shadow-custom1 hover:border-stroke-brand-primary hover:bg-surface-brand-primary-10 md:gap-x-40px"
