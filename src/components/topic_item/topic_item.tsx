@@ -1,12 +1,15 @@
 import Image from 'next/image';
 import { ITopicBrief, dummyTopicList, defaultTopicData } from '@/interfaces/topic';
 import { useGlobalCtx } from '@/contexts/global_context';
+import { useTranslation } from 'next-i18next';
+import { ITranslateFunction } from '@/interfaces/locale';
 
 interface ITopicItem {
   topic: ITopicBrief;
 }
 
 const TopicItem = ({ topic }: ITopicItem) => {
+  const { t }: { t: ITranslateFunction } = useTranslation('common');
   const { topicModalVisibilityHandler, topicModalDataHandler } = useGlobalCtx();
 
   // ToDo: (20240627 - Julian) If API call here
@@ -32,7 +35,7 @@ const TopicItem = ({ topic }: ITopicItem) => {
           {topic.summary}
         </p>
         <p className="ml-auto text-xs font-semibold text-text-neutral-tertiary">
-          Made by {topic.creator}
+          {t('DISCOVER.MADE_BY_1')} {topic.creator} {t('DISCOVER.MADE_BY_2')}
         </p>
       </div>
     </button>

@@ -133,7 +133,9 @@
     "NO_COMMENT_YET": "尚无评论。",
     "COMMENT": "评论",
     "ADD_COMMENT": "新增评论",
-    "COMMENT_WARNING": "注意！Faith 禁止发表伤害他人的评论。"
+    "COMMENT_WARNING": "注意！Faith 禁止发表伤害他人的评论。",
+    "MADE_BY_1": "由",
+    "MADE_BY_2": "建立"
   },
   "FOLDER": {
     "SHARE": "分享资料夹",
