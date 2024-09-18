@@ -9,8 +9,8 @@ export const TopicIcons = {
   [ChatTopicType.OTHERS]: '/elements/others_topic.svg',
 };
 export enum SortOptions {
-  NEWEST = 'COMMON.NEWEST',
-  OLDEST = 'COMMON.OLDEST',
+  NEWEST = 'NEWEST',
+  OLDEST = 'OLDEST',
 }
 
 // Info: (20240628 - Julian) checkbox CSS style

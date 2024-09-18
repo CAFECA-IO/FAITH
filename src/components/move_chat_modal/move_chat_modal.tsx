@@ -97,7 +97,7 @@ const MoveChatModal = ({ isModalVisible, modalVisibilityHandler }: IMoveChatModa
             disabled={isDisableSubmit}
             onClick={moveClickHandler}
           >
-            {t('COMMON.MOVE')}
+            {t('MOVE')}
           </Button>
         </div>
       </div>

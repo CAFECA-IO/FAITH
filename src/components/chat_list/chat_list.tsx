@@ -144,7 +144,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             className="w-full py-8px"
             onClick={renamingHandler}
           >
-            {t('COMMON.RENAME')}
+            {t('RENAME')}
           </Button>
           <Button
             type="button"
@@ -152,7 +152,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             className="w-full py-8px"
             onClick={shareChatHandler}
           >
-            {t('COMMON.SHARE')}
+            {t('SHARE')}
           </Button>
           <Button
             type="button"
@@ -160,7 +160,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             className="w-full py-8px"
             onClick={moveChatHandler}
           >
-            {t('COMMON.MOVE')}
+            {t('MOVE')}
           </Button>
           <Button
             type="button"
@@ -168,7 +168,7 @@ const ChatItem = ({ chat }: IChatItemProps) => {
             className="w-full py-8px"
             onClick={setPrivateChatHandler}
           >
-            {t('COMMON.SET_TO_PRIVATE')}
+            {t('SET_TO_PRIVATE')}
           </Button>
           <Button
             type="button"

@@ -100,8 +100,8 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
       title: t('MESSAGE_MODAL.REMOVE_CHAT_TITLE'),
       messageType: MessageType.WARNING,
       redMsg: t('MESSAGE_MODAL.REMOVE_CHAT_MESSAGE'),
-      backBtnStr: t('COMMON.CANCEL'),
-      submitBtnStr: t('COMMON.REMOVE'),
+      backBtnStr: t('CANCEL'),
+      submitBtnStr: t('REMOVE'),
       submitBtnFunction: () => {
         deleteChat(chatBrief.id);
       },
@@ -114,7 +114,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
       <div key={chatBrief.id} ref={editMenuRef} className="absolute right-0 top-0 z-50">
         <div className="flex flex-col gap-1 rounded-sm bg-surface-neutral-surface-lv2 py-2 text-base font-normal leading-6 tracking-normal shadow-userMenu">
           <Button type="button" variant={'secondaryBorderless'} onClick={renameClickHandler}>
-            {t('COMMON.RENAME')}
+            {t('RENAME')}
           </Button>
           <Button
             type="button"
@@ -122,7 +122,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
             variant={'secondaryBorderless'}
             onClick={shareClickHandler}
           >
-            {t('COMMON.SHARE')}
+            {t('SHARE')}
           </Button>
           <Button
             type="button"
@@ -130,7 +130,7 @@ const ChatBriefItem = ({ chatBrief, index }: IChatBriefItemProps) => {
             variant={'secondaryBorderless'}
             onClick={privateClickHandler}
           >
-            {t('COMMON.SET_TO_PRIVATE')}
+            {t('SET_TO_PRIVATE')}
           </Button>
           <Button type="button" variant={'secondaryBorderless'} onClick={removeClickHandler}>
             {t('SIDE_BAR.REMOVE_CHAT')}
@@ -281,8 +281,8 @@ const ChatFolderItem = ({ chatFolder }: IChatFolderItemProps) => {
       title: t('MESSAGE_MODAL.REMOVE_FOLDER_TITLE'),
       messageType: MessageType.WARNING,
       redMsg: t('MESSAGE_MODAL.REMOVE_FOLDER_MESSAGE'),
-      backBtnStr: t('COMMON.CANCEL'),
-      submitBtnStr: t('COMMON.REMOVE'),
+      backBtnStr: t('CANCEL'),
+      submitBtnStr: t('REMOVE'),
       submitBtnFunction: () => {
         // ToDo: (20240702 - Julian) 這邊要寫刪除資料夾的 function ---> done (20240705 - Shirley)
         deleteFolder(chatFolder.id);
@@ -570,10 +570,6 @@ const ChatSidebar = ({ getIsExpanded }: IChatSidebarProps) => {
     </Button>
   ) : null;
 
-  /* eslint-disable no-console */
-  console.log('I am t', t);
-  console.log('hello hello hello', JSON.stringify(t('NAV_BAR.NEW_CHAT')));
-  /* eslint-enable no-console */
   return (
     <>
       {/* Info: ----- (20240904 - Julian) Desktop sidebar ----- */}

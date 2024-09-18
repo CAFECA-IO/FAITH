@@ -1,10 +1,10 @@
+/**
+ * Info: (20240918 - Murky)
+ * Please add context in /src/app/[locale]/layout.tsx, not in RootLayout.
+ */
 import { Metadata, Viewport } from "next";
-import NavBar from '@/components/nav_bar/nav_bar';
 import { Barlow, Inter } from 'next/font/google';
 
-import { ChatProvider } from '@/contexts/chat_context';
-import { UserProvider } from '@/contexts/user_context';
-import { GlobalProvider } from '@/contexts/global_context';
 import '@/app/[locale]/globals.css';
 import { i18nConfig } from "@/i18nConfig";
 
@@ -57,29 +57,18 @@ export default async function RootLayout({
   // This will be populated with nested layouts or pages
   children,
   params: { locale },
-}: {
+}: Readonly<{
   children: React.ReactNode
   params: {
     locale: string;
   }
-}) {
+}>) {
   return (
     <html lang={locale} className={`${inter.className} ${barlow.className}`}>
       <body>
-        <UserProvider>
-          <ChatProvider>
-            <GlobalProvider>
-              {/*
-                *Info: (20240916 - Murky)
-                * Home page use "h-screen", but other page use relevant, I'm not sure which one is correct.
-              */}
-              <div className="h-screen">
-                <NavBar />
-                {children}
-              </div>
-            </GlobalProvider>
-          </ChatProvider>
-        </UserProvider>
+
+        {children}
+
       </body>
     </html>
   );

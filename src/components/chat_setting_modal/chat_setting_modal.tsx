@@ -50,7 +50,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
   // ToDo: (20240625 - Julian) replace with actual data
   const hasSubscription = false;
   const subscriptionPlan = planName;
-  const subscriptionMonthlyFee = `${t('COMMON.NTD')} ${planMonthlyFee}`;
+  const subscriptionMonthlyFee = `${t('NTD')} ${planMonthlyFee}`;
   const nextPaymentTimestamp = 1719131200;
 
   const isNormalSettingSelected = currentTab === ChatSettingTab.NORMAL_SETTING;
@@ -96,8 +96,8 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       messageType: MessageType.WARNING,
       title: t('MESSAGE_MODAL.DELETE_CHAT_TITLE'),
       redMsg: t('MESSAGE_MODAL.DELETE_CHAT_MESSAGE'),
-      backBtnStr: t('COMMON.CANCEL'),
-      submitBtnStr: t('COMMON.CONFIRM'),
+      backBtnStr: t('CANCEL'),
+      submitBtnStr: t('CONFIRM'),
       submitBtnFunction: () => { }, // ToDo: (20240625 - Julian) add delete all chat function
     });
     messageModalVisibilityHandler();
@@ -109,8 +109,8 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       title: t('MESSAGE_MODAL.CANCEL_SUBSCRIPTION_TITLE'),
       redMsg: t('MESSAGE_MODAL.CANCEL_SUBSCRIPTION_MESSAGE_1'),
       normalMsg: t('MESSAGE_MODAL.CANCEL_SUBSCRIPTION_MESSAGE_2'),
-      backBtnStr: t('COMMON.CANCEL'),
-      submitBtnStr: t('COMMON.CONFIRM'),
+      backBtnStr: t('CANCEL'),
+      submitBtnStr: t('CONFIRM'),
       submitBtnFunction: () => { }, // ToDo: (20240625 - Julian) add cancel subscription function
     });
     messageModalVisibilityHandler();
@@ -121,8 +121,8 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
       messageType: MessageType.WARNING,
       title: t('MESSAGE_MODAL.AUTO_RENEWAL_TITLE'),
       normalMsg: t('MESSAGE_MODAL.AUTO_RENEWAL_MESSAGE'),
-      backBtnStr: t('COMMON.CANCEL'),
-      submitBtnStr: t('COMMON.CONFIRM'),
+      backBtnStr: t('CANCEL'),
+      submitBtnStr: t('CONFIRM'),
       submitBtnFunction: autoRenewalToggleHandler,
     });
     messageModalVisibilityHandler();
@@ -329,7 +329,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
         <div className="flex flex-col items-center gap-y-10px font-bold">
           <p className="z-20 text-4xl text-text-support-baby">{t('SETTING.SUB_MONTHLY_1')}</p>
           <p className="text-2xl text-text-brand-secondary-lv1">
-            {t('COMMON.NTD')}{' '}
+            {t('NTD')}{' '}
             <span className="text-48px text-text-brand-primary-lv2">{planMonthlyFee}</span>
           </p>
           <p className="text-4xl text-text-brand-secondary-lv2">{t('SETTING.SUB_MONTHLY_2')}</p>
@@ -380,7 +380,7 @@ const ChatSettingModal = ({ isModalVisible, modalVisibilityHandler }: IChatSetti
         {/* Info: (20240904 - Julian) Fee */}
         <div className="flex flex-col items-center text-text-brand-secondary-lv2">
           <p className="text-xl font-bold">
-            {t('SETTING.SUB_MONTHLY_1')} {t('COMMON.NTD')}{' '}
+            {t('SETTING.SUB_MONTHLY_1')} {t('NTD')}{' '}
             <span className="text-text-brand-primary-lv2">{planMonthlyFee}</span>{' '}
             {t('SETTING.SUB_MONTHLY_2')}
           </p>

@@ -113,10 +113,10 @@ const RegisterFormModal = ({ isModalVisible, modalVisibilityHandler }: IRegister
           <div className="flex gap-3">
             {/* TODO: button component (20240409 - Shirley) */}
             <Button type="button" variant="tertiaryBorderless" onClick={modalVisibilityHandler}>
-              {t('COMMON.CANCEL')}
+              {t('CANCEL')}
             </Button>
             <Button type="button" variant={'tertiary'} onClick={registerClickHandler}>
-              {t('COMMON.REGISTER')}
+              {t('REGISTER')}
             </Button>
           </div>
         </div>

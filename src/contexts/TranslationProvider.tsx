@@ -18,9 +18,6 @@ const TranslationProvider = React.memo<PropsWithChildren<TranslationProviderProp
     // Info: (20240916 - Murky) it suppose to be any
     // eslint-disable-next-line react/prop-types
     ({ children, locale, namespaces, resources }) => {
-        /* eslint-disable no-console */
-        console.log('TranslationProvider', { locale, namespaces, resources });
-        /* eslint-enable no-console */
         const i18n = createInstance();
 
         initTranslations(locale, namespaces, i18n, resources);

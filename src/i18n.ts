@@ -15,12 +15,12 @@ export default async function initTranslations(
   // Info: (20240916 - Murky) it suppose to be no param
   // Please check https://i18nexus.com/tutorials/nextjs/react-i18next
   // eslint-disable-next-line no-param-reassign
-  i18nInstance = i18nInstance || createInstance();
+  const i18nInstanceReal = i18nInstance || createInstance();
 
-  i18nInstance.use(initReactI18next);
+  await i18nInstanceReal.use(initReactI18next);
 
   if (!resources) {
-    i18nInstance.use(
+    i18nInstanceReal.use(
       resourcesToBackend(
         (language: string, namespace:string) =>
           import(`@/locales/${language}/${namespace}.json`)
@@ -28,7 +28,7 @@ export default async function initTranslations(
     );
   }
 
-  await i18nInstance.init({
+  await i18nInstanceReal.init({
     lng: locale,
     resources,
     fallbackLng: i18nConfig.defaultLocale,
@@ -41,7 +41,7 @@ export default async function initTranslations(
 
   return {
     i18n: i18nInstance,
-    resources: i18nInstance.services.resourceStore.data,
-    t: i18nInstance.t
+    resources: i18nInstanceReal.services.resourceStore.data,
+    t: i18nInstanceReal.t
   };
 }

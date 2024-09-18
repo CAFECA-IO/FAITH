@@ -224,7 +224,7 @@ const UserCodeModal = ({ isModalVisible, modalVisibilityHandler }: IUserCodeModa
               variant="secondaryOutline"
               onClick={modalVisibilityHandler}
             >
-              {t('COMMON.CANCEL')}
+              {t('CANCEL')}
             </Button>
             <Button
               id="user-code-agree-button"

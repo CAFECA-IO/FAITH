@@ -73,7 +73,7 @@ const ReportCommentModal = ({
             className="ml-auto w-fit"
             disabled={isSubmitDisabled}
           >
-            {t('COMMON.SEND')}
+            {t('SEND')}
           </Button>
         </div>
       </div>

@@ -240,7 +240,7 @@ const Pagination = ({
         {displayPageInput}
         {/* Info: (20240419 - Julian) 顯示總頁數 */}
         <p>
-          {t('COMMON.OF')} {totalPages}
+          {t('OF')} {totalPages}
         </p>
       </li>
       {/* Info: (20240419 - Julian) 下一頁 */}

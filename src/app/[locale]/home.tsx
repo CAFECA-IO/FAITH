@@ -15,13 +15,10 @@ export default function HomePage() {
     const getIsExpanded = (props: boolean) => {
         setIsSidebarExpanded(props);
     };
-    /* eslint-disable no-console */
-    console.log('I am app home Page!!');
-    /* eslint-enable no-console */
+
     return (
 
         <div className="bg-white">
-            <h1>Hi I am page!</h1>
             <ChatSidebar getIsExpanded={getIsExpanded} />
             <div
                 className={`flex h-screen flex-col justify-end transition-all duration-300 ease-in-out ${isSidebarExpanded ? 'lg:ml-240px' : ''}`}

@@ -107,7 +107,7 @@ const UpdateLinkModal = ({
             />
           </svg>
 
-          <p>{t('COMMON.LOADING')}</p>
+          <p>{t('LOADING')}</p>
         </Button>
       </div>
       {/* Info: (20240911 - Julian) Mobile */}

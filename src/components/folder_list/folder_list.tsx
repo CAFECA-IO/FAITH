@@ -83,8 +83,8 @@ const FolderItem = ({ folder }: IFolderItemProps) => {
       title: t('MESSAGE_MODAL.REMOVE_FOLDER_TITLE'),
       messageType: MessageType.WARNING,
       redMsg: t('MESSAGE_MODAL.REMOVE_FOLDER_MESSAGE'),
-      backBtnStr: t('COMMON.CANCEL'),
-      submitBtnStr: t('COMMON.REMOVE'),
+      backBtnStr: t('CANCEL'),
+      submitBtnStr: t('REMOVE'),
       submitBtnFunction: () => deleteFolder(id),
     });
     messageModalVisibilityHandler();
@@ -136,7 +136,7 @@ const FolderItem = ({ folder }: IFolderItemProps) => {
             className="w-full py-8px"
             onClick={renamingHandler}
           >
-            {t('COMMON.RENAME')}
+            {t('RENAME')}
           </Button>
           <Button
             type="button"
@@ -144,7 +144,7 @@ const FolderItem = ({ folder }: IFolderItemProps) => {
             className="w-full py-8px"
             onClick={shareChatHandler}
           >
-            {t('COMMON.SHARE')}
+            {t('SHARE')}
           </Button>
           <Button
             type="button"

@@ -53,7 +53,7 @@ const FeedbackModal = ({ isModalVisible, modalVisibilityHandler }: IFeedbackModa
             // ToDo: (20240704 - Julian) Add feedback submit handler
             onClick={modalVisibilityHandler}
           >
-            {t('COMMON.SEND')}
+            {t('SEND')}
           </Button>
         </div>
       </div>
