@@ -21,7 +21,8 @@ const I18n = () => {
         key={item.value}
         href={asPath}
         scroll={false}
-        locale={item.value}
+        // locale={item.value}
+        lang={item.value}
         onClick={toggleMenu}
       >
         <Button type="button" variant="tertiaryBorderless">
