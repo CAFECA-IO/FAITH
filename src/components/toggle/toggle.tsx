@@ -1,3 +1,5 @@
+'use client';
+
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
 interface IToggleProps {
@@ -68,7 +70,7 @@ Toggle.defaultProps = {
   lockedToOpen: false,
   initialToggleState: false,
   toggleStateFromParent: false,
-  setToggleStateFromParent: () => {},
+  setToggleStateFromParent: () => { },
 };
 
 export default Toggle;

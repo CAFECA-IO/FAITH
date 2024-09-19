@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/components/button/button';
 import { IFile, FileStatusIcons, FileTypeIcons, FileStatus } from '@/interfaces/file';
 import { cn } from '@/lib/utils/common';

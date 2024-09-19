@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { Button } from '@/components/button/button';
 import { useTranslation } from 'react-i18next';

@@ -1,3 +1,5 @@
+'use client';
+
 import ChatTopicOption from '@/components/chat_topic_option/chat_topic_option';
 import { useChatCtx } from '@/contexts/chat_context';
 import {

@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils/common';
@@ -39,7 +41,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+  VariantProps<typeof buttonVariants> { }
 
 // Info: 使用 forwardRef 將引用傳遞給 DOM 元素 (20240625 - Shirley)
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(

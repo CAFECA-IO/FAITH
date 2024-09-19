@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { ITopicBrief, dummyTopicList, defaultTopicData } from '@/interfaces/topic';
 import { useGlobalCtx } from '@/contexts/global_context';

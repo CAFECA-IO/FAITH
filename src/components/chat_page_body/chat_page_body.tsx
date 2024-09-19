@@ -1,8 +1,9 @@
+'use client';
+
 import { useUserCtx } from '@/contexts/user_context';
 import { useChatCtx } from '@/contexts/chat_context';
 import { cn } from '@/lib/utils/common';
 import React, { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import ChatThreadSection from '@/components/chat_thread_section/chat_thread_section';
 import { useGlobalCtx } from '@/contexts/global_context';
 import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item';
@@ -15,13 +16,13 @@ import { DELAYED_BOT_ACTION_SUCCESS_MILLISECONDS } from '@/constants/display';
 import { ActionCausingFeedback } from '@/interfaces/chat';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
 
 interface IChatPageBodyProps {
   isSidebarExpanded: boolean;
 }
 
 const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
-  const router = useRouter();
   const { t } = useTranslation();
   const { isSignedIn } = useUserCtx();
   const {
@@ -163,14 +164,14 @@ const ChatPageBody = ({ isSidebarExpanded }: IChatPageBodyProps) => {
             content: (
               <div>
                 {t('TOAST.REGISTER_REMINDER')}
-                <button
+                <Link
                   id="register-button"
                   type="button"
                   className="font-semibold text-link-text-primary hover:underline"
-                  onClick={() => router.push(NATIVE_ROUTE.LOGIN)}
+                  href={NATIVE_ROUTE.LOGIN}
                 >
                   {t('NAV_BAR.REGISTER')}
-                </button>
+                </Link>
               </div>
             ),
             closeable: true,

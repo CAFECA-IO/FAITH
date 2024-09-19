@@ -1,3 +1,5 @@
+'use client';
+
 import Lottie from 'lottie-react';
 import { Button } from '@/components/button/button';
 import UploadedFileItem from '@/components/uploaded_file_item/uploaded_file_item';
@@ -188,8 +190,8 @@ const ChatMessage = ({ sender, role, messages, resend: resendCallback }: ChatMes
                   <div className="mt-2">
                     <UploadedFileItem
                       file={messages[selectedMsgIndex].file ?? ({} as IFile)}
-                      retry={() => {}}
-                      delete={() => {}}
+                      retry={() => { }}
+                      delete={() => { }}
                     />
                   </div>
                 )}

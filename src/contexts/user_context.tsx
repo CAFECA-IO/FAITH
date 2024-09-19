@@ -63,6 +63,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ registration }),
+        cache: 'no-store'
       });
 
       const data = (await response.json()).payload as IUserAuth;
@@ -108,6 +109,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ credential: user }),
+        cache: 'no-store'
       });
 
       setUserAuth(null);
