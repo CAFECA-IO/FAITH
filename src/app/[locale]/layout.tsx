@@ -4,7 +4,6 @@
  * New context need to  be inside TranslationProvider if i18n is used.
  */
 
-import React from 'react';
 import initTranslations from '@/i18n';
 
 import NavBar from '@/components/nav_bar/nav_bar';

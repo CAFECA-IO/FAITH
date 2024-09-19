@@ -63,6 +63,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ registration }),
+        cache: 'no-store'
       });
 
       const data = (await response.json()).payload as IUserAuth;
@@ -108,6 +109,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ credential: user }),
+        cache: 'no-store'
       });
 
       setUserAuth(null);
@@ -136,6 +138,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     if (isSignedIn) {
       router.push(NATIVE_ROUTE.HOME);
     }
+    /* eslint-disable no-console */
+    console.log('isSignedIn:', isSignedIn);
+    /* eslint-enable no-console */
   }, [isSignedIn]);
 
   // TODO: test the user auth status (20240627 -Shirley)

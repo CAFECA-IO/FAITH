@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 // eslint-disable-next-line import/no-cycle
 import { useGlobalCtx } from '@/contexts/global_context';
@@ -37,7 +39,7 @@ const CommentItem = ({ commentData }: ICommentItemProps) => {
             id={`answer-like-button-${commentData.id}`}
             type="button"
             className="flex items-center rounded-full border border-badge-stroke-primary p-6px text-xs text-icon-surface-single-color-primary hover:text-icon-surface-accent md:gap-4px md:text-base"
-            // ToDo: (20240627 - Julian) Add onClick event
+          // ToDo: (20240627 - Julian) Add onClick event
           >
             <svg
               width="20"
@@ -62,7 +64,7 @@ const CommentItem = ({ commentData }: ICommentItemProps) => {
             id={`answer-dislike-button-${commentData.id}`}
             type="button"
             className="flex items-center rounded-full border border-badge-stroke-primary p-6px text-xs text-icon-surface-single-color-primary hover:text-icon-surface-accent md:gap-4px md:text-base"
-            // ToDo: (20240627 - Julian) Add onClick event
+          // ToDo: (20240627 - Julian) Add onClick event
           >
             <svg
               width="20"

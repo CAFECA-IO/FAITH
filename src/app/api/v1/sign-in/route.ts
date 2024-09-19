@@ -5,6 +5,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 import { server } from '@passwordless-id/webauthn';
 import { COOKIE_NAME } from '@/constants/config';
+import { backEndLogger } from '@/lib/utils/logger/backend_logger';
 
 const CREDENTIALS_ARRAY: ICredential[] = [];
 
@@ -33,8 +34,7 @@ export async function POST(request: NextRequest) {
       expected
     );
 
-    // eslint-disable-next-line no-console
-    console.log('authenticationParsed in SignIn API', authenticationParsed);
+    backEndLogger.info('authenticationParsed in SignIn API', authenticationParsed);
 
     CREDENTIALS_ARRAY.push(registeredCredential);
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/components/button/button';
 import useOuterClick from '@/lib/hooks/use_outer_click';
 import Link from 'next/link';

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useUserCtx } from '@/contexts/user_context';
 import { Button } from '@/components/button/button';

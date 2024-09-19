@@ -28,6 +28,9 @@ const nextConfig = {
   reactStrictMode: true,
   // Info: (20240916 - Murky) use react-i18next instead of next-i18next
   // i18n,
+  experimental: {
+    instrumentationHook: true, // Info: (20240812 - Murky) this is for function run before server start
+  },
 };
 
 module.exports = nextConfig;
