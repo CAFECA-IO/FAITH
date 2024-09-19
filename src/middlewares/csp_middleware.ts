@@ -20,7 +20,7 @@ export function cspMiddleware(middleware: CustomMiddleware): CustomMiddleware {
     frame-ancestors 'none';
     upgrade-insecure-requests;
 `;
-    // Replace newline characters and spaces
+    // Info: (20240918 - Murky) Replace newline characters and spaces
     const contentSecurityPolicyHeaderValue = cspHeader.replace(/\s{2,}/g, ' ').trim();
 
     const requestHeaders = new Headers(request.headers);
