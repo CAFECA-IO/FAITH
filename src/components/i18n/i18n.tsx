@@ -22,7 +22,7 @@ const I18n = () => {
       <Link
         id={`language-${item.value}`}
         key={item.value}
-        href={`${item.value}${asPath}`}
+        href={`/${item.value}${asPath}`}
         scroll={false}
         // locale={item.value}
         // lang={item.value}
