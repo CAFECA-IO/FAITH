@@ -5,7 +5,10 @@ import { usePathname } from 'next/navigation';
 import { INTERNATIONALIZATION_LIST } from '@/constants/i18n';
 
 const I18n = () => {
-  const asPath = usePathname() || '';
+  const pathname = usePathname() || '';
+  // Info: (20240919 - Julian) 過濾掉第二個斜線前的字串(locale)
+  const asPath = pathname.replace(/\/[^/]+/, '');
+
   const {
     targetRef: lanRef,
     componentVisible: isMenuVisible,
@@ -19,9 +22,10 @@ const I18n = () => {
       <Link
         id={`language-${item.value}`}
         key={item.value}
-        href={asPath}
+        href={`/${item.value}${asPath}`}
         scroll={false}
-        locale={item.value}
+        // locale={item.value}
+        // lang={item.value}
         onClick={toggleMenu}
       >
         <Button type="button" variant="tertiaryBorderless">
