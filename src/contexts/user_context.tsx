@@ -136,6 +136,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     if (isSignedIn) {
       router.push(NATIVE_ROUTE.HOME);
     }
+    /* eslint-disable no-console */
+    console.log('isSignedIn:', isSignedIn);
+    /* eslint-enable no-console */
   }, [isSignedIn]);
 
   // TODO: test the user auth status (20240627 -Shirley)

@@ -3,7 +3,7 @@
  * This file will start before the app is loaded.
  */
 
-import { LocalStorageFolder } from '@/constants/files';
+import { LocalStorageFolder } from '@/constants/file';
 
 export async function register() {
     if (process.env.NEXT_RUNTIME === 'nodejs') {
@@ -11,5 +11,10 @@ export async function register() {
 
         const pathOrFolderNames = [...Object.values(LocalStorageFolder)];
         await createFoldersIfNotExists(pathOrFolderNames);
+        /* eslint-disable no-console */
+        Object.values(LocalStorageFolder).forEach((folderName) => {
+            console.log(`Folder ${folderName} created.`);
+        });
+        /* eslint-enable no-console */
     }
 }

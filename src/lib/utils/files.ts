@@ -1,4 +1,4 @@
-import { STORAGE_FOLDER } from '@/constants/files';
+import { STORAGE_FOLDER } from '@/constants/file';
 import * as path from 'path';
 import { promises as fs } from 'fs';
 

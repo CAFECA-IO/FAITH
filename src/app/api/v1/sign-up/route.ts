@@ -5,6 +5,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 import { server } from '@passwordless-id/webauthn';
 import { COOKIE_NAME, DUMMY_CHALLENGE } from '@/constants/config';
+import { backEndLogger } from '@/lib/utils/logger/backend_logger';
 
 const USERINFO_ARRAY: IUserAuth[] = [];
 const CREDENTIALS_ARRAY: ICredential[] = [];
@@ -36,8 +37,7 @@ export async function POST(request: NextRequest) {
     USERINFO_ARRAY.push(registrationParsed);
     CREDENTIALS_ARRAY.push(credential);
 
-    // eslint-disable-next-line no-console
-    console.log('registrationParsed', registrationParsed);
+    backEndLogger.info('registrationParsed in SignUp API', registrationParsed);
 
     const expiration = new Date();
 
