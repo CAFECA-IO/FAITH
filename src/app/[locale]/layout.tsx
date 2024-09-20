@@ -12,6 +12,7 @@ import { UserProvider } from '@/contexts/user_context';
 import { GlobalProvider } from '@/contexts/global_context';
 
 import TranslationProvider from '@/contexts/TranslationProvider';
+import { LoggerProvider } from '@/contexts/logger_context';
 
 type Props = {
     children: React.ReactNode;
@@ -39,22 +40,23 @@ const i18nNamespaces = ['common'];
 export default async function Layout({ children, params: { locale } }: Props) {
     const { resources } = await initTranslations(locale, i18nNamespaces);
     return (
-
-        <TranslationProvider locale={locale} namespaces={i18nNamespaces} resources={resources}>
-            <UserProvider>
-                <ChatProvider>
-                    <GlobalProvider>
-                        {/*
+        <LoggerProvider>
+            <TranslationProvider locale={locale} namespaces={i18nNamespaces} resources={resources}>
+                <UserProvider>
+                    <ChatProvider>
+                        <GlobalProvider>
+                            {/*
                             *Info: (20240916 - Murky)
                             * Home page use "h-screen", but other page use relevant, I'm not sure which one is correct.
                         */}
-                        <div className="relative">
-                            <NavBar />
-                            {children}
-                        </div>
-                    </GlobalProvider>
-                </ChatProvider>
-            </UserProvider>
-        </TranslationProvider>
+                            <div className="relative">
+                                <NavBar />
+                                {children}
+                            </div>
+                        </GlobalProvider>
+                    </ChatProvider>
+                </UserProvider>
+            </TranslationProvider>
+        </LoggerProvider>
     );
 }
