@@ -29,4 +29,4 @@ export function generateLogger(
   return newLogger;
 }
 
-export const backEndLogger = generateLogger();
+export const backEndLogger = generateLogger('backend_logger.log');
