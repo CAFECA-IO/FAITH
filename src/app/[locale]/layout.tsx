@@ -15,11 +15,11 @@ import TranslationProvider from '@/contexts/TranslationProvider';
 import { LoggerProvider } from '@/contexts/logger_context';
 
 type Props = {
-    children: React.ReactNode;
-    // Info: (20240918 - Murky) Use params to access the locale
-    params: {
-        locale: string;
-    };
+  children: React.ReactNode;
+  // Info: (20240918 - Murky) Use params to access the locale
+  params: {
+    locale: string;
+  };
 };
 
 /*
@@ -27,9 +27,9 @@ type Props = {
  * ex test is from src/locales/en/test.json
  * shape be like:
  * {
- *     "GREETING": {
- *         "HELLO": "Hello"
- *     }
+ *   "GREETING": {
+ *     "HELLO": "Hello"
+ *   }
  * }
  * <h1>{`${t('GREETING.HELLO', { ns: 'test' })}`}</h1>
  * then Add 'test' to i18nNamespaces
@@ -38,25 +38,25 @@ type Props = {
 const i18nNamespaces = ['common'];
 
 export default async function Layout({ children, params: { locale } }: Props) {
-    const { resources } = await initTranslations(locale, i18nNamespaces);
-    return (
-        <LoggerProvider>
-            <TranslationProvider locale={locale} namespaces={i18nNamespaces} resources={resources}>
-                <UserProvider>
-                    <ChatProvider>
-                        <GlobalProvider>
-                            {/*
-                            *Info: (20240916 - Murky)
-                            * Home page use "h-screen", but other page use relevant, I'm not sure which one is correct.
-                        */}
-                            <div className="relative">
-                                <NavBar />
-                                {children}
-                            </div>
-                        </GlobalProvider>
-                    </ChatProvider>
-                </UserProvider>
-            </TranslationProvider>
-        </LoggerProvider>
-    );
+  const { resources } = await initTranslations(locale, i18nNamespaces);
+  return (
+    <LoggerProvider>
+      <TranslationProvider locale={locale} namespaces={i18nNamespaces} resources={resources}>
+        <UserProvider>
+          <ChatProvider>
+            <GlobalProvider>
+              {/*
+                *Info: (20240916 - Murky)
+                * Home page use "h-screen", but other page use relevant, I'm not sure which one is correct.
+                */}
+              <div className="relative">
+                <NavBar />
+                {children}
+              </div>
+            </GlobalProvider>
+          </ChatProvider>
+        </UserProvider>
+      </TranslationProvider>
+    </LoggerProvider>
+  );
 }
