@@ -41,7 +41,7 @@ const ChatThreadSection = () => {
             key={topic.title}
             title={t(topic.title)}
             description={t(topic.description)}
-            onClick={() => topicClickHandler(topic.title)}
+            onClick={() => topicClickHandler(t(topic.title))}
             icon={isSignedIn ? TopicIcons[topic.type] : undefined}
           />
         ))}
