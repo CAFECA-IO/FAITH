@@ -1,6 +1,6 @@
 {
   "name": "FAITH",
-  "version": "0.8.1+faith.1021",
+  "version": "0.8.1+faith.10211",
   "private": false,
   "scripts": {
     "dev": "next dev",
